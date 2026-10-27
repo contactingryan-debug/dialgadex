@@ -42,7 +42,7 @@ function BindRankings() {
         LoadStrongestAndUpdateURL(event.detail.type);
     });
 
-    document.getElementById("strongest-links-types").setHrefs((type) => `/?strongest&t=${type}`);
+    document.getElementById("strongest-links-types").setHrefs((type) => `?strongest&t=${type}`);
 
     SetupScroll();
 }
@@ -726,7 +726,7 @@ function GetRankingRow(row_i) {
                     ? p.grouped_rat : row_i) + 1) : "")
             +"</td>";
         const td_name = $("<td class='td-poke-name'></td>")
-        const a_name = $(`<a class='a-poke-name' href='/?p=${p.id}&f=${p.form}'</a>`);
+        const a_name = $(`<a class='a-poke-name' href='?p=${p.id}&f=${p.form}'</a>`);
         a_name.on("click", function(e) {
             e.preventDefault();
             LoadPokedexAndUpdateURL(GetPokeDexMon(p.id, p.form));
@@ -893,7 +893,7 @@ function throttle(func, timeFrame) {
  * Builds a formatted anchor element to link back to a type ranking list
  */
 function GetTypeLink(type, versus) {
-    const anchor = $(`<a class='type-text bg-${type}' href='/?strongest&t=${type}${(versus ? "&v" : "")}'>${GetTranslation("pokedata.types."+type)}</a>`);
+    const anchor = $(`<a class='type-text bg-${type}' href='?strongest&t=${type}${(versus ? "&v" : "")}'>${GetTranslation("pokedata.types."+type)}</a>`);
     anchor.on("click", function (e) {
         e.preventDefault();
         LoadStrongestAndUpdateURL(type, versus);
@@ -906,12 +906,12 @@ function GetTypeLink(type, versus) {
  * Builds a formatted anchor element to link back to a type ranking list
  */
 function GetTypeLinkImg(type, versus) {
-    const anchor = $(`<a href='/?strongest&t=${type}${(versus ? "&v" : "")}'></a>`);
+    const anchor = $(`<a href='?strongest&t=${type}${(versus ? "&v" : "")}'></a>`);
     anchor.on("click", function (e) {
         e.preventDefault();
         LoadStrongestAndUpdateURL(type, versus);
     });
-    const img = $(`<img src='/imgs/types/${type.toLowerCase()}.gif' alt=${type}></img>`);
+    const img = $(`<img src='imgs/types/${type.toLowerCase()}.gif' alt=${type}></img>`);
     anchor.append(img);
 
     return anchor;

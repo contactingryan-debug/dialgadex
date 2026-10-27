@@ -7,45 +7,45 @@
     <title>DialgaDex</title>
     <meta name="description" content="Ranking lists, moveset data, calculation tools, and everything else you need to tackle raids in Pokémon Go." />
     
-    <link rel="icon" type="image/png" href="/res/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/res/favicon.svg" />
-    <link rel="shortcut icon" href="/res/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/res/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" href="res/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="res/favicon.svg" />
+    <link rel="shortcut icon" href="res/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="res/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="DialgaDex" />
-    <link rel="manifest" href="/res/site.webmanifest" />
+    <link rel="manifest" href="res/site.webmanifest" />
 
-    <link rel="stylesheet" href="/styles/darkmode.css">
-    <link rel="stylesheet" href="/styles/switch.css">
-    <link rel="stylesheet" href="/styles/togglebutton.css">
-    <link rel="stylesheet" href="/styles/tooltips.css">
-    <link rel="stylesheet" href="/styles/autocomplete.css">
-    <link rel="stylesheet" href="/styles/style.css">
-    <link rel="stylesheet" href="/styles/mobile.css" media="screen and (max-width:900px)">
+    <link rel="stylesheet" href="styles/darkmode.css">
+    <link rel="stylesheet" href="styles/switch.css">
+    <link rel="stylesheet" href="styles/togglebutton.css">
+    <link rel="stylesheet" href="styles/tooltips.css">
+    <link rel="stylesheet" href="styles/autocomplete.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/mobile.css" media="screen and (max-width:900px)">
 
     <!--<link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_pkm_names.json" as="fetch" crossorigin />-->
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_pkm.min.json" as="fetch" crossorigin />
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_fm.json" as="fetch" crossorigin />
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_cm.json" as="fetch" crossorigin />
-    <link rel="preload" href="/locales/en.json" as="fetch" crossorigin />
-    <link rel="preload" href="/locales/pokedata/en.json" as="fetch" crossorigin />
+    <link rel="preload" href="locales/en.json" as="fetch" crossorigin />
+    <link rel="preload" href="locales/pokedata/en.json" as="fetch" crossorigin />
 
-    <script src="/lib/jquery-3.6.0.min.js"></script>
-    <script src="/lib/autoComplete.js"></script>
-    <script src="/lib/jenks.js"></script>
+    <script src="lib/jquery-3.6.0.min.js"></script>
+    <script src="lib/autoComplete.js"></script>
+    <script src="lib/jenks.js"></script>
     
-    <script src="/scripts/dataload.js"></script>
-    <script src="/scripts/translation.js"></script>
-    <script src="/scripts/settings.js"></script>
-    <script src="/scripts/pokemon_enums.js"></script>
-    <script src="/scripts/pokemon_utils.js"></script>
-    <script src="/scripts/dialogs.js"></script>
-    <script src="/scripts/calc.js"></script>
-    <script src="/scripts/rankings.js"></script>
-    <script src="/scripts/pokedex.js"></script>
-    <script src="/scripts/moves.js"></script>
+    <script src="scripts/dataload.js"></script>
+    <script src="scripts/translation.js"></script>
+    <script src="scripts/settings.js"></script>
+    <script src="scripts/pokemon_enums.js"></script>
+    <script src="scripts/pokemon_utils.js"></script>
+    <script src="scripts/dialogs.js"></script>
+    <script src="scripts/calc.js"></script>
+    <script src="scripts/rankings.js"></script>
+    <script src="scripts/pokedex.js"></script>
+    <script src="scripts/moves.js"></script>
     <script src="index.js"></script>
     
-    <script src="/components/type-selector.js"></script>
+    <script src="components/type-selector.js"></script>
 </head>
 
 <body class="darkmode">
@@ -373,7 +373,7 @@
 </dialog>
 <header>
     <div class="site-size" id="header-content">
-        <a id="header-left" href="/">
+        <a id="header-left" href="./">
             <div class="header-area">
                 <img class="unselectable" id=logo src="imgs/dialga.png" alt="Site Logo depicting Dialga">
                 <h2 id="site-name">Dialga<span class="contrast">Dex</span></h2>
@@ -512,9 +512,9 @@
                     <img class="drawer-icon" src="imgs/menu.svg" alt="Menu button to open navigation menu to different pages" />
                     <div class="drawer-popup" id="nav-drawer">
                         <ul class="menu">
-                            <li><a id=rankings-link href="/?strongest" data-i18n="site.links.rankings">Attacker Rankings</a></li>
-                            <li><a id=moves-link href="/?moves" data-i18n="site.links.moves">Move Data</a></li>
-                            <li><a id=typechart-link href="/?typechart" data-i18n="site.links.types">Type Chart</a></li>
+                            <li><a id=rankings-link href="?strongest" data-i18n="site.links.rankings">Attacker Rankings</a></li>
+                            <li><a id=moves-link href="?moves" data-i18n="site.links.moves">Move Data</a></li>
+                            <li><a id=typechart-link href="?typechart" data-i18n="site.links.types">Type Chart</a></li>
                         </ul>
                     </div>
                 </div>
@@ -536,13 +536,13 @@
         <p data-i18n="site.disclaimer">DialgaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.<br/>
             Pokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.</p>
         <nav id=footer-links>
-            <a id=faq-link href="/?faq" data-i18n="site.links.FAQ">FAQ</a>
+            <a id=faq-link href="?faq" data-i18n="site.links.FAQ">FAQ</a>
             •
-            <a id=contact-link href="/?about#contact" data-i18n="site.links.contact">Contact</a>
+            <a id=contact-link href="?about#contact" data-i18n="site.links.contact">Contact</a>
             •
-            <a id=credits-link href="/?about#credits" data-i18n="site.links.credits">Credits</a>
+            <a id=credits-link href="?about#credits" data-i18n="site.links.credits">Credits</a>
             •
-            <a id=privacy-link href="/?about#privacy" data-i18n="site.links.privacy">Privacy</a>
+            <a id=privacy-link href="?about#privacy" data-i18n="site.links.privacy">Privacy</a>
         </nav>
     </div>
 

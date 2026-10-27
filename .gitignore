@@ -1,3 +1,6 @@
 .vscode/
 node_modules/
 package-lock.json
+!baseline-tools/package-lock.json
+baseline-tools/results/
+_site/

@@ -1,0 +1,43 @@
+name: DialgaDex baseline parity
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      fork_url:
+        description: "Optional deployed URL; leave blank to test this checkout under /dialgadex/"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: baseline-tools/package-lock.json
+      - run: npm ci
+        working-directory: baseline-tools
+      - run: npx playwright install --with-deps chromium
+        working-directory: baseline-tools
+      - name: Serve checkout at a repository subpath
+        run: python3 -m http.server 8765 --bind 127.0.0.1 --directory "$GITHUB_WORKSPACE/.." > "$RUNNER_TEMP/dialgadex-server.log" 2>&1 &
+      - name: Compare official and forked DialgaDex
+        run: npm run compare
+        working-directory: baseline-tools
+        env:
+          FORK_URL: ${{ inputs.fork_url || format('http://127.0.0.1:8765/{0}/', github.event.repository.name) }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: baseline-comparison
+          path: baseline-tools/results/baseline-results.json

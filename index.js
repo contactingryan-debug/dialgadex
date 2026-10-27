@@ -9,12 +9,12 @@ $(document).ready(Main);
 let current_pkm_obj = null; // current pokedex pokemon's pkm_obj
 
 const pages = [
-    {id: 'pokedex-page', template_path: '/templates/pokedex.html', binder: BindPokeDex},
-    {id: 'strongest', template_path: '/templates/rankings.html', binder: BindRankings},
-    {id: 'move-data', template_path: '/templates/moves.html', binder: BindMoveData},
-    {id: 'type-matrix', template_path: '/templates/typechart.html', binder: BuildTypeChart},
-    {id: 'faq', template_path: '/templates/faq.html'},
-    {id: 'about', template_path: '/templates/about.html'}
+    {id: 'pokedex-page', template_path: 'templates/pokedex.html', binder: BindPokeDex},
+    {id: 'strongest', template_path: 'templates/rankings.html', binder: BindRankings},
+    {id: 'move-data', template_path: 'templates/moves.html', binder: BindMoveData},
+    {id: 'type-matrix', template_path: 'templates/typechart.html', binder: BuildTypeChart},
+    {id: 'faq', template_path: 'templates/faq.html'},
+    {id: 'about', template_path: 'templates/about.html'}
 ];
 
 /**

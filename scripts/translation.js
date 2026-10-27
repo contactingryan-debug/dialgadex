@@ -54,7 +54,7 @@ async function SetLocale(newLocale) {
     if (!IsSupportedLocale(newLocale)) return;
 
     try {
-        translationMap = await FetchJSON("/locales/" + newLocale + ".json", null,
+        translationMap = await FetchJSON("locales/" + newLocale + ".json", null,
             () => {
                 currentLocale = newLocale;
             },
@@ -63,7 +63,7 @@ async function SetLocale(newLocale) {
                 currentLocale = 'en';
                 translationMap = await LoadFallbackLocale();
             });
-        translationMap.pokedata = await FetchJSON("/locales/pokedata/" + currentLocale + ".json", null, 
+        translationMap.pokedata = await FetchJSON("locales/pokedata/" + currentLocale + ".json", null,
             () => {},
             async () => {
                 console.warn("Unsupported language or pokedata map unable to load. Falling back to English.")
@@ -90,8 +90,8 @@ async function LoadFallbackLocale() {
     if (fallbackMap) return await fallbackMap;
 
     try {
-        fallbackMap = await FetchJSON("/locales/en.json");
-        fallbackMap.pokedata = await FetchJSON("/locales/pokedata/en.json");
+        fallbackMap = await FetchJSON("locales/en.json");
+        fallbackMap.pokedata = await FetchJSON("locales/pokedata/en.json");
     }
     catch (err) {
         console.error("Default string map failed to load. This may lead to unexpected behavior. Trying to continue...")

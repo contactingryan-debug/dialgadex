@@ -18,7 +18,7 @@ let jb_names, jb_pkm, jb_max_id, jb_fm, jb_cm, jb_spec, jb_unpatch;
 async function LoadJSONData() {
     let jsonLoadReqs = [];
     
-    jsonLoadReqs.push(FetchJSON("/locales/pokedata/en.json", null, 
+    jsonLoadReqs.push(FetchJSON("locales/pokedata/en.json", null,
         (json) => {
             jb_names = json.species;
             IncreaseLoadingVal();

@@ -281,7 +281,7 @@ function GetPokemonContainer(pokemon_id, is_selected, form = "Normal") {
     pokemon_container_div.append(img_container_div);
 
     // pokemon name p
-    const pokemon_name_p= $(`<a href='/?p=${pokemon_id}&f=${form}' class='pokemon-name pokefont unselectable'">#${pokemon_id} ${pokemon_name}</a>`);
+    const pokemon_name_p= $(`<a href='?p=${pokemon_id}&f=${form}' class='pokemon-name pokefont unselectable'">#${pokemon_id} ${pokemon_name}</a>`);
     pokemon_name_p.on("click", function(e) {
         e.preventDefault();
         LoadPokedexAndUpdateURL(GetPokeDexMon(pokemon_id, form));

@@ -39,7 +39,7 @@ async function LoadMoves(type = "Any", kind) {
     cur_sort.move_kind = kind; 
 
     document.getElementById("move-type-links-bytype").setHrefs((type) => {
-        return`/?moves=` + kind + `&t=${type}`
+        return`?moves=` + kind + `&t=${type}`
     });
 
     // sets titles
@@ -315,7 +315,7 @@ function SetMoveTable(sort_info) {
                 const coords = GetPokemonIconCoords(users[i].id, users[i].form);
 
                 const mon_link = $("<a class='pokemon-icon'></a>");
-                mon_link.attr("href", "/?p=" + users[i].id + "&f=" + users[i].form);
+                mon_link.attr("href", "?p=" + users[i].id + "&f=" + users[i].form);
                 mon_link.css("background-image", `url(${ICONS_URL})`);
                 mon_link.css("background-position", coords.x + "px " + coords.y + "px");
                 mon_link.on("click", function(e) {

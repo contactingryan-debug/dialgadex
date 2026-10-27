@@ -1,0 +1,124 @@
+{
+  "timestamp": "2026-10-27T06:59:33.920Z",
+  "status": "passed",
+  "scope": "Official production website compared with the local fork served under /dialgadex/. Public GitHub Pages deployment is pending.",
+  "upstreamCodeCommit": "0f958e7b09375fd58f327e42e3c41b2a7d18f27f",
+  "upstreamUrl": "https://www.dialgadex.com/",
+  "testedForkUrl": "http://127.0.0.1:8765/dialgadex/",
+  "dataHash": "71c9321ef4369947fa4227121aa6d21728bfeba2e7d1a9b5c25dd46a398fc91d",
+  "dataCounts": {
+    "pokemonForms": 1385,
+    "fastMoves": 96,
+    "chargedMoves": 266
+  },
+  "settings": {
+    "metric": "eDPS",
+    "level": 50,
+    "megaLevel": 4,
+    "normalTeam": 6,
+    "megaTeam": 6,
+    "relobbySeconds": 10,
+    "partyPower": 1,
+    "typeAffinity": true,
+    "newDps": true,
+    "pveTurns": true,
+    "speculative": true,
+    "mixed": true,
+    "offType": true,
+    "elite": true,
+    "shadow": true,
+    "mega": true,
+    "unreleased": false
+  },
+  "checks": {
+    "inputDataIdentical": true,
+    "settingsIdentical": true,
+    "diagnostics": [],
+    "navigationSmoke": [
+      {
+        "base": "http://127.0.0.1:8765/dialgadex/",
+        "passed": true,
+        "name": "Enamorus",
+        "form": "Incarnate",
+        "counters": 12,
+        "fontLoaded": true
+      },
+      {
+        "base": "http://127.0.0.1:8766/",
+        "passed": true,
+        "name": "Enamorus",
+        "form": "Incarnate",
+        "counters": 12,
+        "fontLoaded": true
+      }
+    ]
+  },
+  "unchangedFiles": {
+    "scripts/calc.js": "f1d597c37d289d5f4d73031dbab8e6c616b00a88d1a829c473ac87d7b611c449",
+    "scripts/settings.js": "659371ed5b3e60a90d23ef8260bb25109edd222aac9aaf9ddcccee8411cfd5a9",
+    "scripts/pokemon_enums.js": "664952cd50b00f8ac1ed22133c0564049674a66bb25360a181608256a04c2b7d",
+    "LICENSE": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+  },
+  "bosses": [
+    {
+      "boss": "Enamorus (Incarnate)",
+      "bossForm": "Incarnate",
+      "searchedCounters": 1722,
+      "topCountersCompared": 15,
+      "megaPrimalCountersCompared": 63,
+      "allResultsExactlyEqual": true,
+      "leadingCounter": {
+        "pokemonId": 888,
+        "pokemon": "Zacian",
+        "form": "Crowned_sword",
+        "shadow": false,
+        "fastMove": "Metal Claw",
+        "chargedMove": "Behemoth Blade",
+        "level": 50,
+        "eDps": 46.92991017820813,
+        "dps": 49.51144873013675,
+        "tdo": 1838.8217819528186
+      }
+    },
+    {
+      "boss": "Mega Tyranitar",
+      "bossForm": "Mega",
+      "searchedCounters": 1722,
+      "topCountersCompared": 15,
+      "megaPrimalCountersCompared": 63,
+      "allResultsExactlyEqual": true,
+      "leadingCounter": {
+        "pokemonId": 150,
+        "pokemon": "Mega Mewtwo X",
+        "form": "Mega",
+        "shadow": false,
+        "fastMove": "Counter",
+        "chargedMove": "Dynamic Punch+",
+        "level": 52,
+        "eDps": 52.06798363441148,
+        "dps": 55.34898542842016,
+        "tdo": 1441.3162481715792
+      }
+    },
+    {
+      "boss": "Dawn Wings Necrozma",
+      "bossForm": "Dawn_wings",
+      "searchedCounters": 1722,
+      "topCountersCompared": 15,
+      "megaPrimalCountersCompared": 63,
+      "allResultsExactlyEqual": true,
+      "leadingCounter": {
+        "pokemonId": 229,
+        "pokemon": "Mega Houndoom",
+        "form": "Mega",
+        "shadow": false,
+        "fastMove": "Snarl",
+        "chargedMove": "Dark Pulse+",
+        "level": 52,
+        "eDps": 51.72036996997395,
+        "dps": 55.152926110033796,
+        "tdo": 1949.3736553055471
+      }
+    }
+  ]
+}
