@@ -40,13 +40,21 @@ Open **Raid Leaderboard** from the rankings page or navigation menu, or use
 It ranks released non-Mega/Primal attackers, including Shadows, fusions, and
 Crowned forms, against released tier 4+ bosses using native eDPS calculations.
 The current level, team size, Party Power, and relobby settings apply; eDPS
-remains the scoring metric. The ranking excludes the announced Data Preview
-without changing the preview or data used by other views.
+remains the scoring metric.
 
-For each boss, divide attacker eDPS by the best released non-Mega eDPS. The
+The shared **Include unreleased** option applies to both attackers and the
+raid-boss pool throughout the rankings, Each type summaries, and leaderboard.
+It is off by default and remembered for the browser tab. Current-only
+calculations use the source data and exclude announced Data Preview changes.
+With Include unreleased on, unreleased attackers and raid-tagged bosses are
+included; Data Preview additionally applies announced data when enabled.
+Release status and raid eligibility remain separate: an attacker need not have
+appeared in raids. The leaderboard URL records whether unreleased data is included.
+
+For each boss, divide attacker eDPS by the best non-Mega eDPS in the selected pool. The
 default awards points linearly from zero at 80% performance to five at 100%:
 `5 * clamp((relative_eDPS - 0.8) / 0.2, 0, 1)`. Each boss species has total
-weight one, shared across its released high-tier forms. The displayed score
+weight one, shared across its included high-tier forms. The displayed score
 is its weighted point total relative to the overall leader (100).
 
 Scoring options support 70%, 80%, and 90% floors and equal weight per form.
@@ -104,8 +112,9 @@ fingerprints, the top 15 counters, and every released Mega/Primal for:
 
 Settings: **eDPS, L50, Super Mega L4, six-Pokémon normal and Mega teams,
 10-second relobby, Party Power off, Type Affinity on, mixed and off-type
-moves on, elite moves and shadows on, released attackers only**. The native
-announced-data patch remains enabled and is recorded in the report. Native
+moves on, elite moves and shadows on, released attackers only**. Announced
+Data Preview is disabled on both sites for a like-for-like comparison of
+current source data and is recorded in the report. Native
 L4 level treatment is preserved; this is not the future normalized L52 scenario.
 
 To run the same comparison locally:
@@ -117,6 +126,7 @@ npx playwright install chromium
 FORK_URL=http://localhost:8000/ npm run compare
 FORK_URL=http://localhost:8000/ npm run check:each-counters
 npm run check:raid-points
+npm run check:release-filter
 FORK_URL=http://localhost:8000/ npm run check:raid-leaderboard
 ```
 

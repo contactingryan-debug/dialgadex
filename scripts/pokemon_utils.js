@@ -322,18 +322,37 @@ function CleanPokeName(string) {
 }
 
 /**
- * Loops through all pokemon, finding those that match 'search_params' and
- * calling a helper function for all matches.
- * 
- * 'f_process_pokemon' hs signature function(pkm_obj, is_shadow, search_params)
+ * Select current source data or the optional announced preview for calculations.
  */
+function GetCalculationPokemon(include_unreleased = false) {
+    if (include_unreleased || typeof jb_unpatch === 'undefined' || !settings_speculative
+            || !Array.isArray(jb_unpatch)) return jb_pkm;
+
+    // Current-only calculations use the source data, including its release flags.
+    // Preview changes stay available to the page and to future calculations.
+    let pokemon = structuredClone(jb_pkm);
+    for (const original of jb_unpatch) {
+        if (original.delete) {
+            pokemon = pokemon.filter(entry => entry.id !== original.id || entry.form !== original.form);
+        } else {
+            const entry = pokemon.find(entry => entry.id === original.id && entry.form === original.form);
+            if (entry) for (const key of Object.keys(original)) {
+                if (!['id', 'name', 'form'].includes(key)) entry[key] = structuredClone(original[key]);
+            }
+        }
+    }
+    return pokemon;
+}
+
+/** Visit each attacker allowed by the selected release and species filters. */
 async function SearchAll(search_params, f_process_pokemon) {
+    const pokemon = GetCalculationPokemon(search_params.unreleased);
     for (let id = 1; id <= jb_max_id; id++) {
         await tryYieldToMain();
         const forms = GetPokemonForms(id);
         const def_form = forms[0];
 
-        let pkm_obj = jb_pkm.find(entry =>
+        let pkm_obj = pokemon.find(entry =>
             entry.id == id && entry.form == def_form);
 
         // checks whether pokemon should be skipped
@@ -359,7 +378,7 @@ async function SearchAll(search_params, f_process_pokemon) {
             // other forms
             for (let form_i = 1; form_i < forms.length; form_i++) {
 
-                pkm_obj = jb_pkm.find(entry =>
+                pkm_obj = pokemon.find(entry =>
                     entry.id == id && entry.form == forms[form_i]);
 
                 // checks whether pokemon should be skipped (form not released or unwanted)
@@ -396,9 +415,11 @@ function GetEnemyParams(enemy_pkm_obj) {
 /**
 * Find relevant raid bosses (tier 4+) based on type matchup
 */
-function GetRaidBosses(has_type = null, weak_to_type = null) {
+function GetRaidBosses(has_type = null, weak_to_type = null, include_unreleased = false) {
     let raid_bosses = [];
-    for (const pkm_obj of jb_pkm) {
+    for (const pkm_obj of GetCalculationPokemon(include_unreleased)) {
+        if (!include_unreleased && !pkm_obj.released)
+            continue;
         if (!pkm_obj.raid_tier || pkm_obj.raid_tier < 4) // Not a high-tier boss
             continue;
 
@@ -660,7 +681,7 @@ function RunSearchString(str, check_movesets = true) {
     const check_unreleased = $("#filter-settings input[value='unreleased']:checkbox").is(":checked");
     
     // Run first check to pre-filter jb_pkm (prevents generating pointless movesets)
-    const search_space = ApplySearchString(str, jb_pkm, true);
+    const search_space = ApplySearchString(str, GetCalculationPokemon(check_unreleased), true);
 
     // Build up all possible mons and movesets
     for (let pkm of search_space) {

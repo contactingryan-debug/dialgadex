@@ -603,7 +603,7 @@ async function LoadPokedexMoveTable(pkm_obj, stats, max_stats = null) {
     let enemy_params = {};
 
     if (settings_type_affinity) {
-        enemy_params = GetTypeAffinity("Any");
+        enemy_params = GetTypeAffinity("Any", false, GetIncludeUnreleased());
         enemy_def = enemy_params.stats.def;
 
         const effectiveness = GetTypesEffectivenessAgainstTypes(types);

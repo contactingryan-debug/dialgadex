@@ -130,8 +130,8 @@
     "filters": {
         "species": {
             "title": "Species Filters",
-            "unreleased": "Unreleased",
-            "unreleased-tooltip": "Include Pokémon found in the Game Master but not yet available in game",
+            "unreleased": "Include unreleased",
+            "unreleased-tooltip": "Include unreleased attackers and raid bosses. Off uses current data; on also allows announced changes when Data Preview is enabled.",
             "mega": "Mega/Primal",
             "shadow": "Shadow",
             "legendary": "Legendary",
@@ -245,7 +245,8 @@
         "site": "Site Settings",
         "preview": "Data Preview",
         "darkmode": "Dark Mode",
-        "language": "Language"
+        "language": "Language",
+        "preview-tooltip": "Apply announced data to rankings when Include unreleased is on. Current-only rankings use current data."
     },
     "moves": {
         "type-helper": "type",
@@ -422,9 +423,9 @@
         "nav": "Raid Leaderboard",
         "title": "Raid Attacker Leaderboard",
         "back": "← Type rankings",
-        "intro": "Non-Mega raid performance. Select a Pokémon for its boss matchups.",
+        "intro": "Non-Mega attackers ranked by performance across high-tier raids. Select a Pokémon to see its contributing matchups.",
         "meta-title": "Raid Attacker Leaderboard - DialgaDex",
-        "meta-description": "Compare released non-Mega raid attackers using eDPS points, boss coverage, and detailed movesets.",
+        "meta-description": "Compare non-Mega raid attackers using eDPS points, boss coverage, and detailed movesets.",
         "preparing": "Preparing released raid matchups…",
         "progress": "Calculating bosses: {completed} / {total}",
         "progress-label": "Calculation progress",
@@ -432,10 +433,10 @@
         "error": "The ranking could not be calculated. Please try again.",
         "settings-summary": "eDPS · Level {level} · Team of {team} · Party Power: {party} · Relobby: {relobby}s",
         "off": "off",
-        "pool": "{forms} released boss forms · {species} species",
+        "pool": "{forms} boss forms · {species} species",
         "method-summary": "Each boss awards 0 points at {floor}% of the best non-Mega eDPS and 5 points at 100%, with a continuous scale between. Weighted points are added across bosses. The overall leader scores 100.",
-        "weight-species-note": "Equal species: each boss species has one total weight, shared evenly across its released high-tier raid forms.",
-        "weight-forms-note": "Equal forms: every released high-tier boss form has the same weight.",
+        "weight-species-note": "Equal species: each boss species has one total weight, shared evenly across its included high-tier raid forms.",
+        "weight-forms-note": "Equal forms: every included high-tier boss form has the same weight.",
         "fixed-hp": "Hidden Power: {type}",
         "hp-note": "This score uses one fixed Hidden Power type: {type}. Other fast moves may be used where stronger. Different Hidden Power builds are scored separately.",
         "other-hp": "Other fixed Hidden Power builds",
@@ -457,9 +458,12 @@
         "empty": "No scoring attackers match this search.",
         "more": "Show 25 more",
         "counts-note": "#1 and ≤5% count boss forms. Tied leaders each count as #1. Display filters keep the same reference pool and score scale.",
-        "data-note": "Released Pokémon and moves only; Data Preview is excluded. Scores use optimal movesets per boss and measure battle coverage. Upgrade cost and your current teams should guide your next investment.",
+        "data-note": "Include unreleased applies to both attackers and raid bosses. Current-only calculations exclude Data Preview. Scores measure battle coverage; upgrade cost and your current teams should guide your next investment.",
         "open-pokemon": "Open Pokémon details →",
         "entry-summary": "Total: {points} weighted points · Largest winning margin: +{lead}%",
-        "moves-note": "Moves are optimized for each boss. * marks limited moves; extra charged moves or TMs may be needed. Percentages compare with the best released non-Mega for that boss. Each contribution below includes its boss weight."
+        "moves-note": "Moves are optimized for each boss. * marks limited moves; extra charged moves or TMs may be needed. Percentages compare with the best non-Mega in the selected pool for that boss. Each contribution below includes its boss weight.",
+        "scope-released": "Released attackers and bosses · Current data",
+        "scope-unreleased": "Includes unreleased attackers and bosses · Game Master data",
+        "scope-preview": "Includes unreleased attackers and bosses · Announced Data Preview on"
     }
 }

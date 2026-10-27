@@ -218,18 +218,18 @@ function GetSpecificY(types, atk, fm_obj, cm_obj,
 /**
 * 
 */
-function GetTypeAffinity(type, versus = false) {
+function GetTypeAffinity(type, versus = false, include_unreleased = false) {
     // Get list of bosses
     let raid_bosses;
     if (type=="Any")
-        raid_bosses = GetRaidBosses();
+        raid_bosses = GetRaidBosses(null, null, include_unreleased);
     else if (versus)
-        raid_bosses = GetRaidBosses(null, type);
+        raid_bosses = GetRaidBosses(null, type, include_unreleased);
     else 
-        raid_bosses = GetRaidBosses(type, null);
+        raid_bosses = GetRaidBosses(type, null, include_unreleased);
 
     if (raid_bosses.length == 0) // e.g. when looking for things weak to "Normal"
-        raid_bosses = GetRaidBosses();
+        raid_bosses = GetRaidBosses(null, null, include_unreleased);
 
     // Initialize to 0s
     const avg_effectiveness = new Map();
@@ -585,7 +585,7 @@ async function GetStrongestOfEachType(search_params) {
     for (const type of POKEMON_TYPES) {
         const type_search = {...search_params, type};
         if (settings_type_affinity) {
-            enemy_params = GetTypeAffinity(type, !type_search.versus);
+            enemy_params = GetTypeAffinity(type, !type_search.versus, type_search.unreleased);
         }
         else {
             enemy_params = {
@@ -621,7 +621,7 @@ async function GetStrongestOfOneType(search_params) {
     // build a basic enemy to "sim" against
     let enemy_params;
     if (settings_type_affinity) {
-        enemy_params = GetTypeAffinity(search_params.type, !search_params.versus);
+        enemy_params = GetTypeAffinity(search_params.type, !search_params.versus, search_params.unreleased);
         UpdateAffinityDialog(enemy_params);
     }
     else {

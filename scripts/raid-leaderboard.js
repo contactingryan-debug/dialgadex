@@ -19,30 +19,25 @@ function CancelRaidLeaderboardLoad() {
     raidLeaderboardReject = null;
 }
 
-function GetReleasedRaidSnapshot() {
-    let pokemon = structuredClone(jb_pkm);
-    // Reconstruct released data without changing the preview used by other pages.
-    if (settings_speculative && Array.isArray(jb_unpatch)) {
-        for (const original of jb_unpatch) {
-            if (original.delete) {
-                pokemon = pokemon.filter(entry => entry.id !== original.id || entry.form !== original.form);
-            } else {
-                const entry = pokemon.find(entry => entry.id === original.id && entry.form === original.form);
-                if (entry) for (const key of Object.keys(original)) {
-                    if (!['id', 'name', 'form'].includes(key)) entry[key] = structuredClone(original[key]);
-                }
-            }
-        }
-    }
+function GetRaidLeaderboardSnapshot() {
+    const includeUnreleased = GetIncludeUnreleased();
+    const pokemon = structuredClone(GetCalculationPokemon(includeUnreleased));
     return {pokemon, fastMoves: structuredClone(jb_fm), chargedMoves: structuredClone(jb_cm), settings: {
         levels: [...settings_default_level], xlBudget: settings_xl_budget,
         team: settings_team_size_normal, relobby: settings_relobbytime, party: settings_party_size,
         newDps: settings_newdps, pveTurns: settings_pve_turns, megaLevel: settings_supermega_level,
         estimatedY: estimated_y_numerator,
+        includeUnreleased, preview: includeUnreleased && settings_speculative,
     }};
 }
 
 function BindRaidLeaderboard() {
+    $('#raid-unreleased').on('change', function() {
+        SetIncludeUnreleased(this.checked);
+        raidLeaderboardState.unreleased = this.checked;
+        UpdateRaidLeaderboardURL();
+        LoadRaidLeaderboard();
+    });
     $('#raid-progress').attr('aria-label', RaidLeaderboardText('progress-label'));
     $('#raid-search').on('input', function() {
         raidLeaderboardState.query = this.value;
@@ -78,6 +73,7 @@ function BindRaidLeaderboard() {
 function UpdateRaidLeaderboardURL() {
     const params = new URLSearchParams();
     params.set('leaderboard', '');
+    if (raidLeaderboardState.unreleased) params.set('unreleased', '');
     if (raidLeaderboardState.floor !== 80) params.set('floor', raidLeaderboardState.floor);
     if (raidLeaderboardState.weighting === 'forms') params.set('weight', 'forms');
     if (!raidLeaderboardState.shadows) params.set('no-shadows', '');
@@ -86,7 +82,7 @@ function UpdateRaidLeaderboardURL() {
 }
 
 function LoadRaidLeaderboardAndUpdateURL() {
-    UpdateURL('?leaderboard');
+    UpdateURL(GetIncludeUnreleased() ? '?leaderboard&unreleased' : '?leaderboard');
     return LoadRaidLeaderboard();
 }
 
@@ -97,16 +93,20 @@ async function LoadRaidLeaderboard() {
     const params = new URLSearchParams(location.search);
     if (!params.has('leaderboard')) return;
     raidLeaderboardState = {
+        unreleased: params.has('unreleased'),
         floor: [70, 80, 90].includes(Number(params.get('floor'))) ? Number(params.get('floor')) : 80,
         weighting: params.get('weight') === 'forms' ? 'forms' : 'species',
         shadows: !params.has('no-shadows'), legendaries: !params.has('no-legendaries'),
         query: '', sort: 'score',
     };
+    SetIncludeUnreleased(raidLeaderboardState.unreleased);
     $('#raid-floor').val(raidLeaderboardState.floor);
     $('#raid-weighting').val(raidLeaderboardState.weighting);
     $('#raid-shadows').prop('checked', raidLeaderboardState.shadows);
     $('#raid-legendaries').prop('checked', raidLeaderboardState.legendaries);
     $('#raid-search').val('');
+    $('#raid-data-scope').text(RaidLeaderboardText(raidLeaderboardState.unreleased
+        ? (settings_speculative ? 'scope-preview' : 'scope-unreleased') : 'scope-released'));
     document.title = RaidLeaderboardText('meta-title');
     $('meta[name=description]').attr('content', RaidLeaderboardText('meta-description'));
     $('#raid-results, #raid-retry').prop('hidden', true);
@@ -116,13 +116,13 @@ async function LoadRaidLeaderboard() {
     raidLeaderboardMatrix = null;
     raidLeaderboardResult = null;
     try {
-        const snapshot = GetReleasedRaidSnapshot();
+        const snapshot = GetRaidLeaderboardSnapshot();
         const key = JSON.stringify(snapshot);
         let matrix;
         if (raidLeaderboardCache?.key === key) matrix = raidLeaderboardCache.matrix;
         else {
             matrix = await new Promise((resolve, reject) => {
-                const worker = new Worker('scripts/raid-leaderboard-worker.js?v=40feb37e7bb4');
+                const worker = new Worker('scripts/raid-leaderboard-worker.js?v=2132cf352caf');
                 raidLeaderboardWorker = worker;
                 raidLeaderboardReject = reject;
                 worker.onmessage = event => {
@@ -151,6 +151,8 @@ async function LoadRaidLeaderboard() {
             team: settings.team, relobby: settings.relobby,
             party: settings.party === 1 ? RaidLeaderboardText('off') : settings.party,
         }));
+        $('#raid-data-scope').text(RaidLeaderboardText(settings.includeUnreleased
+            ? (settings.preview ? 'scope-preview' : 'scope-unreleased') : 'scope-released'));
         RefreshRaidLeaderboardScores();
         $('#raid-progress').prop('hidden', true);
         $('#raid-results').prop('hidden', false);

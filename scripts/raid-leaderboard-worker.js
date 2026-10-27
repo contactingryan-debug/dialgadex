@@ -1,6 +1,6 @@
 /* Reuse the native calculator in isolation so navigation and settings remain responsive. */
 let jb_pkm, jb_fm, jb_cm, jb_max_id;
-importScripts('pokemon_enums.js?v=664952cd50b0', 'settings.js?v=b2073e8a4e6e', 'pokemon_utils.js?v=ed5f80ad4cb2', 'calc.js?v=9a936ecfcc94');
+importScripts('pokemon_enums.js?v=664952cd50b0', 'settings.js?v=72b84d5916cb', 'pokemon_utils.js?v=bf77e61b1002', 'calc.js?v=012b8e9581df');
 
 function IsRaidLeaderboardMega(pokemon) {
     return /^(Mega|Primal)/i.test(pokemon.form) || /^(Mega |Primal )/.test(pokemon.name);
@@ -43,12 +43,13 @@ self.onmessage = async event => {
         settings_pve_turns = snapshot.settings.pveTurns;
         settings_supermega_level = snapshot.settings.megaLevel;
         estimated_y_numerator = snapshot.settings.estimatedY;
-        const search = {...GetDefaultSearchParams(), type: 'Any', mega: false, suboptimal: false, real_damage: true};
+        const search = {...GetDefaultSearchParams(), type: 'Any', mega: false, suboptimal: false,
+            real_damage: true, unreleased: !!snapshot.settings.includeUnreleased};
         const candidates = [];
         await SearchAll(search, async (pokemon, shadow, level) => {
             if (!IsRaidLeaderboardMega(pokemon)) candidates.push(...RaidLeaderboardBuilds(pokemon, shadow, level));
         });
-        const bosses = GetRaidBosses().filter(pokemon => pokemon.released);
+        const bosses = GetRaidBosses(null, null, search.unreleased);
         const benchmarks = [];
         const attackers = candidates.map(candidate => ({
             key: candidate.key, id: candidate.pkm.id, name: candidate.pkm.name, form: candidate.pkm.form,

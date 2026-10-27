@@ -30,6 +30,9 @@ jobs:
       - name: Verify raid point scoring
         run: npm run check:raid-points
         working-directory: baseline-tools
+      - name: Verify release filtering and preview isolation
+        run: npm run check:release-filter
+        working-directory: baseline-tools
       - run: npx playwright install --with-deps chromium
         working-directory: baseline-tools
       - name: Serve checkout at a repository subpath

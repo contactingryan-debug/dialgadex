@@ -89,3 +89,17 @@ The calculation formulas and upstream data sources are unchanged.
   stale template loads and reuse results when battle inputs have not changed.
 - Add English, Spanish, and French text and content-versioned assets.
 - Add mathematical scoring checks and native-engine/UI regression checks.
+
+## October 27, 2026 — consistent release filtering
+
+- Apply Include unreleased to both attacker availability and the tier 4+
+  boss pool, including Type Affinity and Each type rankings.
+- Use current source data throughout current-only calculations. Announced
+  preview data is included only when both Include unreleased and Data Preview
+  are on; reconstructing current data does not mutate the preview.
+- Add the same release switch to the raid leaderboard, record it in its URL,
+  and remember the shared preference within the browser tab.
+- Preserve raid eligibility independently from release status and leave
+  scoring formulas, grouping, and raid mechanics unchanged.
+- Verify both modes, preview isolation, shared navigation, and native-engine
+  parity. Compare current data with Data Preview disabled on both baseline sites.

@@ -22,6 +22,11 @@ let settings_type_affinity = true;
 let settings_theme = "darkmode";
 let settings_speculative = true;
 let settings_supermega_level = 4;
+const UNRELEASED_FILTER_KEY = 'mega-raid-lab.include-unreleased';
+let settings_include_unreleased = false;
+try {
+    settings_include_unreleased = sessionStorage.getItem(UNRELEASED_FILTER_KEY) === 'true';
+} catch (_) {}
 
 // inaccessible
 let settings_metric_exp = 0.225;
@@ -31,6 +36,12 @@ let settings_newdps = true;
  * Bind event handlers for all settings options
  */
 function BindSettings() {
+    $("#filter-settings input[value='unreleased']").prop('checked', settings_include_unreleased)
+        .on('change', function(event) {
+            event.stopPropagation();
+            SetIncludeUnreleased(this.checked);
+            CheckURLAndAct();
+        });
     // Dark Mode
     $("#settings-darkmode").change(function() { 
         if ($("#settings-darkmode").is(":checked"))
@@ -517,6 +528,17 @@ function GetDefaultSearchParams() {
     };
 }
 
+function GetIncludeUnreleased() {
+    return $("#filter-settings input[value='unreleased']").is(':checked');
+}
+
+function SetIncludeUnreleased(include) {
+    settings_include_unreleased = !!include;
+    $("#filter-settings input[value='unreleased'], #raid-unreleased").prop('checked', settings_include_unreleased);
+    try { sessionStorage.setItem(UNRELEASED_FILTER_KEY, String(settings_include_unreleased)); } catch (_) {}
+    ClearTypeTiers();
+}
+
 /**
  * Gets the default search parameters (to be used for generic type-tier-making)
  */
@@ -542,8 +564,7 @@ function GetSearchParms(type, versus) {
         versus,
         type
     };
-    search_params.unreleased =
-        $("#filter-settings input[value='unreleased']:checkbox").is(":checked");
+    search_params.unreleased = GetIncludeUnreleased();
     search_params.mega =
         $("#filter-settings input[value='mega']:checkbox").is(":checked");
     search_params.shadow =

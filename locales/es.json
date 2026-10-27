@@ -130,8 +130,8 @@
     "filters": {
         "species": {
             "title": "Filtros de Especies",
-            "unreleased": "Inédito",
-            "unreleased-tooltip": "Incluye Pokémon que existen en los archivos del juego, pero todavía no son posibles a obtener.",
+            "unreleased": "Incluir no disponibles",
+            "unreleased-tooltip": "Incluye atacantes y jefes de incursión aún no disponibles. Desactivado usa datos actuales; activado también permite cambios anunciados si Vista previa está activada.",
             "mega": "Mega/Primigenio",
             "shadow": "Oscuro",
             "legendary": "Legendario",
@@ -245,7 +245,8 @@
         "site": "Opciones del Sitio",
         "preview": "Vista Previa",
         "darkmode": "Modo Oscuro",
-        "language": "Idioma"
+        "language": "Idioma",
+        "preview-tooltip": "Aplica datos anunciados a las clasificaciones cuando Incluir no disponibles está activado. Las clasificaciones actuales usan datos actuales."
     },
     "moves": {
         "type-helper": "del tipo",
@@ -422,9 +423,9 @@
         "nav": "Clasificación de incursiones",
         "title": "Mejores atacantes de incursiones",
         "back": "← Clasificaciones por tipo",
-        "intro": "Rendimiento no mega en incursiones. Selecciona un Pokémon para ver sus enfrentamientos.",
+        "intro": "Atacantes no Mega clasificados por su rendimiento en incursiones de nivel alto. Selecciona un Pokémon para ver sus enfrentamientos.",
         "meta-title": "Clasificación de atacantes de incursiones - DialgaDex",
-        "meta-description": "Compara atacantes no mega disponibles mediante puntos de eDPS, cobertura de jefes y movimientos detallados.",
+        "meta-description": "Compara atacantes no mega mediante puntos de eDPS, cobertura de jefes y movimientos detallados.",
         "preparing": "Preparando los enfrentamientos disponibles…",
         "progress": "Calculando jefes: {completed} / {total}",
         "progress-label": "Progreso del cálculo",
@@ -432,10 +433,10 @@
         "error": "No se pudo calcular la clasificación. Inténtalo de nuevo.",
         "settings-summary": "eDPS · Nivel {level} · Equipo de {team} · Poder de equipo: {party} · Reingreso: {relobby}s",
         "off": "desactivado",
-        "pool": "{forms} formas de jefes disponibles · {species} especies",
+        "pool": "{forms} formas de jefes · {species} especies",
         "method-summary": "Cada jefe otorga 0 puntos al {floor}% del mejor eDPS no mega y 5 puntos al 100%, con una escala continua entre ambos. Se suman los puntos ponderados. El líder general obtiene 100.",
-        "weight-species-note": "Especies iguales: cada especie de jefe tiene un peso total de uno, repartido entre sus formas de incursión de nivel alto disponibles.",
-        "weight-forms-note": "Formas iguales: cada forma de jefe de nivel alto disponible tiene el mismo peso.",
+        "weight-species-note": "Especies iguales: cada especie tiene un peso total de uno, repartido entre sus formas incluidas en incursiones de nivel alto.",
+        "weight-forms-note": "Formas iguales: cada forma de jefe incluida tiene el mismo peso.",
         "fixed-hp": "Poder Oculto: {type}",
         "hp-note": "Esta puntuación utiliza un tipo fijo de Poder Oculto: {type}. Se pueden usar otros ataques rápidos cuando sean mejores. Cada tipo de Poder Oculto se puntúa por separado.",
         "other-hp": "Otros tipos fijos de Poder Oculto",
@@ -457,9 +458,12 @@
         "empty": "Ningún atacante con puntos coincide con la búsqueda.",
         "more": "Mostrar 25 más",
         "counts-note": "#1 y ≤5% cuentan formas de jefes. Los líderes empatados cuentan como #1. Los filtros de visualización mantienen la misma referencia y escala.",
-        "data-note": "Solo Pokémon y movimientos disponibles; se excluye la vista previa de datos. Se usan movimientos óptimos por jefe para medir la cobertura. El coste de mejora y tus equipos actuales deben orientar tu inversión.",
+        "data-note": "Incluir no disponibles se aplica a atacantes y jefes. Los cálculos solo actuales excluyen la Vista previa. Las puntuaciones miden cobertura; considera el coste de mejora y tus equipos actuales.",
         "open-pokemon": "Ver detalles del Pokémon →",
         "entry-summary": "Total: {points} puntos ponderados · Mayor ventaja ganadora: +{lead}%",
-        "moves-note": "Los movimientos se optimizan para cada jefe. * indica movimientos limitados; pueden requerirse ataques cargados adicionales o MT. Los porcentajes se comparan con el mejor no mega disponible para ese jefe. Cada contribución incluye el peso del jefe."
+        "moves-note": "Los ataques se optimizan para cada jefe. * indica ataques limitados; pueden necesitarse ataques adicionales o MT. Los porcentajes se comparan con el mejor no Mega del conjunto seleccionado. Cada contribución incluye el peso del jefe.",
+        "scope-released": "Atacantes y jefes disponibles · Datos actuales",
+        "scope-unreleased": "Incluye atacantes y jefes aún no disponibles · Datos del Game Master",
+        "scope-preview": "Incluye atacantes y jefes aún no disponibles · Vista previa anunciada activada"
     }
 }

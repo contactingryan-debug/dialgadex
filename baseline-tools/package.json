@@ -7,6 +7,7 @@
     "compare": "node baseline-compare.mjs",
     "check:each-counters": "node each-counters-check.mjs",
     "check:raid-points": "node --test raid-points-check.mjs",
+    "check:release-filter": "node --test release-filter-check.mjs",
     "check:raid-leaderboard": "node raid-leaderboard-check.mjs"
   },
   "dependencies": {

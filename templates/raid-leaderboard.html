@@ -2,7 +2,9 @@
 <div class="card raid-card">
     <div class="card-header"><h1 class="card-title" data-i18n="raid-leaderboard.title">Raid Attacker Leaderboard</h1></div>
     <div class="raid-intro">
-        <p data-i18n="raid-leaderboard.intro">Non-Mega attackers ranked by performance across released high-tier raids. Select a Pokémon to see its contributing matchups.</p>
+        <p data-i18n="raid-leaderboard.intro">Non-Mega attackers ranked by performance across high-tier raids. Select a Pokémon to see its contributing matchups.</p>
+        <label class="raid-release-filter"><input id="raid-unreleased" type="checkbox"> <span data-i18n="filters.species.unreleased">Include unreleased</span></label>
+        <p id="raid-data-scope" class="raid-muted"></p>
         <p id="raid-settings-summary" class="raid-muted"></p>
         <p id="raid-status" role="status" aria-live="polite"></p>
         <progress id="raid-progress" max="100" value="0" aria-label="Calculation progress"></progress>
@@ -31,7 +33,7 @@
             <p id="raid-method-summary"></p>
             <p id="raid-weight-summary"></p>
             <p data-i18n="raid-leaderboard.counts-note">#1 and ≤5% count boss forms. Tied leaders each count as #1. Display filters keep the same reference pool and score scale.</p>
-            <p data-i18n="raid-leaderboard.data-note">Released Pokémon and moves only; Data Preview is excluded. Scores use optimal movesets per boss and measure battle coverage. Upgrade cost and your current teams should guide your next investment.</p>
+            <p data-i18n="raid-leaderboard.data-note">Include unreleased applies to both attackers and raid bosses. Current-only calculations exclude Data Preview. Scores measure battle coverage; upgrade cost and your current teams should guide your next investment.</p>
         </div>
     </div>
 </div>

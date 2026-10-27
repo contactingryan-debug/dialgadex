@@ -16,8 +16,8 @@ try {
     page.on('pageerror', error => errors.push(error.message));
     await page.addInitScript(() => {
         document.addEventListener('DOMContentLoaded', () => {
-            const original = window.GetReleasedRaidSnapshot;
-            window.GetReleasedRaidSnapshot = function() {
+            const original = window.GetRaidLeaderboardSnapshot;
+            window.GetRaidLeaderboardSnapshot = function() {
                 window.raidOriginalData = JSON.stringify([jb_pkm, jb_fm, jb_cm]);
                 return original();
             };
@@ -38,7 +38,7 @@ try {
     const parity = await page.evaluate(async () => {
         if (JSON.stringify([jb_pkm, jb_fm, jb_cm]) !== window.raidOriginalData)
             throw new Error('The worker changed main-page Pokémon or move data.');
-        const snapshot = GetReleasedRaidSnapshot();
+        const snapshot = GetRaidLeaderboardSnapshot();
         const before = JSON.stringify([jb_pkm, jb_fm, jb_cm]);
         const preview = settings_speculative;
         const originalPokemon = jb_pkm;
@@ -145,6 +145,44 @@ try {
     await page.waitForFunction(() => document.querySelector('#strongest')?.checkVisibility());
     await page.goForward();
     await ready();
+    const currentPool = await page.evaluate(() => ({bosses:raidLeaderboardResult.bossCount,
+        attackers:raidLeaderboardMatrix.attackers.length}));
+    const availability = await page.evaluate(() => {
+        const current = GetCalculationPokemon(false);
+        const upcoming = GetCalculationPokemon(true);
+        const currentBosses = GetRaidBosses();
+        const upcomingBosses = GetRaidBosses(null, null, true);
+        return {currentBosses:currentBosses.length, upcomingBosses:upcomingBosses.length,
+            releasedOnly:currentBosses.every(p=>p.released),
+            futureBosses:upcomingBosses.filter(p=>!current.some(c=>c.id===p.id&&c.form===p.form&&c.released)).length,
+            previewPromotions:upcoming.filter(p=>p.released&&current.some(c=>c.id===p.id&&c.form===p.form&&!c.released)).length};
+    });
+    assert.equal(availability.currentBosses,currentPool.bosses);
+    assert(availability.releasedOnly && availability.futureBosses > 0);
+    await page.locator('#raid-unreleased').check();
+    await page.waitForFunction(() => (raidLeaderboardResult && raidLeaderboardMatrix?.settings.includeUnreleased)
+            || document.querySelector('#raid-retry:not([hidden])'),
+        null,{timeout:240000});
+    assert.equal(await page.locator('#raid-retry').isVisible(),false,await page.locator('#raid-status').textContent());
+    assert(new URL(page.url()).searchParams.has('unreleased'));
+    const futurePool = await page.evaluate(() => ({bosses:raidLeaderboardResult.bossCount,
+        attackers:raidLeaderboardMatrix.attackers.length, shared:GetIncludeUnreleased(),
+        containsFutureAttackers:raidLeaderboardMatrix.attackers.some(p=>
+            !GetCalculationPokemon(false).some(c=>c.id===p.id&&c.form===p.form&&c.released))}));
+    assert.equal(futurePool.bosses,availability.upcomingBosses);
+    assert(futurePool.attackers>currentPool.attackers && futurePool.containsFutureAttackers && futurePool.shared);
+    await page.setViewportSize({width:320,height:740});
+    await fits();
+    await page.locator('#raid-rankings-back').click();
+    await page.waitForFunction(() => document.querySelector('#strongest')?.checkVisibility());
+    assert.equal(await page.evaluate(() => GetSearchParms('Any',false).unreleased),true);
+    await page.reload();
+    await page.waitForFunction(() => document.querySelector('#strongest')?.checkVisibility());
+    assert.equal(await page.evaluate(() => GetIncludeUnreleased()),true);
+    await page.evaluate(() => $("#filter-settings input[value='unreleased']").prop('checked',false).trigger('change'));
+    assert.equal(await page.evaluate(() => GetIncludeUnreleased()),false);
+    await page.waitForFunction(() => document.querySelector('#strongest')?.checkVisibility());
+    console.log('Release filter across both pools, navigation and reload:',JSON.stringify({currentPool,futurePool,availability}));
     await page.evaluate(() => { raidLeaderboardCache = null; });
     await page.evaluate(() => { LoadRaidLeaderboardAndUpdateURL(); });
     await page.waitForFunction(() => raidLeaderboardWorker !== null);

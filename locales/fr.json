@@ -130,8 +130,8 @@
     "filters": {
         "species": {
             "title": "Filtre d'Epèces",
-            "unreleased": "Unreleased",
-            "unreleased-tooltip": "Inclure les Pokémon non présent dans le jeu",
+            "unreleased": "Inclure les non disponibles",
+            "unreleased-tooltip": "Inclut les attaquants et boss de raid pas encore disponibles. Désactivé : données actuelles ; activé : modifications annoncées si Aperçu des données est activé.",
             "mega": "Méga/Primo",
             "shadow": "Obscure",
             "legendary": "Legendaire",
@@ -245,7 +245,8 @@
         "site": "Paramètres du site",
         "preview": "Aperçu des futures données",
         "darkmode": "Mode Sombre",
-        "language": "Langue"
+        "language": "Langue",
+        "preview-tooltip": "Applique les données annoncées aux classements lorsque Inclure les non disponibles est activé. Les classements actuels utilisent les données actuelles."
     },
     "moves": {
         "type-helper": "type",
@@ -422,9 +423,9 @@
         "nav": "Classement des raids",
         "title": "Classement des attaquants de raid",
         "back": "← Classements par type",
-        "intro": "Performances non Méga en raid. Sélectionnez un Pokémon pour voir ses affrontements.",
+        "intro": "Attaquants non Méga classés selon leurs performances dans les raids de haut niveau. Sélectionnez un Pokémon pour voir ses combats.",
         "meta-title": "Classement des attaquants de raid - DialgaDex",
-        "meta-description": "Comparez les attaquants de raid non Méga disponibles selon leurs points eDPS, leur couverture et leurs capacités.",
+        "meta-description": "Comparez les attaquants de raid non Méga selon leurs points eDPS, leur couverture et leurs capacités.",
         "preparing": "Préparation des affrontements disponibles…",
         "progress": "Calcul des boss : {completed} / {total}",
         "progress-label": "Progression du calcul",
@@ -432,10 +433,10 @@
         "error": "Le classement n’a pas pu être calculé. Veuillez réessayer.",
         "settings-summary": "eDPS · Niveau {level} · Équipe de {team} · Puissance d’équipe : {party} · Retour au combat : {relobby}s",
         "off": "désactivée",
-        "pool": "{forms} formes de boss disponibles · {species} espèces",
+        "pool": "{forms} formes de boss · {species} espèces",
         "method-summary": "Chaque boss attribue 0 point à {floor}% du meilleur eDPS non Méga et 5 points à 100%, sur une échelle continue. Les points pondérés sont additionnés. Le leader général obtient 100.",
-        "weight-species-note": "Espèces égales : chaque espèce de boss possède un poids total de un, réparti entre ses formes de raid de haut niveau disponibles.",
-        "weight-forms-note": "Formes égales : chaque forme de boss de haut niveau disponible possède le même poids.",
+        "weight-species-note": "Espèces égales : chaque espèce a un poids total de un, réparti entre ses formes incluses dans les raids de haut niveau.",
+        "weight-forms-note": "Formes égales : chaque forme de boss incluse a le même poids.",
         "fixed-hp": "Puissance Cachée : {type}",
         "hp-note": "Ce score utilise un seul type de Puissance Cachée : {type}. D’autres attaques immédiates peuvent être utilisées si elles sont meilleures. Chaque type de Puissance Cachée est évalué séparément.",
         "other-hp": "Autres types fixes de Puissance Cachée",
@@ -457,9 +458,12 @@
         "empty": "Aucun attaquant ayant des points ne correspond à cette recherche.",
         "more": "Afficher 25 de plus",
         "counts-note": "#1 et ≤5% comptent les formes de boss. Les leaders ex æquo comptent chacun comme #1. Les filtres d’affichage conservent la même référence et la même échelle.",
-        "data-note": "Uniquement les Pokémon et capacités disponibles ; l’aperçu des données est exclu. Les capacités sont optimisées par boss pour mesurer la couverture. Le coût des améliorations et vos équipes actuelles doivent guider votre investissement.",
+        "data-note": "Inclure les non disponibles concerne les attaquants et les boss. Les calculs actuels excluent les données annoncées. Les scores mesurent la couverture ; tenez compte du coût et de vos équipes actuelles.",
         "open-pokemon": "Voir les détails du Pokémon →",
         "entry-summary": "Total : {points} points pondérés · Plus grande avance gagnante : +{lead}%",
-        "moves-note": "Les capacités sont optimisées pour chaque boss. * indique une capacité à disponibilité limitée ; des capacités chargées supplémentaires ou des CT peuvent être nécessaires. Les pourcentages sont comparés au meilleur non Méga disponible pour ce boss. Chaque contribution inclut la pondération du boss."
+        "moves-note": "Les attaques sont optimisées pour chaque boss. * indique une attaque limitée ; des attaques supplémentaires ou des CT peuvent être nécessaires. Les pourcentages utilisent le meilleur non Méga du groupe sélectionné. Chaque contribution comprend le poids du boss.",
+        "scope-released": "Attaquants et boss disponibles · Données actuelles",
+        "scope-unreleased": "Inclut les attaquants et boss non disponibles · Données du Game Master",
+        "scope-preview": "Inclut les attaquants et boss non disponibles · Aperçu des données annoncées activé"
     }
 }

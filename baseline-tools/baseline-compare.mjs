@@ -72,6 +72,10 @@ async function measure(browser, url) {
     settings_type_affinity = true;
     settings_newdps = true;
     settings_pve_turns = true;
+    // Compare identical current data on both sites; the fork now excludes preview
+    // data from current-only rankings while upstream does not enforce that policy.
+    if (settings_speculative) PatchSpeculative(false);
+    settings_speculative = false;
 
     const input = {
       metric: settings_metric, level: settings_default_level[0],

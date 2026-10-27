@@ -3,6 +3,8 @@
 .raid-card h1 { margin: 0; }
 .raid-intro, .raid-controls, .raid-method { padding: .85rem 1rem; }
 .raid-intro p { margin: .25rem 0 .65rem; }
+.raid-release-filter { display: flex; align-items: center; gap: .35rem; min-height: 40px; font-size: .85rem; }
+.raid-release-filter input { accent-color: var(--col-text); }
 .raid-muted, .raid-method, .raid-list-footer { color: var(--col-text-midkey); font-size: .8rem; }
 #raid-status { font-size: .85rem; margin-bottom: 0; }
 #raid-progress { width: 100%; height: 8px; accent-color: var(--col-text); }

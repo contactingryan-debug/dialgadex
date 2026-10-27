@@ -82,12 +82,13 @@ try {
       {name: 'Type Affinity on', affinity: true, mixed: true, offtype: true},
       {name: 'Type Affinity off', affinity: false, mixed: true, offtype: true},
       {name: 'Matching move types', affinity: true, mixed: false, offtype: false},
+      {name: 'Unreleased attackers and bosses', affinity: true, mixed: true, offtype: true, unreleased: true},
     ];
     const results = [];
     for (const profile of profiles) {
       settings_type_affinity = profile.affinity;
       const search = {...GetDefaultSearchParams(), type: 'Each', versus: true,
-        mixed: profile.mixed, offtype: profile.offtype, real_damage: false};
+        mixed: profile.mixed, offtype: profile.offtype, unreleased:!!profile.unreleased, real_damage: false};
       const before = JSON.stringify(search);
       const summary = await GetStrongestOfEachType(search);
       if (JSON.stringify(search) !== before) throw new Error('Each type mutated its input parameters.');
