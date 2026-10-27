@@ -12,6 +12,13 @@ exactly for all three reference bosses. See the
 [validation summary](baseline-tools/validation-summary.json). Public GitHub
 Pages deployment is still pending.
 
+## Default settings
+
+New page loads use **eDPS, L50, Super Mega L4, 6-Stack, Type Affinity on,
+Off Types on, Mixed Types on, Party Power off, and a 10-second relobby**.
+The selected controls and the internal default filters use the same preset.
+The settings remain adjustable through the normal controls.
+
 ## Host this fork
 
 The site works at a domain root or a repository subpath. The inherited

@@ -8,7 +8,7 @@ METRICS.add("DPS");
 METRICS.add("TDO");
 METRICS.add("eDPS");
 let settings_metric = "eDPS";
-let settings_default_level = [40];
+let settings_default_level = [50];
 let settings_xl_budget = false;
 let settings_pve_turns = true;
 let settings_strongest_count = 25;
@@ -21,7 +21,7 @@ let settings_team_size_mega = 6;
 let settings_type_affinity = true;
 let settings_theme = "darkmode";
 let settings_speculative = true;
-let settings_supermega_level = 1;
+let settings_supermega_level = 4;
 
 // inaccessible
 let settings_metric_exp = 0.225;
@@ -513,7 +513,7 @@ function GetDefaultSearchParams() {
         elite: true,
         suboptimal: false,
         mixed: true,
-        offtype: false
+        offtype: true
     };
 }
 
@@ -530,7 +530,7 @@ function IsDefaultSearchParams(search_params) {
         search_params.elite===true &&
         search_params.suboptimal===false &&
         search_params.mixed===true &&
-        search_params.offtype===false;
+        search_params.offtype===true;
 }
 
 /**
