@@ -45,3 +45,14 @@ The calculation formulas and upstream data sources are unchanged.
 - Build ranking URLs and type-selector links from the same resolved mode used
   for the calculation, including explicit requests to switch modes.
 - Normalize All types and Each type to their supported Attackers view.
+
+## October 27, 2026 — mode retention through aggregate views
+
+- Remember the user's mode in the current tab instead of inferring it from
+  the temporarily disabled aggregate-view toggle.
+- Preserve that choice through All types, Each type, reloads, and returning
+  through the main navigation, while direct type URLs retain their own mode.
+- Synchronize the type selector with URL navigation so its current selection
+  and change events match the displayed type.
+- Version the changed scripts and the settings script in the entry page so
+  browsers request fresh copies after this update.

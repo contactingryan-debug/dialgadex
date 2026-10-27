@@ -1,5 +1,21 @@
 let str_pokemons = [], type_tiers, tier_stops;
 
+// Keep the user's mode when an aggregate view temporarily disables Counters.
+const RANKINGS_MODE_KEY = "mega-raid-lab.rankings-counters";
+let rankings_versus = false;
+try {
+    rankings_versus = sessionStorage.getItem(RANKINGS_MODE_KEY) === "true";
+} catch (_) {
+    // The page also works when browser storage is unavailable.
+}
+
+function RememberRankingsMode(versus) {
+    rankings_versus = !!versus;
+    try {
+        sessionStorage.setItem(RANKINGS_MODE_KEY, String(rankings_versus));
+    } catch (_) {}
+}
+
 let ROW_HEIGHT = 30; // fixed height in CSS
 const MIN_ROW_BUFFER_SIZE = 10;
 let curIndices = {
@@ -56,7 +72,11 @@ function ShowHideSearchStringIcon(visible) {
  * Loads the list of the strongest pokemon of a specific type in pokemon go.
  * The type can be 'each', 'any' or an actual type.
  */
-async function LoadStrongest(type = "Any", versus = false) {
+async function LoadStrongest(type = "Any", versus = null) {
+    if (versus !== null)
+        RememberRankingsMode(versus);
+    const requestedVersus = rankings_versus;
+
     // displays what should be displayed 
     await LoadPage("strongest");
 
@@ -71,13 +91,15 @@ async function LoadStrongest(type = "Any", versus = false) {
 
     // Handle logic for "versus"
     const supportsCounters = POKEMON_TYPES.has(type);
-    versus = supportsCounters && !!versus;
+    versus = supportsCounters && requestedVersus;
     const versus_chk = $("#strongest input[value='versus']:checkbox");
     versus_chk.prop("checked", versus);
     versus_chk.prop("disabled", !supportsCounters);
 
-    document.getElementById("strongest-links-types").setHrefs((targetType) =>
-        `?strongest&t=${targetType}${(versus && POKEMON_TYPES.has(targetType) ? "&v" : "")}`);
+    const typeSelector = document.getElementById("strongest-links-types");
+    typeSelector.selectType(type);
+    typeSelector.setHrefs((targetType) =>
+        `?strongest&t=${targetType}${(requestedVersus && POKEMON_TYPES.has(targetType) ? "&v" : "")}`);
 
     // sets titles
     let titleKey = "meta.rankings.typed";
@@ -169,8 +191,8 @@ async function LoadStrongest(type = "Any", versus = false) {
  */
 function LoadStrongestAndUpdateURL(type = "Any", versus = null) {
     // A type change keeps the current mode; explicit true/false overrides it.
-    versus = POKEMON_TYPES.has(type) &&
-        Boolean(versus ?? $("#chk-versus").is(":checked"));
+    const requestedVersus = Boolean(versus ?? rankings_versus);
+    versus = POKEMON_TYPES.has(type) && requestedVersus;
 
     let url = "?strongest&t=" + type;
     if (versus)
@@ -178,7 +200,7 @@ function LoadStrongestAndUpdateURL(type = "Any", versus = null) {
 
     UpdateURL(url);
     
-    return LoadStrongest(type, versus);
+    return LoadStrongest(type, requestedVersus);
 }
 
 /**

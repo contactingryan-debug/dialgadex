@@ -75,7 +75,7 @@ class TypeSelector extends HTMLElement {
             this.#newTypeNode(type);
         }
 
-        this.selectedType = "Any";
+        this.selectType("Any");
         
         this.addEventListener("click", (event) => {
             this.#buttonClick(event.target);
@@ -90,18 +90,24 @@ class TypeSelector extends HTMLElement {
         }
     }
 
+    // Synchronize programmatic navigation without dispatching another change.
+    selectType(type) {
+        if (!this.#typeNodeMap.has(type)) return;
+        this.selectedType = type;
+        this.#updateSelectedStyle();
+    }
+
     // Handle click of a type button
     #buttonClick(elem) {
         if (elem.tagName !== "A") return; // type buttons only
 
         const prevType = this.selectedType;
-        this.selectedType = elem.dataset["type"];
+        this.selectType(elem.dataset["type"]);
 
         if (this.selectedType != prevType) {
             this.#typeUpdateEvent();
         }
 
-        this.#updateSelectedStyle();
     }
 
     #typeUpdateEvent() {

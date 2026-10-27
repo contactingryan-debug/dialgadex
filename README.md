@@ -20,10 +20,12 @@ Best baseline**.
 The selected controls and the internal default filters use the same preset.
 The settings remain adjustable through the normal controls.
 
-The rankings type selector preserves the current Attackers/Counters mode when
-switching between specific types. Its links and browser URL use the same mode,
-so refresh and browser navigation restore the corresponding view. All types
-and Each type retain their existing Attackers-only behavior.
+The rankings type selector remembers the chosen Attackers/Counters mode for
+the current browser tab, including detours through All types or Each type,
+reloads, and returning through the main navigation. Those aggregate views show
+Attackers while preserving the choice used when returning to a specific type.
+Direct links and Back/Forward navigation restore their specified view. The
+highlighted type stays synchronized with the displayed rankings.
 
 ## Host this fork
 

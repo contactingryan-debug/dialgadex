@@ -69,7 +69,7 @@ function BindAll() {
 function BindMenu() {
     // Link to Rankings Lists
     $("#rankings-link, #header-left").click(function(e) {
-        LoadStrongestAndUpdateURL("Any", false);
+        LoadStrongestAndUpdateURL("Any");
         CloseMenu();
         e.preventDefault();
         return false;
