@@ -3,7 +3,6 @@
         "best": "Mejores",
         "attackers": "Atacantes",
         "counters": "Contrarios",
-        
         "any": {
             "type-text": "Generales",
             "helper-text": "",
@@ -37,7 +36,6 @@
                 "#strongest-type-title"
             ]
         },
-        
         "notes": {
             "each-counters": "Cada fila muestra el mejor contrario contra ese tipo defensor. Selecciona un tipo arriba para ver su clasificación completa de contrarios.",
             "elite": "* Ataque élite (rápido o cargado)",
@@ -56,7 +54,6 @@
             }
         }
     },
-
     "dex": {
         "unreleased": "§Esta especie o forma aún no está disponible en **Pokémon GO**",
         "tier-title": "Clasificaciones como Atacante",
@@ -130,7 +127,6 @@
             "shadow-header": "(Oscuro)"
         }
     },
-
     "filters": {
         "species": {
             "title": "Filtros de Especies",
@@ -191,7 +187,6 @@
             }
         }
     },
-    
     "settings": {
         "calculation": "Opciones de Cálculo",
         "metric": "PvE Métrica",
@@ -225,7 +220,7 @@
         "supermegalevel-tooltip": {
             "title": "Nivel de Supermega",
             "explanation": "Grado de Megaevolución para los Pokémon Supermega",
-            "characteristic": "Determina el multiplicador de daño (1,0/1,1/1,2/1,3x) para los ataques cargados Supermega temporales. El nivel 4 también otorga temporalmente +2 niveles al Pokémon." 
+            "characteristic": "Determina el multiplicador de daño (1,0/1,1/1,2/1,3x) para los ataques cargados Supermega temporales. El nivel 4 también otorga temporalmente +2 niveles al Pokémon."
         },
         "affinity-tooltip": {
             "title": "Afinidad de Tipos",
@@ -250,14 +245,12 @@
         "site": "Opciones del Sitio",
         "preview": "Vista Previa",
         "darkmode": "Modo Oscuro",
-        "language": "Idioma" 
+        "language": "Idioma"
     },
-
     "moves": {
         "type-helper": "del tipo",
         "move-data": "Datos del Ataques",
         "top-users": "Los Mejores",
-
         "pps": "Potencia por Segundo (DPS)",
         "pps-short": "P/S",
         "pps-tooltip": "La eficacia de un ataque para infligir daño",
@@ -273,7 +266,6 @@
         "peps2": "P/S * E/S",
         "peps2-short": "§PE/S^2^",
         "peps2-tooltip": "La eficacia de un ataque para infligir daño y generar energía",
-        
         "»move-title": [
             "#move-data-span",
             "#chk-move-kind",
@@ -282,7 +274,6 @@
             "#move-type-title"
         ]
     },
-
     "move-editor": {
         "edit": {
             "title": "Editar Datos del Ataque",
@@ -311,7 +302,6 @@
         "weakness": "§Debilidades\nde Oponentes",
         "damage": "§Fortalezas\nde Oponentes"
     },
-
     "terms": {
         "type": "Tipo",
         "attacking-type": "Tipo Atacante",
@@ -319,7 +309,6 @@
         "attacker": "Atacante",
         "defender": "Defensor",
         "type-matchups": "Efectividades de los Tipos",
-
         "name": "Nombre",
         "power": "Potencia",
         "power-short": "POT",
@@ -327,11 +316,9 @@
         "energy-short": "ENG",
         "duration": "Tiempo",
         "duration-short": "TMP",
-
         "dps": "DPS",
         "tdo": "TDO",
         "edps": "eDPS",
-
         "fast": "Rápido",
         "charged": "Cargado",
         "fast-plural": "Rápidos",
@@ -343,35 +330,27 @@
         "fast-move-plural": "Ataques Rápidos",
         "charged-move": "Ataque Cargado",
         "charged-move-plural": "Ataques Cargados",
-
         "enabled": "Activado",
         "disabled": "Desactivado",
-
         "supereffective": "Super Eficaz",
         "resisted": "Resistido",
         "immune": "Inmune",
         "damage-multiplier": "Multiplicador de Daño",
-
         "attack": "Ataque",
         "defense": "Defensa",
         "stamina": "PS",
-
         "level": "Nivel",
         "ivs": "Potencial",
         "cp": "PC",
-
         "tier": "Grada",
-
         "shadow": "Oscuro",
         "not-shadow": "No ",
         "shadow-order": "{species} {shadow}",
         "mega": "Mega",
         "primal": "Primigenio"
     },
-
     "site": {
         "disclaimer": "§DialgaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.\nPokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.",
-
         "links": {
             "rankings": "Lista de Clasificación",
             "moves": "Datos del Ataques",
@@ -382,7 +361,6 @@
             "privacy": "Privacidad"
         }
     },
-
     "search-string": {
         "title": "Generar Cadena de Búsqueda",
         "settings": "Ajustes",
@@ -397,11 +375,9 @@
         "missing": "Faltante: ",
         "copy": "Copiar",
         "copied": "¡Copiado!",
-
         "costume": "disfraz",
         "research": "investigación"
     },
-
     "meta": {
         "rankings": {
             "typed": {
@@ -441,5 +417,49 @@
             "title": "Sobre - DialgaDex",
             "description": "Créditos, referencias, información de contacto y detalles sobre DialgaDex."
         }
+    },
+    "raid-leaderboard": {
+        "nav": "Clasificación de incursiones",
+        "title": "Mejores atacantes de incursiones",
+        "back": "← Clasificaciones por tipo",
+        "intro": "Atacantes no mega clasificados por su rendimiento en incursiones de nivel alto ya disponibles. Selecciona un Pokémon para ver sus enfrentamientos.",
+        "meta-title": "Clasificación de atacantes de incursiones - DialgaDex",
+        "meta-description": "Compara atacantes no mega disponibles mediante puntos de eDPS, cobertura de jefes y movimientos detallados.",
+        "preparing": "Preparando los enfrentamientos disponibles…",
+        "progress": "Calculando jefes: {completed} / {total}",
+        "progress-label": "Progreso del cálculo",
+        "retry": "Reintentar",
+        "error": "No se pudo calcular la clasificación. Inténtalo de nuevo.",
+        "settings-summary": "eDPS · Nivel {level} · Equipo de {team} · Poder de equipo: {party} · Reingreso: {relobby}s",
+        "off": "desactivado",
+        "pool": "{forms} formas de jefes disponibles · {species} especies",
+        "method-summary": "Cada jefe otorga 0 puntos al {floor}% del mejor eDPS no mega y 5 puntos al 100%, con una escala continua entre ambos. Se suman los puntos ponderados. El líder general obtiene 100.",
+        "weight-species-note": "Especies iguales: cada especie de jefe tiene un peso total de uno, repartido entre sus formas de incursión de nivel alto disponibles.",
+        "weight-forms-note": "Formas iguales: cada forma de jefe de nivel alto disponible tiene el mismo peso.",
+        "fixed-hp": "Poder Oculto: {type}",
+        "hp-note": "Esta puntuación utiliza un tipo fijo de Poder Oculto: {type}. Se pueden usar otros ataques rápidos cuando sean mejores. Cada tipo de Poder Oculto se puntúa por separado.",
+        "other-hp": "Otros tipos fijos de Poder Oculto",
+        "points": "puntos",
+        "points-title": "{points} puntos",
+        "result-count": "Mostrando {shown} de {total} atacantes con puntos",
+        "search": "Buscar Pokémon",
+        "show-shadows": "Oscuros",
+        "show-legendaries": "Legendario / Singular / Ultraente",
+        "score-options": "Opciones de puntuación",
+        "floor": "Rendimiento mínimo",
+        "weighting": "Peso de los jefes",
+        "weight-species": "Especies iguales",
+        "weight-forms": "Formas iguales",
+        "pokemon": "Pokémon",
+        "score": "Puntuación",
+        "first": "#1",
+        "near": "≤5%",
+        "empty": "Ningún atacante con puntos coincide con la búsqueda.",
+        "more": "Mostrar 25 más",
+        "counts-note": "#1 y ≤5% cuentan formas de jefes. Los líderes empatados cuentan como #1. Los filtros de visualización mantienen la misma referencia y escala.",
+        "data-note": "Solo Pokémon y movimientos disponibles; se excluye la vista previa de datos. Se usan movimientos óptimos por jefe para medir la cobertura. El coste de mejora y tus equipos actuales deben orientar tu inversión.",
+        "open-pokemon": "Ver detalles del Pokémon →",
+        "entry-summary": "Total: {points} puntos ponderados · Mayor ventaja ganadora: +{lead}%",
+        "moves-note": "Los movimientos se optimizan para cada jefe. * indica movimientos limitados; pueden requerirse ataques cargados adicionales o MT. Los porcentajes se comparan con el mejor no mega disponible para ese jefe. Cada contribución incluye el peso del jefe."
     }
 }

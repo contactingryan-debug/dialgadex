@@ -3,7 +3,6 @@
         "best": "Top",
         "attackers": "Attackers",
         "counters": "Counters",
-        
         "any": {
             "type-text": "Overall",
             "helper-text": "",
@@ -37,7 +36,6 @@
                 "#strongest-vs-lbl"
             ]
         },
-
         "notes": {
             "each-counters": "Each row shows the best counter against that defending type. Select a type above to see its full Counters ranking.",
             "elite": "* Elite fast or charged move",
@@ -56,7 +54,6 @@
             }
         }
     },
-
     "dex": {
         "unreleased": "§This species/form is not in the **Pokémon GO** files yet",
         "tier-title": "Raid Attacker Rankings",
@@ -130,7 +127,6 @@
             "shadow-header": "(Shadow)"
         }
     },
-
     "filters": {
         "species": {
             "title": "Species Filters",
@@ -191,7 +187,6 @@
             }
         }
     },
-    
     "settings": {
         "calculation": "Calculation Settings",
         "metric": "PvE Metric",
@@ -252,12 +247,10 @@
         "darkmode": "Dark Mode",
         "language": "Language"
     },
-
     "moves": {
         "type-helper": "type",
         "move-data": "Move Data",
         "top-users": "Top Users",
-
         "pps": "Power per Second (DPS)",
         "pps-short": "P/S",
         "pps-tooltip": "How effective a move is at dealing damage",
@@ -273,7 +266,6 @@
         "peps2": "P/S * E/S",
         "peps2-short": "§PE/S^2^",
         "peps2-tooltip": "§How well a fast move accomplishes both building charged energy *and* dealing damage on its own",
-
         "»move-title": [
             "#move-type-title",
             "#move-type-helper",
@@ -282,7 +274,6 @@
             "#move-data-span"
         ]
     },
-
     "move-editor": {
         "edit": {
             "title": "Edit Move Data",
@@ -311,7 +302,6 @@
         "weakness": "§Boss\nWeakness",
         "damage": "§Boss\nDamage"
     },
-
     "terms": {
         "type": "Type",
         "attacking-type": "Attacking Type",
@@ -319,7 +309,6 @@
         "attacker": "Attacker",
         "defender": "Defender",
         "type-matchups": "Type Matchups",
-
         "name": "Name",
         "power": "Power",
         "power-short": "PWR",
@@ -327,11 +316,9 @@
         "energy-short": "ENG",
         "duration": "Duration",
         "duration-short": "DUR",
-
         "dps": "DPS",
         "tdo": "TDO",
         "edps": "eDPS",
-
         "fast": "Fast",
         "charged": "Charged",
         "fast-plural": "Fast",
@@ -343,35 +330,27 @@
         "fast-move-plural": "Fast Moves",
         "charged-move": "Charged Move",
         "charged-move-plural": "Charged Moves",
-
         "enabled": "Enabled",
         "disabled": "Disabled",
-
         "supereffective": "Super Effective",
         "resisted": "Resisted",
         "immune": "Immune",
         "damage-multiplier": "Damage Multiplier",
-
         "attack": "Attack",
         "defense": "Defense",
         "stamina": "HP",
-
         "level": "Level",
         "ivs": "IVs",
         "cp": "CP",
-
         "tier": "Tier",
-
         "shadow": "Shadow",
         "not-shadow": "Not ",
         "shadow-order": "{shadow} {species}",
         "mega": "Mega",
         "primal": "Primal"
     },
-
     "site": {
         "disclaimer": "§DialgaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.\nPokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.",
-
         "links": {
             "rankings": "Attacker Rankings",
             "moves": "Move Data",
@@ -382,7 +361,6 @@
             "privacy": "Privacy"
         }
     },
-
     "search-string": {
         "title": "Generate Search String",
         "settings": "Settings",
@@ -397,11 +375,9 @@
         "missing": "Missing: ",
         "copy": "Copy",
         "copied": "Copied!",
-
         "costume": "costume",
         "research": "research"
     },
-
     "meta": {
         "rankings": {
             "typed": {
@@ -441,5 +417,49 @@
             "title": "About - DialgaDex",
             "description": "Credits, references, contact info, and details about DialgaDex."
         }
+    },
+    "raid-leaderboard": {
+        "nav": "Raid Leaderboard",
+        "title": "Raid Attacker Leaderboard",
+        "back": "← Type rankings",
+        "intro": "Non-Mega attackers ranked by performance across released high-tier raids. Select a Pokémon to see its contributing matchups.",
+        "meta-title": "Raid Attacker Leaderboard - DialgaDex",
+        "meta-description": "Compare released non-Mega raid attackers using eDPS points, boss coverage, and detailed movesets.",
+        "preparing": "Preparing released raid matchups…",
+        "progress": "Calculating bosses: {completed} / {total}",
+        "progress-label": "Calculation progress",
+        "retry": "Try again",
+        "error": "The ranking could not be calculated. Please try again.",
+        "settings-summary": "eDPS · Level {level} · Team of {team} · Party Power: {party} · Relobby: {relobby}s",
+        "off": "off",
+        "pool": "{forms} released boss forms · {species} species",
+        "method-summary": "Each boss awards 0 points at {floor}% of the best non-Mega eDPS and 5 points at 100%, with a continuous scale between. Weighted points are added across bosses. The overall leader scores 100.",
+        "weight-species-note": "Equal species: each boss species has one total weight, shared evenly across its released high-tier raid forms.",
+        "weight-forms-note": "Equal forms: every released high-tier boss form has the same weight.",
+        "fixed-hp": "Hidden Power: {type}",
+        "hp-note": "This score uses one fixed Hidden Power type: {type}. Other fast moves may be used where stronger. Different Hidden Power builds are scored separately.",
+        "other-hp": "Other fixed Hidden Power builds",
+        "points": "points",
+        "points-title": "{points} points",
+        "result-count": "Showing {shown} of {total} scoring attackers",
+        "search": "Search Pokémon",
+        "show-shadows": "Shadows",
+        "show-legendaries": "Legendary / Mythical / Ultra Beast",
+        "score-options": "Scoring options",
+        "floor": "Minimum performance",
+        "weighting": "Boss weighting",
+        "weight-species": "Equal species",
+        "weight-forms": "Equal forms",
+        "pokemon": "Pokémon",
+        "score": "Score",
+        "first": "#1",
+        "near": "≤5%",
+        "empty": "No scoring attackers match this search.",
+        "more": "Show 25 more",
+        "counts-note": "#1 and ≤5% count boss forms. Tied leaders each count as #1. Display filters keep the same reference pool and score scale.",
+        "data-note": "Released Pokémon and moves only; Data Preview is excluded. Scores use optimal movesets per boss and measure battle coverage. Upgrade cost and your current teams should guide your next investment.",
+        "open-pokemon": "Open Pokémon details →",
+        "entry-summary": "Total: {points} weighted points · Largest winning margin: +{lead}%",
+        "moves-note": "Moves are optimized for each boss. * marks limited moves; extra charged moves or TMs may be needed. Percentages compare with the best released non-Mega for that boss. Each contribution below includes its boss weight."
     }
 }

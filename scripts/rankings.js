@@ -32,6 +32,10 @@ let display_numbered = true, show_pct = true, highlight_suboptimal = true;
  * Bind event handlers for a rankings table
  */
 function BindRankings() {
+    $('#strongest-raid-link').on('click', function(event) {
+        event.preventDefault();
+        LoadRaidLeaderboardAndUpdateURL();
+    });
     // Moveset count
     $("#chk-suboptimal").change(function() {
         const isChecked = $('#chk-suboptimal').is(":checked");
@@ -82,7 +86,7 @@ async function LoadStrongest(type = "Any", versus = null) {
     const requestedVersus = rankings_versus;
 
     // displays what should be displayed 
-    await LoadPage("strongest");
+    if (!await LoadPage("strongest")) return;
     $("#strongest").toggleClass("each-type-summary", type == "Each");
 
     // Move filters for display

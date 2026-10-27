@@ -21,12 +21,13 @@
     <link rel="stylesheet" href="styles/autocomplete.css">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/mobile.css?v=154598002288" media="screen and (max-width:900px)">
+    <link rel="stylesheet" href="styles/raid-leaderboard.css?v=4f48b8e260c3">
 
     <!--<link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_pkm_names.json" as="fetch" crossorigin />-->
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_pkm.min.json" as="fetch" crossorigin />
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_fm.json" as="fetch" crossorigin />
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_cm.json" as="fetch" crossorigin />
-    <link rel="preload" href="locales/en.json?v=955c8eb360ea" as="fetch" crossorigin />
+    <link rel="preload" href="locales/en.json?v=ce2683412ef2" as="fetch" crossorigin />
     <link rel="preload" href="locales/pokedata/en.json" as="fetch" crossorigin />
 
     <script src="lib/jquery-3.6.0.min.js"></script>
@@ -34,16 +35,18 @@
     <script src="lib/jenks.js"></script>
     
     <script src="scripts/dataload.js"></script>
-    <script src="scripts/translation.js?v=16d8d2e65314"></script>
+    <script src="scripts/translation.js?v=d8aecd2b3a3a"></script>
     <script src="scripts/settings.js?v=b2073e8a4e6e"></script>
     <script src="scripts/pokemon_enums.js"></script>
     <script src="scripts/pokemon_utils.js"></script>
     <script src="scripts/dialogs.js"></script>
     <script src="scripts/calc.js?v=9a936ecfcc94"></script>
-    <script src="scripts/rankings.js?v=bdc4be3d58fa"></script>
+    <script src="scripts/rankings.js?v=40db404f72db"></script>
     <script src="scripts/pokedex.js"></script>
     <script src="scripts/moves.js"></script>
-    <script src="index.js?v=94b0257a3ed2"></script>
+    <script src="scripts/raid-points.js?v=7ce774a14ef7"></script>
+    <script src="scripts/raid-leaderboard.js?v=486edf06164f"></script>
+    <script src="index.js?v=14f111430a26"></script>
     
     <script src="components/type-selector.js?v=9ea0ae6e6f65"></script>
 </head>
@@ -513,6 +516,7 @@
                     <div class="drawer-popup" id="nav-drawer">
                         <ul class="menu">
                             <li><a id=rankings-link href="?strongest" data-i18n="site.links.rankings">Attacker Rankings</a></li>
+                            <li><a id="raid-leaderboard-link" href="?leaderboard" data-i18n="raid-leaderboard.nav">Raid Leaderboard</a></li>
                             <li><a id=moves-link href="?moves" data-i18n="site.links.moves">Move Data</a></li>
                             <li><a id=typechart-link href="?typechart" data-i18n="site.links.types">Type Chart</a></li>
                         </ul>
@@ -526,6 +530,7 @@
     
     <div id=pokedex-page class="page"></div>
     <div id=strongest class="page"></div>
+    <div id="raid-leaderboard" class="page"></div>
     <div id=move-data class="page"></div>
     <div id=type-matrix class="page"></div>
     <div id=about class="page"></div>

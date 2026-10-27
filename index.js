@@ -7,10 +7,12 @@ $(document).ready(Main);
 
 // global constants and variables
 let current_pkm_obj = null; // current pokedex pokemon's pkm_obj
+let pageRequest = 0;
 
 const pages = [
     {id: 'pokedex-page', template_path: 'templates/pokedex.html', binder: BindPokeDex},
-    {id: 'strongest', template_path: 'templates/rankings.html?v=8b1874f225a0', binder: BindRankings},
+    {id: 'strongest', template_path: 'templates/rankings.html?v=d8618d153180', binder: BindRankings},
+    {id: 'raid-leaderboard', template_path: 'templates/raid-leaderboard.html?v=a735dabb7966', binder: BindRaidLeaderboard},
     {id: 'move-data', template_path: 'templates/moves.html', binder: BindMoveData},
     {id: 'type-matrix', template_path: 'templates/typechart.html', binder: BuildTypeChart},
     {id: 'faq', template_path: 'templates/faq.html'},
@@ -67,6 +69,11 @@ function BindAll() {
  * Binds links in top menu nav
  */
 function BindMenu() {
+    $('#raid-leaderboard-link').click(function(event) {
+        event.preventDefault();
+        LoadRaidLeaderboardAndUpdateURL();
+        CloseMenu();
+    });
     // Link to Rankings Lists
     $("#rankings-link, #header-left").click(function(e) {
         LoadStrongestAndUpdateURL("Any");
@@ -222,6 +229,11 @@ function CheckURLAndAct() {
         return;
     }
 
+    if (params.has('leaderboard')) {
+        LoadRaidLeaderboard();
+        return;
+    }
+
     // if url has 'strongest' param...
     if (params.has("strongest")) {
 
@@ -358,20 +370,16 @@ function LoadAboutAndUpdateURL() {
  * Shows appropriate part of SPA, hiding all other parts
  */
 async function LoadPage(pageName) {
-    for (const page of pages) {
-        const pageDiv = $("#"+page.id);
-
-        if (page.id === pageName) {
-            if (!page.loadingPromise) {
-                page.loadingPromise = LoadAndApplyTemplate(page);
-            }
-            await page.loadingPromise;
-            pageDiv.css("display", "revert");
-        }
-        else {
-            pageDiv.css("display", "none");
-        }
-    };
+    const request = ++pageRequest;
+    if (pageName !== 'raid-leaderboard') CancelRaidLeaderboardLoad();
+    for (const page of pages) $('#' + page.id).css('display', 'none');
+    const page = pages.find(page => page.id === pageName);
+    if (page) {
+        if (!page.loadingPromise) page.loadingPromise = LoadAndApplyTemplate(page);
+        await page.loadingPromise;
+        if (request !== pageRequest) return false;
+        $('#' + page.id).css('display', 'revert');
+    }
 
     // If we're loading any page, show the footer
     $("#footer").css("display", (!!pageName ? "revert" : "none"));
@@ -381,6 +389,7 @@ async function LoadPage(pageName) {
         left: 0,
         behavior: "smooth",
     });
+    return true;
 }
 
 /**

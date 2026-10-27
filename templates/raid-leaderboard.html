@@ -1,0 +1,37 @@
+<a id="raid-rankings-back" class="raid-back" href="?strongest" data-i18n="raid-leaderboard.back">← Type rankings</a>
+<div class="card raid-card">
+    <div class="card-header"><h1 class="card-title" data-i18n="raid-leaderboard.title">Raid Attacker Leaderboard</h1></div>
+    <div class="raid-intro">
+        <p data-i18n="raid-leaderboard.intro">Non-Mega attackers ranked by performance across released high-tier raids. Select a Pokémon to see its contributing matchups.</p>
+        <p id="raid-settings-summary" class="raid-muted"></p>
+        <p id="raid-status" role="status" aria-live="polite"></p>
+        <progress id="raid-progress" max="100" value="0" aria-label="Calculation progress"></progress>
+        <button id="raid-retry" hidden data-i18n="raid-leaderboard.retry">Try again</button>
+    </div>
+    <div id="raid-results" hidden>
+        <div class="raid-controls">
+            <label class="raid-search-label"><span data-i18n="raid-leaderboard.search">Search Pokémon</span><input id="raid-search" type="search" autocomplete="off"></label>
+            <div class="raid-display-filters">
+                <label><input id="raid-shadows" type="checkbox" checked> <span data-i18n="raid-leaderboard.show-shadows">Shadows</span></label>
+                <label><input id="raid-legendaries" type="checkbox" checked> <span data-i18n="raid-leaderboard.show-legendaries">Legendary / Mythical / Ultra Beast</span></label>
+            </div>
+            <details class="raid-score-options">
+                <summary data-i18n="raid-leaderboard.score-options">Scoring options</summary>
+                <div class="raid-option-fields">
+                    <label><span data-i18n="raid-leaderboard.floor">Minimum performance</span><select id="raid-floor"><option value="70">70%</option><option value="80" selected>80%</option><option value="90">90%</option></select></label>
+                    <label><span data-i18n="raid-leaderboard.weighting">Boss weighting</span><select id="raid-weighting"><option value="species" selected data-i18n="raid-leaderboard.weight-species">Equal species</option><option value="forms" data-i18n="raid-leaderboard.weight-forms">Equal forms</option></select></label>
+                </div>
+            </details>
+        </div>
+        <div id="raid-column-headings" class="raid-grid"><span>#</span><span data-i18n="raid-leaderboard.pokemon">Pokémon</span><button data-sort="score" aria-pressed="true" data-i18n="raid-leaderboard.score">Score</button><button data-sort="first" aria-pressed="false" data-i18n="raid-leaderboard.first">#1</button><button data-sort="near" aria-pressed="false" data-i18n="raid-leaderboard.near">≤5%</button></div>
+        <div id="raid-list"></div>
+        <p id="raid-empty" hidden data-i18n="raid-leaderboard.empty">No scoring attackers match this search.</p>
+        <div class="raid-list-footer"><span id="raid-result-count"></span><button id="raid-more" data-i18n="raid-leaderboard.more">Show 25 more</button></div>
+        <div class="raid-method">
+            <p id="raid-method-summary"></p>
+            <p id="raid-weight-summary"></p>
+            <p data-i18n="raid-leaderboard.counts-note">#1 and ≤5% count boss forms. Tied leaders each count as #1. Display filters keep the same reference pool and score scale.</p>
+            <p data-i18n="raid-leaderboard.data-note">Released Pokémon and moves only; Data Preview is excluded. Scores use optimal movesets per boss and measure battle coverage. Upgrade cost and your current teams should guide your next investment.</p>
+        </div>
+    </div>
+</div>

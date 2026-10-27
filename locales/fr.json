@@ -3,7 +3,6 @@
         "best": "Top",
         "attackers": "Attaquants",
         "counters": "Contres",
-        
         "any": {
             "type-text": "Global",
             "helper-text": "",
@@ -37,11 +36,10 @@
                 "#strongest-type-title"
             ]
         },
-
         "notes": {
             "each-counters": "Chaque ligne indique le meilleur contre pour ce type défensif. Sélectionnez un type ci-dessus pour voir son classement complet des contres.",
             "elite": "* = Attaque Élite",
-            "supermega" : "Niveau de attaque Super Mega",
+            "supermega": "Niveau de attaque Super Mega",
             "typed": "Les classements par type sont calculés en utilisant les dégâts super efficaces pour le type choisi et les dégâts neutres pour tous les autres types.",
             "versus": "Les classements sont calculés à l'aide d'un multiplicateur d'efficacité approprié pour les dégâts d'attaque.",
             "affinity": {
@@ -56,7 +54,6 @@
             }
         }
     },
-
     "dex": {
         "unreleased": "§Cette espèce ou forme n'est pas encore disponible dans **Pokémon GO**",
         "tier-title": "Classement de type",
@@ -130,7 +127,6 @@
             "shadow-header": "(Obscure)"
         }
     },
-
     "filters": {
         "species": {
             "title": "Filtre d'Epèces",
@@ -191,7 +187,6 @@
             }
         }
     },
-    
     "settings": {
         "calculation": "Paramètres",
         "metric": "Formules PvE",
@@ -225,7 +220,7 @@
         "supermegalevel-tooltip": {
             "title": "Niveau Super Méga",
             "explanation": "Degré de Méga-Évolution pour les Pokémon Super Méga",
-            "characteristic": "Détermine le multiplicateur de dégâts (1,0/1,1/1,2/1,3x) pour les attaques chargées Super Méga temporaires. Le niveau 4 confère également temporairement +2 niveaux au Pokémon." 
+            "characteristic": "Détermine le multiplicateur de dégâts (1,0/1,1/1,2/1,3x) pour les attaques chargées Super Méga temporaires. Le niveau 4 confère également temporairement +2 niveaux au Pokémon."
         },
         "affinity-tooltip": {
             "title": "Affinité de type",
@@ -250,14 +245,12 @@
         "site": "Paramètres du site",
         "preview": "Aperçu des futures données",
         "darkmode": "Mode Sombre",
-        "language": "Langue" 
+        "language": "Langue"
     },
-
     "moves": {
         "type-helper": "type",
         "move-data": "Liste des Attaques",
         "top-users": "Top Utilisateurs",
-
         "pps": "Dégâts par seconde (DPS)",
         "pps-short": "P/S",
         "pps-tooltip": "L'efficacité d'une attaque à infliger des dégâts",
@@ -273,7 +266,6 @@
         "peps2": "P/S * E/S",
         "peps2-short": "§PE/S^2^",
         "peps2-tooltip": "§Dans quelle mesure une action rapide parvient à la fois à accumuler de l'énergie *et* à infliger des dégâts de manière autonome",
-
         "»move-title": [
             "#move-type-title",
             "#move-type-helper",
@@ -282,7 +274,6 @@
             "#move-data-span"
         ]
     },
-
     "move-editor": {
         "edit": {
             "title": "Modifier l'attaque",
@@ -311,7 +302,6 @@
         "weakness": "§Boss\nWeakness",
         "damage": "§Boss\nDamage"
     },
-
     "terms": {
         "type": "Type",
         "attacking-type": "Type Attaquant",
@@ -319,7 +309,6 @@
         "attacker": "Attaquant",
         "defender": "Défenseur",
         "type-matchups": "Sensibilité de type",
-
         "name": "Nom",
         "power": "Puissance",
         "power-short": "PS",
@@ -327,11 +316,9 @@
         "energy-short": "ENG",
         "duration": "Durée",
         "duration-short": "DUR",
-
         "dps": "DPS",
         "tdo": "TDO",
         "edps": "eDPS",
-
         "fast": "Immédiate",
         "charged": "Chargée",
         "fast-plural": "Immédiates",
@@ -343,35 +330,27 @@
         "fast-move-plural": "Attaques Immédiates",
         "charged-move": "Attaque Chargée",
         "charged-move-plural": "Attaques Chargées",
-
         "enabled": "Activé",
         "disabled": "Désactivé",
-
         "supereffective": "Super Efficace",
         "resisted": "Résisté",
         "immune": "Immunisé",
         "damage-multiplier": "Multiplicateur de Dégâts",
-
         "attack": "Attaque",
         "defense": "Défense",
         "stamina": "PV",
-
         "level": "Niveau",
         "ivs": "IVs",
         "cp": "PC",
-
         "tier": "Tier",
-
         "shadow": "Obscure",
         "not-shadow": "Non ",
         "shadow-order": "{species} {shadow}",
         "mega": "Méga",
         "primal": "Primo"
     },
-
     "site": {
         "disclaimer": "§DialgaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.\nPokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.",
-
         "links": {
             "rankings": "Classement Attaquants",
             "moves": "Classement Attaques",
@@ -382,7 +361,6 @@
             "privacy": "Mentions Légales"
         }
     },
-
     "search-string": {
         "title": "Générer une chaîne de recherche",
         "settings": "Paramètres",
@@ -397,11 +375,9 @@
         "missing": "Manquant: ",
         "copy": "Copier",
         "copied": "Copié !",
-
         "costume": "costume",
         "research": "étude"
     },
-
     "meta": {
         "rankings": {
             "typed": {
@@ -441,5 +417,49 @@
             "title": "A propos - DialgaDex",
             "description": "Crédits, références, coordonnées et détails concernant DialgaDex."
         }
+    },
+    "raid-leaderboard": {
+        "nav": "Classement des raids",
+        "title": "Classement des attaquants de raid",
+        "back": "← Classements par type",
+        "intro": "Les attaquants non Méga sont classés selon leurs performances contre les boss de haut niveau déjà disponibles. Sélectionnez un Pokémon pour voir ses affrontements.",
+        "meta-title": "Classement des attaquants de raid - DialgaDex",
+        "meta-description": "Comparez les attaquants de raid non Méga disponibles selon leurs points eDPS, leur couverture et leurs capacités.",
+        "preparing": "Préparation des affrontements disponibles…",
+        "progress": "Calcul des boss : {completed} / {total}",
+        "progress-label": "Progression du calcul",
+        "retry": "Réessayer",
+        "error": "Le classement n’a pas pu être calculé. Veuillez réessayer.",
+        "settings-summary": "eDPS · Niveau {level} · Équipe de {team} · Puissance d’équipe : {party} · Retour au combat : {relobby}s",
+        "off": "désactivée",
+        "pool": "{forms} formes de boss disponibles · {species} espèces",
+        "method-summary": "Chaque boss attribue 0 point à {floor}% du meilleur eDPS non Méga et 5 points à 100%, sur une échelle continue. Les points pondérés sont additionnés. Le leader général obtient 100.",
+        "weight-species-note": "Espèces égales : chaque espèce de boss possède un poids total de un, réparti entre ses formes de raid de haut niveau disponibles.",
+        "weight-forms-note": "Formes égales : chaque forme de boss de haut niveau disponible possède le même poids.",
+        "fixed-hp": "Puissance Cachée : {type}",
+        "hp-note": "Ce score utilise un seul type de Puissance Cachée : {type}. D’autres attaques immédiates peuvent être utilisées si elles sont meilleures. Chaque type de Puissance Cachée est évalué séparément.",
+        "other-hp": "Autres types fixes de Puissance Cachée",
+        "points": "points",
+        "points-title": "{points} points",
+        "result-count": "Affichage de {shown} attaquants sur {total} ayant des points",
+        "search": "Rechercher un Pokémon",
+        "show-shadows": "Obscurs",
+        "show-legendaries": "Légendaire / Fabuleux / Ultra-Chimère",
+        "score-options": "Options de notation",
+        "floor": "Performance minimale",
+        "weighting": "Pondération des boss",
+        "weight-species": "Espèces égales",
+        "weight-forms": "Formes égales",
+        "pokemon": "Pokémon",
+        "score": "Score",
+        "first": "#1",
+        "near": "≤5%",
+        "empty": "Aucun attaquant ayant des points ne correspond à cette recherche.",
+        "more": "Afficher 25 de plus",
+        "counts-note": "#1 et ≤5% comptent les formes de boss. Les leaders ex æquo comptent chacun comme #1. Les filtres d’affichage conservent la même référence et la même échelle.",
+        "data-note": "Uniquement les Pokémon et capacités disponibles ; l’aperçu des données est exclu. Les capacités sont optimisées par boss pour mesurer la couverture. Le coût des améliorations et vos équipes actuelles doivent guider votre investissement.",
+        "open-pokemon": "Voir les détails du Pokémon →",
+        "entry-summary": "Total : {points} points pondérés · Plus grande avance gagnante : +{lead}%",
+        "moves-note": "Les capacités sont optimisées pour chaque boss. * indique une capacité à disponibilité limitée ; des capacités chargées supplémentaires ou des CT peuvent être nécessaires. Les pourcentages sont comparés au meilleur non Méga disponible pour ce boss. Chaque contribution inclut la pondération du boss."
     }
 }
