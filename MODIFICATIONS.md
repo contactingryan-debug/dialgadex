@@ -73,3 +73,19 @@ The calculation formulas and upstream data sources are unchanged.
   validation workflow.
 - Keep type labels readable on narrow phones and derive virtualized row
   sizing from the rendered CSS row height.
+
+## October 27, 2026 — non-Mega raid points leaderboard
+
+- Add a shareable leaderboard with continuous points based on relative eDPS,
+  an 80% default floor, and boss-species weights shared across raid forms.
+- Offer 70/80/90% floors, equal-form weighting, search, stable display filters,
+  and sortable score, first-place, and within-5% columns.
+- Calculate released non-Mega/Primal builds against released tier 4+ bosses
+  using the existing battle functions in a Web Worker. Reconstruct released
+  data from the preview's undo records without mutating the main page.
+- Score fixed Hidden Power types separately, select the strongest aggregate
+  build per attacker, and show contributing bosses and required movesets.
+- Cancel background calculations on navigation; protect page visibility from
+  stale template loads and reuse results when battle inputs have not changed.
+- Add English, Spanish, and French text and content-versioned assets.
+- Add mathematical scoring checks and native-engine/UI regression checks.

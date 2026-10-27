@@ -2,7 +2,7 @@ name: DialgaDex baseline parity
 
 on:
   push:
-    branches: [main]
+    branches: [main, codex/raid-leaderboard]
   pull_request:
   workflow_dispatch:
     inputs:
@@ -27,12 +27,20 @@ jobs:
           cache-dependency-path: baseline-tools/package-lock.json
       - run: npm ci
         working-directory: baseline-tools
+      - name: Verify raid point scoring
+        run: npm run check:raid-points
+        working-directory: baseline-tools
       - run: npx playwright install --with-deps chromium
         working-directory: baseline-tools
       - name: Serve checkout at a repository subpath
         run: python3 -m http.server 8765 --bind 127.0.0.1 --directory "$GITHUB_WORKSPACE/.." > "$RUNNER_TEMP/dialgadex-server.log" 2>&1 &
       - name: Verify Each type Counters
         run: npm run check:each-counters
+        working-directory: baseline-tools
+        env:
+          FORK_URL: ${{ inputs.fork_url || format('http://127.0.0.1:8765/{0}/', github.event.repository.name) }}
+      - name: Verify raid leaderboard and native-engine parity
+        run: npm run check:raid-leaderboard
         working-directory: baseline-tools
         env:
           FORK_URL: ${{ inputs.fork_url || format('http://127.0.0.1:8765/{0}/', github.event.repository.name) }}

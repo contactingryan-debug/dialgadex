@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "compare": "node baseline-compare.mjs",
-    "check:each-counters": "node each-counters-check.mjs"
+    "check:each-counters": "node each-counters-check.mjs",
+    "check:raid-points": "node --test raid-points-check.mjs",
+    "check:raid-leaderboard": "node raid-leaderboard-check.mjs"
   },
   "dependencies": {
     "playwright": "1.55.1"

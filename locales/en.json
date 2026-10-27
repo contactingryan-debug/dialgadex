@@ -422,7 +422,7 @@
         "nav": "Raid Leaderboard",
         "title": "Raid Attacker Leaderboard",
         "back": "← Type rankings",
-        "intro": "Non-Mega attackers ranked by performance across released high-tier raids. Select a Pokémon to see its contributing matchups.",
+        "intro": "Non-Mega raid performance. Select a Pokémon for its boss matchups.",
         "meta-title": "Raid Attacker Leaderboard - DialgaDex",
         "meta-description": "Compare released non-Mega raid attackers using eDPS points, boss coverage, and detailed movesets.",
         "preparing": "Preparing released raid matchups…",

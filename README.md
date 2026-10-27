@@ -33,6 +33,35 @@ Affinity on, each row uses raid bosses that have that type; with it off, each
 row uses the same single-type target as the individual Counters page. Winners,
 movesets, and scores follow the corresponding individual view, including ties.
 
+## Raid attacker leaderboard
+
+Open **Raid Leaderboard** from the rankings page or navigation menu, or use
+[`?leaderboard`](https://contactingryan-debug.github.io/dialgadex/?leaderboard).
+It ranks released non-Mega/Primal attackers, including Shadows, fusions, and
+Crowned forms, against released tier 4+ bosses using native eDPS calculations.
+The current level, team size, Party Power, and relobby settings apply; eDPS
+remains the scoring metric. The ranking excludes the announced Data Preview
+without changing the preview or data used by other views.
+
+For each boss, divide attacker eDPS by the best released non-Mega eDPS. The
+default awards points linearly from zero at 80% performance to five at 100%:
+`5 * clamp((relative_eDPS - 0.8) / 0.2, 0, 1)`. Each boss species has total
+weight one, shared across its released high-tier forms. The displayed score
+is its weighted point total relative to the overall leader (100).
+
+Scoring options support 70%, 80%, and 90% floors and equal weight per form.
+Search and display filters preserve the reference pool and score scale.
+Each entry expands to contributing bosses, weighted points, relative eDPS,
+and the optimal moves. #1 and within-5% counts refer to boss forms; ties count.
+Hidden Power types are separate fixed builds: only the best aggregate build
+is displayed, with alternative build totals available in its breakdown.
+The score measures battle coverage; acquisition costs and roster-aware
+upgrade recommendations remain a separate future step.
+
+Calculations run in an isolated Web Worker and cache the most recent battle
+settings in memory. Navigating away cancels unfinished work. Existing type
+rankings and individual counters retain their calculation formulas.
+
 ## Host this fork
 
 The site works at a domain root or a repository subpath. The inherited
@@ -59,6 +88,12 @@ The workflow also checks all 18 Each type Counters rows against the individual
 type rankings with Type Affinity on, Type Affinity off, and matching move types.
 Mobile toggle, direct-link, reload, and navigation checks cover the new view.
 
+Raid scoring checks cover point boundaries, form weighting, tied leaders,
+duplicate movesets, and fixed Hidden Power builds. The leaderboard browser
+check compares every boss benchmark and the leading entries' movesets with
+the native calculator, then exercises mobile layout, scoring controls,
+search, display filters, URLs, history, and cancellation.
+
 The manual workflow also accepts a deployed URL. No repository variable or
 secret is needed. Its `baseline-comparison` artifact records inputs, data
 fingerprints, the top 15 counters, and every released Mega/Primal for:
@@ -81,6 +116,8 @@ npm ci
 npx playwright install chromium
 FORK_URL=http://localhost:8000/ npm run compare
 FORK_URL=http://localhost:8000/ npm run check:each-counters
+npm run check:raid-points
+FORK_URL=http://localhost:8000/ npm run check:raid-leaderboard
 ```
 
 Results are written to `baseline-tools/results/baseline-results.json`.
