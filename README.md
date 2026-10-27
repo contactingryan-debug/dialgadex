@@ -9,15 +9,21 @@ stat changes, and normalized L52 treatment are reserved for the next step.
 
 **Baseline verified:** the local fork matches the official production site
 exactly for all three reference bosses. See the
-[validation summary](baseline-tools/validation-summary.json). Public GitHub
-Pages deployment is still pending.
+[validation summary](baseline-tools/validation-summary.json). The hosted copy is
+[available here](https://contactingryan-debug.github.io/dialgadex/).
 
 ## Default settings
 
 New page loads use **eDPS, L50, Super Mega L4, 6-Stack, Type Affinity on,
-Off Types on, Mixed Types on, Party Power off, and a 10-second relobby**.
+Off Types on, Mixed Types on, Party Power off, a 10-second relobby, and the
+Best baseline**.
 The selected controls and the internal default filters use the same preset.
 The settings remain adjustable through the normal controls.
+
+The rankings type selector preserves the current Attackers/Counters mode when
+switching between specific types. Its links and browser URL use the same mode,
+so refresh and browser navigation restore the corresponding view. All types
+and Each type retain their existing Attackers-only behavior.
 
 ## Host this fork
 

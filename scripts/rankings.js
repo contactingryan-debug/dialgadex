@@ -42,8 +42,6 @@ function BindRankings() {
         LoadStrongestAndUpdateURL(event.detail.type);
     });
 
-    document.getElementById("strongest-links-types").setHrefs((type) => `?strongest&t=${type}`);
-
     SetupScroll();
 }
 
@@ -58,7 +56,7 @@ function ShowHideSearchStringIcon(visible) {
  * Loads the list of the strongest pokemon of a specific type in pokemon go.
  * The type can be 'each', 'any' or an actual type.
  */
-async function LoadStrongest(type = "Any", versus) {
+async function LoadStrongest(type = "Any", versus = false) {
     // displays what should be displayed 
     await LoadPage("strongest");
 
@@ -72,15 +70,14 @@ async function LoadStrongest(type = "Any", versus) {
         $("#chk-suboptimal").prop("disabled", false);
 
     // Handle logic for "versus"
+    const supportsCounters = POKEMON_TYPES.has(type);
+    versus = supportsCounters && !!versus;
     const versus_chk = $("#strongest input[value='versus']:checkbox");
     versus_chk.prop("checked", versus);
-    if (type == "Any" || type == "Each") { // disabled if not a specific type
-        versus_chk.prop("checked", false);
-        versus_chk.prop("disabled", true);
-    }
-    else {
-        versus_chk.prop("disabled", false);
-    }
+    versus_chk.prop("disabled", !supportsCounters);
+
+    document.getElementById("strongest-links-types").setHrefs((targetType) =>
+        `?strongest&t=${targetType}${(versus && POKEMON_TYPES.has(targetType) ? "&v" : "")}`);
 
     // sets titles
     let titleKey = "meta.rankings.typed";
@@ -171,16 +168,17 @@ async function LoadStrongest(type = "Any", versus) {
  * Calls the 'LoadStrongest' function and updates the url accordingly.
  */
 function LoadStrongestAndUpdateURL(type = "Any", versus = null) {
-    if (versus !== null)
-        versus = !!versus;
+    // A type change keeps the current mode; explicit true/false overrides it.
+    versus = POKEMON_TYPES.has(type) &&
+        Boolean(versus ?? $("#chk-versus").is(":checked"));
 
     let url = "?strongest&t=" + type;
-    if ($("#chk-versus").prop("checked") && type != "Any" && type != "Each") 
+    if (versus)
         url += '&v';
 
     UpdateURL(url);
     
-    LoadStrongest(type, versus);
+    return LoadStrongest(type, versus);
 }
 
 /**

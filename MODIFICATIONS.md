@@ -37,3 +37,11 @@ timestamp, input fingerprint, source hashes, settings, and per-boss results.
   defaults. The full preset is documented in the README.
 
 The calculation formulas and upstream data sources are unchanged.
+
+## October 27, 2026 — Best baseline and ranking navigation
+
+- Set the initial comparison baseline to Best, including the selected control.
+- Preserve the selected Attackers/Counters mode when changing a specific type.
+- Build ranking URLs and type-selector links from the same resolved mode used
+  for the calculation, including explicit requests to switch modes.
+- Normalize All types and Each type to their supported Attackers view.
