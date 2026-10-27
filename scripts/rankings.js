@@ -1,6 +1,6 @@
 let str_pokemons = [], type_tiers, tier_stops;
 
-// Keep the user's mode when an aggregate view temporarily disables Counters.
+// Keep the user's mode when All types temporarily disables Counters.
 const RANKINGS_MODE_KEY = "mega-raid-lab.rankings-counters";
 let rankings_versus = false;
 try {
@@ -14,6 +14,10 @@ function RememberRankingsMode(versus) {
     try {
         sessionStorage.setItem(RANKINGS_MODE_KEY, String(rankings_versus));
     } catch (_) {}
+}
+
+function SupportsRankingCounters(type) {
+    return type === "Each" || POKEMON_TYPES.has(type);
 }
 
 let ROW_HEIGHT = 30; // fixed height in CSS
@@ -79,6 +83,7 @@ async function LoadStrongest(type = "Any", versus = null) {
 
     // displays what should be displayed 
     await LoadPage("strongest");
+    $("#strongest").toggleClass("each-type-summary", type == "Each");
 
     // Move filters for display
     MoveFilterPopup("#strongest-filters");
@@ -90,7 +95,7 @@ async function LoadStrongest(type = "Any", versus = null) {
         $("#chk-suboptimal").prop("disabled", false);
 
     // Handle logic for "versus"
-    const supportsCounters = POKEMON_TYPES.has(type);
+    const supportsCounters = SupportsRankingCounters(type);
     versus = supportsCounters && requestedVersus;
     const versus_chk = $("#strongest input[value='versus']:checkbox");
     versus_chk.prop("checked", versus);
@@ -99,11 +104,11 @@ async function LoadStrongest(type = "Any", versus = null) {
     const typeSelector = document.getElementById("strongest-links-types");
     typeSelector.selectType(type);
     typeSelector.setHrefs((targetType) =>
-        `?strongest&t=${targetType}${(requestedVersus && POKEMON_TYPES.has(targetType) ? "&v" : "")}`);
+        `?strongest&t=${targetType}${(requestedVersus && SupportsRankingCounters(targetType) ? "&v" : "")}`);
 
     // sets titles
     let titleKey = "meta.rankings.typed";
-    if (type == "Each") titleKey = "meta.rankings.each";
+    if (type == "Each") titleKey = versus ? "meta.rankings.each-versus" : "meta.rankings.each";
     else if (versus) titleKey = "meta.rankings.versus";
 
     document.title = FormatTranslation(titleKey + ".title", {
@@ -122,7 +127,8 @@ async function LoadStrongest(type = "Any", versus = null) {
         $("#strongest-title").attr("data-i18n-reorder", "strongest.any.»order");
     }
     else if (type == "Each") {
-        $("#strongest-type-title").attr("data-i18n", "strongest.each.type-text");
+        $("#strongest-type-title").attr("data-i18n",
+            versus ? "strongest.each.counter-type-text" : "strongest.each.type-text");
         $("#strongest-type-helper").attr("data-i18n", "strongest.each.helper-text");
         $("#strongest-title").attr("data-i18n-reorder", "strongest.each.»order");
     }
@@ -176,6 +182,7 @@ async function LoadStrongest(type = "Any", versus = null) {
     $("#footnote-typed-ranking").css('display', type != "Any" && !settings_type_affinity ? 'block' : 'none');
     $("#footnote-affinity-ranking").css('display', type != "Each" && settings_type_affinity ? 'block' : 'none');
     $("#footnote-versus").css('display', search_params.versus ? 'block' : 'none');
+    $("#footnote-each-counters").css('display', type == "Each" && versus ? 'block' : 'none');
     $("#footnote-supermega-value").text(settings_supermega_level);
 
     // Update Icon
@@ -192,7 +199,7 @@ async function LoadStrongest(type = "Any", versus = null) {
 function LoadStrongestAndUpdateURL(type = "Any", versus = null) {
     // A type change keeps the current mode; explicit true/false overrides it.
     const requestedVersus = Boolean(versus ?? rankings_versus);
-    versus = POKEMON_TYPES.has(type) && requestedVersus;
+    versus = SupportsRankingCounters(type) && requestedVersus;
 
     let url = "?strongest&t=" + type;
     if (versus)
@@ -558,17 +565,9 @@ function ClearViewport() {
 
 // Calculate all indices for rendering
 function GetIndices(scrollTop = null) {
-    //ROW_HEIGHT = window.getComputedStyle(document.documentElement).getPropertyValue('--ranking-row-height');
-    if (window.matchMedia('(max-device-width: 400px)').matches)
-        ROW_HEIGHT = 45;
-    else if (window.matchMedia('(max-device-width: 600px)').matches)
-        ROW_HEIGHT = 50;
-    else if (window.matchMedia('(max-device-width: 900px)').matches)
-        ROW_HEIGHT = 60;
-    else
-        ROW_HEIGHT = 30;
-
     const container = $("#strongest-scroller");
+    ROW_HEIGHT = parseFloat(window.getComputedStyle(container[0])
+        .getPropertyValue('--ranking-row-height')) || 30;
     
     // Desired row buffer
     const containerHeight = container.height();
@@ -661,11 +660,13 @@ function RenderLabels(indices) {
         if (min_len < tier.tier.length) min_len = tier.tier.length;
 
         let startRow = tier.start, endRow = tier.stop;
-        if (startRow > indices.visibleRow[1] || endRow < indices.visibleRow[0])
+        if (startRow >= indices.visibleRow[1] || endRow <= indices.visibleRow[0])
             continue;
 
-        if (startRow < indices.visibleRow[0]) startRow = indices.visibleRow[0];
-        if (endRow > indices.visibleRow[1]) endRow = indices.visibleRow[1];
+        if (!tier.type) {
+            if (startRow < indices.visibleRow[0]) startRow = indices.visibleRow[0];
+            if (endRow > indices.visibleRow[1]) endRow = indices.visibleRow[1];
+        }
 
         let label = $(`<div class="tier-label floating-label">${tier.tier}</div>`);
         if (tier.tier == "MRay") 

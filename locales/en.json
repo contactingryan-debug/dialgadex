@@ -17,6 +17,7 @@
         },
         "each": {
             "type-text": "of Each",
+            "counter-type-text": "against Each",
             "helper-text": "type",
             "»order": [
                 "#strongest-best-span",
@@ -38,6 +39,7 @@
         },
 
         "notes": {
+            "each-counters": "Each row shows the best counter against that defending type. Select a type above to see its full Counters ranking.",
             "elite": "* Elite fast or charged move",
             "supermega": "Super Mega move level",
             "typed": "Typed rankings are calculated using super-effective damage for the chosen type, and neutral damage for all other types.",
@@ -409,6 +411,10 @@
             "each": {
                 "title": "Best Attackers of Each type - DialgaDex",
                 "description": "The best attackers of Each type in Pokémon Go, using the new eDPS metric."
+            },
+            "each-versus": {
+                "title": "Best Counters against Each Type - DialgaDex",
+                "description": "The strongest counter against each defending type in Pokémon Go, using the selected ranking settings."
             },
             "versus": {
                 "title": "Best Attackers against {type}-type Bosses - DialgaDex",

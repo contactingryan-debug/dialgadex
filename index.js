@@ -10,7 +10,7 @@ let current_pkm_obj = null; // current pokedex pokemon's pkm_obj
 
 const pages = [
     {id: 'pokedex-page', template_path: 'templates/pokedex.html', binder: BindPokeDex},
-    {id: 'strongest', template_path: 'templates/rankings.html', binder: BindRankings},
+    {id: 'strongest', template_path: 'templates/rankings.html?v=8b1874f225a0', binder: BindRankings},
     {id: 'move-data', template_path: 'templates/moves.html', binder: BindMoveData},
     {id: 'type-matrix', template_path: 'templates/typechart.html', binder: BuildTypeChart},
     {id: 'faq', template_path: 'templates/faq.html'},
@@ -237,7 +237,7 @@ function CheckURLAndAct() {
                 + type.slice(1).toLowerCase();
             
             if (type == 'Each')
-                LoadStrongest("Each");
+                LoadStrongest("Each", versus);
             else if (type == "Any")
                 LoadStrongest("Any");
             else if (POKEMON_TYPES.has(type))

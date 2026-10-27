@@ -21,11 +21,17 @@ The selected controls and the internal default filters use the same preset.
 The settings remain adjustable through the normal controls.
 
 The rankings type selector remembers the chosen Attackers/Counters mode for
-the current browser tab, including detours through All types or Each type,
-reloads, and returning through the main navigation. Those aggregate views show
-Attackers while preserving the choice used when returning to a specific type.
+the current browser tab, including detours through All types, reloads,
+and returning through the main navigation. All types shows Attackers while
+preserving the choice used when returning to a supported Counters view.
 Direct links and Back/Forward navigation restore their specified view. The
 highlighted type stays synchronized with the displayed rankings.
+
+**Each type** supports both modes. In **Counters**, its 18 rows show the best
+counter against each defending type under the current settings. With Type
+Affinity on, each row uses raid bosses that have that type; with it off, each
+row uses the same single-type target as the individual Counters page. Winners,
+movesets, and scores follow the corresponding individual view, including ties.
 
 ## Host this fork
 
@@ -49,6 +55,10 @@ site with the checked-out fork served under its repository subpath. It runs
 on pushes to `main`, pull requests, or manual dispatch. On a new fork, GitHub
 may require enabling workflows once in the Actions tab.
 
+The workflow also checks all 18 Each type Counters rows against the individual
+type rankings with Type Affinity on, Type Affinity off, and matching move types.
+Mobile toggle, direct-link, reload, and navigation checks cover the new view.
+
 The manual workflow also accepts a deployed URL. No repository variable or
 secret is needed. Its `baseline-comparison` artifact records inputs, data
 fingerprints, the top 15 counters, and every released Mega/Primal for:
@@ -70,6 +80,7 @@ cd baseline-tools
 npm ci
 npx playwright install chromium
 FORK_URL=http://localhost:8000/ npm run compare
+FORK_URL=http://localhost:8000/ npm run check:each-counters
 ```
 
 Results are written to `baseline-tools/results/baseline-results.json`.

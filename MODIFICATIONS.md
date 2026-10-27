@@ -56,3 +56,20 @@ The calculation formulas and upstream data sources are unchanged.
   and change events match the displayed type.
 - Version the changed scripts and the settings script in the entry page so
   browsers request fresh copies after this update.
+
+## October 27, 2026 — Each type Counters
+
+- Enable Counters for Each type, including mode-preserving links, reloads,
+  and browser navigation.
+- Select the best counter against each defending type using the same boss
+  profiles and search settings as the corresponding individual Counters page.
+- Preserve full counter ordering for tie consistency and avoid mutating the
+  caller's search parameters while building the summary.
+- Add mode-specific headings, page metadata, and an explanatory note in
+  English, Spanish, and French.
+- Version the changed calculation/controller scripts, ranking template,
+  and translation resources so browsers load the complete feature together.
+- Add automated 18-type parity and mobile navigation checks to the baseline
+  validation workflow.
+- Keep type labels readable on narrow phones and derive virtualized row
+  sizing from the rendered CSS row height.

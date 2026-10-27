@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "compare": "node baseline-compare.mjs"
+    "compare": "node baseline-compare.mjs",
+    "check:each-counters": "node each-counters-check.mjs"
   },
   "dependencies": {
     "playwright": "1.55.1"

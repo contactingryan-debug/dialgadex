@@ -573,8 +573,7 @@ function GetMovesetYs(types, atk, fms, cms, total_incoming_dps = 50) {
 }
 
 /**
- * Searches the strongest pokemon of each type and returns the strongest
- * pokemon per type.
+ * Returns the best attacker or counter for each type in the selected mode.
  */
 async function GetStrongestOfEachType(search_params) {
     // map of strongest pokemon and moveset found so far for each type
@@ -584,19 +583,23 @@ async function GetStrongestOfEachType(search_params) {
     let enemy_params;
 
     for (const type of POKEMON_TYPES) {
-        search_params.type = type; // Find strongest movesets regardless of type
+        const type_search = {...search_params, type};
         if (settings_type_affinity) {
-            enemy_params = GetTypeAffinity(search_params.type, true);
+            enemy_params = GetTypeAffinity(type, !type_search.versus);
         }
         else {
             enemy_params = {
-                weakness: GetTypesEffectivenessSingleBoost(search_params.type),
+                weakness: (type_search.versus ?
+                    GetTypesEffectivenessAgainstTypes([type]) :
+                    GetTypesEffectivenessSingleBoost(type)),
                 enemy_ys: [{"Any": {y_num: null, cm_num: null} }], // use defaults
                 stats: {atk: null, def: 180, hp: 1000000000} // Use huge HP to approach "theoretical" eDPS
             };
         }
 
-        const str_pok = (await GetStrongestVersus(enemy_params, search_params, 1))[0];
+        // Preserve the full counter ordering so tied winners match the individual pages.
+        const limit = type_search.versus ? undefined : 1;
+        const str_pok = (await GetStrongestVersus(enemy_params, type_search, limit)).at(-1);
         str_pokemons.set(type, str_pok);
     }
 

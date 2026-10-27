@@ -17,6 +17,7 @@
         },
         "each": {
             "type-text": "de Cada",
+            "counter-type-text": "contra Cada",
             "helper-text": "tipo",
             "»order": [
                 "#strongest-best-span",
@@ -38,6 +39,7 @@
         },
         
         "notes": {
+            "each-counters": "Cada fila muestra el mejor contrario contra ese tipo defensor. Selecciona un tipo arriba para ver su clasificación completa de contrarios.",
             "elite": "* Ataque élite (rápido o cargado)",
             "supermega": "Nivel de attaque Super Mega",
             "typed": "Listas de clasificación por tipo son calculado con daño super eficaz por eso tipo, y daño neutral por todos los otros tipos.",
@@ -409,6 +411,10 @@
             "each": {
                 "title": "Mejores Atacantes de Cada Tipo - DialgaDex",
                 "description": "Los mejores atacantes de cada tipo en Pokémon Go, utilizando la nueva métrica eDPS."
+            },
+            "each-versus": {
+                "title": "Mejores Contrarios contra Cada Tipo - DialgaDex",
+                "description": "El mejor contrario contra cada tipo defensor en Pokémon Go, utilizando la configuración de clasificación seleccionada."
             },
             "versus": {
                 "title": "Mejores Atacantes contra Oponentes de tipo {type} - DialgaDex",

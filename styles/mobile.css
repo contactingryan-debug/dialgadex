@@ -498,3 +498,31 @@ dialog.card .card-body {
         overflow: clip;
     }
 }
+
+/* Each type summaries need readable type names, including on narrow phones. */
+@media screen and (max-width:600px) {
+    #strongest.each-type-summary {
+        --ranking-row-height: 60px;
+    }
+
+    #strongest.each-type-summary #strongest-table tr > *:nth-child(1) {
+        width: 64px;
+        min-width: 64px !important;
+    }
+
+    #strongest.each-type-summary #strongest-table tr > *:nth-child(2) {
+        width: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    #strongest.each-type-summary .pokemon-icon {
+        display: none;
+    }
+
+    #strongest.each-type-summary #strongest-table .tier-label {
+        font-size: 10px;
+        writing-mode: horizontal-tb;
+        transform: none;
+    }
+}

@@ -1,4 +1,5 @@
 let currentLocale = 'en';
+const LOCALE_VERSION = "955c8eb360ea";
 let translationMap;
 let fallbackMap;
 
@@ -54,7 +55,7 @@ async function SetLocale(newLocale) {
     if (!IsSupportedLocale(newLocale)) return;
 
     try {
-        translationMap = await FetchJSON("locales/" + newLocale + ".json", null,
+        translationMap = await FetchJSON("locales/" + newLocale + ".json?v=" + LOCALE_VERSION, null,
             () => {
                 currentLocale = newLocale;
             },
@@ -90,7 +91,7 @@ async function LoadFallbackLocale() {
     if (fallbackMap) return await fallbackMap;
 
     try {
-        fallbackMap = await FetchJSON("locales/en.json");
+        fallbackMap = await FetchJSON("locales/en.json?v=" + LOCALE_VERSION);
         fallbackMap.pokedata = await FetchJSON("locales/pokedata/en.json");
     }
     catch (err) {
