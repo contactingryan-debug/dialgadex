@@ -275,6 +275,36 @@
       "class": "POKEMON_CLASS_LEGENDARY",
       "released": false,
       "raid_tier": 5
+    },
+    {
+      "id": 382,
+      "name": "Kyogre",
+      "form": "Normal",
+      "types": [
+        "Water"
+      ],
+      "stats": {
+        "baseStamina": 205,
+        "baseAttack": 270,
+        "baseDefense": 228
+      },
+      "fm": [
+        "Waterfall"
+      ],
+      "cm": [
+        "Hydro Pump",
+        "Blizzard",
+        "Thunder",
+        "Surf",
+        "Avalanche"
+      ],
+      "elite_cm": [
+        "Origin Pulse"
+      ],
+      "shadow": true,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "released": true,
+      "raid_tier": 5
     }
   ],
   "announced": [

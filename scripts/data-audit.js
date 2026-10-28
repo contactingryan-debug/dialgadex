@@ -34,10 +34,11 @@ function BuildPokemonAuditContext() {
     }
     ApplyPokemonAuditOverrides([...previewMap.values()], manifest);
     const includeUnreleased = GetIncludeUnreleased();
+    const includeMegas = typeof GetRaidLeaderboardIncludeMegas === 'function' && GetRaidLeaderboardIncludeMegas();
     const preview = includeUnreleased && settings_speculative;
     const bosses = GetRaidBosses(null, null, includeUnreleased);
     const {weights, groupCount} = GetRaidBossWeights(bosses);
-    return {manifest, currentMap, previewMap, includeUnreleased, preview, groupCount,
+    return {manifest, currentMap, previewMap, includeUnreleased, includeMegas, preview, groupCount,
         sourceMap: new Map(source.map(pokemon => [PokemonDataKey(pokemon), pokemon])),
         selectedMap: new Map(GetCalculationPokemon(includeUnreleased).map(pokemon => [PokemonDataKey(pokemon), pokemon])),
         weightMap: new Map(bosses.map((pokemon, index) => [PokemonDataKey(pokemon), weights[index]]))};
@@ -85,12 +86,17 @@ function GetPokemonAuditInfo(id, form, context) {
         preview, selected, display, supported, quality, reasons, bossReasons,
         tier, corrections, restrictions, statReview, releaseReview, applied, evidence, projectedStats, statsChanged,
         weight: context.weightMap.get(key) || 0, group: GetRaidGroupKey(display),
-        attackerIncluded: !reasons.length, leaderboardIncluded: !reasons.length && !mega,
+        attackerIncluded: !reasons.length, leaderboardIncluded: !reasons.length && (!mega || !!context.includeMegas),
         bossIncluded: !bossReasons.length, mega, attackerLevels, projectedLevel, plusMove};
 }
 
 function AuditRankingReason(reasons) {
     return reasons.length ? [...new Set(reasons)].map(reason => AuditText(reason)).join(' · ') : AuditText('included');
+}
+
+function AuditLeaderboardReason(info, context) {
+    return !info.reasons.length && info.mega && !context.includeMegas
+        ? AuditText('mega-attacker') : AuditRankingReason(info.reasons);
 }
 
 function AuditRaidProfile(info) {
@@ -124,7 +130,7 @@ function BuildPokemonAuditDetails(info, context) {
     add('support', AuditYesNo(info.supported));
     add('move-data', AuditText(info.quality.code));
     add('attacker-pool', AuditRankingReason(info.reasons));
-    add('leaderboard-pool', info.mega ? AuditText('mega-attacker') : AuditRankingReason(info.reasons));
+    add('leaderboard-pool', AuditLeaderboardReason(info, context));
     add('boss-pool', AuditRankingReason(info.bossReasons));
     add('group', GetRaidGroupLabel(info.display));
     add('weight', info.weight ? info.weight.toLocaleString(currentLocale, {maximumFractionDigits: 6}) : '0');
@@ -195,7 +201,7 @@ function PokemonAuditCopyText(info, context) {
         `Raid profile: ${AuditRaidProfile(info)}`,
         `Moves: ${AuditText(info.quality.code)}; fast: ${(info.display.fm || []).join(', ')}; charged: ${(info.display.cm || []).join(', ')}`,
         `Attacker pool: ${AuditRankingReason(info.reasons)}`,
-        `Non-Mega leaderboard: ${info.mega ? AuditText('mega-attacker') : AuditRankingReason(info.reasons)}`,
+        `Raid leaderboard: ${AuditLeaderboardReason(info, context)}; Mega/Primal/Ultra option: ${!!context.includeMegas}`,
         `Boss pool: ${AuditRankingReason(info.bossReasons)}`,
         `Default group: ${info.group}; weight in selected pool: ${info.weight}`,
         `Stats (Attack/Defense/Stamina): ${AuditStatText(info.display.stats)}; ${AuditStatSource(info)}`,

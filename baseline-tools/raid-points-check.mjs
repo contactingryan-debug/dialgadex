@@ -102,3 +102,17 @@ test('fixed Hidden Power builds cannot combine their best matchups', () => {
     assert.equal(rows[0].id, 800);
     assert.equal(rows.filter(row => row.id === 486).length, 2);
 });
+
+test('adding transformations keeps ordinary scores fixed and permits scores above 100 with the same boss cap', () => {
+    const bosses=[{id:1},{id:2}];
+    const ordinary=[attacker('a',10,[matchup(0,1),matchup(1,.8)]),
+        attacker('b',20,[matchup(0,.95),matchup(1,.95)])];
+    const before=ScoreRaidMatrix({bosses,attackers:ordinary});
+    const after=ScoreRaidMatrix({bosses,attackers:[...ordinary,
+        attacker('mega',30,[matchup(0,1.5),matchup(1,1.4)],{form:'Mega',transformed:true})]});
+    for(const row of before.rows)assert.deepEqual(after.rows.find(r=>r.key===row.key),row);
+    const mega=after.rows.find(r=>r.transformed);
+    assert.equal(mega.points,10);assert(mega.score>100);
+    assert.equal(mega.first,2);assert.equal(mega.near,2);
+    assert.equal(after.bestPoints,before.bestPoints);
+});

@@ -3,10 +3,15 @@
 <div class="card raid-card">
     <div class="card-header"><h1 class="card-title" data-i18n="raid-leaderboard.title">Raid Attacker Leaderboard</h1></div>
     <div class="raid-intro">
-        <p data-i18n="raid-leaderboard.intro">Attackers outside Mega, Primal, and Ultra transformations, ranked across high-tier raids. Select a Pokémon to see its contributing matchups.</p>
+        <p data-i18n="raid-leaderboard.intro">Raid attackers ranked across high-tier raids. Select a Pokémon to see its contributing matchups.</p>
+        <label class="raid-release-filter"><input id="raid-megas" type="checkbox"> <span data-i18n="raid-leaderboard.include-megas">Include Mega / Primal / Ultra</span></label>
+        <p id="raid-attacker-pool" class="raid-muted"></p>
         <label class="raid-release-filter"><input id="raid-unreleased" type="checkbox"> <span data-i18n="filters.species.unreleased">Include unreleased</span></label>
         <p id="raid-data-scope" class="raid-muted"></p>
         <p id="raid-settings-summary" class="raid-muted"></p>
+        <p id="raid-mega-settings" class="raid-muted" hidden></p>
+        <p id="raid-plus-note" class="raid-muted" data-i18n="strongest.notes.projected-plus" hidden></p>
+        <p id="raid-level-note" class="raid-muted" data-i18n="strongest.notes.projected-levels" hidden></p>
         <p id="raid-status" role="status" aria-live="polite"></p>
         <progress id="raid-progress" max="100" value="0" aria-label="Calculation progress"></progress>
         <button id="raid-retry" hidden data-i18n="raid-leaderboard.retry">Try again</button>
@@ -26,7 +31,7 @@
                 </div>
             </details>
         </div>
-        <div id="raid-column-headings" class="raid-grid"><span>#</span><span data-i18n="raid-leaderboard.pokemon">Pokémon</span><button data-sort="score" aria-pressed="true" data-i18n="raid-leaderboard.score">Score</button><button data-sort="first" aria-pressed="false" data-i18n="raid-leaderboard.first">#1</button><button data-sort="near" aria-pressed="false" data-i18n="raid-leaderboard.near">≤5%</button></div>
+        <div id="raid-column-headings" class="raid-grid"><span>#</span><span data-i18n="raid-leaderboard.pokemon">Pokémon</span><button data-sort="score" aria-pressed="true" data-i18n="raid-leaderboard.score">Score</button><button data-sort="first" aria-pressed="false" data-i18n="raid-leaderboard.first">≥100%</button><button data-sort="near" aria-pressed="false" data-i18n="raid-leaderboard.near">≥95%</button></div>
         <div id="raid-list"></div>
         <p id="raid-empty" hidden data-i18n="raid-leaderboard.empty">No scoring attackers match this search.</p>
         <div class="raid-list-footer"><span id="raid-result-count"></span><button id="raid-more" data-i18n="raid-leaderboard.more">Show 25 more</button></div>

@@ -74,8 +74,13 @@ movesets, and scores follow the corresponding individual view, including ties.
 
 Open **Raid Leaderboard** from the rankings page or navigation menu, or use
 [`?leaderboard`](https://contactingryan-debug.github.io/dialgadex/?leaderboard).
-It ranks released non-Mega/Primal attackers, including Shadows, fusions, and
-Crowned forms, against released tier 4+ bosses using native eDPS calculations.
+It defaults to released non-Mega/Primal/Ultra attackers, including Shadows,
+fusions, and Crowned forms, against released tier 4+ bosses using native eDPS.
+Enable **Include Mega / Primal / Ultra** to add eligible transformations. The
+benchmark remains the best non-Mega attacker per boss, and the overall
+non-Mega leader remains 100. Ordinary scores stay unchanged when transformations
+are included; Mega scores and matchup percentages may exceed 100. The option
+is recorded in `?leaderboard&megas` and remembered for navigation in the tab.
 The current level, team size, Party Power, and relobby settings apply; eDPS
 remains the scoring metric.
 
@@ -88,26 +93,35 @@ included; Data Preview additionally applies announced data when enabled.
 Release status and raid eligibility remain separate: an attacker need not have
 appeared in raids. The leaderboard URL records whether unreleased data is included.
 
-For each boss, divide attacker eDPS by the best non-Mega eDPS in the selected pool. The
+For each boss, divide attacker eDPS by the best non-Mega eDPS in the selected release pool. The
 default awards points linearly from zero at 80% performance to five at 100%:
 `5 * clamp((relative_eDPS - 0.8) / 0.2, 0, 1)`. Each raid group has total
 weight one. Genesect, Deoxys, Arceus, and Silvally share it across included forms;
 other major forms have separate groups. A form's allocation is shared across
 raid formats, so regular/Shadow or ordinary/Super versions cannot add weight.
 Separate Shadow raid profiles and their availability audit are deferred. The displayed score
-is its weighted point total relative to the overall leader (100).
+is its weighted point total relative to the overall non-Mega leader (100).
+Points remain capped at five per boss, including Mega performance above 100%.
 
 Scoring options support 70%, 80%, and 90% floors, equal species, and equal forms.
-Search and display filters preserve the reference pool and score scale.
+Search, Shadow, and Legendary display filters preserve the reference pool and
+score scale. Adding Mega/Primal/Ultra retains this same reference.
 Each entry expands to contributing bosses, weighted points, relative eDPS,
-and the optimal moves. #1 and within-5% counts refer to boss forms; ties count.
+and the optimal moves. ≥100% and ≥95% count boss forms reaching those
+percentages of the best non-Mega eDPS. Winning margin uses the strongest other
+non-Mega build; a transformed attacker compares with the best non-Mega build.
 Hidden Power types are separate fixed builds: only the best aggregate build
 is displayed, with alternative build totals available in its breakdown.
 The score measures battle coverage; acquisition costs and roster-aware
 upgrade recommendations remain a separate future step.
 
-Calculations run in an isolated Web Worker and cache the most recent battle
-settings in memory. Navigating away cancels unfinished work. Existing type
+Mega/Primal/Ultra forms use their separately selected native team size and Mega
+level. Include unreleased also applies the existing forecast +moves and +2 level
+rule, once; placeholder forms and boss-only Eternamax remain excluded. Expanded
+breakdowns show the effective attacker level and clickable move assumptions.
+
+Calculations run in an isolated Web Worker and cache up to four recent battle
+settings and attacker-pool selections in memory. Navigating away cancels unfinished work. Existing type
 rankings and individual counters retain their calculation formulas.
 
 ## Data audit and corrections

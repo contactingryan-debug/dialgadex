@@ -168,3 +168,17 @@ The calculation formulas and upstream data sources are unchanged.
   raid boss pools in both release modes. Preserve regular Eternatus.
 - Keep its source data inspectable; label the restriction in Data Audit,
   Copy details and the Pokémon page, with official event and Serebii sources.
+
+## October 28, 2026 — optional Mega-equivalent raid leaderboard
+
+- Add Include Mega / Primal / Ultra, with a shareable megas URL flag and tab
+  preference. Keep the best non-Mega benchmark for every boss and the overall
+  non-Mega leader at 100. Ordinary scores remain unchanged when transformations
+  are added; transformations may exceed 100. Preserve the five-point boss cap.
+- Include eligible transformations in the worker using native form identity,
+  effective levels, separately selected Mega team size, and +move power scaling.
+  Pass every scoped forecast definition to the worker. Preserve placeholder and
+  Eternamax exclusions. Cache recent selections for returning between views.
+- Show the fixed non-Mega reference, Mega settings, effective attacker levels,
+  projected-level notes and clickable +move details. Make Data Audit reflect
+  the selected leaderboard pool. Shadow/Legendary filters remain display-only.

@@ -1,11 +1,20 @@
 let raidLeaderboardWorker = null;
 let raidLeaderboardReject = null;
 let raidLeaderboardRequest = 0;
-let raidLeaderboardCache = null;
+let raidLeaderboardCache = new Map();
 let raidLeaderboardMatrix = null;
 let raidLeaderboardResult = null;
 let raidLeaderboardVisible = 25;
 let raidLeaderboardState = {};
+let raidLeaderboardIncludeMegas = false;
+try { raidLeaderboardIncludeMegas = sessionStorage.getItem('dialgadex-raid-megas') === 'true'; } catch (_) {}
+
+function GetRaidLeaderboardIncludeMegas() { return raidLeaderboardIncludeMegas; }
+
+function SetRaidLeaderboardIncludeMegas(include) {
+    raidLeaderboardIncludeMegas = !!include;
+    try { sessionStorage.setItem('dialgadex-raid-megas', String(raidLeaderboardIncludeMegas)); } catch (_) {}
+}
 
 function RaidLeaderboardText(key, params = {}) {
     return FormatTranslation('raid-leaderboard.' + key, params);
@@ -22,9 +31,16 @@ function CancelRaidLeaderboardLoad() {
 function GetRaidLeaderboardSnapshot() {
     const includeUnreleased = GetIncludeUnreleased();
     const pokemon = structuredClone(GetCalculationPokemon(includeUnreleased));
-    return {pokemon, fastMoves: structuredClone(jb_fm), chargedMoves: structuredClone(jb_cm), settings: {
+    // Include definitions attached to this calculation scope, including detached forecasts.
+    const charged = new Map(jb_cm.filter(move => !move._plus_projection).map(move => [move.name, move]));
+    for (const entry of pokemon) for (const name of entry.temp_cm || []) {
+        const move = FindChargedMove(name);
+        if (move) charged.set(name, move);
+    }
+    return {pokemon, fastMoves: structuredClone(jb_fm), chargedMoves: structuredClone([...charged.values()]), settings: {
         levels: [...settings_default_level], xlBudget: settings_xl_budget,
-        team: settings_team_size_normal, relobby: settings_relobbytime, party: settings_party_size,
+        team: settings_team_size_normal, megaTeam: settings_team_size_mega,
+        includeMegas: GetRaidLeaderboardIncludeMegas(), relobby: settings_relobbytime, party: settings_party_size,
         newDps: settings_newdps, pveTurns: settings_pve_turns, megaLevel: settings_supermega_level,
         estimatedY: estimated_y_numerator,
         includeUnreleased, preview: includeUnreleased && settings_speculative,
@@ -36,6 +52,12 @@ function BindRaidLeaderboard() {
     $('#raid-unreleased').on('change', function() {
         SetIncludeUnreleased(this.checked);
         raidLeaderboardState.unreleased = this.checked;
+        UpdateRaidLeaderboardURL();
+        LoadRaidLeaderboard();
+    });
+    $('#raid-megas').on('change', function() {
+        SetRaidLeaderboardIncludeMegas(this.checked);
+        raidLeaderboardState.includeMegas = this.checked;
         UpdateRaidLeaderboardURL();
         LoadRaidLeaderboard();
     });
@@ -75,6 +97,7 @@ function UpdateRaidLeaderboardURL() {
     const params = new URLSearchParams();
     params.set('leaderboard', '');
     if (raidLeaderboardState.unreleased) params.set('unreleased', '');
+    if (raidLeaderboardState.includeMegas) params.set('megas', '');
     if (raidLeaderboardState.floor !== 80) params.set('floor', raidLeaderboardState.floor);
     if (['forms', 'species'].includes(raidLeaderboardState.weighting)) params.set('weight', raidLeaderboardState.weighting);
     if (!raidLeaderboardState.shadows) params.set('no-shadows', '');
@@ -83,7 +106,8 @@ function UpdateRaidLeaderboardURL() {
 }
 
 function LoadRaidLeaderboardAndUpdateURL() {
-    UpdateURL(GetIncludeUnreleased() ? '?leaderboard&unreleased' : '?leaderboard');
+    UpdateURL('?leaderboard' + (GetIncludeUnreleased() ? '&unreleased' : '')
+        + (GetRaidLeaderboardIncludeMegas() ? '&megas' : ''));
     return LoadRaidLeaderboard();
 }
 
@@ -95,12 +119,15 @@ async function LoadRaidLeaderboard() {
     if (!params.has('leaderboard')) return;
     raidLeaderboardState = {
         unreleased: params.has('unreleased'),
+        includeMegas: params.has('megas'),
         floor: [70, 80, 90].includes(Number(params.get('floor'))) ? Number(params.get('floor')) : 80,
         weighting: ['forms', 'species'].includes(params.get('weight')) ? params.get('weight') : 'groups',
         shadows: !params.has('no-shadows'), legendaries: !params.has('no-legendaries'),
         query: '', sort: 'score',
     };
     SetIncludeUnreleased(raidLeaderboardState.unreleased);
+    SetRaidLeaderboardIncludeMegas(raidLeaderboardState.includeMegas);
+    $('#raid-megas').prop('checked', raidLeaderboardState.includeMegas);
     $('#raid-floor').val(raidLeaderboardState.floor);
     $('#raid-weighting').val(raidLeaderboardState.weighting);
     $('#raid-shadows').prop('checked', raidLeaderboardState.shadows);
@@ -108,6 +135,8 @@ async function LoadRaidLeaderboard() {
     $('#raid-search').val('');
     $('#raid-data-scope').text(RaidLeaderboardText(raidLeaderboardState.unreleased
         ? (settings_speculative ? 'scope-preview' : 'scope-unreleased') : 'scope-released'));
+    $('#raid-attacker-pool').text(RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'pool-all' : 'pool-non-mega'));
+    $('#raid-mega-settings, #raid-plus-note, #raid-level-note').prop('hidden', true);
     document.title = RaidLeaderboardText('meta-title');
     $('meta[name=description]').attr('content', RaidLeaderboardText('meta-description'));
     $('#raid-results, #raid-retry').prop('hidden', true);
@@ -120,10 +149,11 @@ async function LoadRaidLeaderboard() {
         const snapshot = GetRaidLeaderboardSnapshot();
         const key = JSON.stringify(snapshot);
         let matrix;
-        if (raidLeaderboardCache?.key === key) matrix = raidLeaderboardCache.matrix;
+        if (!(raidLeaderboardCache instanceof Map)) raidLeaderboardCache = new Map();
+        if (raidLeaderboardCache.has(key)) matrix = raidLeaderboardCache.get(key);
         else {
             matrix = await new Promise((resolve, reject) => {
-                const worker = new Worker('scripts/raid-leaderboard-worker.js?v=98d5f5089751');
+                const worker = new Worker('scripts/raid-leaderboard-worker.js?v=8d9deddca8ab');
                 raidLeaderboardWorker = worker;
                 raidLeaderboardReject = reject;
                 worker.onmessage = event => {
@@ -142,7 +172,8 @@ async function LoadRaidLeaderboard() {
             raidLeaderboardWorker?.terminate();
             raidLeaderboardWorker = null;
             raidLeaderboardReject = null;
-            raidLeaderboardCache = {key, matrix};
+            if (raidLeaderboardCache.size >= 4) raidLeaderboardCache.delete(raidLeaderboardCache.keys().next().value);
+            raidLeaderboardCache.set(key, matrix);
         }
         if (request !== raidLeaderboardRequest) return;
         raidLeaderboardMatrix = matrix;
@@ -152,6 +183,11 @@ async function LoadRaidLeaderboard() {
             team: settings.team, relobby: settings.relobby,
             party: settings.party === 1 ? RaidLeaderboardText('off') : settings.party,
         }));
+        $('#raid-mega-settings').prop('hidden', !settings.includeMegas).text(RaidLeaderboardText('mega-settings', {
+            level: settings.megaLevel, team: settings.megaTeam,
+        }));
+        $('#raid-plus-note').prop('hidden', !(settings.includeMegas && settings.includeUnreleased));
+        $('#raid-level-note').prop('hidden', !(settings.includeMegas && settings.includeUnreleased && settings.megaLevel === 4));
         $('#raid-data-scope').text(RaidLeaderboardText(settings.includeUnreleased
             ? (settings.preview ? 'scope-preview' : 'scope-unreleased') : 'scope-released'));
         RefreshRaidLeaderboardScores();
@@ -178,7 +214,8 @@ function RefreshRaidLeaderboardScores() {
     $('#raid-status').text(RaidLeaderboardText('pool', {
         forms: raidLeaderboardResult.bossCount, groups: raidLeaderboardResult.groupCount,
     }));
-    $('#raid-method-summary').text(RaidLeaderboardText('method-summary', {floor: raidLeaderboardState.floor}));
+    $('#raid-method-summary').text(RaidLeaderboardText('method-summary', {floor: raidLeaderboardState.floor,
+        reference: RaidLeaderboardText('reference-non-mega')}));
     $('#raid-weight-summary').text(RaidLeaderboardText('weight-' + raidLeaderboardState.weighting + '-note'));
     RenderRaidLeaderboard();
 }
@@ -221,7 +258,7 @@ function RenderRaidLeaderboard() {
         const score = $('<span class="raid-score"></span>').attr('title', RaidLeaderboardText('points-title', {
             points: RaidLeaderboardNumber(row.points, 2),
         }));
-        score.append($('<span class="raid-score-fill"></span>').css('width', row.score + '%'));
+        score.append($('<span class="raid-score-fill"></span>').css('width', Math.min(100, row.score) + '%'));
         score.append($('<strong></strong>').text(RaidLeaderboardNumber(row.score)));
         summary.append(score, $('<span></span>').text(row.first), $('<span></span>').text(row.near));
         entry.append(summary);
@@ -246,10 +283,13 @@ function BuildRaidLeaderboardBreakdown(row) {
         LoadPokedexAndUpdateURL(GetPokeDexMon(row.id, row.form, row.level));
     });
     container.append(pokemonLink);
+    container.append($('<p class="raid-muted"></p>').text(RaidLeaderboardText('build-level', {level: row.level})));
+    if (row.projectedLevel) container.append($('<p class="raid-muted"></p>').text(AuditText('projected-level-note')));
     container.append($('<p></p>').text(RaidLeaderboardText('entry-summary', {
         points: RaidLeaderboardNumber(row.points, 2), lead: RaidLeaderboardNumber(row.lead),
     })));
-    container.append($('<p class="raid-muted"></p>').text(RaidLeaderboardText('moves-note')));
+    container.append($('<p class="raid-muted"></p>').text(RaidLeaderboardText('moves-note', {
+        reference: RaidLeaderboardText('reference-non-mega')})));
     if (row.hiddenPowerType) {
         container.append($('<p class="raid-fixed-note"></p>').text(RaidLeaderboardText('hp-note', {
             type: TranslatedTypeName(row.hiddenPowerType),
@@ -284,9 +324,7 @@ function BuildRaidLeaderboardBreakdown(row) {
             group: GetRaidGroupLabel(boss, raidLeaderboardState.weighting)})));
         const moves = $('<span class="raid-matchup-moves"></span>');
         for (const kind of ['fm', 'cm']) {
-            const move = jb_fm.concat(jb_cm).find(move => move.name === matchup[kind]);
-            moves.append($('<span class="type-text"></span>').addClass('bg-' + matchup[kind + 'Type'])
-                .text(TranslatedMoveName(move?.id, matchup[kind + 'Type'], matchup[kind]) + (matchup[kind + 'Elite'] ? '*' : '')));
+            moves.append(GetMoveLink(matchup[kind], matchup[kind + 'Type'], matchup[kind + 'Elite']));
         }
         item.append(moves);
         list.append(item);

@@ -36,24 +36,26 @@ self.onmessage = async event => {
         settings_default_level = snapshot.settings.levels;
         settings_xl_budget = snapshot.settings.xlBudget;
         settings_team_size_normal = snapshot.settings.team;
-        settings_team_size_mega = snapshot.settings.team;
+        settings_team_size_mega = snapshot.settings.megaTeam ?? snapshot.settings.team;
         settings_relobbytime = snapshot.settings.relobby;
         settings_party_size = snapshot.settings.party;
         settings_newdps = snapshot.settings.newDps;
         settings_pve_turns = snapshot.settings.pveTurns;
         settings_supermega_level = snapshot.settings.megaLevel;
         estimated_y_numerator = snapshot.settings.estimatedY;
-        const search = {...GetDefaultSearchParams(), type: 'Any', mega: false, suboptimal: false,
+        const search = {...GetDefaultSearchParams(), type: 'Any', mega: !!snapshot.settings.includeMegas, suboptimal: false,
             real_damage: true, unreleased: !!snapshot.settings.includeUnreleased};
         const candidates = [];
         await SearchAll(search, async (pokemon, shadow, level) => {
-            if (!IsRaidLeaderboardMega(pokemon)) candidates.push(...RaidLeaderboardBuilds(pokemon, shadow, level));
+            candidates.push(...RaidLeaderboardBuilds(pokemon, shadow, level));
         });
         const bosses = GetRaidBosses(null, null, search.unreleased);
         const benchmarks = [];
         const attackers = candidates.map(candidate => ({
             key: candidate.key, id: candidate.pkm.id, name: candidate.pkm.name, form: candidate.pkm.form,
             shadow: candidate.shadow, level: candidate.level, legendary: !!candidate.pkm.class,
+            transformed: IsRaidLeaderboardMega(candidate.pkm),
+            projectedLevel: UsesProjectedAttackerLevel(candidate.pkm, search.unreleased),
             hiddenPowerType: candidate.hiddenPowerType, matchups: [],
         }));
         const identity = candidate => JSON.stringify([candidate.pkm.id, candidate.pkm.form, candidate.shadow, candidate.level]);
@@ -69,15 +71,16 @@ self.onmessage = async event => {
                 if (moveset && Number.isFinite(moveset.rat) && moveset.rat > 0) counters.push({index, moveset});
             }
             counters.sort((a, b) => b.moveset.rat - a.moveset.rat || a.index - b.index);
-            const best = counters[0]?.moveset.rat;
-            if (!best) throw new Error('No valid counters for boss ' + boss.id + '/' + boss.form);
+            const referenceCounters = counters.filter(counter => !IsRaidLeaderboardMega(candidates[counter.index].pkm));
+            const best = referenceCounters[0]?.moveset.rat;
+            if (!best) throw new Error('No valid non-Mega counters for boss ' + boss.id + '/' + boss.form);
             benchmarks.push(best);
             for (const {index, moveset} of counters) {
                 const ratio = moveset.rat / best;
                 // All supported scoring floors can be recomputed from this compact matrix.
                 if (ratio < 0.7 - 1e-9) continue;
                 const runnerUp = ratio >= 1 - 1e-9
-                    ? counters.find(counter => identities[counter.index] !== identities[index]) : null;
+                    ? referenceCounters.find(counter => identities[counter.index] !== identities[index]) : null;
                 attackers[index].matchups.push({bossIndex, ratio, edps: moveset.rat,
                     lead: runnerUp ? Math.max(0, 100 * (moveset.rat / runnerUp.moveset.rat - 1)) : 0,
                     fm: moveset.fm, fmType: moveset.fm_type, fmElite: moveset.fm_is_elite,

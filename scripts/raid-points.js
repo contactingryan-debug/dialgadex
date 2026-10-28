@@ -71,7 +71,8 @@ function ScoreRaidMatrix(matrix, options = {}) {
             first: variant.first, near: variant.near,
         }))};
     }).sort(compare);
-    const best = rows[0]?.points || 1;
+    // Keep ordinary scores stable when transformations are added to the display.
+    const best = rows.find(row => !row.transformed)?.points || 1;
     for (const row of rows) row.score = 100 * row.points / best;
     return {rows, floor, weighting, weights, groupCount, bossCount: matrix.bosses.length, speciesCount: speciesCounts.size,
         totalWeight: weights.reduce((sum, weight) => sum + weight, 0), bestPoints: best};

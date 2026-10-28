@@ -14,7 +14,9 @@
     "check:transformation-browser": "node transformation-level-browser-check.mjs",
     "check:plus-moves": "node --test plus-projections-check.mjs",
     "check:plus-browser": "node plus-projections-browser-check.mjs",
-    "check:raid-leaderboard": "node raid-leaderboard-check.mjs"
+    "check:raid-leaderboard": "node raid-leaderboard-check.mjs",
+    "check:raid-megas": "node --test raid-megas-check.mjs",
+    "check:raid-megas-browser": "node raid-megas-browser-check.mjs"
   },
   "dependencies": {
     "playwright": "1.55.1"

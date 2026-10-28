@@ -158,3 +158,12 @@ test('audit inclusion and copied details reflect explicit custom calculation edi
     assert.match(evaluate('PokemonAuditCopyText(GetPokemonAuditInfo(800,"Ultra",BuildPokemonAuditContext()),BuildPokemonAuditContext())'),/Custom move edits:.*Outrage/);
     assert.equal(json('jb_source_pkm.find(p=>p.id===800&&p.form==="Ultra").cm_add ?? null'),null);
 });
+
+test('audit eligibility reflects the optional Mega-equivalent leaderboard pool',()=>{
+    const {evaluate,json}=fixture();
+    assert.equal(json('GetPokemonAuditInfo(150,"Mega",BuildPokemonAuditContext()).leaderboardIncluded'),false);
+    evaluate('GetRaidLeaderboardIncludeMegas=()=>true');
+    assert.equal(json('GetPokemonAuditInfo(150,"Mega",BuildPokemonAuditContext()).leaderboardIncluded'),true);
+    assert.match(evaluate('PokemonAuditCopyText(GetPokemonAuditInfo(150,"Mega",BuildPokemonAuditContext()),BuildPokemonAuditContext())'),/Raid leaderboard: Included; Mega\/Primal\/Ultra option: true/);
+    assert.equal(json('GetPokemonAuditInfo(800,"Ultra",BuildPokemonAuditContext()).leaderboardIncluded'),false);
+});
