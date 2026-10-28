@@ -443,6 +443,64 @@
       ],
       "shadow": false,
       "released": true
+    },
+    {
+      "id": 890,
+      "name": "Eternatus",
+      "form": "Normal",
+      "types": [
+        "Poison",
+        "Dragon"
+      ],
+      "stats": {
+        "baseStamina": 268,
+        "baseAttack": 278,
+        "baseDefense": 192
+      },
+      "fm": [
+        "Dragon Tail",
+        "Poison Jab"
+      ],
+      "cm": [
+        "Sludge Bomb",
+        "Dragon Pulse",
+        "Flamethrower"
+      ],
+      "elite_cm": [
+        "Dynamax Cannon"
+      ],
+      "shadow": false,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "released": true
+    },
+    {
+      "id": 890,
+      "name": "Eternatus",
+      "form": "Eternamax",
+      "types": [
+        "Poison",
+        "Dragon"
+      ],
+      "stats": {
+        "baseStamina": 452,
+        "baseAttack": 251,
+        "baseDefense": 505
+      },
+      "fm": [
+        "Dragon Tail",
+        "Poison Jab"
+      ],
+      "cm": [
+        "Sludge Bomb",
+        "Hyper Beam",
+        "Flamethrower"
+      ],
+      "elite_cm": [
+        "Dynamax Cannon"
+      ],
+      "shadow": false,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "released": false
     }
   ],
   "announced": [
@@ -671,6 +729,16 @@
       "damage_window_start": 1060,
       "damage_window_end": 1300,
       "energy_delta": 19
+    },
+    {
+      "id": 224,
+      "name": "Poison Jab",
+      "type": "Poison",
+      "power": 13,
+      "duration": 1000,
+      "damage_window_start": 400,
+      "damage_window_end": 1000,
+      "energy_delta": 9
     }
   ],
   "chargedMoves": [
@@ -974,6 +1042,36 @@
       "duration": 2500,
       "damage_window_start": 1200,
       "damage_window_end": 2500,
+      "energy_delta": -100
+    },
+    {
+      "id": 82,
+      "name": "Dragon Pulse",
+      "type": "Dragon",
+      "power": 90,
+      "duration": 3500,
+      "damage_window_start": 2050,
+      "damage_window_end": 3200,
+      "energy_delta": -50
+    },
+    {
+      "id": 90,
+      "name": "Sludge Bomb",
+      "type": "Poison",
+      "power": 85,
+      "duration": 2500,
+      "damage_window_start": 1300,
+      "damage_window_end": 2300,
+      "energy_delta": -50
+    },
+    {
+      "id": 482,
+      "name": "Dynamax Cannon",
+      "type": "Dragon",
+      "power": 215,
+      "duration": 1500,
+      "damage_window_start": 900,
+      "damage_window_end": 1400,
       "energy_delta": -100
     }
   ]

@@ -86,6 +86,31 @@ test('a released alternate form is not blocked by an unreleased base form', asyn
     assert(keys.includes('800/Dawn_wings') && !keys.includes('800/Normal'));
 });
 
+test('Eternamax is inspectable but never a usable ordinary raid form, while regular Eternatus remains eligible', async () => {
+    const {evaluate,json}=fixture({future:true});
+    assert.equal(json('GetPokemonDataQuality(jb_pkm.find(p=>p.id===890&&p.form==="Eternamax")).usable'),true);
+    for(const future of [false,true]) {
+        const keys=JSON.parse(await evaluate(`(async()=>{const keys=[];
+            await SearchAll({...GetDefaultSearchParams(),unreleased:${future},mega:false},p=>keys.push(PokemonDataKey(p)));
+            return JSON.stringify(keys)})()`));
+        assert(keys.includes('890/Normal'));assert(!keys.includes('890/Eternamax'));
+    }
+    const info=json('GetPokemonAuditInfo(890,"Eternamax",BuildPokemonAuditContext())');
+    assert.equal(info.supported,true);assert.equal(info.attackerIncluded,false);
+    assert.equal(info.leaderboardIncluded,false);assert.equal(info.bossIncluded,false);
+    assert(info.reasons.includes('max-battle-only'));
+    assert.equal(json('jb_source_pkm.find(p=>p.id===890&&p.form==="Eternamax")._raidRestriction ?? null'),null);
+    const copy=evaluate('PokemonAuditCopyText(GetPokemonAuditInfo(890,"Eternamax",BuildPokemonAuditContext()),BuildPokemonAuditContext())');
+    assert.match(copy,/Max Battle boss only/);assert.match(copy,/https:\/\/pokemongo.com\/gofestmaxfinale/);
+    // Even an erroneous future release flag/raid tag must not make a Max boss a raid form.
+    evaluate('Object.assign(jb_pkm.find(p=>p.id===890&&p.form==="Eternamax"),{released:true,raid_tier:5})');
+    assert.equal(json('IsPokemonCalculationEligible(jb_pkm.find(p=>p.id===890&&p.form==="Eternamax"),true)'),false);
+    assert(!json('GetRaidBosses(null,null,true).some(p=>p.id===890&&p.form==="Eternamax")'));
+    evaluate('PatchSpeculative(false);settings_speculative=false;PatchSpeculative(true);settings_speculative=true');
+    assert.equal(json('GetPokemonAuditInfo(890,"Normal",BuildPokemonAuditContext()).attackerIncluded'),true);
+    assert.equal(json('GetPokemonAuditInfo(890,"Eternamax",BuildPokemonAuditContext()).attackerIncluded'),false);
+});
+
 test('audit details distinguish projections, stored stats, hypothetical stats, and selected weights', () => {
     const {evaluate,json}=fixture({future:true});
     evaluate('auditContext=BuildPokemonAuditContext()');

@@ -578,7 +578,8 @@
         "plus-source": "Already in source learnset",
         "plus-applied": "Enabled by Include unreleased",
         "plus-off": "Forecast available; not used in current-only rankings",
-        "plus-incomplete": "Excluded: base move data incomplete"
+        "plus-incomplete": "Excluded: base move data incomplete",
+        "max-battle-only": "Max Battle boss only; not a usable raid form"
     },
     "plus-moves": {
         "projected": "Projected +move",

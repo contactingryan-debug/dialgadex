@@ -578,7 +578,8 @@
         "plus-source": "Déjà présente dans la source",
         "plus-applied": "Activée par Inclure les non disponibles",
         "plus-off": "Projection disponible ; inutilisée dans le classement actuel",
-        "plus-incomplete": "Exclu : données d’attaques incomplètes"
+        "plus-incomplete": "Exclu : données d’attaques incomplètes",
+        "max-battle-only": "Boss de Combat Dynamax uniquement ; forme inutilisable en raid"
     },
     "plus-moves": {
         "projected": "Attaque + projetée",

@@ -13,7 +13,7 @@ let loading_val = 0; // number of files loaded so far
 let jb_names, jb_pkm, jb_max_id, jb_fm, jb_cm, jb_spec, jb_unpatch;
 let jb_source_pkm, jb_audit_manifest, jb_plus_predictions;
 const PLUS_PREDICTIONS_URL = 'data/plus-move-projections.json?v=6afbfc884de4';
-const AUDIT_MANIFEST_URL = 'data/audit-overrides.json?v=b597fde57e8c';
+const AUDIT_MANIFEST_URL = 'data/audit-overrides.json?v=69d38cb3d6fb';
 
 /**
  * Load JSONs from resource repo

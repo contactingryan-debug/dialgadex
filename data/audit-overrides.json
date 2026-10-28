@@ -1,5 +1,5 @@
 {
-    "reviewed": "2026-10-27",
+    "reviewed": "2026-10-28",
     "corrections": [
         {
             "key": "armored-mewtwo-raid",
@@ -91,6 +91,16 @@
             "reason": "Minior can currently expose its core only in Team GO Rocket, team leader, or GO Battle League battles. Its core forms are excluded from raid calculations.",
             "sources": [
                 "https://pokemongo.com/news/minior-meteor-showers-2026"
+            ]
+        },
+        {
+            "id": 890,
+            "form": "Eternamax",
+            "code": "max-battle-only",
+            "reason": "Eternamax Eternatus is a Max Battle boss and cannot be kept or used by Trainers in this form. It is excluded from ordinary raid attacker and boss calculations, including Include unreleased. Regular Eternatus remains usable. Max Battle mechanics are outside this raid calculator.",
+            "sources": [
+                "https://pokemongo.com/gofestmaxfinale",
+                "https://www.serebii.net/pokemongo/pokemon/890.shtml"
             ]
         }
     ],

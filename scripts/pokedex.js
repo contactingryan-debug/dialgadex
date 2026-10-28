@@ -559,7 +559,7 @@ async function LoadPokedexMoveTable(pkm_obj, stats, max_stats = null) {
     const usable = GetPokemonDataQuality(pkm_obj).usable && !pkm_obj._raidRestriction;
     $('#pokedex-move-table').toggle(!!usable);
     $('#pokedex-move-note').prop('hidden', !!usable).text(AuditText(pkm_obj._raidRestriction
-        ? 'raid-restricted' : GetPokemonDataQuality(pkm_obj).code));
+        ? pkm_obj._raidRestrictionCode || 'raid-restricted' : GetPokemonDataQuality(pkm_obj).code));
     if (!usable) {
         $('#pokedex-move-table tbody').empty();
         $('#attack-tiers').hide();

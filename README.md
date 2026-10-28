@@ -133,6 +133,11 @@ raid calculations because their transformation is currently restricted to
 non-raid battles. Future placeholder learnsets are excluded in both release
 modes, while genuine released Splash/Struggle learnsets remain usable.
 
+Eternamax Eternatus remains visible for inspection but is excluded from ordinary
+raid calculations in both release modes: it is a Max Battle boss, not a
+player-usable raid form. Regular Eternatus remains eligible. Data details and
+Copy details explain this restriction and link the official event source.
+
 Mega Zygarde **403/181/415** and Mega Baxcalibur **331/221/244** remain explicitly
 unconfirmed projections, rather than game-data claims. Ultra Necrozma's stored
 **337/196/200** matches the checked Game Master snapshot; the **359/209/213**

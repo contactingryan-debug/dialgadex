@@ -57,7 +57,7 @@ function GetPokemonAuditInfo(id, form, context) {
     if (!supported) reasons.push('unsupported');
     if (!selected && supported) reasons.push('preview-only');
     else if (!context.includeUnreleased && !current?.released) reasons.push('unreleased');
-    if ((selected || display)._raidRestriction) reasons.push('raid-restricted');
+    if ((selected || display)._raidRestriction) reasons.push((selected || display)._raidRestrictionCode || 'raid-restricted');
     if (!quality.usable) reasons.push(quality.code);
     const tier = (selected || preview || current || display).raid_tier;
     const bossReasons = [...reasons];
@@ -251,7 +251,8 @@ function RenderPokemonDataDetails(id, form) {
     target.prop('hidden', false);
     const details = $('<details class="audit-pokemon-details"></details>');
     details.append($('<summary></summary>').text(AuditText('details')
-        + (!info.quality.usable ? ' · ' + AuditText(info.quality.code)
+        + (info.reasons.includes('max-battle-only') ? ' · ' + AuditText('max-battle-only')
+            : !info.quality.usable ? ' · ' + AuditText(info.quality.code)
             : info.projectedStats || info.projectedLevel || info.plusMove?.move?._plus_projection ? ' · ' + AuditText('projected') : '')));
     details.append(BuildPokemonAuditDetails(info, context));
     const audit = $('<a class="audit-all-link"></a>').attr('href', '?audit&q=' + id).text(AuditText('open-audit'));
@@ -352,6 +353,7 @@ function RenderDataAudit() {
         const badges = $('<span class="audit-badges"></span>');
         badges.append($('<span></span>').text(AuditText(info.current?.released ? 'released-short' : 'unreleased-short')));
         if (info.tier) badges.append($('<span></span>').text(AuditText('tier', {tier: info.tier})));
+        if (info.reasons.includes('max-battle-only')) badges.append($('<span class="audit-warning"></span>').text(AuditText('max-battle-only')));
         if (!info.quality.usable) badges.append($('<span class="audit-warning"></span>').text(AuditText(info.quality.code)));
         if (info.projectedStats || info.projectedLevel) badges.append($('<span></span>').text(AuditText('projected')));
         if (info.plusMove?.move?._plus_projection) badges.append($('<span></span>').text(AuditText('plus-projected')));

@@ -171,6 +171,10 @@ try {
             !GetCalculationPokemon(false).some(c=>c.id===p.id&&c.form===p.form&&c.released))}));
     assert.equal(futurePool.bosses,availability.upcomingBosses);
     assert(futurePool.attackers>currentPool.attackers && futurePool.containsFutureAttackers && futurePool.shared);
+    assert(await page.evaluate(()=>raidLeaderboardMatrix.attackers.some(p=>p.id===890&&p.form==='Normal')),
+        'Regular Eternatus must remain in the investment pool.');
+    assert(!await page.evaluate(()=>raidLeaderboardMatrix.attackers.some(p=>p.id===890&&p.form==='Eternamax')),
+        'The Max Battle boss must not enter the investment pool.');
     await page.setViewportSize({width:320,height:740});
     await fits();
     await page.locator('#raid-rankings-back').click();

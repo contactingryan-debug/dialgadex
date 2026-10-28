@@ -67,7 +67,10 @@ function ApplyPokemonAuditOverrides(pokemon, manifest = {}) {
             if (applied.length) entry._auditCorrections = [...(entry._auditCorrections || []), {key: rule.key, fields: applied}];
         }
         for (const rule of manifest.restrictions || []) {
-            if (PokemonAuditRuleMatches(rule, entry)) entry._raidRestriction = rule.reason;
+            if (PokemonAuditRuleMatches(rule, entry)) {
+                entry._raidRestriction = rule.reason;
+                entry._raidRestrictionCode = rule.code || 'raid-restricted';
+            }
         }
     }
     return pokemon;

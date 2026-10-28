@@ -159,3 +159,12 @@ The calculation formulas and upstream data sources are unchanged.
 - Correct the guarded unreleased Mega Baxcalibur projection to 331/221/244 by
   applying the assumed 3% stamina adjustment before rounding. Preserve raw source
   values and any future released or changed record.
+
+## October 28, 2026 — exclude Eternamax from ordinary raids
+
+- Treat Eternamax Eternatus as a Max Battle boss rather than an unreleased
+  player-usable raid form. Use the existing raid-restriction mechanism to
+  exclude it from attacker rankings, the investment leaderboard, and ordinary
+  raid boss pools in both release modes. Preserve regular Eternatus.
+- Keep its source data inspectable; label the restriction in Data Audit,
+  Copy details and the Pokémon page, with official event and Serebii sources.

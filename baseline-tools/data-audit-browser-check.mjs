@@ -102,6 +102,26 @@ try {
     assert.match(await zygarde.innerText(),/403 \/ 181 \/ 415/);
     if(process.env.DATA_AUDIT_SCREENSHOT)await page.screenshot({path:process.env.DATA_AUDIT_SCREENSHOT,fullPage:true});
     await fits();
+    await page.evaluate(()=>LoadDataAuditAndUpdateURL('890'));
+    if(!await page.locator('#audit-unreleased').isChecked())await page.locator('#audit-unreleased').check();
+    const eternamax=page.locator('.audit-entry[data-key="890/Eternamax"]');
+    await eternamax.locator('summary').click();await eternamax.locator('.audit-copy').waitFor();
+    assert.match(await eternamax.innerText(),/Max Battle boss only; not a usable raid form/);
+    assert.match(await eternamax.innerText(),/Regular Eternatus remains usable/);
+    await eternamax.locator('.audit-copy').click();
+    await eternamax.locator('.audit-copy-status').filter({hasText:'Copied'}).waitFor();
+    assert.match(await page.evaluate(()=>navigator.clipboard.readText()),/Max Battle boss only/);
+    const allowed=await page.evaluate(async()=>{
+        const rows=[];await SearchAll({...GetDefaultSearchParams(),unreleased:true},p=>rows.push(PokemonDataKey(p)));
+        return {regular:rows.includes('890/Normal'),eternamax:rows.includes('890/Eternamax')};
+    });
+    assert.deepEqual(allowed,{regular:true,eternamax:false});
+    await eternamax.locator('.audit-actions a').click();
+    await page.locator('#pokedex-move-note').waitFor();
+    assert.match(await page.locator('#pokedex-move-note').innerText(),/Max Battle boss only/);
+    assert.equal(await page.locator('#pokedex-move-table').isVisible(),false);
+    assert.equal(await page.locator('#counters').isVisible(),false);
+    await page.setViewportSize({width:320,height:740});await fits();
     assert.deepEqual(errors,[]);
     console.log('Audit data, clipboard, filters, projections, exclusions, navigation and mobile fit:',JSON.stringify(pool));
 } finally { await browser.close(); }

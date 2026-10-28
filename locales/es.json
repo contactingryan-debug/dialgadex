@@ -578,7 +578,8 @@
         "plus-source": "Ya incluido en la fuente",
         "plus-applied": "Activado por Incluir no lanzados",
         "plus-off": "Proyección disponible; no se usa en clasificaciones actuales",
-        "plus-incomplete": "Excluido: datos de movimientos incompletos"
+        "plus-incomplete": "Excluido: datos de movimientos incompletos",
+        "max-battle-only": "Solo jefe de Combate Max; forma no utilizable en incursiones"
     },
     "plus-moves": {
         "projected": "Movimiento + proyectado",

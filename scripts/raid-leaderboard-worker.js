@@ -1,6 +1,6 @@
 /* Reuse the native calculator in isolation so navigation and settings remain responsive. */
 let jb_pkm, jb_fm, jb_cm, jb_max_id;
-importScripts('pokemon_enums.js?v=664952cd50b0', 'settings.js?v=63f6908f18cb', 'data-rules.js?v=e7f431dc7718', 'pokemon_utils.js?v=1745f81d1ee5', 'calc.js?v=e78987b30605');
+importScripts('pokemon_enums.js?v=664952cd50b0', 'settings.js?v=63f6908f18cb', 'data-rules.js?v=489b486b3f8a', 'pokemon_utils.js?v=1745f81d1ee5', 'calc.js?v=e78987b30605');
 
 function IsRaidLeaderboardMega(pokemon) {
     return IsMegaPrimalUltraForm(pokemon);
