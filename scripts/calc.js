@@ -438,7 +438,7 @@ function GetStrongestAgainstSpecificEnemy(pkm_obj, shadow, level,
                 continue;
 
             // gets the charged move object
-            const cm_obj = jb_cm.find(entry => entry.name == cm);
+            const cm_obj = FindChargedMove(cm);
             if (!cm_obj)
                 continue;
 
@@ -561,7 +561,7 @@ function GetMovesetYs(types, atk, fms, cms, total_incoming_dps = 50) {
 
         for (let cm of cms) {
             // gets the charged move object
-            const cm_obj = jb_cm.find(entry => entry.name == cm);
+            const cm_obj = FindChargedMove(cm);
             if (!cm_obj)
                 continue;
 

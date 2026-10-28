@@ -17,6 +17,8 @@ rewrite('scripts/translation.js', lambda text: re.sub(r'const LOCALE_VERSION = "
     f'const LOCALE_VERSION = "{locale}";', text))
 rewrite('scripts/dataload.js', lambda text: re.sub(r"data/audit-overrides.json(?:\?v=[^']+)?",
     'data/audit-overrides.json?v=' + digest('data/audit-overrides.json'), text))
+rewrite('scripts/dataload.js', lambda text: re.sub(r"data/plus-move-projections.json(?:\?v=[^']+)?",
+    'data/plus-move-projections.json?v=' + digest('data/plus-move-projections.json'), text))
 def versions(text, paths):
     for path in paths:
         text = re.sub(re.escape(path) + r'''(?:\?v=[^'"\s]+)?''',
@@ -34,7 +36,7 @@ def template_versions(text):
 rewrite('index.js', template_versions)
 def entry_versions(text):
     paths = ['scripts/' + name + '.js' for name in ['dataload', 'translation', 'settings',
-        'data-rules', 'pokemon_utils', 'calc', 'pokedex', 'rankings', 'raid-points',
+        'data-rules', 'plus-projections', 'dialogs', 'moves', 'pokemon_utils', 'calc', 'pokedex', 'rankings', 'raid-points',
         'data-audit', 'raid-leaderboard']]
     paths += ['index.js', 'styles/raid-leaderboard.css', 'styles/data-audit.css']
     for path in paths:

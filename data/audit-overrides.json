@@ -49,6 +49,30 @@
                 "https://leekduck.com/events/minior-showers-orionids-2026/",
                 "https://pokemongo.com/news/minior-meteor-showers-2026"
             ]
+        },
+        {
+            "key": "baxcalibur-projected-stamina",
+            "id": 998,
+            "form": "Mega",
+            "when": {
+                "released": false,
+                "stats": {
+                    "baseAttack": 331,
+                    "baseDefense": 221,
+                    "baseStamina": 243
+                }
+            },
+            "values": {
+                "stats": {
+                    "baseAttack": 331,
+                    "baseDefense": 221,
+                    "baseStamina": 244
+                }
+            },
+            "reason": "Our chosen 3% forecast rounds (50 + 1.75 × 115) × 0.97 = 243.7125 to 244 Stamina. The upstream projection floors HP too early and gives 243. This correction applies only while the form is unreleased and the reviewed source tuple matches.",
+            "sources": [
+                "https://www.dittobase.com/pokemon-go/stat-converter"
+            ]
         }
     ],
     "restrictions": [
@@ -102,7 +126,7 @@
             "expected": {
                 "baseAttack": 331,
                 "baseDefense": 221,
-                "baseStamina": 243
+                "baseStamina": 244
             },
             "mainSeries": {
                 "hp": 115,
@@ -112,11 +136,12 @@
                 "spd": 101,
                 "spe": 87
             },
-            "note": "Preserves our existing 3% projection for Attack, Defense, and Stamina. No Mega stat override was present in the checked Game Master. Final GO stats remain unconfirmed.",
+            "note": "Chosen 3% projection: 331 Attack / 221 Defense / 244 Stamina. Apply the adjustment before final rounding; do not floor Stamina first. This restores the corrected saved model. Final GO stats remain unconfirmed.",
             "sources": [
                 "https://github.com/PokeMiners/game_masters/tree/8e227be44f288d34463e23bf04e9b564d3c16f79/latest",
                 "https://github.com/smogon/pokemon-showdown/blob/1242c1e2d9763ba5b85d33f13aecb89bae19ae3d/data/pokedex.ts",
-                "https://github.com/mgrann03/pokemon-resources/blob/413424cbbc3edb94f3b61c16d355b512c4e85321/pogo_pkm_manual_announced.json"
+                "https://github.com/mgrann03/pokemon-resources/blob/413424cbbc3edb94f3b61c16d355b512c4e85321/pogo_pkm_manual_announced.json",
+                "https://www.dittobase.com/pokemon-go/stat-converter"
             ]
         },
         {

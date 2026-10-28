@@ -28,28 +28,29 @@
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_pkm.min.json" as="fetch" crossorigin />
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_fm.json" as="fetch" crossorigin />
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_cm.json" as="fetch" crossorigin />
-    <link rel="preload" href="locales/en.json?v=b2246b9d3c8a" as="fetch" crossorigin />
+    <link rel="preload" href="locales/en.json?v=b2eb33802ea9" as="fetch" crossorigin />
     <link rel="preload" href="locales/pokedata/en.json" as="fetch" crossorigin />
 
     <script src="lib/jquery-3.6.0.min.js"></script>
     <script src="lib/autoComplete.js"></script>
     <script src="lib/jenks.js"></script>
     
-    <script src="scripts/dataload.js?v=9949cf40f733"></script>
-    <script src="scripts/translation.js?v=d101c98aff4b"></script>
-    <script src="scripts/settings.js?v=249f1f9f91d3"></script>
+    <script src="scripts/dataload.js?v=7545a2c9c1be"></script>
+    <script src="scripts/translation.js?v=4ede8e03e4b7"></script>
+    <script src="scripts/settings.js?v=63f6908f18cb"></script>
     <script src="scripts/pokemon_enums.js"></script>
-    <script src="scripts/data-rules.js?v=6098fdc11dc9"></script>
-    <script src="scripts/pokemon_utils.js?v=19e19b03759f"></script>
-    <script src="scripts/dialogs.js"></script>
-    <script src="scripts/calc.js?v=cdd17e8929d0"></script>
-    <script src="scripts/rankings.js?v=f9abb771e1b3"></script>
-    <script src="scripts/pokedex.js?v=25287c145a6a"></script>
-    <script src="scripts/moves.js"></script>
+    <script src="scripts/data-rules.js?v=e7f431dc7718"></script>
+    <script src="scripts/plus-projections.js?v=aa4e939e0ca6"></script>
+    <script src="scripts/pokemon_utils.js?v=1745f81d1ee5"></script>
+    <script src="scripts/dialogs.js?v=38e8c4376154"></script>
+    <script src="scripts/calc.js?v=e78987b30605"></script>
+    <script src="scripts/rankings.js?v=0eec1f4f63e5"></script>
+    <script src="scripts/pokedex.js?v=baa262d74565"></script>
+    <script src="scripts/moves.js?v=b70b692c2036"></script>
     <script src="scripts/raid-points.js?v=8f0615950754"></script>
-    <script src="scripts/data-audit.js?v=b01033a7f5b2"></script>
-    <script src="scripts/raid-leaderboard.js?v=9500f4b89478"></script>
-    <script src="index.js?v=bcc86ebf0146"></script>
+    <script src="scripts/data-audit.js?v=17d4f5be4b60"></script>
+    <script src="scripts/raid-leaderboard.js?v=d0ffece065f3"></script>
+    <script src="index.js?v=49ae9b5e28fe"></script>
     
     <script src="components/type-selector.js?v=9ea0ae6e6f65"></script>
 </head>
@@ -245,6 +246,7 @@
         </div>
     </div>
     <div class="card-body">
+        <p id="move-projection-note" class="audit-note" style="white-space:normal;max-width:30rem" hidden></p>
         <div class="move-form">
             <label for="any-search-box"><span data-i18n="terms.name">Name</span>:</label>
                 <div style="position: relative;">

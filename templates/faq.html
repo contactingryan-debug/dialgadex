@@ -303,6 +303,17 @@
             for Attack, Defense, and HP; boss profiles stay at their raid stats. Data Preview is
             optional for this level rule. Ultra Beasts retain normal levels. Explicit calculator
             levels stay as entered, and incomplete moves still exclude a form from rankings.</p>
+        <h3>How are predicted +moves included?</h3>
+        <p><b>Include unreleased</b> enables the saved form-specific +move assignments.
+            <b>P</b> marks a projection. Click a move for its base power and assumptions, or
+            select <b>Projected +moves</b> in <a href="?audit&amp;data=plus">Data Audit</a>.
+            Source and published powers take priority. Unknown base power uses
+            <code>round_to_5(147.391 − 0.125502 × base GO Attack + 16.80809 × duration_seconds)</code>,
+            with 100 energy and the ordinary move's type and timing assumed.</p>
+        <p>Mega level power scaling applies once, separately from this prediction and the
+            +2 level rule. Aerodactyl's Rock Slide+ is labeled an unverified assignment hypothesis.
+            No +move is invented for forms without an assignment, and placeholder moves remain
+            excluded. Data Preview is needed for forms not yet in the source roster.</p>
         <h3>How are raid groups weighted?</h3>
         <p>The leaderboard defaults to equal raid groups. Genesect, Deoxys, Arceus, and Silvally
             each share one total weight across their included forms. Other major forms, including

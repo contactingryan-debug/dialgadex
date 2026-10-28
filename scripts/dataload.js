@@ -6,13 +6,14 @@ const POGO_PNGS_PATH = "graphics/pogo-256/"
 const SHINY_POGO_PNGS_PATH = "graphics/pogo-shiny-256/"
 const ICONS_URL = CDN_URL + "graphics/pokemonicons-sheet.png";
 
-const LOADING_MAX_VAL = 6; // max number of files that need to be loaded
+const LOADING_MAX_VAL = 7; // max number of files that need to be loaded
 let loading_val = 0; // number of files loaded so far
 
 // jb json objects
 let jb_names, jb_pkm, jb_max_id, jb_fm, jb_cm, jb_spec, jb_unpatch;
-let jb_source_pkm, jb_audit_manifest;
-const AUDIT_MANIFEST_URL = 'data/audit-overrides.json?v=3facae201f4a';
+let jb_source_pkm, jb_audit_manifest, jb_plus_predictions;
+const PLUS_PREDICTIONS_URL = 'data/plus-move-projections.json?v=6afbfc884de4';
+const AUDIT_MANIFEST_URL = 'data/audit-overrides.json?v=b597fde57e8c';
 
 /**
  * Load JSONs from resource repo
@@ -65,6 +66,10 @@ async function LoadJSONData() {
         jb_audit_manifest = json;
         IncreaseLoadingVal();
     }));
+    jsonLoadReqs.push(FetchJSON(PLUS_PREDICTIONS_URL, null, json => {
+        jb_plus_predictions = json;
+        IncreaseLoadingVal();
+    }));
 
     try {
         await Promise.all(jsonLoadReqs);
@@ -74,6 +79,7 @@ async function LoadJSONData() {
         if (settings_speculative) {
             PatchSpeculative(settings_speculative);
         }
+        RefreshPlusMoveProjections(settings_include_unreleased);
 
         return true;
     }
@@ -249,6 +255,7 @@ function SwapShiny(element) {
  * Modifies jb_pkm either direction (applying or un-applying patches)
  */
 function PatchSpeculative(useUpcoming) {
+    if (typeof RefreshPlusMoveProjections === 'function') RefreshPlusMoveProjections(false);
     if (useUpcoming && jb_spec) {
         jb_unpatch = [];
 
@@ -300,4 +307,6 @@ function PatchSpeculative(useUpcoming) {
             }
         }
     }
+    ApplyPokemonAuditOverrides(jb_pkm, jb_audit_manifest);
+    if (typeof RefreshPlusMoveProjections === 'function') RefreshPlusMoveProjections(settings_include_unreleased);
 }

@@ -1,5 +1,5 @@
 let currentLocale = 'en';
-const LOCALE_VERSION = "b2246b9d3c8a";
+const LOCALE_VERSION = "b2eb33802ea9";
 let translationMap;
 let fallbackMap;
 
@@ -278,6 +278,10 @@ function TranslatedFormName(form_key) {
  * Else shift to appropriate type, if it exists
  */
 function TranslatedMoveName(id, type, backup = "") {
+    const projected = typeof GetProjectedPlusMoveById === 'function' && GetProjectedPlusMoveById(id);
+    if (projected) return projected.projection_base_id != null
+        ? TranslatedMoveName(projected.projection_base_id, type, projected.projection_label.replace(/\+$/, '')) + '+'
+        : projected.projection_label;
     let trans = GetTranslation("pokedata.moves."+id, backup);
 
     // Add appropriate Hidden Power type

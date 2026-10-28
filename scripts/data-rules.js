@@ -31,6 +31,18 @@ function PokemonAuditRuleMatches(rule, pokemon) {
     return rule.id === pokemon.id && (rule.form === pokemon.form || rule.forms?.includes(pokemon.form));
 }
 
+function PokemonAuditConditionMatches(value, expected) {
+    if (expected === null) return value == null;
+    if (typeof expected === 'object' && !Array.isArray(expected))
+        return value != null && Object.entries(expected).every(([key, item]) => PokemonAuditConditionMatches(value[key], item));
+    return value === expected;
+}
+
+function FindChargedMove(name) {
+    return (typeof GetProjectedPlusMove === 'function' && GetProjectedPlusMove(name))
+        || jb_cm.find(move => move.name === name);
+}
+
 function MarkPokemonMovePlaceholder(pokemon, previewOnly = false) {
     const charged = [...(pokemon.cm || []), ...(pokemon.elite_cm || [])];
     if ((!pokemon.released || previewOnly) && charged.length && charged.every(move => move === 'Struggle'))
@@ -44,11 +56,9 @@ function ApplyPokemonAuditOverrides(pokemon, manifest = {}) {
         MarkPokemonMovePlaceholder(entry);
         for (const rule of manifest.corrections || []) {
             if (!PokemonAuditRuleMatches(rule, entry)) continue;
+            if (rule.when && !PokemonAuditConditionMatches(entry, rule.when)) continue;
             const applied = [];
             for (const [key, value] of Object.entries(rule.values || {})) {
-                const expected = rule.when?.[key];
-                if (rule.when && Object.hasOwn(rule.when, key)
-                        && (expected === null ? entry[key] != null : entry[key] !== expected)) continue;
                 if (JSON.stringify(entry[key]) !== JSON.stringify(value)) {
                     entry[key] = structuredClone(value);
                     applied.push(key);

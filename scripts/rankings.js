@@ -189,6 +189,7 @@ async function LoadStrongest(type = "Any", versus = null) {
     $("#footnote-each-counters").css('display', type == "Each" && versus ? 'block' : 'none');
     $("#footnote-supermega-value").text(settings_supermega_level);
     $('#footnote-projected-levels').toggle(!!(search_params.unreleased && search_params.mega && settings_supermega_level === 4));
+    $('#footnote-projected-plus').toggle(!!(search_params.unreleased && search_params.mega));
 
     // Update Icon
     ShowHideSearchStringIcon(type != "Each");

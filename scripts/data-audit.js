@@ -32,6 +32,7 @@ function BuildPokemonAuditContext() {
         const pokemon = {...previewMap.get(key), ...structuredClone(patch)};
         previewMap.set(key, MarkPokemonMovePlaceholder(pokemon, !currentMap.has(key)));
     }
+    ApplyPokemonAuditOverrides([...previewMap.values()], manifest);
     const includeUnreleased = GetIncludeUnreleased();
     const preview = includeUnreleased && settings_speculative;
     const bosses = GetRaidBosses(null, null, includeUnreleased);
@@ -66,7 +67,7 @@ function GetPokemonAuditInfo(id, form, context) {
     const restrictions = (context.manifest.restrictions || []).filter(rule => PokemonAuditRuleMatches(rule, display));
     const statReview = (context.manifest.statReviews || []).find(rule => PokemonAuditRuleMatches(rule, display));
     const releaseReview = (context.manifest.releaseReviews || []).find(rule => PokemonAuditRuleMatches(rule, display));
-    const applied = current?._auditCorrections || [];
+    const applied = (selected || display)._auditCorrections || current?._auditCorrections || [];
     const evidence = !tier ? 'no-raid-tag' : corrections.some(rule => Object.hasOwn(rule.values, 'raid_tier'))
         ? 'verified' : releaseReview?.raidStatus === 'announced' ? 'announced'
         : !current?.released ? 'projected' : 'source-tag';
@@ -78,12 +79,14 @@ function GetPokemonAuditInfo(id, form, context) {
     const attackerLevels = [...new Set(settings_default_level.map(level =>
         GetAttackerLevel(levelPokemon, level, context.includeUnreleased)))];
     const projectedLevel = UsesProjectedAttackerLevel(levelPokemon, context.includeUnreleased);
+    const plusMove = typeof GetPlusMoveProjectionInfo === 'function'
+        ? GetPlusMoveProjectionInfo(selected || display, context.includeUnreleased && !!selected) : null;
     return {id, form, key, source, current, currentReleased: current?.released ?? (preview ? false : undefined),
         preview, selected, display, supported, quality, reasons, bossReasons,
         tier, corrections, restrictions, statReview, releaseReview, applied, evidence, projectedStats, statsChanged,
         weight: context.weightMap.get(key) || 0, group: GetRaidGroupKey(display),
         attackerIncluded: !reasons.length, leaderboardIncluded: !reasons.length && !mega,
-        bossIncluded: !bossReasons.length, mega, attackerLevels, projectedLevel};
+        bossIncluded: !bossReasons.length, mega, attackerLevels, projectedLevel, plusMove};
 }
 
 function AuditRankingReason(reasons) {
@@ -129,6 +132,18 @@ function BuildPokemonAuditDetails(info, context) {
     add('ranking-stats', AuditStatText(info.selected?.stats));
     add('attacker-levels', info.attackerLevels.map(level => 'L' + level).join(' / '));
     if (info.projectedLevel) add('level-rule', AuditText('projected-level-note'));
+    if (info.plusMove) {
+        const plus = info.plusMove;
+        add('plus-move', plus.rule.move || AuditText('plus-unassigned'));
+        add('plus-status', AuditText('plus-' + plus.status));
+        if (plus.move) {
+            add('plus-power', FormatTranslation('plus-moves.power-detail', {power: plus.move.power,
+                kind: GetTranslation('plus-moves.power-' + plus.powerKind), level: settings_supermega_level,
+                effective: Number(ProcessPower(plus.move).toFixed(4))}));
+            if (plus.move._plus_projection) add('plus-assumptions', PlusMoveProjectionSummary(plus.move));
+        }
+        if (plus.status !== 'source') add('plus-assignment', plus.rule.assignmentEvidence);
+    }
     add('stat-source', AuditStatSource(info));
     if (info.statReview && context.manifest.checkedGameMaster)
         add('snapshot', context.manifest.checkedGameMaster.date.slice(0, 10) + ' · ' + context.manifest.checkedGameMaster.sha.slice(0, 8));
@@ -143,6 +158,7 @@ function BuildPokemonAuditDetails(info, context) {
     const sources = $('<div class="audit-sources"></div>');
     sources.append($('<span></span>').text(AuditText('sources') + ': '));
     const urls = new Set(notes.flatMap(note => note.sources || []));
+    for (const url of info.plusMove?.rule.sources || []) urls.add(url);
     urls.add('https://github.com/mgrann03/pokemon-resources/blob/main/'
         + (info.source ? 'pogo_pkm.json' : 'pogo_pkm_manual_announced.json'));
     for (const url of urls) {
@@ -185,6 +201,12 @@ function PokemonAuditCopyText(info, context) {
         `Stats (Attack/Defense/Stamina): ${AuditStatText(info.display.stats)}; ${AuditStatSource(info)}`,
         `Ranking stats (Attack/Defense/Stamina): ${AuditStatText(info.selected?.stats)}`,
         `Default attacker levels: ${info.attackerLevels.map(level => 'L' + level).join(', ')}${info.projectedLevel ? '; projected +2 levels' : ''}`,
+        ...(info.plusMove ? [
+            `+move: ${info.plusMove.rule.move || 'unassigned'}; ${AuditText('plus-' + info.plusMove.status)}`,
+            ...(info.plusMove.move ? [`+move base power: ${info.plusMove.move.power} (${info.plusMove.powerKind}); energy: ${info.plusMove.move.energy_delta}; duration: ${info.plusMove.move.duration} ms; effective power at Mega level ${settings_supermega_level}: ${ProcessPower(info.plusMove.move)}`] : []),
+            ...(info.plusMove.move?._plus_projection ? [PlusMoveProjectionSummary(info.plusMove.move)] : []),
+            `Saved assignment evidence: ${info.plusMove.rule.assignmentEvidence}`,
+            ...(info.plusMove.rule.sources || [])] : []),
         ...(['fm_add','cm_add','fm_rem','cm_rem'].some(key => info.selected?.[key]?.length)
             ? ['Custom move edits: ' + JSON.stringify(Object.fromEntries(['fm_add','cm_add','fm_rem','cm_rem']
                 .filter(key => info.selected[key]).map(key => [key, info.selected[key]])))] : []),
@@ -230,7 +252,7 @@ function RenderPokemonDataDetails(id, form) {
     const details = $('<details class="audit-pokemon-details"></details>');
     details.append($('<summary></summary>').text(AuditText('details')
         + (!info.quality.usable ? ' · ' + AuditText(info.quality.code)
-            : info.projectedStats || info.projectedLevel ? ' · ' + AuditText('projected') : '')));
+            : info.projectedStats || info.projectedLevel || info.plusMove?.move?._plus_projection ? ' · ' + AuditText('projected') : '')));
     details.append(BuildPokemonAuditDetails(info, context));
     const audit = $('<a class="audit-all-link"></a>').attr('href', '?audit&q=' + id).text(AuditText('open-audit'));
     audit.on('click', event => { event.preventDefault(); LoadDataAuditAndUpdateURL(String(id)); });
@@ -279,7 +301,7 @@ async function LoadDataAudit() {
     dataAuditState = {query: params.get('q') || '',
         availability: ['released', 'unreleased'].includes(params.get('availability')) ? params.get('availability') : 'all',
         raids: ['high', 'tagged', 'untagged'].includes(params.get('raids')) ? params.get('raids') : 'all',
-        quality: ['incomplete', 'projected', 'corrected', 'unsupported'].includes(params.get('data')) ? params.get('data') : 'all',
+        quality: ['incomplete', 'projected', 'plus', 'corrected', 'unsupported'].includes(params.get('data')) ? params.get('data') : 'all',
         visible: 50};
     $('#audit-search').val(dataAuditState.query);
     $('#audit-availability').val(dataAuditState.availability);
@@ -312,6 +334,7 @@ function RenderDataAudit() {
             if (dataAuditState.raids === 'untagged' && info.tier) return false;
             if (dataAuditState.quality === 'incomplete' && info.quality.usable) return false;
             if (dataAuditState.quality === 'projected' && !info.projectedStats) return false;
+            if (dataAuditState.quality === 'plus' && !info.plusMove?.move?._plus_projection) return false;
             if (dataAuditState.quality === 'corrected' && !info.applied.length) return false;
             if (dataAuditState.quality === 'unsupported' && info.supported) return false;
             const name = `${info.id} ${info.display.name} ${info.form} ${TranslatedSpeciesName(info.id, info.display.name)} ${GetFormText(info.id, info.form)}`;
@@ -331,6 +354,7 @@ function RenderDataAudit() {
         if (info.tier) badges.append($('<span></span>').text(AuditText('tier', {tier: info.tier})));
         if (!info.quality.usable) badges.append($('<span class="audit-warning"></span>').text(AuditText(info.quality.code)));
         if (info.projectedStats || info.projectedLevel) badges.append($('<span></span>').text(AuditText('projected')));
+        if (info.plusMove?.move?._plus_projection) badges.append($('<span></span>').text(AuditText('plus-projected')));
         if (info.applied.length) badges.append($('<span></span>').text(AuditText('corrected-short')));
         summary.append(name, badges);
         entry.append(summary);

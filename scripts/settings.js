@@ -510,7 +510,8 @@ function SetSpeculative(useUpcoming) {
     
     // Reset caches
     ClearTypeTiers();
-    ClearMoveUserMap()
+    ClearMoveUserMap();
+    ClearMoveData();
     
     // reload page
     CheckURLAndAct();
@@ -541,6 +542,9 @@ function SetIncludeUnreleased(include) {
     settings_include_unreleased = !!include;
     $("#filter-settings input[value='unreleased'], #raid-unreleased, #audit-unreleased").prop('checked', settings_include_unreleased);
     try { sessionStorage.setItem(UNRELEASED_FILTER_KEY, String(settings_include_unreleased)); } catch (_) {}
+    if (typeof RefreshPlusMoveProjections === 'function') RefreshPlusMoveProjections(settings_include_unreleased);
+    if (typeof ClearMoveUserMap === 'function') ClearMoveUserMap();
+    if (typeof ClearMoveData === 'function') ClearMoveData();
     ClearTypeTiers();
 }
 

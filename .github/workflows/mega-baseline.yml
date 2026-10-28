@@ -39,6 +39,9 @@ jobs:
       - name: Verify projected Mega, Primal, and Ultra levels
         run: npm run check:transformation-levels
         working-directory: baseline-tools
+      - name: Verify optional per-form +move projections
+        run: npm run check:plus-moves
+        working-directory: baseline-tools
       - run: npx playwright install --with-deps chromium
         working-directory: baseline-tools
       - name: Serve checkout at a repository subpath
@@ -55,6 +58,11 @@ jobs:
           FORK_URL: ${{ inputs.fork_url || format('http://127.0.0.1:8765/{0}/', github.event.repository.name) }}
       - name: Verify projected levels in the browser
         run: npm run check:transformation-browser
+        working-directory: baseline-tools
+        env:
+          FORK_URL: ${{ inputs.fork_url || format('http://127.0.0.1:8765/{0}/', github.event.repository.name) }}
+      - name: Verify projected +moves in the browser
+        run: npm run check:plus-browser
         working-directory: baseline-tools
         env:
           FORK_URL: ${{ inputs.fork_url || format('http://127.0.0.1:8765/{0}/', github.event.repository.name) }}

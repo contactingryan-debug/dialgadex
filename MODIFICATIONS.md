@@ -142,3 +142,20 @@ The calculation formulas and upstream data sources are unchanged.
   ranking note, and audit/copy metadata with Mega/Primal/Ultra terminology.
 - Add unit and browser checks for conditional levels, no double boost,
   multi-level searches, real native eDPS, preview independence, and mobile UI.
+
+## October 28, 2026 — optional predicted +moves
+
+- Recover the saved per-move model and 96 canonical form references. Include
+  unreleased adds 70 move assignments with the checked snapshot (69 estimated,
+  plus published Night Shade+). Existing 18 source definitions remain unchanged.
+- Prefer source/published power; predict unknown power from base GO Attack and
+  parent duration, round to five, assume 100 energy and parent timing. Native
+  Mega level scaling and level +2 each apply separately, once.
+- Scope forecast definitions to the assigned form; remove them on returning to
+  current-only mode. Pure future calculations also work with the UI filter off.
+- Label projected moves P, expose their assumptions in the move editor and Data
+  Audit, and include them in Copy details. Preserve the Aerodactyl Rock Slide+
+  hypothesis label and do not invent assignments or enable placeholder learnsets.
+- Correct the guarded unreleased Mega Baxcalibur projection to 331/221/244 by
+  applying the assumed 3% stamina adjustment before rounding. Preserve raw source
+  values and any future released or changed record.

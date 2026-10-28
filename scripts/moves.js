@@ -82,7 +82,7 @@ function LoadMovesAndUpdateURL(type = "Any", move_kind) {
 
     UpdateURL(url);
 
-    return LoadMoves(type);
+    return LoadMoves(type, move_kind.toLowerCase() === 'charged' ? 'Charged' : 'Fast');
 }
 
 /**
@@ -132,6 +132,7 @@ function GetMoveData(type = "Any", move_kind = "Fast") {
         power: e.power,
         energy: Math.abs(e.energy_delta),
         duration: e.duration / 1000,
+        _plus_projection: e._plus_projection,
         pps: e.power / e.duration * 1000,
         eps: Math.abs(e.energy_delta) / e.duration * 1000,
         ppe: (e.energy_delta != 0) ? 
@@ -156,8 +157,9 @@ function BuildMoveUserMap(force_reload = false) {
     if (top_move_users && !force_reload) return; // Build only once
     top_move_users = new Map();
 
-    for (const pkm of jb_pkm) {
-        if (!pkm.released) continue;
+    const includeUnreleased = GetIncludeUnreleased();
+    for (const pkm of GetCalculationPokemon(includeUnreleased)) {
+        if (!IsPokemonCalculationEligible(pkm, includeUnreleased)) continue;
 
         let moves = GetPokemonMoves(pkm, "Type-Match");
         moves = moves.reduce((agg,e)=>agg.concat(e),[]);
@@ -203,7 +205,7 @@ function ClearMoveData() {
  */
 function GetAdjustedAttStat(pkm_obj, move_name) {
     let move_obj = jb_fm.find(e=>e.name==move_name);
-    if (!move_obj) move_obj = jb_cm.find(e=>e.name==move_name);
+    if (!move_obj) move_obj = FindChargedMove(move_name);
 
     return pkm_obj.stats.baseAttack * 
         (pkm_obj.shadow ? 1.2 : 1) *
@@ -265,6 +267,8 @@ function SetMoveTable(sort_info) {
             td_move_name.addClass("selected");
         const span_move_name = $(`<span class='type-text'>${md.display_name}</span>`);
         span_move_name.addClass("bg-" + ((md.name == "Hidden Power") ? "any-type" : md.type));
+        if (md._plus_projection) span_move_name.append($('<sup class="plus-projected">P</sup>')
+            .attr('title', PlusMoveProjectionSummary(FindChargedMove(md.name))));
         span_move_name.on("click", function() { OpenMoveEditor(md.name) });
         td_move_name.append(span_move_name);
 

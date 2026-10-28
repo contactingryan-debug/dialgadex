@@ -52,7 +52,8 @@
                     "#footnote-affinity-suffix"
                 ]
             },
-            "projected-levels": "Projection: with unreleased included and Super Mega level 4, every Mega, Primal, and Ultra form receives +2 levels once (L50 → L52)."
+            "projected-levels": "Projection: with unreleased included and Super Mega level 4, every Mega, Primal, and Ultra form receives +2 levels once (L50 → L52).",
+            "projected-plus": "P marks a projected +move enabled by Include unreleased. Published power takes priority; unknown power, energy and timing use our saved model. Inspect assumptions by clicking the move or opening Data Audit."
         }
     },
     "dex": {
@@ -566,6 +567,27 @@
         "shadow-calculation": "Shadow in calculations (custom)",
         "attacker-levels": "Default ranking attacker level",
         "level-rule": "Level assumption",
-        "projected-level-note": "Projection: with unreleased included and Super Mega level 4, every Mega, Primal, and Ultra form receives +2 levels once (L50 → L52)."
+        "projected-level-note": "Projection: with unreleased included and Super Mega level 4, every Mega, Primal, and Ultra form receives +2 levels once (L50 → L52).",
+        "plus-move": "+move",
+        "plus-status": "+move status",
+        "plus-power": "+move power",
+        "plus-assumptions": "+move assumptions",
+        "plus-assignment": "Saved assignment evidence",
+        "plus-projected": "Projected +move",
+        "plus-unassigned": "No assigned +move; none invented",
+        "plus-source": "Already in source learnset",
+        "plus-applied": "Enabled by Include unreleased",
+        "plus-off": "Forecast available; not used in current-only rankings",
+        "plus-incomplete": "Excluded: base move data incomplete"
+    },
+    "plus-moves": {
+        "projected": "Projected +move",
+        "summary": "Projected +move for {pokemon}: {kind} base power {power}, energy {energy}, duration {seconds}s. Mega level scaling applies separately; availability is projected.",
+        "inputs": "Power model inputs: base Attack {attack}, parent duration {seconds}s; rounded to the nearest 5.",
+        "hypothesis": "This move assignment is an unverified hypothesis.",
+        "power-source": "source",
+        "power-published": "published",
+        "power-estimated": "estimated",
+        "power-detail": "{power} base ({kind}); {effective} at Mega level {level}"
     }
 }

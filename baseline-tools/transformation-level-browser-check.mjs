@@ -43,7 +43,7 @@ try{
             const counters=await GetStrongestVersus(enemy,search);
             for(const [id,form,level] of [[80,'Mega',52],[382,'Mega',52],[383,'Mega',52],[384,'Mega',52],
                 [150,'Mega',52],[800,'Ultra',52],[798,'Normal',50]]){
-                const p=jb_pkm.find(p=>p.id===id&&p.form===form);
+                const p=GetCalculationPokemon(true).find(p=>p.id===id&&p.form===form);
                 const actual=counters.find(p=>p.id===id&&p.form===form&&!p.shadow);
                 const expected=GetStrongestAgainstSpecificEnemy(p,false,level,enemy,search).at(-1);
                 if(!actual||actual.level!==level||!expected||Math.abs(actual.rat-expected.rat)>1e-8

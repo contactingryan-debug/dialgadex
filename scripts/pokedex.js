@@ -661,7 +661,7 @@ async function LoadPokedexMoveTable(pkm_obj, stats, max_stats = null) {
             const cm_is_elite = elite_cms.includes(cm);
 
             // gets the charged move object
-            const cm_obj = jb_cm.find(entry => entry.name == cm);
+            const cm_obj = FindChargedMove(cm);
             if (!cm_obj)
                 continue;
 

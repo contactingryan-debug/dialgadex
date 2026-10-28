@@ -3,9 +3,9 @@
 Personal research fork of [DialgaDex](https://github.com/mgrann03/dialgadex),
 based on upstream commit `0f958e7b09375fd58f327e42e3c41b2a7d18f27f`.
 
-The first step preserves the native calculation engine while verifying that
-this copy produces the same raid-counter results. Custom projected moves,
-stat changes, and normalized L52 treatment are reserved for the next step.
+This fork preserves the native calculation engine and verifies current-only
+raid-counter results against upstream. Optional future assumptions are enabled
+through Include unreleased and are identified in Data Audit.
 
 **Baseline verified:** the local fork matches the official production site
 exactly for all three reference bosses. See the
@@ -35,6 +35,27 @@ Rankings show a projection note, and Data details / Copy details include the
 default attacker level and its assumption. Placeholder move exclusions still
 apply to Ultra Necrozma. Mega, Primal, and Ultra forms share the transformation
 filter/team-size setting and are excluded from the non-Mega investment pool.
+
+With **Include unreleased on**, the saved +move assignments are also available.
+Existing source definitions retain their values. Published power takes priority;
+unknown base power is `round_to_5(147.391 - 0.125502 × base GO Attack +
+16.80809 × duration_seconds)`. Unknown definitions assume 100 energy and inherit
+the ordinary parent move's type and timing. The native Mega level power scaling
+is applied once, separately from power prediction and the level +2 projection.
+
+**P** marks a projected move. Click it to inspect its base power and assumptions,
+or choose **Projected +moves** in Data Audit and use Copy details. Assignments
+are scoped to individual forms, so identical move names can have different
+estimated powers. Aerodactyl's Rock Slide+ remains an explicitly unverified
+assignment hypothesis. No +move is invented for an unassigned form, and forecasts
+do not make placeholder learnsets eligible. Data Preview is needed only for
+forms absent from the current source roster. With the checked resource snapshot,
+this adds 70 assignments: 69 estimated powers and published Night Shade+ (160).
+
+The Mega Baxcalibur 3% projection is **331/221/244**. The stamina correction uses
+`round((50 + 1.75 × 115) × .97) = 244`, applying the adjustment before rounding.
+It is guarded to the reviewed unreleased source tuple 331/221/243; changed or
+released source records are preserved.
 
 The rankings type selector remembers the chosen Attackers/Counters mode for
 the current browser tab, including detours through All types, reloads,
@@ -112,7 +133,7 @@ raid calculations because their transformation is currently restricted to
 non-raid battles. Future placeholder learnsets are excluded in both release
 modes, while genuine released Splash/Struggle learnsets remain usable.
 
-Mega Zygarde **403/181/415** and Mega Baxcalibur **331/221/243** remain explicitly
+Mega Zygarde **403/181/415** and Mega Baxcalibur **331/221/244** remain explicitly
 unconfirmed projections, rather than game-data claims. Ultra Necrozma's stored
 **337/196/200** matches the checked Game Master snapshot; the **359/209/213**
 hypothesis is displayed separately and does not enable an incomplete form.

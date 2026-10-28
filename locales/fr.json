@@ -52,7 +52,8 @@
                     "#footnote-affinity-suffix"
                 ]
             },
-            "projected-levels": "Projection : avec les Pokémon non sortis et le niveau Super Méga 4, chaque forme Méga, Primo et Ultra reçoit une fois +2 niveaux (N50 → N52)."
+            "projected-levels": "Projection : avec les Pokémon non sortis et le niveau Super Méga 4, chaque forme Méga, Primo et Ultra reçoit une fois +2 niveaux (N50 → N52).",
+            "projected-plus": "P indique une attaque + projetée, activée par Inclure les non disponibles. La puissance publiée est prioritaire ; la puissance, l’énergie et la durée inconnues utilisent notre modèle. Cliquez sur l’attaque ou ouvrez l’audit pour voir les hypothèses."
         }
     },
     "dex": {
@@ -566,6 +567,27 @@
         "shadow-calculation": "Obscur dans le calcul (personnalisé)",
         "attacker-levels": "Niveau d’attaquant par défaut",
         "level-rule": "Hypothèse de niveau",
-        "projected-level-note": "Projection : avec les Pokémon non sortis et le niveau Super Méga 4, chaque forme Méga, Primo et Ultra reçoit une fois +2 niveaux (N50 → N52)."
+        "projected-level-note": "Projection : avec les Pokémon non sortis et le niveau Super Méga 4, chaque forme Méga, Primo et Ultra reçoit une fois +2 niveaux (N50 → N52).",
+        "plus-move": "Attaque +",
+        "plus-status": "État de l’attaque +",
+        "plus-power": "Puissance de l’attaque +",
+        "plus-assumptions": "Hypothèses de l’attaque +",
+        "plus-assignment": "Preuve enregistrée de l’attribution",
+        "plus-projected": "Attaque + projetée",
+        "plus-unassigned": "Aucune attaque + attribuée ; aucune inventée",
+        "plus-source": "Déjà présente dans la source",
+        "plus-applied": "Activée par Inclure les non disponibles",
+        "plus-off": "Projection disponible ; inutilisée dans le classement actuel",
+        "plus-incomplete": "Exclu : données d’attaques incomplètes"
+    },
+    "plus-moves": {
+        "projected": "Attaque + projetée",
+        "summary": "Attaque + projetée pour {pokemon} : puissance de base {power} ({kind}), énergie {energy}, durée {seconds}s. Le niveau Méga est appliqué séparément ; la disponibilité est une projection.",
+        "inputs": "Données du modèle : Attaque de base {attack}, durée de l’attaque originale {seconds}s ; arrondi au multiple de 5 le plus proche.",
+        "hypothesis": "L’attribution de cette attaque est une hypothèse non vérifiée.",
+        "power-source": "de la source",
+        "power-published": "publiée",
+        "power-estimated": "estimée",
+        "power-detail": "{power} de base ({kind}) ; {effective} au niveau Méga {level}"
     }
 }

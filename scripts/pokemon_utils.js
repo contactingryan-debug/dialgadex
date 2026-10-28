@@ -325,13 +325,17 @@ function CleanPokeName(string) {
  * Select current source data or the optional announced preview for calculations.
  */
 function GetCalculationPokemon(include_unreleased = false) {
-    if (include_unreleased || typeof jb_unpatch === 'undefined' || !settings_speculative
-            || !Array.isArray(jb_unpatch)) return jb_pkm;
+    if (include_unreleased) return typeof ApplyPlusMoveProjections === 'function'
+        ? ApplyPlusMoveProjections(structuredClone(jb_pkm)) : jb_pkm;
+    const hasPreview = typeof jb_unpatch !== 'undefined' && settings_speculative && Array.isArray(jb_unpatch);
+    const hasProjections = jb_pkm.some(pokemon => pokemon._plusProjections);
+    if (!hasPreview && !hasProjections) return jb_pkm;
 
     // Current-only calculations use the source data, including its release flags.
     // Preview changes stay available to the page and to future calculations.
     let pokemon = structuredClone(jb_pkm);
-    for (const original of jb_unpatch) {
+    if (hasProjections) StripPlusMoveProjections(pokemon);
+    for (const original of hasPreview ? jb_unpatch : []) {
         if (original.delete) {
             pokemon = pokemon.filter(entry => entry.id !== original.id || entry.form !== original.form);
         } else {
@@ -761,7 +765,7 @@ function ApplySearchString(str, pkm_arr, id_filter_only = false) {
                         fm_phrase_val = (p.fm.substring(0,move_name.length)==move_name) || (TranslatedTypeName(fm_obj.type)==move_name);
                     }
                     if (check_cm && !!p.cm) {
-                        cm_obj = cm_obj ?? jb_cm.find(c=>c.name==p.cm);
+                        cm_obj = cm_obj ?? FindChargedMove(p.cm);
                         cm_phrase_val = (p.cm.substring(0,move_name.length)==move_name) || (TranslatedTypeName(cm_obj.type)==move_name);
                     }
 
@@ -853,7 +857,7 @@ function GetDarmanitanFilters(filtered_in_forms) {
 /* Handle special cases for weird move names */
 function SanitizeMoveNameSearch(move_name) {
     let move_obj = jb_fm.find(e=>e.name==move_name);
-    if (!move_obj) move_obj = jb_cm.find(e=>e.name==move_name);
+    if (!move_obj) move_obj = FindChargedMove(move_name);
 
     const transName = TranslatedMoveName(move_obj.id, "None", move_obj.name); // Sanitize to "untyped" base names as they appear in-game
 

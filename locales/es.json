@@ -52,7 +52,8 @@
                     "#footnote-affinity-suffix"
                 ]
             },
-            "projected-levels": "Proyección: con no lanzados y nivel Super Mega 4, cada forma Mega, Primigenia y Ultra recibe +2 niveles una vez (N50 → N52)."
+            "projected-levels": "Proyección: con no lanzados y nivel Super Mega 4, cada forma Mega, Primigenia y Ultra recibe +2 niveles una vez (N50 → N52).",
+            "projected-plus": "P indica un movimiento + proyectado, activado por Incluir no lanzados. La potencia publicada tiene prioridad; la potencia, energía y duración desconocidas usan nuestro modelo. Pulsa el movimiento o abre la auditoría para ver los supuestos."
         }
     },
     "dex": {
@@ -566,6 +567,27 @@
         "shadow-calculation": "Oscuro en el cálculo (personalizado)",
         "attacker-levels": "Nivel de atacante predeterminado",
         "level-rule": "Supuesto de nivel",
-        "projected-level-note": "Proyección: con no lanzados y nivel Super Mega 4, cada forma Mega, Primigenia y Ultra recibe +2 niveles una vez (N50 → N52)."
+        "projected-level-note": "Proyección: con no lanzados y nivel Super Mega 4, cada forma Mega, Primigenia y Ultra recibe +2 niveles una vez (N50 → N52).",
+        "plus-move": "Movimiento +",
+        "plus-status": "Estado del movimiento +",
+        "plus-power": "Potencia del movimiento +",
+        "plus-assumptions": "Supuestos del movimiento +",
+        "plus-assignment": "Evidencia guardada de la asignación",
+        "plus-projected": "Movimiento + proyectado",
+        "plus-unassigned": "Sin movimiento + asignado; no se inventa ninguno",
+        "plus-source": "Ya incluido en la fuente",
+        "plus-applied": "Activado por Incluir no lanzados",
+        "plus-off": "Proyección disponible; no se usa en clasificaciones actuales",
+        "plus-incomplete": "Excluido: datos de movimientos incompletos"
+    },
+    "plus-moves": {
+        "projected": "Movimiento + proyectado",
+        "summary": "Movimiento + proyectado para {pokemon}: potencia base {power} ({kind}), energía {energy}, duración {seconds}s. El nivel Mega se aplica por separado; la disponibilidad es una proyección.",
+        "inputs": "Datos del modelo: Ataque base {attack}, duración del movimiento original {seconds}s; redondeado al múltiplo de 5 más cercano.",
+        "hypothesis": "La asignación de este movimiento es una hipótesis sin verificar.",
+        "power-source": "de la fuente",
+        "power-published": "publicada",
+        "power-estimated": "estimada",
+        "power-detail": "{power} base ({kind}); {effective} en el nivel Mega {level}"
     }
 }

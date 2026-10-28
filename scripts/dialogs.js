@@ -223,7 +223,7 @@ function UpdateMoveEditor(move_name, clear_fields = true) {
     if (typeof move_name === 'string' || move_name instanceof String) {
         move_obj = jb_fm.find(e=>e.name.toLowerCase()==move_name.toLowerCase() || collator.compare(TranslatedMoveName(e.id, e.type, e.name), move_name)===0);
         if (!move_obj) {
-            move_obj = jb_cm.find(e=>e.name.toLowerCase()==move_name.toLowerCase() || collator.compare(TranslatedMoveName(e.id, e.type, e.name), move_name)===0);
+            move_obj = FindChargedMove(move_name) || jb_cm.find(e=>e.name.toLowerCase()==move_name.toLowerCase() || collator.compare(TranslatedMoveName(e.id, e.type, e.name), move_name)===0);
             move_kind = "cm";
         }
     }
@@ -273,6 +273,8 @@ function UpdateMoveEditor(move_name, clear_fields = true) {
     }
     
 
+    $('#move-projection-note').prop('hidden', !move_obj?._plus_projection)
+        .text(move_obj?._plus_projection ? PlusMoveProjectionSummary(move_obj) : '');
     LoadMoveInputs();
 }
 
@@ -383,7 +385,7 @@ function DeleteMove(move_name) {
  */
 function GetMoveLink(move_name, move_type, is_elite) {
     let move_obj = jb_fm.find(e=>e.name==move_name);
-    if (!move_obj) move_obj = jb_cm.find(e=>e.name==move_name);
+    if (!move_obj) move_obj = FindChargedMove(move_name);
 
     if (move_type === undefined) {
         move_type = move_obj.type;
@@ -400,6 +402,8 @@ function GetMoveLink(move_name, move_type, is_elite) {
     span.text(move_text);
     if (move_obj.mega_temp)
         span.append("<sup>"+ settings_supermega_level +"</sup>");
+    if (move_obj._plus_projection) span.append($('<sup class="plus-projected">P</sup>')
+        .attr('title', PlusMoveProjectionSummary(move_obj)).attr('aria-label', GetTranslation('plus-moves.projected')));
     
     span.on("click", function (e) {
         e.preventDefault();
