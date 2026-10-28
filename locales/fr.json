@@ -61,7 +61,7 @@
         "stats": {
             "title": "Statistiques, IVs, et PC",
             "base": "Base Statistiques",
-            "base-tooltip": "§Statistiques du Pokémon telles qu'elles apparaissent pour cette espèce/forme",
+            "base-tooltip": "§Statistiques utilisées pour cette espèce/forme.\\nConsultez les sources et projections dans Détails des données.",
             "max": "Statistiques Niv.50",
             "max-tooltip": "§Statistiques réelles en jeu pour un Pokémon de niveau 50 avec des \nIV parfaits",
             "calc-title": "Calculateur de statistiques",

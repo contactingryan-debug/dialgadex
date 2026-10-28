@@ -221,7 +221,8 @@ function RenderPokemonDataDetails(id, form) {
     if (!info) { target.prop('hidden', true); return; }
     target.prop('hidden', false);
     const details = $('<details class="audit-pokemon-details"></details>');
-    details.append($('<summary></summary>').text(AuditText('details')));
+    details.append($('<summary></summary>').text(AuditText('details')
+        + (info.projectedStats ? ' · ' + AuditText('projected') : !info.quality.usable ? ' · ' + AuditText(info.quality.code) : '')));
     details.append(BuildPokemonAuditDetails(info, context));
     const audit = $('<a class="audit-all-link"></a>').attr('href', '?audit&q=' + id).text(AuditText('open-audit'));
     audit.on('click', event => { event.preventDefault(); LoadDataAuditAndUpdateURL(String(id)); });

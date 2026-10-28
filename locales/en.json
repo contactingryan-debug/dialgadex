@@ -61,7 +61,7 @@
         "stats": {
             "title": "Stats, IVs, and CP",
             "base": "Base Stats",
-            "base-tooltip": "§Pokémon stats as found in the Game Master\nfor this species/form",
+            "base-tooltip": "§Stats used for this species/form.\\nOpen Data details for sources and projections.",
             "max": "Lv50 Stats",
             "max-tooltip": "§Real in-game stats for a\nPerfect-IV Level 50 Pokémon",
             "calc-title": "Stats Calculator",
