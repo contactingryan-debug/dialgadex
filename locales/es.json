@@ -51,7 +51,8 @@
                     "#type-affinity-link",
                     "#footnote-affinity-suffix"
                 ]
-            }
+            },
+            "projected-levels": "Proyección: con no lanzados y nivel Super Mega 4, cada forma Mega, Primigenia y Ultra recibe +2 niveles una vez (N50 → N52)."
         }
     },
     "dex": {
@@ -132,7 +133,7 @@
             "title": "Filtros de Especies",
             "unreleased": "Incluir no disponibles",
             "unreleased-tooltip": "Incluye atacantes y jefes de incursión aún no disponibles. Desactivado usa datos actuales; activado también permite cambios anunciados si Vista previa está activada.",
-            "mega": "Mega/Primigenio",
+            "mega": "Mega/Primigenio/Ultra",
             "shadow": "Oscuro",
             "legendary": "Legendario",
             "legendary-tooltip": "También incluye Pokémon Singulares y Ultraentes"
@@ -423,7 +424,7 @@
         "nav": "Clasificación de incursiones",
         "title": "Mejores atacantes de incursiones",
         "back": "← Clasificaciones por tipo",
-        "intro": "Atacantes no Mega clasificados por su rendimiento en incursiones de nivel alto. Selecciona un Pokémon para ver sus enfrentamientos.",
+        "intro": "Atacantes sin transformaciones Mega, Primigenia o Ultra, clasificados en incursiones de nivel alto. Selecciona un Pokémon para ver sus enfrentamientos.",
         "meta-title": "Clasificación de atacantes de incursiones - DialgaDex",
         "meta-description": "Compara atacantes no mega mediante puntos de eDPS, cobertura de jefes y movimientos detallados.",
         "preparing": "Preparando enfrentamientos…",
@@ -526,7 +527,7 @@
         "included": "Incluido",
         "no-raid-tag": "Sin etiqueta de incursión",
         "below-cutoff": "Por debajo del nivel 4+",
-        "mega-attacker": "Atacante mega / primigenio excluido",
+        "mega-attacker": "Atacante Mega / Primigenio / Ultra excluido",
         "projected": "Proyectado",
         "verified": "Historial verificado",
         "announced": "Incursión anunciada",
@@ -562,6 +563,9 @@
         "upstream-link": "Datos del repositorio original",
         "official-link": "Anuncio oficial",
         "release-link": "Referencia del lanzamiento",
-        "shadow-calculation": "Oscuro en el cálculo (personalizado)"
+        "shadow-calculation": "Oscuro en el cálculo (personalizado)",
+        "attacker-levels": "Nivel de atacante predeterminado",
+        "level-rule": "Supuesto de nivel",
+        "projected-level-note": "Proyección: con no lanzados y nivel Super Mega 4, cada forma Mega, Primigenia y Ultra recibe +2 niveles una vez (N50 → N52)."
     }
 }

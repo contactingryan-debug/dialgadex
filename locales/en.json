@@ -51,7 +51,8 @@
                     "#type-affinity-link",
                     "#footnote-affinity-suffix"
                 ]
-            }
+            },
+            "projected-levels": "Projection: with unreleased included and Super Mega level 4, every Mega, Primal, and Ultra form receives +2 levels once (L50 → L52)."
         }
     },
     "dex": {
@@ -132,7 +133,7 @@
             "title": "Species Filters",
             "unreleased": "Include unreleased",
             "unreleased-tooltip": "Include unreleased attackers and raid bosses. Off uses current data; on also allows announced changes when Data Preview is enabled.",
-            "mega": "Mega/Primal",
+            "mega": "Mega/Primal/Ultra",
             "shadow": "Shadow",
             "legendary": "Legendary",
             "legendary-tooltip": "Also includes Mythical Pokémon and Ultrabeasts"
@@ -423,7 +424,7 @@
         "nav": "Raid Leaderboard",
         "title": "Raid Attacker Leaderboard",
         "back": "← Type rankings",
-        "intro": "Non-Mega attackers ranked by performance across high-tier raids. Select a Pokémon to see its contributing matchups.",
+        "intro": "Attackers outside Mega, Primal, and Ultra transformations, ranked across high-tier raids. Select a Pokémon to see its contributing matchups.",
         "meta-title": "Raid Attacker Leaderboard - DialgaDex",
         "meta-description": "Compare non-Mega raid attackers using eDPS points, boss coverage, and detailed movesets.",
         "preparing": "Preparing raid matchups…",
@@ -526,7 +527,7 @@
         "included": "Included",
         "no-raid-tag": "No raid tag",
         "below-cutoff": "Below the tier 4+ cutoff",
-        "mega-attacker": "Mega / Primal attacker excluded",
+        "mega-attacker": "Mega / Primal / Ultra attacker excluded",
         "projected": "Projected",
         "verified": "Verified raid history",
         "announced": "Announced raid",
@@ -562,6 +563,9 @@
         "upstream-link": "Upstream resource data",
         "official-link": "Official announcement",
         "release-link": "Release reference",
-        "shadow-calculation": "Shadow in calculations (custom)"
+        "shadow-calculation": "Shadow in calculations (custom)",
+        "attacker-levels": "Default ranking attacker level",
+        "level-rule": "Level assumption",
+        "projected-level-note": "Projection: with unreleased included and Super Mega level 4, every Mega, Primal, and Ultra form receives +2 levels once (L50 → L52)."
     }
 }

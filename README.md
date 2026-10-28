@@ -20,6 +20,22 @@ Best baseline**.
 The selected controls and the internal default filters use the same preset.
 The settings remain adjustable through the normal controls.
 
+With **Include unreleased on** and **Super Mega level 4**, all **Mega, Primal,
+and Ultra transformations** use the selected base level +2, once: normally
+L50 → L52. The rule uses form identity, including Ultra Necrozma, rather than
+requiring a Super Mega raid tag. Existing native +2 boosts do not stack.
+Current-only mode retains the native tier-8/9 level treatment; Data Preview
+is independent of the projected level rule. Ultra Beasts, fusions, and Crowned
+forms retain their normal levels. The actual CPM changes Attack, Defense,
+and HP before native eDPS calculations. Boss HP/stat profiles do not change.
+
+Type rankings and counters share the rule with default Pokédex levels.
+Explicit calculator/URL levels remain the effective levels entered by the user.
+Rankings show a projection note, and Data details / Copy details include the
+default attacker level and its assumption. Placeholder move exclusions still
+apply to Ultra Necrozma. Mega, Primal, and Ultra forms share the transformation
+filter/team-size setting and are excluded from the non-Mega investment pool.
+
 The rankings type selector remembers the chosen Attackers/Counters mode for
 the current browser tab, including detours through All types, reloads,
 and returning through the main navigation. All types shows Attackers while
@@ -163,6 +179,8 @@ FORK_URL=http://localhost:8000/ npm run check:each-counters
 npm run check:raid-points
 npm run check:release-filter
 npm run check:data-audit
+npm run check:transformation-levels
+FORK_URL=http://localhost:8000/ npm run check:transformation-browser
 FORK_URL=http://localhost:8000/ npm run check:data-audit-browser
 FORK_URL=http://localhost:8000/ npm run check:raid-leaderboard
 ```

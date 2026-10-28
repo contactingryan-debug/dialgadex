@@ -347,57 +347,25 @@ function GetCalculationPokemon(include_unreleased = false) {
 /** Visit each attacker allowed by the selected release and species filters. */
 async function SearchAll(search_params, f_process_pokemon) {
     const pokemon = GetCalculationPokemon(search_params.unreleased);
+    const byKey = new Map(pokemon.map(entry => [PokemonDataKey(entry), entry]));
     for (let id = 1; id <= jb_max_id; id++) {
         await tryYieldToMain();
         const forms = GetPokemonForms(id);
-        const def_form = forms[0];
-
-        let pkm_obj = pokemon.find(entry =>
-            entry.id == id && entry.form == def_form);
-
-        // checks whether pokemon should be skipped
-        // (not released or legendary when not allowed)
-        if (!pkm_obj || (!search_params.legendary && pkm_obj.class)) {
-            continue;
-        }
-
-        for (let level of settings_default_level) {
-            if (pkm_obj.class == undefined && settings_xl_budget)
-                level = 50;
-
-            // default form
-            if (IsPokemonCalculationEligible(pkm_obj, search_params.unreleased))
-                await f_process_pokemon(pkm_obj, false, level, search_params);
-
-            // shadow (except not released when it shouldn't)
-            if (search_params.shadow && pkm_obj.shadow && IsPokemonCalculationEligible(pkm_obj, search_params.unreleased)) {
-                await f_process_pokemon(pkm_obj, true, level, search_params);
-            }
-
-            const base_level = level;
-            // other forms
-            for (let form_i = 1; form_i < forms.length; form_i++) {
-
-                pkm_obj = pokemon.find(entry =>
-                    entry.id == id && entry.form == forms[form_i]);
-
-                // checks whether pokemon should be skipped (form not released or unwanted)
+        for (const baseLevel of settings_default_level) {
+            for (const form of forms) {
+                const pkm_obj = byKey.get(PokemonDataKey({id, form}));
                 if (!IsPokemonCalculationEligible(pkm_obj, search_params.unreleased)
-                    || (!search_params.mega && (pkm_obj.form == "Mega" || pkm_obj.form == "MegaY" || pkm_obj.form == "MegaZ")))
+                    || (!search_params.legendary && pkm_obj.class)
+                    || (!search_params.mega && IsMegaPrimalUltraForm(pkm_obj)))
                     continue;
 
-                level = base_level + (((pkm_obj.raid_tier == 8 || pkm_obj.raid_tier == 9)
-                    && settings_supermega_level == 4) ? 2 : 0);
-
+                const level = GetAttackerLevel(pkm_obj, baseLevel, search_params.unreleased);
                 await f_process_pokemon(pkm_obj, false, level, search_params);
-                // other forms and shadow (except not released when it shouldn't)
-                if (search_params.shadow && pkm_obj.shadow) {
+                if (search_params.shadow && pkm_obj.shadow)
                     await f_process_pokemon(pkm_obj, true, level, search_params);
-                }
             }
         }
     }
-
 }
 
 /**

@@ -188,6 +188,7 @@ async function LoadStrongest(type = "Any", versus = null) {
     $("#footnote-versus").css('display', search_params.versus ? 'block' : 'none');
     $("#footnote-each-counters").css('display', type == "Each" && versus ? 'block' : 'none');
     $("#footnote-supermega-value").text(settings_supermega_level);
+    $('#footnote-projected-levels').toggle(!!(search_params.unreleased && search_params.mega && settings_supermega_level === 4));
 
     // Update Icon
     ShowHideSearchStringIcon(type != "Each");
@@ -764,7 +765,8 @@ function GetRankingRow(row_i) {
             + " <span class='strongest-name'>"
             + name
             + ((settings_xl_budget && p.level >= 50) ? "<sup class='lvl'>XL</sup>" : "")
-            + ((settings_supermega_level == 4 && p.level % 10 == 2) ? "<sup class='lvl'>+2</sup>" : "")
+            + (GetAttackerLevelBoost(jb_pkm.find(entry => entry.id === p.id && entry.form === p.form), GetIncludeUnreleased())
+                ? "<sup class='lvl'>+2</sup>" : "")
             +"</span>"
             + ((form_text.length > 0)
                 ? "<span class=poke-form-name> (" + form_text + ")</span>" 

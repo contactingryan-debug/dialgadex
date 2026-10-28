@@ -1,9 +1,9 @@
 /* Reuse the native calculator in isolation so navigation and settings remain responsive. */
 let jb_pkm, jb_fm, jb_cm, jb_max_id;
-importScripts('pokemon_enums.js?v=664952cd50b0', 'settings.js?v=249f1f9f91d3', 'data-rules.js?v=4163a1cdfa82', 'pokemon_utils.js?v=74e10340629e', 'calc.js?v=012b8e9581df');
+importScripts('pokemon_enums.js?v=664952cd50b0', 'settings.js?v=249f1f9f91d3', 'data-rules.js?v=6098fdc11dc9', 'pokemon_utils.js?v=19e19b03759f', 'calc.js?v=cdd17e8929d0');
 
 function IsRaidLeaderboardMega(pokemon) {
-    return /^(Mega|Primal)/i.test(pokemon.form) || /^(Mega |Primal )/.test(pokemon.name);
+    return IsMegaPrimalUltraForm(pokemon);
 }
 
 function RaidLeaderboardBuilds(pokemon, shadow, level) {

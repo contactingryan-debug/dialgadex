@@ -73,13 +73,17 @@ function GetPokemonAuditInfo(id, form, context) {
     const projectedStats = statReview?.kind === 'projection' || !source;
     const statsChanged = statReview && ['baseAttack', 'baseDefense', 'baseStamina']
         .some(stat => display.stats?.[stat] !== statReview.expected[stat]);
-    const mega = /^(Mega|Primal)/i.test(form) || /^(Mega |Primal )/.test(display.name);
+    const mega = IsMegaPrimalUltraForm(display);
+    const levelPokemon = selected || display;
+    const attackerLevels = [...new Set(settings_default_level.map(level =>
+        GetAttackerLevel(levelPokemon, level, context.includeUnreleased)))];
+    const projectedLevel = UsesProjectedAttackerLevel(levelPokemon, context.includeUnreleased);
     return {id, form, key, source, current, currentReleased: current?.released ?? (preview ? false : undefined),
         preview, selected, display, supported, quality, reasons, bossReasons,
         tier, corrections, restrictions, statReview, releaseReview, applied, evidence, projectedStats, statsChanged,
         weight: context.weightMap.get(key) || 0, group: GetRaidGroupKey(display),
         attackerIncluded: !reasons.length, leaderboardIncluded: !reasons.length && !mega,
-        bossIncluded: !bossReasons.length, mega};
+        bossIncluded: !bossReasons.length, mega, attackerLevels, projectedLevel};
 }
 
 function AuditRankingReason(reasons) {
@@ -123,6 +127,8 @@ function BuildPokemonAuditDetails(info, context) {
     add('weight', info.weight ? info.weight.toLocaleString(currentLocale, {maximumFractionDigits: 6}) : '0');
     add('stats', AuditStatText(info.display.stats));
     add('ranking-stats', AuditStatText(info.selected?.stats));
+    add('attacker-levels', info.attackerLevels.map(level => 'L' + level).join(' / '));
+    if (info.projectedLevel) add('level-rule', AuditText('projected-level-note'));
     add('stat-source', AuditStatSource(info));
     if (info.statReview && context.manifest.checkedGameMaster)
         add('snapshot', context.manifest.checkedGameMaster.date.slice(0, 10) + ' · ' + context.manifest.checkedGameMaster.sha.slice(0, 8));
@@ -178,6 +184,7 @@ function PokemonAuditCopyText(info, context) {
         `Default group: ${info.group}; weight in selected pool: ${info.weight}`,
         `Stats (Attack/Defense/Stamina): ${AuditStatText(info.display.stats)}; ${AuditStatSource(info)}`,
         `Ranking stats (Attack/Defense/Stamina): ${AuditStatText(info.selected?.stats)}`,
+        `Default attacker levels: ${info.attackerLevels.map(level => 'L' + level).join(', ')}${info.projectedLevel ? '; projected +2 levels' : ''}`,
         ...(['fm_add','cm_add','fm_rem','cm_rem'].some(key => info.selected?.[key]?.length)
             ? ['Custom move edits: ' + JSON.stringify(Object.fromEntries(['fm_add','cm_add','fm_rem','cm_rem']
                 .filter(key => info.selected[key]).map(key => [key, info.selected[key]])))] : []),
@@ -222,7 +229,8 @@ function RenderPokemonDataDetails(id, form) {
     target.prop('hidden', false);
     const details = $('<details class="audit-pokemon-details"></details>');
     details.append($('<summary></summary>').text(AuditText('details')
-        + (info.projectedStats ? ' · ' + AuditText('projected') : !info.quality.usable ? ' · ' + AuditText(info.quality.code) : '')));
+        + (!info.quality.usable ? ' · ' + AuditText(info.quality.code)
+            : info.projectedStats || info.projectedLevel ? ' · ' + AuditText('projected') : '')));
     details.append(BuildPokemonAuditDetails(info, context));
     const audit = $('<a class="audit-all-link"></a>').attr('href', '?audit&q=' + id).text(AuditText('open-audit'));
     audit.on('click', event => { event.preventDefault(); LoadDataAuditAndUpdateURL(String(id)); });
@@ -322,7 +330,7 @@ function RenderDataAudit() {
         badges.append($('<span></span>').text(AuditText(info.current?.released ? 'released-short' : 'unreleased-short')));
         if (info.tier) badges.append($('<span></span>').text(AuditText('tier', {tier: info.tier})));
         if (!info.quality.usable) badges.append($('<span class="audit-warning"></span>').text(AuditText(info.quality.code)));
-        if (info.projectedStats) badges.append($('<span></span>').text(AuditText('projected')));
+        if (info.projectedStats || info.projectedLevel) badges.append($('<span></span>').text(AuditText('projected')));
         if (info.applied.length) badges.append($('<span></span>').text(AuditText('corrected-short')));
         summary.append(name, badges);
         entry.append(summary);

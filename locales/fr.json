@@ -51,7 +51,8 @@
                     "#type-affinity-link",
                     "#footnote-affinity-suffix"
                 ]
-            }
+            },
+            "projected-levels": "Projection : avec les Pokémon non sortis et le niveau Super Méga 4, chaque forme Méga, Primo et Ultra reçoit une fois +2 niveaux (N50 → N52)."
         }
     },
     "dex": {
@@ -132,7 +133,7 @@
             "title": "Filtre d'Epèces",
             "unreleased": "Inclure les non disponibles",
             "unreleased-tooltip": "Inclut les attaquants et boss de raid pas encore disponibles. Désactivé : données actuelles ; activé : modifications annoncées si Aperçu des données est activé.",
-            "mega": "Méga/Primo",
+            "mega": "Méga/Primo/Ultra",
             "shadow": "Obscure",
             "legendary": "Legendaire",
             "legendary-tooltip": "Inclut également les Pokémon Fabuleux et les Ultra-Chimères"
@@ -423,7 +424,7 @@
         "nav": "Classement des raids",
         "title": "Classement des attaquants de raid",
         "back": "← Classements par type",
-        "intro": "Attaquants non Méga classés selon leurs performances dans les raids de haut niveau. Sélectionnez un Pokémon pour voir ses combats.",
+        "intro": "Attaquants hors transformations Méga, Primo et Ultra, classés sur les raids de haut niveau. Sélectionnez un Pokémon pour consulter ses combats.",
         "meta-title": "Classement des attaquants de raid - DialgaDex",
         "meta-description": "Comparez les attaquants de raid non Méga selon leurs points eDPS, leur couverture et leurs capacités.",
         "preparing": "Préparation des combats…",
@@ -526,7 +527,7 @@
         "included": "Inclus",
         "no-raid-tag": "Aucune catégorie de raid",
         "below-cutoff": "Sous le seuil de niveau 4+",
-        "mega-attacker": "Attaquant Méga / Primo exclu",
+        "mega-attacker": "Attaquant Méga / Primo / Ultra exclu",
         "projected": "Projeté",
         "verified": "Historique de raid vérifié",
         "announced": "Raid annoncé",
@@ -562,6 +563,9 @@
         "upstream-link": "Données du dépôt source",
         "official-link": "Annonce officielle",
         "release-link": "Référence de sortie",
-        "shadow-calculation": "Obscur dans le calcul (personnalisé)"
+        "shadow-calculation": "Obscur dans le calcul (personnalisé)",
+        "attacker-levels": "Niveau d’attaquant par défaut",
+        "level-rule": "Hypothèse de niveau",
+        "projected-level-note": "Projection : avec les Pokémon non sortis et le niveau Super Méga 4, chaque forme Méga, Primo et Ultra reçoit une fois +2 niveaux (N50 → N52)."
     }
 }

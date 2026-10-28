@@ -4,6 +4,29 @@ function PokemonDataKey(pokemon) {
     return `${pokemon.id}/${pokemon.form || 'Normal'}`;
 }
 
+/** Ultra means an Ultra transformation, not the Ultra Beast species class. */
+function IsMegaPrimalUltraForm(pokemon) {
+    return /^(Mega(?:Y|Z)?|Primal|Ultra)$/i.test(pokemon?.form || '')
+        || /^(Mega |Primal |Ultra Necrozma$)/i.test(pokemon?.name || '');
+}
+
+function GetAttackerLevelBoost(pokemon, includeUnreleased = false) {
+    if (settings_supermega_level !== 4 || !pokemon) return 0;
+    const currentBoost = [8, 9].includes(pokemon.raid_tier);
+    const projectedBoost = includeUnreleased && IsMegaPrimalUltraForm(pokemon);
+    return currentBoost || projectedBoost ? 2 : 0;
+}
+
+function UsesProjectedAttackerLevel(pokemon, includeUnreleased = false) {
+    return !!GetAttackerLevelBoost(pokemon, includeUnreleased) && ![8, 9].includes(pokemon.raid_tier);
+}
+
+/** Accept a base level; explicit calculator levels are already effective levels. */
+function GetAttackerLevel(pokemon, baseLevel, includeUnreleased = false) {
+    const selected = pokemon && !pokemon.class && settings_xl_budget ? 50 : Number(baseLevel);
+    return selected + GetAttackerLevelBoost(pokemon, includeUnreleased);
+}
+
 function PokemonAuditRuleMatches(rule, pokemon) {
     return rule.id === pokemon.id && (rule.form === pokemon.form || rule.forms?.includes(pokemon.form));
 }

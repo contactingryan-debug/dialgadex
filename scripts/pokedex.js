@@ -172,10 +172,7 @@ function GetPokeDexMon(pokemon_id, form = "def", level = null, ivs = null) {
     if (level == null) {
         level = settings_default_level[0];
         const pkm_obj = jb_pkm.find(e=>e.id == pokemon_id && e.form == form);
-        if (pkm_obj !== undefined && pkm_obj.class == undefined && settings_xl_budget)
-            level = 50;
-        if (pkm_obj !== undefined && pkm_obj.raid_tier >= 8 && settings_supermega_level == 4)
-            level += 2;
+        level = GetAttackerLevel(pkm_obj, level, GetIncludeUnreleased());
     }
 
     // sets the default ivs

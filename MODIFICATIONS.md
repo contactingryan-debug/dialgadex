@@ -126,3 +126,19 @@ The calculation formulas and upstream data sources are unchanged.
 - Add mathematical/eligibility/clipboard/mobile checks and a reusable asset
   version updater. Engine parity still compares identical upstream records;
   audit corrections are verified separately.
+
+## October 27, 2026 — projected levels for Mega, Primal, and Ultra forms
+
+- With Include unreleased and Super Mega level 4, use base level +2 for all
+  three transformation categories, including ordinary Megas and Ultra Necrozma.
+  Preserve current-only native boosts and apply the offset once.
+- Share level selection across attacker searches and default Pokédex levels;
+  preserve explicit effective calculator levels. Avoid carrying a previous
+  form's boosted level into another form or selected base-level profile.
+- Apply native CPM to all three stats. Leave boss raid profiles unchanged and
+  retain placeholder-move exclusions. Ultra Beasts, fusions, and Crowned forms
+  do not receive the transformation projection.
+- Align the transformation filter, team-size category, leaderboard exclusion,
+  ranking note, and audit/copy metadata with Mega/Primal/Ultra terminology.
+- Add unit and browser checks for conditional levels, no double boost,
+  multi-level searches, real native eDPS, preview independence, and mobile UI.

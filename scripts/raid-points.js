@@ -10,7 +10,7 @@ function RaidPointValue(ratio, floor = 80) {
 function GetRaidGroupKey(boss, weighting = 'groups') {
     if (weighting === 'species') return `species:${boss.id}`;
     if (weighting === 'groups' && [386, 493, 649, 773].includes(boss.id)
-            && !/^(Mega|Primal)/i.test(boss.form || '')) return `species:${boss.id}`;
+            && !/^(Mega|Primal|Ultra)/i.test(boss.form || '')) return `species:${boss.id}`;
     return `form:${boss.id}/${boss.form || 'Normal'}`;
 }
 
