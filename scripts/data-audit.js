@@ -39,6 +39,7 @@ function BuildPokemonAuditContext() {
     const bosses = GetRaidBosses(null, null, includeUnreleased);
     const {weights, groupCount} = GetRaidBossWeights(bosses);
     return {manifest, currentMap, previewMap, includeUnreleased, includeMegas, preview, groupCount,
+        catchRoster:[...GetCalculationPokemon(includeUnreleased),...previewMap.values()],
         sourceMap: new Map(source.map(pokemon => [PokemonDataKey(pokemon), pokemon])),
         selectedMap: new Map(GetCalculationPokemon(includeUnreleased).map(pokemon => [PokemonDataKey(pokemon), pokemon])),
         weightMap: new Map(bosses.map((pokemon, index) => [PokemonDataKey(pokemon), weights[index]]))};
@@ -82,12 +83,15 @@ function GetPokemonAuditInfo(id, form, context) {
     const projectedLevel = UsesProjectedAttackerLevel(levelPokemon, context.includeUnreleased);
     const plusMove = typeof GetPlusMoveProjectionInfo === 'function'
         ? GetPlusMoveProjectionInfo(selected || display, context.includeUnreleased && !!selected) : null;
+    const encounter = typeof GetRaidCatchEncounter === 'function' && (tier || mega)
+        ? GetRaidCatchEncounter(selected || display,context.catchRoster) : null;
+    const xlProfile = typeof GetCatchXLBoostProfile === 'function' ? GetCatchXLBoostProfile(selected || display) : null;
     return {id, form, key, source, current, currentReleased: current?.released ?? (preview ? false : undefined),
         preview, selected, display, supported, quality, reasons, bossReasons,
         tier, corrections, restrictions, statReview, releaseReview, applied, evidence, projectedStats, statsChanged,
         weight: context.weightMap.get(key) || 0, group: GetRaidGroupKey(display),
         attackerIncluded: !reasons.length, leaderboardIncluded: !reasons.length && (!mega || !!context.includeMegas),
-        bossIncluded: !bossReasons.length, mega, attackerLevels, projectedLevel, plusMove};
+        bossIncluded: !bossReasons.length, mega, attackerLevels, projectedLevel, plusMove, encounter, xlProfile};
 }
 
 function AuditRankingReason(reasons) {
@@ -150,6 +154,18 @@ function BuildPokemonAuditDetails(info, context) {
         }
         if (plus.status !== 'source') add('plus-assignment', plus.rule.assignmentEvidence);
     }
+    if (info.encounter || info.xlProfile?.types.length) {
+        const addXL = (key,value)=>fields.append($('<dt></dt>').text(XLText(key)),$('<dd></dd>').text(value));
+        if (info.encounter) {
+            addXL('encounter',RaidCatchEncounterText(info.encounter));
+            addXL('encounter-status',XLText('status-'+info.encounter.status));
+        }
+        if (info.xlProfile?.types.length) {
+            addXL('boost-types',CatchXLTypeText(info.xlProfile.types));
+            addXL('profile-status',XLText('status-'+info.xlProfile.status));
+            addXL('minimum-level',info.xlProfile.minLevel == null ? XLText('level-unknown') : '≥'+info.xlProfile.minLevel);
+        }
+    }
     add('stat-source', AuditStatSource(info));
     if (info.statReview && context.manifest.checkedGameMaster)
         add('snapshot', context.manifest.checkedGameMaster.date.slice(0, 10) + ' · ' + context.manifest.checkedGameMaster.sha.slice(0, 8));
@@ -158,6 +174,8 @@ function BuildPokemonAuditDetails(info, context) {
     container.append(fields);
     if (info.statsChanged) container.append($('<p class="audit-warning"></p>').text(AuditText('stats-changed')));
     const notes = [...info.corrections, ...info.restrictions, info.statReview, info.releaseReview].filter(Boolean);
+    if (info.encounter?.note) notes.push(info.encounter);
+    if (info.xlProfile?.note) notes.push(info.xlProfile);
     for (const note of notes) container.append($('<p class="audit-note"></p>').text(note.reason || note.note));
     if (info.applied.length) container.append($('<p class="audit-note"></p>').text(AuditText('corrected', {
         fields: [...new Set(info.applied.flatMap(correction => correction.fields))].join(', ')})));
@@ -207,6 +225,8 @@ function PokemonAuditCopyText(info, context) {
         `Stats (Attack/Defense/Stamina): ${AuditStatText(info.display.stats)}; ${AuditStatSource(info)}`,
         `Ranking stats (Attack/Defense/Stamina): ${AuditStatText(info.selected?.stats)}`,
         `Default attacker levels: ${info.attackerLevels.map(level => 'L' + level).join(', ')}${info.projectedLevel ? '; projected +2 levels' : ''}`,
+        ...(info.encounter ? ['Raid catch mapping: '+JSON.stringify(info.encounter)] : []),
+        ...(info.xlProfile?.types.length ? ['Catch XL boost profile: '+JSON.stringify(info.xlProfile)] : []),
         ...(info.plusMove ? [
             `+move: ${info.plusMove.rule.move || 'unassigned'}; ${AuditText('plus-' + info.plusMove.status)}`,
             ...(info.plusMove.move ? [`+move base power: ${info.plusMove.move.power} (${info.plusMove.powerKind}); energy: ${info.plusMove.move.energy_delta}; duration: ${info.plusMove.move.duration} ms; effective power at Mega level ${settings_supermega_level}: ${ProcessPower(info.plusMove.move)}`] : []),
@@ -308,7 +328,7 @@ async function LoadDataAudit() {
     dataAuditState = {query: params.get('q') || '',
         availability: ['released', 'unreleased'].includes(params.get('availability')) ? params.get('availability') : 'all',
         raids: ['high', 'tagged', 'untagged'].includes(params.get('raids')) ? params.get('raids') : 'all',
-        quality: ['incomplete', 'projected', 'plus', 'corrected', 'unsupported'].includes(params.get('data')) ? params.get('data') : 'all',
+        quality: ['incomplete', 'projected', 'plus', 'xl', 'catch-unknown', 'corrected', 'unsupported'].includes(params.get('data')) ? params.get('data') : 'all',
         visible: 50};
     $('#audit-search').val(dataAuditState.query);
     $('#audit-availability').val(dataAuditState.availability);
@@ -342,6 +362,8 @@ function RenderDataAudit() {
             if (dataAuditState.quality === 'incomplete' && info.quality.usable) return false;
             if (dataAuditState.quality === 'projected' && !info.projectedStats) return false;
             if (dataAuditState.quality === 'plus' && !info.plusMove?.move?._plus_projection) return false;
+            if (dataAuditState.quality === 'xl' && !info.xlProfile?.types.length) return false;
+            if (dataAuditState.quality === 'catch-unknown' && !['unknown','projected'].includes(info.encounter?.status)) return false;
             if (dataAuditState.quality === 'corrected' && !info.applied.length) return false;
             if (dataAuditState.quality === 'unsupported' && info.supported) return false;
             const name = `${info.id} ${info.display.name} ${info.form} ${TranslatedSpeciesName(info.id, info.display.name)} ${GetFormText(info.id, info.form)}`;

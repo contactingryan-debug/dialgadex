@@ -6,12 +6,14 @@ const POGO_PNGS_PATH = "graphics/pogo-256/"
 const SHINY_POGO_PNGS_PATH = "graphics/pogo-shiny-256/"
 const ICONS_URL = CDN_URL + "graphics/pokemonicons-sheet.png";
 
-const LOADING_MAX_VAL = 7; // max number of files that need to be loaded
+const LOADING_MAX_VAL = 8; // max number of files that need to be loaded
 let loading_val = 0; // number of files loaded so far
 
 // jb json objects
 let jb_names, jb_pkm, jb_max_id, jb_fm, jb_cm, jb_spec, jb_unpatch;
 let jb_source_pkm, jb_audit_manifest, jb_plus_predictions;
+let jb_catch_profiles;
+const CATCH_XL_URL = 'data/catch-xl-profiles.json?v=ebb12b28669b';
 const PLUS_PREDICTIONS_URL = 'data/plus-move-projections.json?v=6afbfc884de4';
 const AUDIT_MANIFEST_URL = 'data/audit-overrides.json?v=69d38cb3d6fb';
 
@@ -68,6 +70,10 @@ async function LoadJSONData() {
     }));
     jsonLoadReqs.push(FetchJSON(PLUS_PREDICTIONS_URL, null, json => {
         jb_plus_predictions = json;
+        IncreaseLoadingVal();
+    }));
+    jsonLoadReqs.push(FetchJSON(CATCH_XL_URL, null, json => {
+        jb_catch_profiles = json;
         IncreaseLoadingVal();
     }));
 

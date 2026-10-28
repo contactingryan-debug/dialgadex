@@ -16,7 +16,9 @@
     "check:plus-browser": "node plus-projections-browser-check.mjs",
     "check:raid-leaderboard": "node raid-leaderboard-check.mjs",
     "check:raid-megas": "node --test raid-megas-check.mjs",
-    "check:raid-megas-browser": "node raid-megas-browser-check.mjs"
+    "check:raid-megas-browser": "node raid-megas-browser-check.mjs",
+    "check:catch-xl": "node --test catch-xl-check.mjs",
+    "check:catch-xl-browser": "node catch-xl-browser-check.mjs"
   },
   "dependencies": {
     "playwright": "1.55.1"

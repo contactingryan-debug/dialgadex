@@ -124,6 +124,37 @@ Calculations run in an isolated Web Worker and cache up to four recent battle
 settings and attacker-pool selections in memory. Navigating away cancels unfinished work. Existing type
 rankings and individual counters retain their calculation formulas.
 
+## Catch XL compatibility
+
+The separate **XL ≥95%** leaderboard column adds the selected raid-group weights
+for bosses where the displayed build reaches the chosen 90%, 95%, or 100% of
+best non-Mega eDPS and its active transformation can boost the catch's XL chance.
+It preserves combat points and the non-Mega reference. Sort by this column or
+use **Strong + XL only**, which also enables transformations. URL parameters
+`xl`, `xl-min`, and `sort=xl` preserve the view. Fixed Hidden Power builds are
+never combined to inflate XL coverage.
+
+The caught form is resolved separately from the fought form. Mega/Primal raids
+use the base encounter; Necrozma/Kyurem fusions revert, Crowned Zacian/Zamazenta
+yield Hero forms, and Hoopa Unbound stays Unbound. Uncertain future encounters
+remain unknown or explicitly projected. Catch-type matching never uses the
+Candy family's base Pokémon. Matching two types still qualifies only once.
+
+Catch bonus profiles use ordinary Mega typing, with dedicated three-type rules
+for Primal Kyogre, Primal Groudon and Mega Rayquaza. Standard Mega/Primal profiles
+require at least High Level (2). Ultra Necrozma assumes Dragon/Psychic as an
+explicit user-approved projection, without inventing its level system or XL
+rate. This does not enable its placeholder learnset. Projected matches require
+Include unreleased and carry P labels.
+
+Individual raid counter lists show catch details and XL badges and have their
+own Strong + XL filter. The threshold uses eDPS for the displayed moveset even
+when another display metric is selected; its non-Mega reference remains fixed.
+Catch-form rules, boost types, evidence, source links and unknown mappings are
+inspectable in Data Audit and Copy details. An active transformation is required
+at catch time; the feature predicts compatibility, not a guaranteed extra XL
+count or an estimate of team attack boosts.
+
 ## Data audit and corrections
 
 Open **Data Audit** from navigation, the leaderboard, or

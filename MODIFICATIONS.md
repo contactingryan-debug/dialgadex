@@ -182,3 +182,18 @@ The calculation formulas and upstream data sources are unchanged.
 - Show the fixed non-Mega reference, Mega settings, effective attacker levels,
   projected-level notes and clickable +move details. Make Data Audit reflect
   the selected leaderboard pool. Shadow/Legendary filters remain display-only.
+
+## October 28, 2026 — Strong + catch XL compatibility
+
+- Add a reviewed encounter/boost manifest with base Mega/Primal encounters,
+  Necrozma/Kyurem fusion and Crowned-to-Hero mappings, retained alternate forms,
+  and explicit unknown future encounters. Use catch typing rather than boss or
+  Candy-family typing. Support the Primal and Rayquaza weather-type exceptions.
+- Record Ultra Necrozma's user-approved Dragon/Psychic profile as projected,
+  without inventing a level system or XL rate or enabling placeholder moves.
+- Add weighted XL coverage and a Strong + XL filter with 90/95/100 thresholds,
+  default 95. Preserve combat scores and the fixed non-Mega reference. Respect
+  existing group/format weights and fixed Hidden Power builds.
+- Show per-matchup catch details, eligibility and projection labels, counter
+  badges and filters, and auditable/copyable rule provenance. Use a per-call
+  eDPS reference for counter filtering without changing the selected metric.

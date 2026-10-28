@@ -32,6 +32,7 @@ function GetRaidBossWeights(bosses, weighting = 'groups') {
 function ScoreRaidMatrix(matrix, options = {}) {
     const floor = [70, 80, 90].includes(Number(options.floor)) ? Number(options.floor) : 80;
     const weighting = ['forms', 'species'].includes(options.weighting) ? options.weighting : 'groups';
+    const xlThreshold = [90,95,100].includes(Number(options.xlThreshold)) ? Number(options.xlThreshold) : 95;
     const speciesCounts = new Map();
     for (const boss of matrix.bosses)
         speciesCounts.set(boss.id, (speciesCounts.get(boss.id) || 0) + 1);
@@ -50,13 +51,16 @@ function ScoreRaidMatrix(matrix, options = {}) {
             return {...matchup, points, weightedPoints: points * weights[matchup.bossIndex]};
         });
         const points = matchups.reduce((sum, matchup) => sum + matchup.weightedPoints, 0);
-        if (points <= 1e-10) continue;
+        const strongXL = matchups.filter(matchup=>matchup.xl?.eligible === true && matchup.ratio >= xlThreshold/100 - 1e-9);
+        const xlCoverage = strongXL.reduce((sum,matchup)=>sum+weights[matchup.bossIndex],0);
+        if (points <= 1e-10 && xlCoverage <= 1e-10) continue;
         const entry = {
             ...attacker, matchups,
             points,
             first: matchups.filter(matchup => matchup.ratio >= 1 - 1e-9).length,
             near: matchups.filter(matchup => matchup.ratio >= 0.95 - 1e-9).length,
             lead: Math.max(0, ...matchups.map(matchup => matchup.lead || 0)),
+            xlCoverage, xlCount:strongXL.length, xlProjected:strongXL.filter(matchup=>matchup.xl.projected).length,
         };
         const key = JSON.stringify([attacker.id, attacker.form, !!attacker.shadow, attacker.level]);
         if (!groups.has(key)) groups.set(key, []);
@@ -69,11 +73,12 @@ function ScoreRaidMatrix(matrix, options = {}) {
         return {...variants[0], variants: variants.map(variant => ({
             key: variant.key, hiddenPowerType: variant.hiddenPowerType, points: variant.points,
             first: variant.first, near: variant.near,
+            xlCoverage:variant.xlCoverage,
         }))};
     }).sort(compare);
     // Keep ordinary scores stable when transformations are added to the display.
     const best = rows.find(row => !row.transformed)?.points || 1;
     for (const row of rows) row.score = 100 * row.points / best;
-    return {rows, floor, weighting, weights, groupCount, bossCount: matrix.bosses.length, speciesCount: speciesCounts.size,
+    return {rows, floor, weighting, xlThreshold, weights, groupCount, bossCount: matrix.bosses.length, speciesCount: speciesCounts.size,
         totalWeight: weights.reduce((sum, weight) => sum + weight, 0), bestPoints: best};
 }

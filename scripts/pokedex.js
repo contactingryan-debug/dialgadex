@@ -1,4 +1,5 @@
 let atk_dist, def_dist, hp_dist, cp_dist;
+let pokedexCounterRequest = 0;
 
 /**
  * Loads a Pokémon page.
@@ -320,6 +321,7 @@ function LoadPokedexEffectiveness(pkm_obj) {
  * Resets the pokemon go counters section for the current selected pokemon.
  */
 function ResetPokedexCounters() {
+    pokedexCounterRequest++;
     // shows cell with loading image in the counters table
     $("#counters-grid").empty();
     let div = $("<div id='counters-loading'></div>");
@@ -339,6 +341,8 @@ function ResetPokedexCounters() {
  * mon and their resistance to the average of the selected mon's movesets.
  */
 async function LoadPokedexCounters() {
+    const request=++pokedexCounterRequest;
+    const boss=current_pkm_obj;
     if (!GetPokemonDataQuality(current_pkm_obj).usable || current_pkm_obj._raidRestriction) {
         $('#counters-loading').empty();
         $('#counters').hide();
@@ -354,10 +358,31 @@ async function LoadPokedexCounters() {
     if (moves[0].length > 0 && moves[1].length > 0) { // has non-elite moves
         let search_params = GetSearchParms("Any", false);
         search_params.real_damage = true;
+        const xlOnly=$('#counters-xl-only').is(':checked');
+        if (xlOnly) search_params.mega=true;
+        $('#counters-xl-threshold').val(GetXLStrongThreshold());
 
         const enemy_params = GetEnemyParams(current_pkm_obj);
         const counters = await GetStrongestVersus(enemy_params, search_params);
-        ProcessAndSetCountersFromArray(counters);
+        const references=await GetStrongestVersus(enemy_params,{...GetDefaultSearchParams(),type:'Any',mega:false,
+            unreleased:search_params.unreleased,real_damage:true,metric:'eDPS'});
+        if (request!==pokedexCounterRequest || current_pkm_obj!==boss) return;
+        const baseline=references.at(-1)?.rat || NaN;
+        const roster=GetCalculationPokemon(search_params.unreleased);
+        const byKey=new Map(roster.map(p=>[PokemonDataKey(p),p]));
+        const encounter=GetRaidCatchEncounter(boss,roster);
+        $('#counters-catch-note').text(XLText('catch-label',{pokemon:RaidCatchEncounterText(encounter)}));
+        for (const counter of counters) {
+            const pokemon=byKey.get(PokemonDataKey(counter)) || counter;
+            counter._catchEncounter=encounter;
+            counter._catchXL=GetCatchXLMatch(GetCatchXLBoostProfile(pokemon),encounter,settings_supermega_level,search_params.unreleased);
+            const ratings=counter.all_rat || [{dps:counter.dps,tdo:counter.tdo}];
+            const edps=ratings.reduce((sum,r)=>sum+GetEDPS(r.dps,r.tdo,pokemon,enemy_params,true),0)/ratings.length;
+            counter._catchXLRatio=edps/baseline;
+        }
+        const shown=xlOnly ? counters.filter(counter=>IsStrongCatchXL(counter._catchXL,counter._catchXLRatio)) : counters;
+        $('#counters-xl-empty').prop('hidden',shown.length>0).text(XLText('empty'));
+        ProcessAndSetCountersFromArray(shown);
         
         $("#counters").css("display", "revert");
     }
@@ -380,7 +405,8 @@ function ProcessAndSetCountersFromArray(counters,
     max_counters = 10, max_per_counter = 3, extra_moveset_cutoff = 0.7) {
 
     // reverses counters arrays to be in descending order
-    counters.reverse();
+    const xlOnly=$('#counters-xl-only').is(':checked');
+    counters=xlOnly ? [...counters].sort((a,b)=>b._catchXLRatio-a._catchXLRatio) : [...counters].reverse();
 
     // simplifies counters arrays into maps where each pokemon species is a key
     let counters_s = new Map();
@@ -397,7 +423,7 @@ function ProcessAndSetCountersFromArray(counters,
     const all_counters = Array.from(counters_s.values()).slice(0, max_counters);
 
     // gets strongest rat
-    const top_compare = GetComparisonMon(counters);
+    const top_compare = xlOnly ? 1 : GetComparisonMon(counters);
 
     // sets counters in the page
 
@@ -412,7 +438,7 @@ function ProcessAndSetCountersFromArray(counters,
         for (let j = 0; j < all_counters[i].length && j < max_per_counter; j++) {
             let counter = all_counters[i][j];
 
-            let rat_pct = 100 * counter.rat / top_compare;
+            let rat_pct = xlOnly ? 100*counter._catchXLRatio : 100 * counter.rat / top_compare;
 
             if (j > 0 && rat_pct < extra_moveset_cutoff * 100)
                 continue;
@@ -424,6 +450,8 @@ function ProcessAndSetCountersFromArray(counters,
             rat_info_td.html(((counter.mega)?"&nbsp;"+GetTranslation("dex.counters.mega-abbrev", " (M)"):"")
                 + ((counter.shadow)?"&nbsp;"+GetTranslation("dex.counters.shadow-abbrev", " (Sh)"):""));
             if (rat_info_td.html() == "") rat_info_td.css("width", "25%");
+            const xlBadge=GetCatchXLBadge(counter._catchXL,true);
+            if (xlBadge) rat_info_td.append(xlBadge);
             
             const rat_tr = $("<tr class=counters-rat-row></tr>");
             rat_tr.append(rat_pct_td);
@@ -526,6 +554,8 @@ function ShowCountersPopup(hover_element, show, counter = null) {
             + "<span class='type-text bg-" + counter.cm_type + "'>"
                 + TranslatedMoveName(counter.cm_id, counter.cm_type, counter.cm) + ((counter.cm_is_elite) ? "*" : "") 
             + "</span></p>");
+        if (counter._catchXL) $('#counters-popup').append($('<p class="counter-xl-note"></p>')
+            .text(XLText('catch-label',{pokemon:RaidCatchEncounterText(counter._catchEncounter)})+' · '+CatchXLMatchText(counter._catchXL)));
 
         // sets popup's click callback for touch devices
         if (HasTouchScreen()) {
@@ -985,6 +1015,9 @@ async function UpdatePokemonStatsAndURL() {
  * Bind event handlers for a Pokedex page
  */
 function BindPokeDex() {
+    $('#counters-xl-threshold').on('change',function() {
+        SetXLStrongThreshold(this.value);ResetPokedexCounters();LoadPokedexCounters();
+    });
     // Custom IVs
     $("#stats-form").submit(function(e) {
         UpdatePokemonStatsAndURL();

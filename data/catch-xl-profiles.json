@@ -1,0 +1,187 @@
+{
+    "reviewed": "2026-10-28",
+    "rules": {
+        "sameForm": {
+            "note": "Same-form encounter rule. This is not independent verification of the upstream raid tag. Unreleased encounters are projections.",
+            "sources": [
+                "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/29-what-are-the-different-types-of-raid-battles-1771551891/"
+            ]
+        },
+        "megaBase": {
+            "note": "Mega and Primal raid encounters use the non-transformed form. Unreleased encounters are projections.",
+            "sources": [
+                "https://niantic.helpshift.com/hc/en/6-pokemon-go/faq/29-what-are-the-different-types-of-raid-battles-1771551891/"
+            ]
+        },
+        "standardMega": {
+            "note": "Standard Mega catch-type rule. XL requires at least High Mega Level (2) and an active transformation at catch time. No numerical XL-rate estimate is made.",
+            "minLevel": 2,
+            "sources": [
+                "https://www.pokemon.com/uk/features/a-guide-to-mega-evolution-in-pokemon-go",
+                "https://pokemongo.com/news/mega-evolution-2026-update"
+            ]
+        }
+    },
+    "encounters": [
+        {
+            "id": 646,
+            "forms": [
+                "Black",
+                "White"
+            ],
+            "targetForm": "Normal",
+            "status": "verified",
+            "note": "Black and White Kyurem raids yield regular Kyurem.",
+            "sources": [
+                "https://pokemongo.com/en/news/kyurem-fusion-raid-day-2026"
+            ]
+        },
+        {
+            "id": 800,
+            "forms": [
+                "Dawn_wings",
+                "Dusk_mane"
+            ],
+            "targetForm": "Normal",
+            "status": "verified",
+            "note": "Necrozma fusion raids yield regular Psychic-type Necrozma.",
+            "sources": [
+                "https://pokemongo.com/news/gofest-fusion-2024"
+            ]
+        },
+        {
+            "id": 888,
+            "form": "Crowned_sword",
+            "targetForm": "Hero",
+            "status": "verified",
+            "note": "Crowned Sword Zacian raids yield Hero of Many Battles Zacian (Fairy).",
+            "sources": [
+                "https://pokemongo.com/post/adventure-effects-crowned-zacian-zamazenta/"
+            ]
+        },
+        {
+            "id": 889,
+            "form": "Crowned_shield",
+            "targetForm": "Hero",
+            "status": "verified",
+            "note": "Crowned Shield Zamazenta raids yield Hero of Many Battles Zamazenta (Fighting).",
+            "sources": [
+                "https://pokemongo.com/post/adventure-effects-crowned-zacian-zamazenta/"
+            ]
+        },
+        {
+            "id": 720,
+            "form": "Unbound",
+            "targetForm": "Unbound",
+            "status": "verified",
+            "note": "Hoopa Unbound is caught in its Unbound form.",
+            "sources": [
+                "https://pokemongo.com/news/elite-raids-new-feature"
+            ]
+        },
+        {
+            "id": 800,
+            "form": "Ultra",
+            "targetForm": null,
+            "status": "unknown",
+            "note": "The catchable form from a hypothetical Ultra Necrozma raid is unconfirmed. Its assumed XL boost profile is a separate field.",
+            "sources": []
+        },
+        {
+            "id": 670,
+            "form": "Mega",
+            "targetForm": null,
+            "status": "unknown",
+            "note": "The encounter form for a hypothetical Mega Floette raid needs verification.",
+            "sources": []
+        },
+        {
+            "id": 718,
+            "form": "Mega",
+            "targetForm": null,
+            "status": "unknown",
+            "note": "The encounter form for a hypothetical Mega Zygarde raid needs verification.",
+            "sources": []
+        },
+        {
+            "id": 898,
+            "forms": [
+                "Ice_rider",
+                "Shadow_rider"
+            ],
+            "targetForm": null,
+            "status": "unknown",
+            "note": "The encounter form for a hypothetical Calyrex fusion raid needs verification.",
+            "sources": []
+        },
+        {
+            "id": 890,
+            "form": "Eternamax",
+            "targetForm": null,
+            "status": "none",
+            "note": "Boss-only Max Battle form; outside ordinary raid encounter modeling.",
+            "sources": [
+                "https://pokemongo.com/gofestmaxfinale"
+            ]
+        }
+    ],
+    "boostOverrides": [
+        {
+            "id": 382,
+            "form": "Mega",
+            "types": [
+                "Water",
+                "Electric",
+                "Bug"
+            ],
+            "minLevel": 2,
+            "status": "rule",
+            "note": "Primal Kyogre uses the rainy-weather catch-boost types.",
+            "sources": [
+                "https://pokemongo.com/news/primal-reversion-2023"
+            ]
+        },
+        {
+            "id": 383,
+            "form": "Mega",
+            "types": [
+                "Fire",
+                "Grass",
+                "Ground"
+            ],
+            "minLevel": 2,
+            "status": "rule",
+            "note": "Primal Groudon uses the sunny-weather catch-boost types.",
+            "sources": [
+                "https://pokemongo.com/news/primal-reversion-2023"
+            ]
+        },
+        {
+            "id": 384,
+            "form": "Mega",
+            "types": [
+                "Dragon",
+                "Flying",
+                "Psychic"
+            ],
+            "minLevel": 2,
+            "status": "rule",
+            "note": "Mega Rayquaza boosts Dragon, Flying and Psychic catches.",
+            "sources": [
+                "https://pokemongo.com/news/mega-rayquaza-arrives-go-fest-2023"
+            ]
+        },
+        {
+            "id": 800,
+            "form": "Ultra",
+            "types": [
+                "Dragon",
+                "Psychic"
+            ],
+            "minLevel": null,
+            "status": "projected",
+            "note": "User-approved assumption: Ultra Necrozma boosts Dragon and Psychic catches. Its level system is unconfirmed; no Mega-level requirement or XL rate is invented. Placeholder move exclusions remain in force.",
+            "sources": []
+        }
+    ]
+}

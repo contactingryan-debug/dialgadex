@@ -1,5 +1,5 @@
 let currentLocale = 'en';
-const LOCALE_VERSION = "700e11bb0fff";
+const LOCALE_VERSION = "a1465b8c9fcc";
 let translationMap;
 let fallbackMap;
 

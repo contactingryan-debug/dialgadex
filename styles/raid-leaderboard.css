@@ -68,3 +68,20 @@
 }
 
 .raid-back, .raid-pokemon-link, .raid-boss-link, .rankings-raid-link a { text-decoration: underline; text-underline-offset: 3px; }
+
+#raid-xl-heading, .raid-xl-coverage { display:none; }
+.raid-with-xl #raid-xl-heading, .raid-with-xl .raid-xl-coverage { display:block; }
+.raid-with-xl .raid-grid { grid-template-columns:28px minmax(0,1fr) 100px 52px 52px 64px; }
+.raid-catch-label, .raid-xl-status { grid-column:1 / -1; font-size:.75rem; overflow-wrap:anywhere; }
+.raid-xl-status { color:var(--col-text-midkey); }
+.xl-badge { display:inline-block; border:1px solid var(--col-widget); border-radius:3px; padding:.05rem .2rem; font-size:.65rem; line-height:1.3; }
+.xl-projected { font-style:italic; }
+.counter-ratings .xl-badge { font-size:.58rem; }
+.counters-xl-controls { display:flex; flex-wrap:wrap; gap:.4rem .8rem; align-items:center; font-size:.8rem; padding:.5rem; text-align:left; }
+.counters-xl-controls label { display:flex; align-items:center; gap:.3rem; min-height:36px; }
+.counters-xl-controls select { font:inherit; padding:.3rem; background:var(--col-row-bg); color:var(--col-text); border:1px solid var(--col-outline); }
+#counters-catch-note, #counters-xl-empty { font-size:.8rem; padding:.4rem; overflow-wrap:anywhere; }
+@media(max-width:600px) {
+    .raid-with-xl .raid-grid { grid-template-columns:20px minmax(0,1fr) 52px 28px 28px 38px; gap:.3rem; }
+    #raid-xl-heading { font-size:.65rem; }
+}

@@ -1,6 +1,7 @@
 /* Reuse the native calculator in isolation so navigation and settings remain responsive. */
-let jb_pkm, jb_fm, jb_cm, jb_max_id;
-importScripts('pokemon_enums.js?v=664952cd50b0', 'settings.js?v=63f6908f18cb', 'data-rules.js?v=489b486b3f8a', 'pokemon_utils.js?v=1745f81d1ee5', 'calc.js?v=e78987b30605');
+let jb_pkm, jb_fm, jb_cm, jb_max_id, jb_catch_profiles;
+importScripts('catch-xl.js?v=6117a414b307');
+importScripts('pokemon_enums.js?v=664952cd50b0', 'settings.js?v=63f6908f18cb', 'data-rules.js?v=489b486b3f8a', 'pokemon_utils.js?v=1745f81d1ee5', 'calc.js?v=cab94d1b01ba');
 
 function IsRaidLeaderboardMega(pokemon) {
     return IsMegaPrimalUltraForm(pokemon);
@@ -31,6 +32,7 @@ self.onmessage = async event => {
         jb_pkm = snapshot.pokemon;
         jb_fm = snapshot.fastMoves;
         jb_cm = snapshot.chargedMoves;
+        jb_catch_profiles = snapshot.catchProfiles || {};
         jb_max_id = Math.max(...jb_pkm.map(pokemon => pokemon.id));
         settings_metric = 'eDPS';
         settings_default_level = snapshot.settings.levels;
@@ -50,12 +52,14 @@ self.onmessage = async event => {
             candidates.push(...RaidLeaderboardBuilds(pokemon, shadow, level));
         });
         const bosses = GetRaidBosses(null, null, search.unreleased);
+        const encounters = bosses.map(boss=>GetRaidCatchEncounter(boss,jb_pkm));
         const benchmarks = [];
         const attackers = candidates.map(candidate => ({
             key: candidate.key, id: candidate.pkm.id, name: candidate.pkm.name, form: candidate.pkm.form,
             shadow: candidate.shadow, level: candidate.level, legendary: !!candidate.pkm.class,
             transformed: IsRaidLeaderboardMega(candidate.pkm),
             projectedLevel: UsesProjectedAttackerLevel(candidate.pkm, search.unreleased),
+            xlProfile: GetCatchXLBoostProfile(candidate.pkm),
             hiddenPowerType: candidate.hiddenPowerType, matchups: [],
         }));
         const identity = candidate => JSON.stringify([candidate.pkm.id, candidate.pkm.form, candidate.shadow, candidate.level]);
@@ -82,6 +86,7 @@ self.onmessage = async event => {
                 const runnerUp = ratio >= 1 - 1e-9
                     ? referenceCounters.find(counter => identities[counter.index] !== identities[index]) : null;
                 attackers[index].matchups.push({bossIndex, ratio, edps: moveset.rat,
+                    xl: GetCatchXLMatch(attackers[index].xlProfile,encounters[bossIndex],snapshot.settings.megaLevel,search.unreleased),
                     lead: runnerUp ? Math.max(0, 100 * (moveset.rat / runnerUp.moveset.rat - 1)) : 0,
                     fm: moveset.fm, fmType: moveset.fm_type, fmElite: moveset.fm_is_elite,
                     cm: moveset.cm, cmType: moveset.cm_type, cmElite: moveset.cm_is_elite});
@@ -91,7 +96,7 @@ self.onmessage = async event => {
         }
         self.postMessage({type: 'complete', matrix: {
             bosses: bosses.map((boss, index) => ({id: boss.id, name: boss.name, form: boss.form,
-                types: boss.types, raid_tier: boss.raid_tier, bestEdps: benchmarks[index]})),
+                types: boss.types, raid_tier: boss.raid_tier, bestEdps: benchmarks[index],catch:encounters[index]})),
             attackers: attackers.filter(attacker => attacker.matchups.length), settings: snapshot.settings,
         }});
     } catch (error) {

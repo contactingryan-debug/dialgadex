@@ -10,8 +10,9 @@ const plusInputs = JSON.parse(read('./fixtures/plus-inputs.json'));
 function fixture({future=false, megas=false, validUltra=false}={}) {
     const context=vm.createContext({performance,setTimeout,structuredClone,inputs:structuredClone(inputs),
         plusInputs:structuredClone(plusInputs),manifest:JSON.parse(read('../data/audit-overrides.json')),
-        predictions:JSON.parse(read('../data/plus-move-projections.json'))});
-    for(const name of ['dataload','settings','pokemon_enums','data-rules','plus-projections','pokemon_utils','calc','raid-points','raid-leaderboard'])
+        predictions:JSON.parse(read('../data/plus-move-projections.json')),
+        catchProfiles:JSON.parse(read('../data/catch-xl-profiles.json'))});
+    for(const name of ['dataload','settings','pokemon_enums','data-rules','catch-xl','plus-projections','pokemon_utils','calc','raid-points','raid-leaderboard'])
         vm.runInContext(read('../scripts/'+name+'.js'),context);
     vm.runInContext(`
         jb_pkm=structuredClone(inputs.pokemon);jb_spec=structuredClone(inputs.announced);
@@ -22,6 +23,7 @@ function fixture({future=false, megas=false, validUltra=false}={}) {
         jb_fm=[...new Map([...inputs.fastMoves,...plusInputs.fastMoves].map(m=>[m.name,m])).values()];
         jb_cm=[...new Map([...inputs.chargedMoves,...plusInputs.chargedMoves].map(m=>[m.name,m])).values()];
         jb_audit_manifest=manifest;jb_plus_predictions=predictions;
+        jb_catch_profiles=catchProfiles;
         jb_pkm=ApplyPokemonAuditOverrides(jb_pkm,manifest);
         settings_speculative=true;settings_include_unreleased=false;
         settings_default_level=[50];settings_team_size_normal=6;settings_team_size_mega=1;
@@ -57,6 +59,17 @@ test('snapshot carries transformation settings and every detached forecast defin
     assert.deepEqual(json('[jb_pkm,jb_cm]'),before);
     evaluate('GetIncludeUnreleased=()=>false');
     assert(!json('GetRaidLeaderboardSnapshot().chargedMoves.some(m=>m._plus_projection)'));
+});
+
+test('per-call eDPS comparisons leave the selected display metric unchanged',()=>{
+    const {evaluate,json}=fixture();
+    evaluate(`settings_metric='DPS';const attacker=jb_pkm.find(p=>p.id===150&&p.form==='Normal');
+        const enemy=GetEnemyParams(jb_pkm.find(p=>p.id===6));
+        const params={...GetDefaultSearchParams(),type:'Any',real_damage:true};
+        const forced=GetStrongestAgainstSpecificEnemy(attacker,false,50,enemy,{...params,metric:'eDPS'}).at(-1);`);
+    assert.equal(evaluate('settings_metric'),'DPS');
+    evaluate(`settings_metric='eDPS';const native=GetStrongestAgainstSpecificEnemy(attacker,false,50,enemy,params).at(-1);`);
+    assert.deepEqual(json('forced'),json('native'));
 });
 
 test('worker keeps non-Mega benchmarks, scores and counts identical when transformations are included',async()=>{
