@@ -1,0 +1,23 @@
+<div class="card audit-card">
+    <div class="card-header"><h1 class="card-title" data-i18n="data-audit.title">Pokémon Data Audit</h1></div>
+    <div class="audit-intro">
+        <p data-i18n="data-audit.intro">Inspect release flags, raid tags, moves, stats, and ranking eligibility. Open a Pokémon and copy its details to report a mistake.</p>
+        <p class="audit-note" data-i18n="data-audit.meaning">Released means historically available, not currently in rotation. Raid tags come from the dataset unless explicitly verified or announced. Separate Shadow raid history is deferred.</p>
+        <a id="audit-leaderboard" href="?leaderboard" data-i18n="raid-leaderboard.nav">Raid Leaderboard</a>
+    </div>
+    <div class="audit-controls">
+        <label class="audit-search"><span data-i18n="data-audit.search">Search Pokémon, form, or Pokédex number</span><input id="audit-search" type="search" autocomplete="off"></label>
+        <div class="audit-filters">
+            <label><span data-i18n="data-audit.availability">Availability</span><select id="audit-availability"><option value="all" data-i18n="data-audit.all">All</option><option value="released" data-i18n="data-audit.released-short">Released</option><option value="unreleased" data-i18n="data-audit.unreleased-short">Unreleased</option></select></label>
+            <label><span data-i18n="data-audit.raid-tag">Raid tag</span><select id="audit-raids"><option value="all" data-i18n="data-audit.all">All</option><option value="high" data-i18n="data-audit.high-raids">Tier 4+</option><option value="tagged" data-i18n="data-audit.tagged">All tagged</option><option value="untagged" data-i18n="data-audit.untagged">No tag</option></select></label>
+            <label><span data-i18n="data-audit.review">Data review</span><select id="audit-quality"><option value="all" data-i18n="data-audit.supported-forms">Supported forms</option><option value="incomplete" data-i18n="data-audit.incomplete">Incomplete data</option><option value="projected" data-i18n="data-audit.projected-stats">Projected stats</option><option value="corrected" data-i18n="data-audit.corrected-short">Locally corrected</option><option value="unsupported" data-i18n="data-audit.unsupported-forms">Unsupported source forms</option></select></label>
+        </div>
+        <label class="raid-release-filter"><input id="audit-unreleased" type="checkbox"><span data-i18n="data-audit.include-unreleased">Include unreleased in ranking calculations</span></label>
+        <p id="audit-scope" class="audit-note"></p>
+        <p class="audit-note" data-i18n="data-audit.weights-note">Weights use the default raid groups in the selected ranking pool. Regular and Shadow formats share a form's allocation. No separate Shadow profiles are added.</p>
+        <p id="audit-count" role="status" aria-live="polite"></p>
+    </div>
+    <div id="audit-list"></div>
+    <p id="audit-empty" hidden data-i18n="data-audit.empty">No records match these filters.</p>
+    <button id="audit-more" type="button" data-i18n="data-audit.more">Show 50 more</button>
+</div>

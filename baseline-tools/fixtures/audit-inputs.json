@@ -1,0 +1,980 @@
+{
+  "sourceCommit": "413424cbbc3edb94f3b61c16d355b512c4e85321",
+  "gameMaster": {
+    "sha": "8e227be44f288d34463e23bf04e9b564d3c16f79",
+    "date": "2026-08-29T12:08:01Z"
+  },
+  "pokemon": [
+    {
+      "id": 129,
+      "name": "Magikarp",
+      "form": "Normal",
+      "types": [
+        "Water"
+      ],
+      "stats": {
+        "baseStamina": 85,
+        "baseAttack": 29,
+        "baseDefense": 85
+      },
+      "fm": [
+        "Splash"
+      ],
+      "cm": [
+        "Struggle"
+      ],
+      "shadow": true,
+      "released": true,
+      "raid_tier": 1
+    },
+    {
+      "id": 150,
+      "name": "Mewtwo",
+      "form": "Normal",
+      "types": [
+        "Psychic"
+      ],
+      "stats": {
+        "baseStamina": 214,
+        "baseAttack": 300,
+        "baseDefense": 182
+      },
+      "fm": [
+        "Psycho Cut",
+        "Confusion"
+      ],
+      "cm": [
+        "Psychic",
+        "Thunderbolt",
+        "Ice Beam",
+        "Focus Blast",
+        "Flamethrower"
+      ],
+      "elite_fm": [
+        "Counter"
+      ],
+      "elite_cm": [
+        "Psystrike",
+        "Shadow Ball",
+        "Hyper Beam"
+      ],
+      "shadow": true,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "released": true,
+      "raid_tier": 5
+    },
+    {
+      "id": 150,
+      "name": "Mega Mewtwo X",
+      "form": "Mega",
+      "fm": [
+        "Psycho Cut",
+        "Confusion"
+      ],
+      "cm": [
+        "Psychic",
+        "Thunderbolt",
+        "Ice Beam",
+        "Focus Blast",
+        "Flamethrower"
+      ],
+      "shadow": false,
+      "released": true,
+      "raid_tier": 9,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "elite_fm": [
+        "Counter"
+      ],
+      "elite_cm": [
+        "Psystrike",
+        "Shadow Ball",
+        "Hyper Beam"
+      ],
+      "types": [
+        "Psychic",
+        "Fighting"
+      ],
+      "stats": {
+        "baseStamina": 228,
+        "baseAttack": 399,
+        "baseDefense": 215
+      },
+      "temp_cm": [
+        "Dynamic Punch+"
+      ]
+    },
+    {
+      "id": 150,
+      "name": "Mega Mewtwo Y",
+      "form": "MegaY",
+      "fm": [
+        "Psycho Cut",
+        "Confusion"
+      ],
+      "cm": [
+        "Psychic",
+        "Thunderbolt",
+        "Ice Beam",
+        "Focus Blast",
+        "Flamethrower"
+      ],
+      "shadow": false,
+      "released": true,
+      "raid_tier": 9,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "elite_fm": [
+        "Counter"
+      ],
+      "elite_cm": [
+        "Psystrike",
+        "Shadow Ball",
+        "Hyper Beam"
+      ],
+      "types": [
+        "Psychic"
+      ],
+      "stats": {
+        "baseStamina": 228,
+        "baseAttack": 413,
+        "baseDefense": 223
+      },
+      "temp_cm": [
+        "Future Sight+"
+      ]
+    },
+    {
+      "id": 150,
+      "name": "Mewtwo",
+      "form": "A",
+      "types": [
+        "Psychic"
+      ],
+      "stats": {
+        "baseStamina": 214,
+        "baseAttack": 182,
+        "baseDefense": 278
+      },
+      "fm": [
+        "Confusion",
+        "Iron Tail"
+      ],
+      "cm": [
+        "Rock Slide",
+        "Dynamic Punch",
+        "Earthquake",
+        "Future Sight"
+      ],
+      "elite_cm": [
+        "Psystrike"
+      ],
+      "shadow": false,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "released": true
+    },
+    {
+      "id": 718,
+      "name": "Zygarde",
+      "form": "Fifty_percent",
+      "types": [
+        "Dragon",
+        "Ground"
+      ],
+      "stats": {
+        "baseStamina": 239,
+        "baseAttack": 203,
+        "baseDefense": 232
+      },
+      "fm": [
+        "Dragon Tail",
+        "Bite",
+        "Zen Headbutt"
+      ],
+      "cm": [
+        "Outrage",
+        "Earthquake",
+        "Crunch",
+        "Hyper Beam",
+        "Bulldoze"
+      ],
+      "shadow": false,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "released": true
+    },
+    {
+      "id": 774,
+      "name": "Minior",
+      "form": "Green",
+      "types": [
+        "Rock",
+        "Flying"
+      ],
+      "stats": {
+        "baseStamina": 155,
+        "baseAttack": 218,
+        "baseDefense": 131
+      },
+      "fm": [
+        "Rollout",
+        "Take Down"
+      ],
+      "cm": [
+        "Power Gem",
+        "Ancient Power",
+        "Acrobatics"
+      ],
+      "shadow": false,
+      "released": false
+    },
+    {
+      "id": 774,
+      "name": "Minior",
+      "form": "Meteor",
+      "types": [
+        "Rock",
+        "Flying"
+      ],
+      "stats": {
+        "baseStamina": 155,
+        "baseAttack": 116,
+        "baseDefense": 194
+      },
+      "fm": [
+        "Rollout",
+        "Take Down"
+      ],
+      "cm": [
+        "Power Gem",
+        "Ancient Power",
+        "Acrobatics"
+      ],
+      "shadow": false,
+      "released": false
+    },
+    {
+      "id": 774,
+      "name": "Minior",
+      "form": "Red",
+      "types": [
+        "Rock",
+        "Flying"
+      ],
+      "stats": {
+        "baseStamina": 155,
+        "baseAttack": 218,
+        "baseDefense": 131
+      },
+      "fm": [
+        "Rollout",
+        "Take Down"
+      ],
+      "cm": [
+        "Power Gem",
+        "Ancient Power",
+        "Acrobatics"
+      ],
+      "shadow": false,
+      "released": false
+    },
+    {
+      "id": 800,
+      "name": "Necrozma",
+      "form": "Normal",
+      "types": [
+        "Psychic"
+      ],
+      "stats": {
+        "baseStamina": 219,
+        "baseAttack": 251,
+        "baseDefense": 195
+      },
+      "fm": [
+        "Metal Claw",
+        "Psycho Cut",
+        "Shadow Claw"
+      ],
+      "cm": [
+        "Dark Pulse",
+        "Future Sight",
+        "Iron Head",
+        "Outrage"
+      ],
+      "shadow": false,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "released": true,
+      "raid_tier": 5
+    },
+    {
+      "id": 800,
+      "name": "Necrozma",
+      "form": "Dawn_wings",
+      "types": [
+        "Psychic",
+        "Ghost"
+      ],
+      "stats": {
+        "baseStamina": 200,
+        "baseAttack": 277,
+        "baseDefense": 220
+      },
+      "fm": [
+        "Metal Claw",
+        "Psycho Cut",
+        "Shadow Claw"
+      ],
+      "cm": [
+        "Dark Pulse",
+        "Future Sight",
+        "Iron Head",
+        "Outrage"
+      ],
+      "shadow": false,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "released": true,
+      "raid_tier": 5,
+      "elite_cm": [
+        "Moongeist Beam"
+      ]
+    },
+    {
+      "id": 800,
+      "name": "Necrozma",
+      "form": "Dusk_mane",
+      "types": [
+        "Psychic",
+        "Steel"
+      ],
+      "stats": {
+        "baseStamina": 200,
+        "baseAttack": 277,
+        "baseDefense": 220
+      },
+      "fm": [
+        "Metal Claw",
+        "Psycho Cut",
+        "Shadow Claw"
+      ],
+      "cm": [
+        "Dark Pulse",
+        "Future Sight",
+        "Iron Head",
+        "Outrage"
+      ],
+      "shadow": false,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "released": true,
+      "raid_tier": 5,
+      "elite_cm": [
+        "Sunsteel Strike"
+      ]
+    },
+    {
+      "id": 800,
+      "name": "Necrozma",
+      "form": "Ultra",
+      "types": [
+        "Psychic",
+        "Dragon"
+      ],
+      "stats": {
+        "baseStamina": 200,
+        "baseAttack": 337,
+        "baseDefense": 196
+      },
+      "fm": [
+        "Splash"
+      ],
+      "cm": [
+        "Struggle"
+      ],
+      "shadow": false,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "released": false,
+      "raid_tier": 5
+    },
+    {
+      "id": 801,
+      "name": "Magearna",
+      "form": "Normal",
+      "types": [
+        "Steel",
+        "Fairy"
+      ],
+      "stats": {
+        "baseStamina": 190,
+        "baseAttack": 246,
+        "baseDefense": 225
+      },
+      "fm": [
+        "Splash"
+      ],
+      "cm": [
+        "Struggle"
+      ],
+      "shadow": false,
+      "class": "POKEMON_CLASS_MYTHIC",
+      "released": false
+    },
+    {
+      "id": 998,
+      "name": "Baxcalibur",
+      "form": "Normal",
+      "types": [
+        "Dragon",
+        "Ice"
+      ],
+      "stats": {
+        "baseStamina": 229,
+        "baseAttack": 254,
+        "baseDefense": 168
+      },
+      "fm": [
+        "Dragon Breath",
+        "Ice Fang"
+      ],
+      "cm": [
+        "Dragon Claw",
+        "Avalanche",
+        "Outrage",
+        "Blizzard",
+        "Icy Wind"
+      ],
+      "elite_cm": [
+        "Glaive Rush"
+      ],
+      "shadow": false,
+      "released": true
+    }
+  ],
+  "announced": [
+    {
+      "id": 998,
+      "name": "Mega Baxcalibur",
+      "form": "Mega",
+      "types": [
+        "Dragon",
+        "Ice"
+      ],
+      "stats": {
+        "baseStamina": 243,
+        "baseAttack": 331,
+        "baseDefense": 221
+      },
+      "fm": [
+        "Dragon Breath",
+        "Ice Fang"
+      ],
+      "cm": [
+        "Dragon Claw",
+        "Avalanche",
+        "Outrage",
+        "Blizzard",
+        "Icy Wind"
+      ],
+      "elite_cm": [
+        "Glaive Rush"
+      ],
+      "shadow": false,
+      "released": false,
+      "raid_tier": 8
+    },
+    {
+      "id": 718,
+      "name": "Mega Zygarde",
+      "form": "Mega",
+      "types": [
+        "Dragon",
+        "Ground"
+      ],
+      "stats": {
+        "baseStamina": 415,
+        "baseAttack": 403,
+        "baseDefense": 181
+      },
+      "fm": [
+        "Dragon Tail",
+        "Bite",
+        "Zen Headbutt"
+      ],
+      "cm": [
+        "Outrage",
+        "Earthquake",
+        "Crunch",
+        "Hyper Beam",
+        "Bulldoze"
+      ],
+      "shadow": false,
+      "class": "POKEMON_CLASS_LEGENDARY",
+      "released": false,
+      "raid_tier": 9
+    },
+    {
+      "id": 801,
+      "name": "Mega Magearna",
+      "form": "Mega",
+      "types": [
+        "Steel",
+        "Fairy"
+      ],
+      "stats": {
+        "baseStamina": 190,
+        "baseAttack": 342,
+        "baseDefense": 239
+      },
+      "fm": [
+        "Splash"
+      ],
+      "cm": [
+        "Struggle"
+      ],
+      "shadow": false,
+      "class": "POKEMON_CLASS_MYTHIC",
+      "released": false
+    }
+  ],
+  "fastMoves": [
+    {
+      "id": 202,
+      "name": "Bite",
+      "type": "Dark",
+      "power": 6,
+      "duration": 500,
+      "damage_window_start": 300,
+      "damage_window_end": 500,
+      "energy_delta": 4
+    },
+    {
+      "id": 204,
+      "name": "Dragon Breath",
+      "type": "Dragon",
+      "power": 6,
+      "duration": 500,
+      "damage_window_start": 300,
+      "damage_window_end": 500,
+      "energy_delta": 4
+    },
+    {
+      "id": 213,
+      "name": "Shadow Claw",
+      "type": "Ghost",
+      "power": 6,
+      "duration": 500,
+      "damage_window_start": 50,
+      "damage_window_end": 300,
+      "energy_delta": 4
+    },
+    {
+      "id": 226,
+      "name": "Psycho Cut",
+      "type": "Psychic",
+      "power": 4,
+      "duration": 500,
+      "damage_window_start": 270,
+      "damage_window_end": 470,
+      "energy_delta": 7
+    },
+    {
+      "id": 228,
+      "name": "Metal Claw",
+      "type": "Steel",
+      "power": 6,
+      "duration": 500,
+      "damage_window_start": 230,
+      "damage_window_end": 430,
+      "energy_delta": 5
+    },
+    {
+      "id": 231,
+      "name": "Splash",
+      "type": "Water",
+      "power": 0,
+      "duration": 1500,
+      "damage_window_start": 800,
+      "damage_window_end": 1000,
+      "energy_delta": 17
+    },
+    {
+      "id": 234,
+      "name": "Zen Headbutt",
+      "type": "Psychic",
+      "power": 11,
+      "duration": 1000,
+      "damage_window_start": 750,
+      "damage_window_end": 950,
+      "energy_delta": 9
+    },
+    {
+      "id": 235,
+      "name": "Confusion",
+      "type": "Psychic",
+      "power": 19,
+      "duration": 1500,
+      "damage_window_start": 500,
+      "damage_window_end": 1500,
+      "energy_delta": 14
+    },
+    {
+      "id": 243,
+      "name": "Counter",
+      "type": "Fighting",
+      "power": 13,
+      "duration": 1000,
+      "damage_window_start": 800,
+      "damage_window_end": 1000,
+      "energy_delta": 9
+    },
+    {
+      "id": 253,
+      "name": "Dragon Tail",
+      "type": "Dragon",
+      "power": 14,
+      "duration": 1000,
+      "damage_window_start": 750,
+      "damage_window_end": 950,
+      "energy_delta": 8
+    },
+    {
+      "id": 266,
+      "name": "Iron Tail",
+      "type": "Steel",
+      "power": 14,
+      "duration": 1000,
+      "damage_window_start": 750,
+      "damage_window_end": 950,
+      "energy_delta": 6
+    },
+    {
+      "id": 282,
+      "name": "Take Down",
+      "type": "Normal",
+      "power": 7,
+      "duration": 1000,
+      "damage_window_start": 750,
+      "damage_window_end": 900,
+      "energy_delta": 8
+    },
+    {
+      "id": 327,
+      "name": "Ice Fang",
+      "type": "Ice",
+      "power": 12,
+      "duration": 1500,
+      "damage_window_start": 400,
+      "damage_window_end": 1000,
+      "energy_delta": 20
+    },
+    {
+      "id": 368,
+      "name": "Rollout",
+      "type": "Rock",
+      "power": 15,
+      "duration": 1500,
+      "damage_window_start": 1060,
+      "damage_window_end": 1300,
+      "energy_delta": 19
+    }
+  ],
+  "chargedMoves": [
+    {
+      "id": 14,
+      "name": "Hyper Beam",
+      "type": "Normal",
+      "power": 150,
+      "duration": 4000,
+      "damage_window_start": 3500,
+      "damage_window_end": 3800,
+      "energy_delta": -100
+    },
+    {
+      "id": 16,
+      "name": "Dark Pulse",
+      "type": "Dark",
+      "power": 80,
+      "duration": 3000,
+      "damage_window_start": 1400,
+      "damage_window_end": 2300,
+      "energy_delta": -50
+    },
+    {
+      "id": 24,
+      "name": "Flamethrower",
+      "type": "Fire",
+      "power": 65,
+      "duration": 2000,
+      "damage_window_start": 1300,
+      "damage_window_end": 1500,
+      "energy_delta": -50
+    },
+    {
+      "id": 31,
+      "name": "Earthquake",
+      "type": "Ground",
+      "power": 140,
+      "duration": 3500,
+      "damage_window_start": 2600,
+      "damage_window_end": 3400,
+      "energy_delta": -100
+    },
+    {
+      "id": 39,
+      "name": "Ice Beam",
+      "type": "Ice",
+      "power": 95,
+      "duration": 3500,
+      "damage_window_start": 1500,
+      "damage_window_end": 3000,
+      "energy_delta": -50
+    },
+    {
+      "id": 40,
+      "name": "Blizzard",
+      "type": "Ice",
+      "power": 130,
+      "duration": 3000,
+      "damage_window_start": 1400,
+      "damage_window_end": 2800,
+      "energy_delta": -100
+    },
+    {
+      "id": 62,
+      "name": "Ancient Power",
+      "type": "Rock",
+      "power": 70,
+      "duration": 3500,
+      "damage_window_start": 2850,
+      "damage_window_end": 3100,
+      "energy_delta": -33
+    },
+    {
+      "id": 64,
+      "name": "Rock Slide",
+      "type": "Rock",
+      "power": 75,
+      "duration": 2500,
+      "damage_window_start": 1300,
+      "damage_window_end": 2400,
+      "energy_delta": -50
+    },
+    {
+      "id": 65,
+      "name": "Power Gem",
+      "type": "Rock",
+      "power": 80,
+      "duration": 3000,
+      "damage_window_start": 2050,
+      "damage_window_end": 2800,
+      "energy_delta": -50
+    },
+    {
+      "id": 70,
+      "name": "Shadow Ball",
+      "type": "Ghost",
+      "power": 100,
+      "duration": 3000,
+      "damage_window_start": 2400,
+      "damage_window_end": 2800,
+      "energy_delta": -50
+    },
+    {
+      "id": 74,
+      "name": "Iron Head",
+      "type": "Steel",
+      "power": 60,
+      "duration": 2000,
+      "damage_window_start": 1400,
+      "damage_window_end": 1800,
+      "energy_delta": -50
+    },
+    {
+      "id": 79,
+      "name": "Thunderbolt",
+      "type": "Electric",
+      "power": 80,
+      "duration": 2500,
+      "damage_window_start": 1800,
+      "damage_window_end": 2300,
+      "energy_delta": -50
+    },
+    {
+      "id": 83,
+      "name": "Dragon Claw",
+      "type": "Dragon",
+      "power": 45,
+      "duration": 1500,
+      "damage_window_start": 900,
+      "damage_window_end": 1100,
+      "energy_delta": -33
+    },
+    {
+      "id": 95,
+      "name": "Bulldoze",
+      "type": "Ground",
+      "power": 80,
+      "duration": 3500,
+      "damage_window_start": 2600,
+      "damage_window_end": 3100,
+      "energy_delta": -50
+    },
+    {
+      "id": 108,
+      "name": "Psychic",
+      "type": "Psychic",
+      "power": 95,
+      "duration": 3000,
+      "damage_window_start": 1500,
+      "damage_window_end": 2800,
+      "energy_delta": -50
+    },
+    {
+      "id": 109,
+      "name": "Psystrike",
+      "type": "Psychic",
+      "power": 95,
+      "duration": 2500,
+      "damage_window_start": 1200,
+      "damage_window_end": 2200,
+      "energy_delta": -50
+    },
+    {
+      "id": 111,
+      "name": "Icy Wind",
+      "type": "Ice",
+      "power": 65,
+      "duration": 3500,
+      "damage_window_start": 2200,
+      "damage_window_end": 3000,
+      "energy_delta": -33
+    },
+    {
+      "id": 133,
+      "name": "Struggle",
+      "type": "Normal",
+      "power": 35,
+      "duration": 2000,
+      "damage_window_start": 1000,
+      "damage_window_end": 1800,
+      "energy_delta": 0
+    },
+    {
+      "id": 246,
+      "name": "Dynamic Punch",
+      "type": "Fighting",
+      "power": 85,
+      "duration": 2500,
+      "damage_window_start": 1000,
+      "damage_window_end": 2500,
+      "energy_delta": -50
+    },
+    {
+      "id": 247,
+      "name": "Focus Blast",
+      "type": "Fighting",
+      "power": 140,
+      "duration": 3500,
+      "damage_window_start": 3000,
+      "damage_window_end": 3500,
+      "energy_delta": -100
+    },
+    {
+      "id": 254,
+      "name": "Avalanche",
+      "type": "Ice",
+      "power": 85,
+      "duration": 2500,
+      "damage_window_start": 1500,
+      "damage_window_end": 1900,
+      "energy_delta": -50
+    },
+    {
+      "id": 275,
+      "name": "Future Sight",
+      "type": "Psychic",
+      "power": 115,
+      "duration": 2500,
+      "damage_window_start": 1200,
+      "damage_window_end": 2500,
+      "energy_delta": -100
+    },
+    {
+      "id": 277,
+      "name": "Outrage",
+      "type": "Dragon",
+      "power": 110,
+      "duration": 4000,
+      "damage_window_start": 2600,
+      "damage_window_end": 3800,
+      "energy_delta": -50
+    },
+    {
+      "id": 279,
+      "name": "Crunch",
+      "type": "Dark",
+      "power": 65,
+      "duration": 3000,
+      "damage_window_start": 1100,
+      "damage_window_end": 2800,
+      "energy_delta": -33
+    },
+    {
+      "id": 364,
+      "name": "Acrobatics",
+      "type": "Flying",
+      "power": 100,
+      "duration": 2000,
+      "damage_window_start": 600,
+      "damage_window_end": 1700,
+      "energy_delta": -100
+    },
+    {
+      "id": 404,
+      "name": "Sunsteel Strike",
+      "type": "Steel",
+      "power": 230,
+      "duration": 3000,
+      "damage_window_start": 2200,
+      "damage_window_end": 3000,
+      "energy_delta": -100
+    },
+    {
+      "id": 405,
+      "name": "Moongeist Beam",
+      "type": "Ghost",
+      "power": 230,
+      "duration": 3000,
+      "damage_window_start": 2200,
+      "damage_window_end": 3000,
+      "energy_delta": -100
+    },
+    {
+      "id": 590,
+      "name": "Glaive Rush",
+      "type": "Dragon",
+      "power": 105,
+      "duration": 2000,
+      "damage_window_start": 1700,
+      "damage_window_end": 1900,
+      "energy_delta": -50
+    },
+    {
+      "id": 495,
+      "name": "Dynamic Punch+",
+      "mega_temp": true,
+      "type": "Fighting",
+      "power": 130,
+      "duration": 2500,
+      "damage_window_start": 1000,
+      "damage_window_end": 2500,
+      "energy_delta": -100
+    },
+    {
+      "id": 496,
+      "name": "Future Sight+",
+      "mega_temp": true,
+      "type": "Psychic",
+      "power": 140,
+      "duration": 2500,
+      "damage_window_start": 1200,
+      "damage_window_end": 2500,
+      "energy_delta": -100
+    }
+  ]
+}

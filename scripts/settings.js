@@ -40,6 +40,11 @@ function BindSettings() {
         .on('change', function(event) {
             event.stopPropagation();
             SetIncludeUnreleased(this.checked);
+            const params = new URLSearchParams(location.search);
+            if (params.has('leaderboard')) {
+                raidLeaderboardState.unreleased = this.checked;
+                UpdateRaidLeaderboardURL();
+            } else if (params.has('audit')) UpdateDataAuditURL();
             CheckURLAndAct();
         });
     // Dark Mode
@@ -534,7 +539,7 @@ function GetIncludeUnreleased() {
 
 function SetIncludeUnreleased(include) {
     settings_include_unreleased = !!include;
-    $("#filter-settings input[value='unreleased'], #raid-unreleased").prop('checked', settings_include_unreleased);
+    $("#filter-settings input[value='unreleased'], #raid-unreleased, #audit-unreleased").prop('checked', settings_include_unreleased);
     try { sessionStorage.setItem(UNRELEASED_FILTER_KEY, String(settings_include_unreleased)); } catch (_) {}
     ClearTypeTiers();
 }

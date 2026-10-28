@@ -10,12 +10,13 @@ let current_pkm_obj = null; // current pokedex pokemon's pkm_obj
 let pageRequest = 0;
 
 const pages = [
-    {id: 'pokedex-page', template_path: 'templates/pokedex.html', binder: BindPokeDex},
+    {id: 'pokedex-page', template_path: 'templates/pokedex.html?v=0f27c3d4d2f0', binder: BindPokeDex},
     {id: 'strongest', template_path: 'templates/rankings.html?v=d8618d153180', binder: BindRankings},
-    {id: 'raid-leaderboard', template_path: 'templates/raid-leaderboard.html?v=110011170be1', binder: BindRaidLeaderboard},
+    {id: 'raid-leaderboard', template_path: 'templates/raid-leaderboard.html?v=bfc6df8e9638', binder: BindRaidLeaderboard},
+    {id: 'data-audit', template_path: 'templates/data-audit.html?v=44b2fb3eaee8', binder: BindDataAudit},
     {id: 'move-data', template_path: 'templates/moves.html', binder: BindMoveData},
     {id: 'type-matrix', template_path: 'templates/typechart.html', binder: BuildTypeChart},
-    {id: 'faq', template_path: 'templates/faq.html?v=f5809d455139'},
+    {id: 'faq', template_path: 'templates/faq.html?v=9c52172a34d6'},
     {id: 'about', template_path: 'templates/about.html'}
 ];
 
@@ -69,6 +70,11 @@ function BindAll() {
  * Binds links in top menu nav
  */
 function BindMenu() {
+    $('#data-audit-link').click(function(event) {
+        event.preventDefault();
+        LoadDataAuditAndUpdateURL();
+        CloseMenu();
+    });
     $('#raid-leaderboard-link').click(function(event) {
         event.preventDefault();
         LoadRaidLeaderboardAndUpdateURL();
@@ -220,6 +226,10 @@ function OnDocumentClick(event)  {
 function CheckURLAndAct() {
 
     const params = new URLSearchParams(location.search);
+    if (params.has('audit')) {
+        LoadDataAudit();
+        return;
+    }
 
     // if url has pokemon params...
     if (params.has("p")) {

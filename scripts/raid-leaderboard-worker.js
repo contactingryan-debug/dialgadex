@@ -1,6 +1,6 @@
 /* Reuse the native calculator in isolation so navigation and settings remain responsive. */
 let jb_pkm, jb_fm, jb_cm, jb_max_id;
-importScripts('pokemon_enums.js?v=664952cd50b0', 'settings.js?v=72b84d5916cb', 'pokemon_utils.js?v=bf77e61b1002', 'calc.js?v=012b8e9581df');
+importScripts('pokemon_enums.js?v=664952cd50b0', 'settings.js?v=249f1f9f91d3', 'data-rules.js?v=4163a1cdfa82', 'pokemon_utils.js?v=74e10340629e', 'calc.js?v=012b8e9581df');
 
 function IsRaidLeaderboardMega(pokemon) {
     return /^(Mega|Primal)/i.test(pokemon.form) || /^(Mega |Primal )/.test(pokemon.name);
@@ -88,7 +88,7 @@ self.onmessage = async event => {
         }
         self.postMessage({type: 'complete', matrix: {
             bosses: bosses.map((boss, index) => ({id: boss.id, name: boss.name, form: boss.form,
-                types: boss.types, bestEdps: benchmarks[index]})),
+                types: boss.types, raid_tier: boss.raid_tier, bestEdps: benchmarks[index]})),
             attackers: attackers.filter(attacker => attacker.matchups.length), settings: snapshot.settings,
         }});
     } catch (error) {

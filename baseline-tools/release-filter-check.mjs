@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 function fixture(preview = true) {
     const context = vm.createContext({performance,setTimeout,structuredClone});
-    for (const file of ['dataload.js','settings.js','pokemon_enums.js','pokemon_utils.js'])
+    for (const file of ['dataload.js','settings.js','pokemon_enums.js','data-rules.js','pokemon_utils.js'])
         vm.runInContext(readFileSync(new URL('../scripts/'+file,import.meta.url),'utf8'),context);
     vm.runInContext(`
         jb_pkm = [
@@ -14,11 +14,15 @@ function fixture(preview = true) {
             {id:3,name:'Venusaur',form:'Normal',released:true,shadow:false,types:['Grass'],stats:{baseAttack:200}}
         ];
         jb_max_id = 4;
+        jb_fm = [{name:'Tackle',duration:500}]; jb_cm = [{name:'Body Slam',duration:1500}];
+        for (const p of jb_pkm) {p.fm=['Tackle'];p.cm=['Body Slam'];p.stats.baseDefense=100;p.stats.baseStamina=100;}
         jb_spec = [
             {id:1,name:'Bulbasaur',form:'Normal',types:['Fire'],stats:{baseAttack:999}},
             {id:2,name:'Ivysaur',form:'Normal',released:true},
             {id:4,name:'Charmander',form:'Normal',released:true,shadow:false,raid_tier:5,types:['Fire'],stats:{baseAttack:180}}
         ];
+        Object.assign(jb_spec[2],{fm:['Tackle'],cm:['Body Slam'],stats:{baseAttack:180,baseDefense:100,baseStamina:100}});
+        Object.assign(jb_spec[0].stats,{baseDefense:100,baseStamina:100});
         settings_speculative = ${preview};
         if (settings_speculative) PatchSpeculative(true);
     `,context);

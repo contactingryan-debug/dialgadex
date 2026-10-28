@@ -3,4 +3,5 @@ node_modules/
 package-lock.json
 !baseline-tools/package-lock.json
 baseline-tools/results/
+/results/
 _site/

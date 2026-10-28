@@ -1,0 +1,400 @@
+{
+  "baselineCommit": "12eb162aa1ff361404e3a2fee8ce55ae223948d6",
+  "reviewDate": "2026-10-27",
+  "sourceSnapshot": {
+    "sha": "8e227be44f288d34463e23bf04e9b564d3c16f79",
+    "date": "2026-08-29T12:08:01Z"
+  },
+  "previousDefault": {
+    "bossForms": 141,
+    "groups": 112,
+    "weight": 111.99999999999999,
+    "top15": [
+      {
+        "rank": 1,
+        "id": 800,
+        "name": "Necrozma",
+        "form": "Dawn_wings",
+        "shadow": false,
+        "score": 100,
+        "points": 92.59685
+      },
+      {
+        "rank": 2,
+        "id": 647,
+        "name": "Keldeo",
+        "form": "Resolute",
+        "shadow": false,
+        "score": 97.472049,
+        "points": 90.256047
+      },
+      {
+        "rank": 3,
+        "id": 643,
+        "name": "Reshiram",
+        "form": "Normal",
+        "shadow": true,
+        "score": 86.614243,
+        "points": 80.202061
+      },
+      {
+        "rank": 4,
+        "id": 888,
+        "name": "Zacian",
+        "form": "Crowned_sword",
+        "shadow": false,
+        "score": 84.08828,
+        "points": 77.863098
+      },
+      {
+        "rank": 5,
+        "id": 646,
+        "name": "Kyurem",
+        "form": "White",
+        "shadow": false,
+        "score": 82.567455,
+        "points": 76.454862
+      },
+      {
+        "rank": 6,
+        "id": 383,
+        "name": "Groudon",
+        "form": "Normal",
+        "shadow": true,
+        "score": 78.024665,
+        "points": 72.248382
+      },
+      {
+        "rank": 7,
+        "id": 890,
+        "name": "Eternatus",
+        "form": "Normal",
+        "shadow": false,
+        "score": 77.264258,
+        "points": 71.544269
+      },
+      {
+        "rank": 8,
+        "id": 806,
+        "name": "Blacephalon",
+        "form": "Normal",
+        "shadow": false,
+        "score": 74.152195,
+        "points": 68.662597
+      },
+      {
+        "rank": 9,
+        "id": 644,
+        "name": "Zekrom",
+        "form": "Normal",
+        "shadow": true,
+        "score": 69.111337,
+        "points": 63.994921
+      },
+      {
+        "rank": 10,
+        "id": 464,
+        "name": "Rhyperior",
+        "form": "Normal",
+        "shadow": true,
+        "score": 65.503781,
+        "points": 60.654437
+      },
+      {
+        "rank": 11,
+        "id": 889,
+        "name": "Zamazenta",
+        "form": "Crowned_shield",
+        "shadow": false,
+        "score": 61.706743,
+        "points": 57.1385
+      },
+      {
+        "rank": 12,
+        "id": 146,
+        "name": "Moltres",
+        "form": "Normal",
+        "shadow": true,
+        "score": 56.711048,
+        "points": 52.512644
+      },
+      {
+        "rank": 13,
+        "id": 150,
+        "name": "Mewtwo",
+        "form": "Normal",
+        "shadow": true,
+        "score": 55.05338,
+        "points": 50.977696
+      },
+      {
+        "rank": 14,
+        "id": 800,
+        "name": "Necrozma",
+        "form": "Dusk_mane",
+        "shadow": false,
+        "score": 54.761699,
+        "points": 50.707608
+      },
+      {
+        "rank": 15,
+        "id": 491,
+        "name": "Darkrai",
+        "form": "Normal",
+        "shadow": true,
+        "score": 53.397707,
+        "points": 49.444594
+      }
+    ]
+  },
+  "revisedDefault": {
+    "bossForms": 142,
+    "groups": 135,
+    "weight": 135,
+    "top15": [
+      {
+        "rank": 1,
+        "id": 800,
+        "name": "Necrozma",
+        "form": "Dawn_wings",
+        "shadow": false,
+        "score": 100,
+        "points": 122.403491
+      },
+      {
+        "rank": 2,
+        "id": 890,
+        "name": "Eternatus",
+        "form": "Normal",
+        "shadow": false,
+        "score": 83.683461,
+        "points": 102.431477
+      },
+      {
+        "rank": 3,
+        "id": 646,
+        "name": "Kyurem",
+        "form": "White",
+        "shadow": false,
+        "score": 83.246502,
+        "points": 101.896624
+      },
+      {
+        "rank": 4,
+        "id": 647,
+        "name": "Keldeo",
+        "form": "Resolute",
+        "shadow": false,
+        "score": 80.774268,
+        "points": 98.870524
+      },
+      {
+        "rank": 5,
+        "id": 888,
+        "name": "Zacian",
+        "form": "Crowned_sword",
+        "shadow": false,
+        "score": 77.737782,
+        "points": 95.153758
+      },
+      {
+        "rank": 6,
+        "id": 643,
+        "name": "Reshiram",
+        "form": "Normal",
+        "shadow": true,
+        "score": 70.374905,
+        "points": 86.14134
+      },
+      {
+        "rank": 7,
+        "id": 383,
+        "name": "Groudon",
+        "form": "Normal",
+        "shadow": true,
+        "score": 66.984388,
+        "points": 81.991229
+      },
+      {
+        "rank": 8,
+        "id": 806,
+        "name": "Blacephalon",
+        "form": "Normal",
+        "shadow": false,
+        "score": 62.045145,
+        "points": 75.945423
+      },
+      {
+        "rank": 9,
+        "id": 644,
+        "name": "Zekrom",
+        "form": "Normal",
+        "shadow": true,
+        "score": 59.969491,
+        "points": 73.404751
+      },
+      {
+        "rank": 10,
+        "id": 889,
+        "name": "Zamazenta",
+        "form": "Crowned_shield",
+        "shadow": false,
+        "score": 59.05352,
+        "points": 72.28357
+      },
+      {
+        "rank": 11,
+        "id": 464,
+        "name": "Rhyperior",
+        "form": "Normal",
+        "shadow": true,
+        "score": 55.64623,
+        "points": 68.112928
+      },
+      {
+        "rank": 12,
+        "id": 800,
+        "name": "Necrozma",
+        "form": "Dusk_mane",
+        "shadow": false,
+        "score": 52.828923,
+        "points": 64.664446
+      },
+      {
+        "rank": 13,
+        "id": 646,
+        "name": "Kyurem",
+        "form": "Black",
+        "shadow": false,
+        "score": 52.238861,
+        "points": 63.942189
+      },
+      {
+        "rank": 14,
+        "id": 491,
+        "name": "Darkrai",
+        "form": "Normal",
+        "shadow": true,
+        "score": 51.706523,
+        "points": 63.290589
+      },
+      {
+        "rank": 15,
+        "id": 146,
+        "name": "Moltres",
+        "form": "Normal",
+        "shadow": true,
+        "score": 44.475276,
+        "points": 54.43929
+      }
+    ]
+  },
+  "current": {
+    "forms": 142,
+    "groups": 135
+  },
+  "future": {
+    "forms": 226,
+    "groups": 185
+  },
+  "removedPlaceholderBosses": [
+    {
+      "id": 800,
+      "name": "Necrozma",
+      "form": "Ultra",
+      "reason": "placeholder-moves"
+    },
+    {
+      "id": 1009,
+      "name": "Walking Wake",
+      "form": "Normal",
+      "reason": "placeholder-moves"
+    },
+    {
+      "id": 1010,
+      "name": "Iron Leaves",
+      "form": "Normal",
+      "reason": "placeholder-moves"
+    },
+    {
+      "id": 1020,
+      "name": "Gouging Fire",
+      "form": "Normal",
+      "reason": "placeholder-moves"
+    },
+    {
+      "id": 1021,
+      "name": "Raging Bolt",
+      "form": "Normal",
+      "reason": "placeholder-moves"
+    },
+    {
+      "id": 1022,
+      "name": "Iron Boulder",
+      "form": "Normal",
+      "reason": "placeholder-moves"
+    },
+    {
+      "id": 1023,
+      "name": "Iron Crown",
+      "form": "Normal",
+      "reason": "placeholder-moves"
+    },
+    {
+      "id": 1024,
+      "name": "Terapagos",
+      "form": "Normal",
+      "reason": "placeholder-moves"
+    }
+  ],
+  "statReviews": [
+    {
+      "id": 718,
+      "form": "Mega",
+      "kind": "projection",
+      "storedOrProjected": {
+        "baseAttack": 403,
+        "baseDefense": 181,
+        "baseStamina": 415
+      },
+      "hypothetical": null
+    },
+    {
+      "id": 998,
+      "form": "Mega",
+      "kind": "projection",
+      "storedOrProjected": {
+        "baseAttack": 331,
+        "baseDefense": 221,
+        "baseStamina": 243
+      },
+      "hypothetical": null
+    },
+    {
+      "id": 800,
+      "form": "Ultra",
+      "kind": "game-data-placeholder",
+      "storedOrProjected": {
+        "baseAttack": 337,
+        "baseDefense": 196,
+        "baseStamina": 200
+      },
+      "hypothetical": {
+        "baseAttack": 359,
+        "baseDefense": 209,
+        "baseStamina": 213
+      }
+    }
+  ],
+  "comparisonMethod": "The previous default is reconstructed from the validated current matchup matrix by removing the newly added Armored Mewtwo boss and applying the previous equal-species scoring. The first five entries match the previously recorded leaderboard.",
+  "validation": {
+    "unitChecks": 21,
+    "nativeBossBenchmarks": 142,
+    "nativeLeadingMovesets": 619,
+    "eachTypeProfiles": 4,
+    "matchingTypesPerProfile": 18,
+    "upstreamReferenceBosses": 3,
+    "releasedMegaCountersPerReferenceBoss": 62,
+    "clipboardAndMobile": "passed at 320, 390, and 900 px"
+  }
+}

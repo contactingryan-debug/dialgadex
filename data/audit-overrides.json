@@ -1,0 +1,163 @@
+{
+    "reviewed": "2026-10-27",
+    "corrections": [
+        {
+            "key": "armored-mewtwo-raid",
+            "id": 150,
+            "form": "A",
+            "when": {
+                "raid_tier": null
+            },
+            "values": {
+                "raid_tier": 5
+            },
+            "reason": "Armored Mewtwo has appeared in five-star raids. The upstream record has no raid tier.",
+            "sources": [
+                "https://pokemongo.com/news/armoredmewtworaids2019",
+                "https://pokemongo.com/news/pokemonday2020"
+            ]
+        },
+        {
+            "key": "minior-meteor-release",
+            "id": 774,
+            "form": "Meteor",
+            "when": {
+                "released": false
+            },
+            "values": {
+                "released": true
+            },
+            "effectiveDate": "2026-10-19",
+            "reason": "Minior debuted in its Meteor Form during the October 19–24, 2026 Orionids shower.",
+            "sources": [
+                "https://pokemongo.com/news/minior-meteor-showers-2026"
+            ]
+        },
+        {
+            "key": "minior-green-release",
+            "id": 774,
+            "form": "Green",
+            "when": {
+                "released": false
+            },
+            "values": {
+                "released": true
+            },
+            "effectiveDate": "2026-10-19",
+            "reason": "Green Core debuted during the Orionids shower. Its form change is currently restricted to non-raid battles.",
+            "sources": [
+                "https://leekduck.com/events/minior-showers-orionids-2026/",
+                "https://pokemongo.com/news/minior-meteor-showers-2026"
+            ]
+        }
+    ],
+    "restrictions": [
+        {
+            "id": 774,
+            "forms": [
+                "Normal",
+                "Red",
+                "Orange",
+                "Yellow",
+                "Green",
+                "Blue",
+                "Indigo",
+                "Violet"
+            ],
+            "reason": "Minior can currently expose its core only in Team GO Rocket, team leader, or GO Battle League battles. Its core forms are excluded from raid calculations.",
+            "sources": [
+                "https://pokemongo.com/news/minior-meteor-showers-2026"
+            ]
+        }
+    ],
+    "statReviews": [
+        {
+            "id": 718,
+            "form": "Mega",
+            "kind": "projection",
+            "expected": {
+                "baseAttack": 403,
+                "baseDefense": 181,
+                "baseStamina": 415
+            },
+            "mainSeries": {
+                "hp": 216,
+                "atk": 70,
+                "def": 91,
+                "spa": 216,
+                "spd": 85,
+                "spe": 100
+            },
+            "note": "Preserves our 3% projection. No Mega stat override was present in the checked Game Master. Final GO stats remain unconfirmed; values on other sites may use different rounding or nerfs.",
+            "sources": [
+                "https://github.com/PokeMiners/game_masters/tree/8e227be44f288d34463e23bf04e9b564d3c16f79/latest",
+                "https://github.com/smogon/pokemon-showdown/blob/1242c1e2d9763ba5b85d33f13aecb89bae19ae3d/data/pokedex.ts",
+                "https://github.com/mgrann03/pokemon-resources/blob/413424cbbc3edb94f3b61c16d355b512c4e85321/pogo_pkm_manual_announced.json"
+            ]
+        },
+        {
+            "id": 998,
+            "form": "Mega",
+            "kind": "projection",
+            "expected": {
+                "baseAttack": 331,
+                "baseDefense": 221,
+                "baseStamina": 243
+            },
+            "mainSeries": {
+                "hp": 115,
+                "atk": 175,
+                "def": 117,
+                "spa": 105,
+                "spd": 101,
+                "spe": 87
+            },
+            "note": "Preserves our existing 3% projection for Attack, Defense, and Stamina. No Mega stat override was present in the checked Game Master. Final GO stats remain unconfirmed.",
+            "sources": [
+                "https://github.com/PokeMiners/game_masters/tree/8e227be44f288d34463e23bf04e9b564d3c16f79/latest",
+                "https://github.com/smogon/pokemon-showdown/blob/1242c1e2d9763ba5b85d33f13aecb89bae19ae3d/data/pokedex.ts",
+                "https://github.com/mgrann03/pokemon-resources/blob/413424cbbc3edb94f3b61c16d355b512c4e85321/pogo_pkm_manual_announced.json"
+            ]
+        },
+        {
+            "id": 800,
+            "form": "Ultra",
+            "kind": "game-data-placeholder",
+            "expected": {
+                "baseAttack": 337,
+                "baseDefense": 196,
+                "baseStamina": 200
+            },
+            "forecast": {
+                "baseAttack": 359,
+                "baseDefense": 209,
+                "baseStamina": 213
+            },
+            "note": "337/196/200 matches the checked Game Master, which still assigns Splash and Struggle. Our 359/209/213 forecast assumes a 3% nerf and is displayed only as a hypothesis; it does not replace game data or enable ranking this incomplete form.",
+            "sources": [
+                "https://github.com/PokeMiners/game_masters/blob/8e227be44f288d34463e23bf04e9b564d3c16f79/latest/latest.json",
+                "https://github.com/smogon/pokemon-showdown/blob/1242c1e2d9763ba5b85d33f13aecb89bae19ae3d/data/pokedex.ts"
+            ]
+        }
+    ],
+    "releaseReviews": [
+        {
+            "id": 609,
+            "form": "Mega",
+            "effectiveDate": "2026-10-31",
+            "raidStatus": "announced",
+            "note": "Mega Chandelure is announced for Super Mega Raid Day on October 31, 2026. Preview availability is a future scenario until release.",
+            "sources": [
+                "https://pokemongo.com/news/chandelure-super-mega-raid-day-2026"
+            ]
+        }
+    ],
+    "checkedGameMaster": {
+        "sha": "8e227be44f288d34463e23bf04e9b564d3c16f79",
+        "date": "2026-08-29T12:08:01Z"
+    },
+    "checkedMainSeries": {
+        "sha": "1242c1e2d9763ba5b85d33f13aecb89bae19ae3d",
+        "date": "2026-10-27T15:59:21Z"
+    }
+}

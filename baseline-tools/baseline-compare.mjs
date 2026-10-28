@@ -76,6 +76,10 @@ async function measure(browser, url) {
     // data from current-only rankings while upstream does not enforce that policy.
     if (settings_speculative) PatchSpeculative(false);
     settings_speculative = false;
+    // Engine parity uses the identical upstream inputs. Local data corrections and
+    // eligibility changes are independently covered by audit/release checks.
+    if (typeof jb_source_pkm !== 'undefined' && jb_source_pkm)
+      jb_pkm = structuredClone(jb_source_pkm).filter(p => GetPokemonForms(p.id).includes(p.form));
 
     const input = {
       metric: settings_metric, level: settings_default_level[0],
@@ -87,7 +91,10 @@ async function measure(browser, url) {
       mixed: true, offType: true, elite: true,
       shadow: true, mega: true, unreleased: false,
     };
-    const dataJson = JSON.stringify([jb_pkm, jb_fm, jb_cm, jb_spec]);
+    // Autocomplete adds search_name to shared objects in upstream; local audit
+    // metadata is likewise not a battle input. Keep all resource fields in the hash.
+    const dataJson = JSON.stringify([jb_pkm, jb_fm, jb_cm, jb_spec], (key, value) =>
+      ['search_name','_auditCorrections','_movesPending','_raidRestriction'].includes(key) ? undefined : value);
     const dataCounts = {pokemonForms: jb_pkm.length, fastMoves: jb_fm.length, chargedMoves: jb_cm.length};
     const results = [];
     const normalize = value => String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');

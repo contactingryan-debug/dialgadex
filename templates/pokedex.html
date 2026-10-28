@@ -8,6 +8,7 @@
 </div>
 
 <!-- pokedex stats and moves table -->
+<div id="pokemon-data-details" hidden></div>
 <div id=pokedex-details>
     <div id=not-released class="center" data-i18n="dex.unreleased">Not found in the <b>Pokémon GO</b> files yet</div>
     <div id=released>
@@ -276,6 +277,7 @@
                 </div>
             </div>
             <div class="card-body">
+                <p id="pokedex-move-note" class="audit-note" hidden></p>
                 <table class="table-bg move-table" id=pokedex-move-table>
                     <thead>
                         <tr class=table-header>

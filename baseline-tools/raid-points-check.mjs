@@ -21,11 +21,11 @@ test('points reflect performance gaps continuously, with bounded invalid inputs'
 });
 
 test('species weight is split across forms; an equal-form view preserves full weight', () => {
-    const matrix = {bosses: [{id:1}, {id:1}, {id:2}], attackers: [
+    const matrix = {bosses: [{id:1,form:'A'}, {id:1,form:'B'}, {id:2}], attackers: [
         attacker('a', 10, [matchup(0,1), matchup(1,1)]),
         attacker('b', 20, [matchup(2,1)]),
     ]};
-    const species = ScoreRaidMatrix(matrix);
+    const species = ScoreRaidMatrix(matrix, {weighting:'species'});
     assert.equal(species.totalWeight, 2);
     assert.equal(species.rows[0].points, 5);
     assert.equal(species.rows[1].points, 5);
@@ -33,6 +33,43 @@ test('species weight is split across forms; an equal-form view preserves full we
     const forms = ScoreRaidMatrix(matrix, {weighting:'forms'});
     assert.equal(forms.rows[0].points, 10);
     assert.equal(forms.rows[1].score, 50);
+});
+
+test('raid groups combine Genesect, Deoxys, Arceus, and Silvally but preserve major forms', () => {
+    const bosses = [
+        ...[386,493,649,773].flatMap(id => ['A','B','C'].map(form => ({id,form}))),
+        {id:150,form:'Normal'}, {id:150,form:'A'}, {id:150,form:'Mega'}, {id:150,form:'MegaY'},
+        {id:483,form:'Altered'}, {id:483,form:'Origin'},
+        {id:800,form:'Normal'}, {id:800,form:'Dusk_mane'}, {id:800,form:'Dawn_wings'},
+    ];
+    const result = ScoreRaidMatrix({bosses, attackers:[attacker('all',10,bosses.map((_,i)=>matchup(i,1)))]});
+    assert.equal(result.weighting, 'groups');
+    assert.equal(result.groupCount,13);
+    assert(Math.abs(result.totalWeight-13)<1e-10);
+    assert(result.weights.slice(0,12).every(weight=>Math.abs(weight-1/3)<1e-10));
+    assert(result.weights.slice(12).every(weight=>weight===1));
+    assert(Math.abs(result.rows[0].points-65)<1e-10);
+});
+
+test('normal, Shadow, and Super formats share a form allocation without biasing other forms', () => {
+    const bosses=[{id:649,form:'Normal'},{id:649,form:'Normal',raidFormat:'shadow'},
+        {id:649,form:'Burn'},{id:150,form:'Mega'},{id:150,form:'Mega',raidFormat:'super'},
+        {id:150,form:'Normal'},{id:150,form:'Normal',raidFormat:'shadow'},{id:150,form:'A'}];
+    const result=ScoreRaidMatrix({bosses,attackers:[attacker('all',10,bosses.map((_,i)=>matchup(i,1)))]});
+    assert.deepEqual(Array.from(result.weights),[.25,.25,.5,.5,.5,.5,.5,1]);
+    assert.equal(result.groupCount,4);
+    assert.equal(result.totalWeight,4);
+    assert.equal(result.rows[0].points,20);
+    const forms=ScoreRaidMatrix({bosses,attackers:[]},{weighting:'forms'});
+    assert.equal(forms.totalWeight,5);
+});
+
+test('group points average form results rather than choosing a group’s best matchup', () => {
+    const result=ScoreRaidMatrix({bosses:[{id:649,form:'Normal'},{id:649,form:'Burn'}],
+        attackers:[attacker('a',1,[matchup(0,1),matchup(1,.8)]),attacker('b',2,[matchup(0,.95),matchup(1,.95)])]});
+    assert.equal(result.rows.find(row=>row.id===1).points,2.5);
+    assert(Math.abs(result.rows[0].points-3.75)<1e-10);
+    assert.equal(result.rows[0].id,2);
 });
 
 test('one boss contributes once per build, including ties and near-best boundaries', () => {

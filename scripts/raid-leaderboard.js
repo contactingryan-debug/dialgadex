@@ -32,6 +32,7 @@ function GetRaidLeaderboardSnapshot() {
 }
 
 function BindRaidLeaderboard() {
+    $('#raid-audit-link').on('click', event => { event.preventDefault(); LoadDataAuditAndUpdateURL(); });
     $('#raid-unreleased').on('change', function() {
         SetIncludeUnreleased(this.checked);
         raidLeaderboardState.unreleased = this.checked;
@@ -75,7 +76,7 @@ function UpdateRaidLeaderboardURL() {
     params.set('leaderboard', '');
     if (raidLeaderboardState.unreleased) params.set('unreleased', '');
     if (raidLeaderboardState.floor !== 80) params.set('floor', raidLeaderboardState.floor);
-    if (raidLeaderboardState.weighting === 'forms') params.set('weight', 'forms');
+    if (['forms', 'species'].includes(raidLeaderboardState.weighting)) params.set('weight', raidLeaderboardState.weighting);
     if (!raidLeaderboardState.shadows) params.set('no-shadows', '');
     if (!raidLeaderboardState.legendaries) params.set('no-legendaries', '');
     UpdateURL('?' + params.toString());
@@ -95,7 +96,7 @@ async function LoadRaidLeaderboard() {
     raidLeaderboardState = {
         unreleased: params.has('unreleased'),
         floor: [70, 80, 90].includes(Number(params.get('floor'))) ? Number(params.get('floor')) : 80,
-        weighting: params.get('weight') === 'forms' ? 'forms' : 'species',
+        weighting: ['forms', 'species'].includes(params.get('weight')) ? params.get('weight') : 'groups',
         shadows: !params.has('no-shadows'), legendaries: !params.has('no-legendaries'),
         query: '', sort: 'score',
     };
@@ -122,7 +123,7 @@ async function LoadRaidLeaderboard() {
         if (raidLeaderboardCache?.key === key) matrix = raidLeaderboardCache.matrix;
         else {
             matrix = await new Promise((resolve, reject) => {
-                const worker = new Worker('scripts/raid-leaderboard-worker.js?v=2132cf352caf');
+                const worker = new Worker('scripts/raid-leaderboard-worker.js?v=ad9991a46464');
                 raidLeaderboardWorker = worker;
                 raidLeaderboardReject = reject;
                 worker.onmessage = event => {
@@ -175,11 +176,10 @@ function RefreshRaidLeaderboardScores() {
     raidLeaderboardResult = ScoreRaidMatrix(raidLeaderboardMatrix, raidLeaderboardState);
     raidLeaderboardVisible = 25;
     $('#raid-status').text(RaidLeaderboardText('pool', {
-        forms: raidLeaderboardResult.bossCount, species: raidLeaderboardResult.speciesCount,
+        forms: raidLeaderboardResult.bossCount, groups: raidLeaderboardResult.groupCount,
     }));
     $('#raid-method-summary').text(RaidLeaderboardText('method-summary', {floor: raidLeaderboardState.floor}));
-    $('#raid-weight-summary').text(RaidLeaderboardText(raidLeaderboardState.weighting === 'species'
-        ? 'weight-species-note' : 'weight-forms-note'));
+    $('#raid-weight-summary').text(RaidLeaderboardText('weight-' + raidLeaderboardState.weighting + '-note'));
     RenderRaidLeaderboard();
 }
 
@@ -279,6 +279,9 @@ function BuildRaidLeaderboardBreakdown(row) {
         item.append(link, points);
         item.append($('<span class="raid-matchup-rating"></span>').text(
             `${RaidLeaderboardNumber(100 * matchup.ratio)}% · eDPS ${RaidLeaderboardNumber(matchup.edps, 2)}`));
+        item.append($('<span class="raid-matchup-rating"></span>').text(RaidLeaderboardText('boss-weight', {
+            weight: RaidLeaderboardNumber(raidLeaderboardResult.weights[matchup.bossIndex], 3),
+            group: GetRaidGroupLabel(boss, raidLeaderboardState.weighting)})));
         const moves = $('<span class="raid-matchup-moves"></span>');
         for (const kind of ['fm', 'cm']) {
             const move = jb_fm.concat(jb_cm).find(move => move.name === matchup[kind]);

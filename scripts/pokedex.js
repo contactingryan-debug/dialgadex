@@ -10,7 +10,7 @@ async function LoadPokedex(pokedex_mon) {
     }
 
     // displays what should be displayed
-    await LoadPage("pokedex-page");
+    if (!await LoadPage("pokedex-page")) return;
 
     // sets the page title
     const pokemon_name = TranslatedSpeciesName(pokedex_mon.pokemon_id);
@@ -133,6 +133,7 @@ async function LoadPokedexData(pokedex_mon) {
 
     // if this pokemon is not released in pokemon go yet...
     if (!released) {
+        RenderPokemonDataDetails(pokedex_mon.pokemon_id, pokedex_mon.form);
         $("#not-released").css("display", "revert");
         $("#released").css("display", "none");
         //if ($("#footer").css("display") != "none")
@@ -240,6 +241,7 @@ function GetPokedexStatBars(stats) {
  * Recalculates stats and movesets (for the stat calculator)
  */
 async function UpdateStats(pkm_obj, pokedex_mon) {
+    RenderPokemonDataDetails(pokedex_mon.pokemon_id, pokedex_mon.form);
     const stats = GetPokemonStats(pkm_obj, pokedex_mon.level, pokedex_mon.ivs);
     const max_stats = GetPokemonStats(pkm_obj, pokedex_mon.level);
     const max_stats_50 = GetPokemonStats(pkm_obj, 50);
@@ -340,6 +342,11 @@ function ResetPokedexCounters() {
  * mon and their resistance to the average of the selected mon's movesets.
  */
 async function LoadPokedexCounters() {
+    if (!GetPokemonDataQuality(current_pkm_obj).usable || current_pkm_obj._raidRestriction) {
+        $('#counters-loading').empty();
+        $('#counters').hide();
+        return;
+    }
     // Move filters for display
     MoveFilterPopup("#counters-filters");
     const moves = GetPokemonMoves(current_pkm_obj, "Type-Match");
@@ -552,6 +559,15 @@ function ShowCountersPopup(hover_element, show, counter = null) {
  * of all movesets. This percentage is then displayed on the CP section.
  */
 async function LoadPokedexMoveTable(pkm_obj, stats, max_stats = null) {
+    const usable = GetPokemonDataQuality(pkm_obj).usable && !pkm_obj._raidRestriction;
+    $('#pokedex-move-table').toggle(!!usable);
+    $('#pokedex-move-note').prop('hidden', !!usable).text(AuditText(pkm_obj._raidRestriction
+        ? 'raid-restricted' : GetPokemonDataQuality(pkm_obj).code));
+    if (!usable) {
+        $('#pokedex-move-table tbody').empty();
+        $('#attack-tiers').hide();
+        return;
+    }
     // sets movesets title
     //$("#movesets-title").html("<b>" + pkm_obj.name + "'s movesets</b>");
 

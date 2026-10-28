@@ -53,11 +53,14 @@ appeared in raids. The leaderboard URL records whether unreleased data is includ
 
 For each boss, divide attacker eDPS by the best non-Mega eDPS in the selected pool. The
 default awards points linearly from zero at 80% performance to five at 100%:
-`5 * clamp((relative_eDPS - 0.8) / 0.2, 0, 1)`. Each boss species has total
-weight one, shared across its included high-tier forms. The displayed score
+`5 * clamp((relative_eDPS - 0.8) / 0.2, 0, 1)`. Each raid group has total
+weight one. Genesect, Deoxys, Arceus, and Silvally share it across included forms;
+other major forms have separate groups. A form's allocation is shared across
+raid formats, so regular/Shadow or ordinary/Super versions cannot add weight.
+Separate Shadow raid profiles and their availability audit are deferred. The displayed score
 is its weighted point total relative to the overall leader (100).
 
-Scoring options support 70%, 80%, and 90% floors and equal weight per form.
+Scoring options support 70%, 80%, and 90% floors, equal species, and equal forms.
 Search and display filters preserve the reference pool and score scale.
 Each entry expands to contributing bosses, weighted points, relative eDPS,
 and the optimal moves. #1 and within-5% counts refer to boss forms; ties count.
@@ -69,6 +72,38 @@ upgrade recommendations remain a separate future step.
 Calculations run in an isolated Web Worker and cache the most recent battle
 settings in memory. Navigating away cancels unfinished work. Existing type
 rankings and individual counters retain their calculation formulas.
+
+## Data audit and corrections
+
+Open **Data Audit** from navigation, the leaderboard, or
+[`?audit`](https://contactingryan-debug.github.io/dialgadex/?audit). Search by
+Pokémon, form, or number, and filter availability, raid tags, incomplete data,
+projections, local corrections, or unsupported source forms. Pokémon pages have
+an expandable **Data details** panel. **Copy details** includes source/effective
+flags, moves, stats and provenance, ranking inclusion reasons, group, weight,
+and a direct page link. Clipboard failures offer selectable text.
+
+Released means ever available, not currently in rotation. Shadow availability
+controls attacker eligibility independently of general raid eligibility. The
+audit distinguishes verified/announced raids, unverified upstream tags, and
+future projections. A tag on an unreleased form is not evidence of a real raid.
+
+Upstream resources remain live. Narrow corrections and source links live in
+[`data/audit-overrides.json`](data/audit-overrides.json), while raw upstream
+records remain inspectable. This pass adds Armored Mewtwo's missing tier-5 tag
+and updates Minior's Meteor/Green release flags. Core forms are excluded from
+raid calculations because their transformation is currently restricted to
+non-raid battles. Future placeholder learnsets are excluded in both release
+modes, while genuine released Splash/Struggle learnsets remain usable.
+
+Mega Zygarde **403/181/415** and Mega Baxcalibur **331/221/243** remain explicitly
+unconfirmed projections, rather than game-data claims. Ultra Necrozma's stored
+**337/196/200** matches the checked Game Master snapshot; the **359/209/213**
+hypothesis is displayed separately and does not enable an incomplete form.
+The manifest pins the checked Game Master and main-series sources and dates.
+
+After editing assets, run `python tools/update-assets.py` to refresh entry,
+template, worker, locale, and correction-manifest content versions.
 
 ## Host this fork
 
@@ -127,12 +162,16 @@ FORK_URL=http://localhost:8000/ npm run compare
 FORK_URL=http://localhost:8000/ npm run check:each-counters
 npm run check:raid-points
 npm run check:release-filter
+npm run check:data-audit
+FORK_URL=http://localhost:8000/ npm run check:data-audit-browser
 FORK_URL=http://localhost:8000/ npm run check:raid-leaderboard
 ```
 
 Results are written to `baseline-tools/results/baseline-results.json`.
 Matching settings and input-data hashes are required before numerical parity
-can pass. Empty, missing, and nonfinite counter results fail the check.
+can pass. The engine comparison restores identical upstream records on the
+fork; local corrections and eligibility changes have separate audit checks.
+Empty, missing, and nonfinite counter results fail the check.
 The sites load live resource data, which can change independently of the code;
 the report identifies the particular input version tested.
 

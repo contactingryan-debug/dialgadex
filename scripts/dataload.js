@@ -6,11 +6,13 @@ const POGO_PNGS_PATH = "graphics/pogo-256/"
 const SHINY_POGO_PNGS_PATH = "graphics/pogo-shiny-256/"
 const ICONS_URL = CDN_URL + "graphics/pokemonicons-sheet.png";
 
-const LOADING_MAX_VAL = 5; // max number of files that need to be loaded
+const LOADING_MAX_VAL = 6; // max number of files that need to be loaded
 let loading_val = 0; // number of files loaded so far
 
 // jb json objects
 let jb_names, jb_pkm, jb_max_id, jb_fm, jb_cm, jb_spec, jb_unpatch;
+let jb_source_pkm, jb_audit_manifest;
+const AUDIT_MANIFEST_URL = 'data/audit-overrides.json?v=3facae201f4a';
 
 /**
  * Load JSONs from resource repo
@@ -26,6 +28,7 @@ async function LoadJSONData() {
     );
     jsonLoadReqs.push(FetchJSONPokeData("pogo_pkm.min.json",
         function(response) {
+            jb_source_pkm = structuredClone(response);
             jb_pkm = response;
             jb_max_id = jb_pkm.at(-1).id;
 
@@ -58,9 +61,14 @@ async function LoadJSONData() {
             IncreaseLoadingVal();
         })
     );
+    jsonLoadReqs.push(FetchJSON(AUDIT_MANIFEST_URL, null, json => {
+        jb_audit_manifest = json;
+        IncreaseLoadingVal();
+    }));
 
     try {
         await Promise.all(jsonLoadReqs);
+        ApplyPokemonAuditOverrides(jb_pkm, jb_audit_manifest);
         $("#loading-bar").css("display", "none");
         
         if (settings_speculative) {
@@ -247,7 +255,7 @@ function PatchSpeculative(useUpcoming) {
         for (const patch of jb_spec) {
             let pkm_obj = jb_pkm.find(e=>e.id==patch.id&&e.form==patch.form);
             if (!pkm_obj) {
-                jb_pkm.push(patch);
+                jb_pkm.push(MarkPokemonMovePlaceholder(structuredClone(patch), true));
 
                 jb_unpatch.push({
                     id: patch.id,

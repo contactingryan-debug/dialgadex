@@ -103,3 +103,26 @@ The calculation formulas and upstream data sources are unchanged.
   scoring formulas, grouping, and raid mechanics unchanged.
 - Verify both modes, preview isolation, shared navigation, and native-engine
   parity. Compare current data with Data Preview disabled on both baseline sites.
+
+## October 27, 2026 — raid groups and inspectable data audit
+
+- Default to equal raid groups: Genesect, Deoxys, Arceus, and Silvally share one
+  weight across forms; other major forms remain separate. Split a form's share
+  across raid formats so adding regular/Shadow/Super profiles cannot inflate it.
+  Retain equal-species and equal-form comparisons in scoring options.
+- Defer separate Shadow raid history/profiles, retaining Shadow attacker
+  availability and the general raid tag.
+- Apply documented local corrections to Armored Mewtwo and Minior, retaining
+  raw upstream records and their original flags for inspection.
+- Exclude incomplete stats/move placeholders and explicitly restricted raid
+  forms from calculation pools. Preserve genuine released zero-power learnsets.
+  Validate alternate forms independently of the base form's release flag.
+- Add searchable/filterable Data Audit and Pokémon Data details, including
+  source/effective availability, raid provenance, HP/profile, move quality,
+  displayed/ranking stats, projection sources, inclusion reasons, group, and
+  weight. Copy details supports clipboard and a visible selection fallback.
+- Keep the Mega Zygarde/Baxcalibur stat projections labeled unconfirmed, and
+  distinguish Ultra Necrozma's Game Master record from the hypothetical forecast.
+- Add mathematical/eligibility/clipboard/mobile checks and a reusable asset
+  version updater. Engine parity still compares identical upstream records;
+  audit corrections are verified separately.

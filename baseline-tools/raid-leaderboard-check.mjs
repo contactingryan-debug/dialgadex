@@ -34,7 +34,7 @@ try {
     assert.equal(await page.title(), 'Raid Attacker Leaderboard - DialgaDex');
     assert(await page.locator('.raid-entry').count() > 10);
     assert.equal(await page.locator('#raid-floor').inputValue(), '80');
-    assert.equal(await page.locator('#raid-weighting').inputValue(), 'species');
+    assert.equal(await page.locator('#raid-weighting').inputValue(), 'groups');
     const parity = await page.evaluate(async () => {
         if (JSON.stringify([jb_pkm, jb_fm, jb_cm]) !== window.raidOriginalData)
             throw new Error('The worker changed main-page Pokémon or move data.');

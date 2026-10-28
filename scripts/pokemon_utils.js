@@ -357,8 +357,7 @@ async function SearchAll(search_params, f_process_pokemon) {
 
         // checks whether pokemon should be skipped
         // (not released or legendary when not allowed)
-        if (!pkm_obj || (!search_params.unreleased && !pkm_obj.released)
-            || (!search_params.legendary && pkm_obj.class)) {
+        if (!pkm_obj || (!search_params.legendary && pkm_obj.class)) {
             continue;
         }
 
@@ -367,10 +366,11 @@ async function SearchAll(search_params, f_process_pokemon) {
                 level = 50;
 
             // default form
-            await f_process_pokemon(pkm_obj, false, level, search_params);
+            if (IsPokemonCalculationEligible(pkm_obj, search_params.unreleased))
+                await f_process_pokemon(pkm_obj, false, level, search_params);
 
             // shadow (except not released when it shouldn't)
-            if (search_params.shadow && pkm_obj.shadow) {
+            if (search_params.shadow && pkm_obj.shadow && IsPokemonCalculationEligible(pkm_obj, search_params.unreleased)) {
                 await f_process_pokemon(pkm_obj, true, level, search_params);
             }
 
@@ -382,12 +382,12 @@ async function SearchAll(search_params, f_process_pokemon) {
                     entry.id == id && entry.form == forms[form_i]);
 
                 // checks whether pokemon should be skipped (form not released or unwanted)
-                if (!pkm_obj || (!search_params.unreleased && !pkm_obj.released)
+                if (!IsPokemonCalculationEligible(pkm_obj, search_params.unreleased)
                     || (!search_params.mega && (pkm_obj.form == "Mega" || pkm_obj.form == "MegaY" || pkm_obj.form == "MegaZ")))
                     continue;
 
-                if ((pkm_obj.raid_tier == 8 || pkm_obj.raid_tier == 9) && settings_supermega_level == 4)
-                    level = base_level + 2;
+                level = base_level + (((pkm_obj.raid_tier == 8 || pkm_obj.raid_tier == 9)
+                    && settings_supermega_level == 4) ? 2 : 0);
 
                 await f_process_pokemon(pkm_obj, false, level, search_params);
                 // other forms and shadow (except not released when it shouldn't)
@@ -418,7 +418,8 @@ function GetEnemyParams(enemy_pkm_obj) {
 function GetRaidBosses(has_type = null, weak_to_type = null, include_unreleased = false) {
     let raid_bosses = [];
     for (const pkm_obj of GetCalculationPokemon(include_unreleased)) {
-        if (!include_unreleased && !pkm_obj.released)
+        if (!GetPokemonForms(pkm_obj.id).includes(pkm_obj.form)) continue;
+        if (!IsPokemonCalculationEligible(pkm_obj, include_unreleased))
             continue;
         if (!pkm_obj.raid_tier || pkm_obj.raid_tier < 4) // Not a high-tier boss
             continue;
@@ -686,7 +687,7 @@ function RunSearchString(str, check_movesets = true) {
     // Build up all possible mons and movesets
     for (let pkm of search_space) {
         if (check_movesets && !(pkm.fm && pkm.cm)) continue;
-        if (!check_unreleased && !pkm.released) continue;
+        if (!IsPokemonCalculationEligible(pkm, check_unreleased)) continue;
 
         const moves = GetPokemonMoves(pkm, "All");
         let fms = [{name: null, elite: false}], cms = [{name: null, elite: false}];

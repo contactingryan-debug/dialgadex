@@ -283,17 +283,30 @@
         <p>DialgaDex is designed to always keep you in the same session while using the website so
             your modifications aren't lost during normal browsing.</p>
         <h3>How do I preview announced-but-unimplemented changes?</h3>
-        <p>In the site settings (accessible via the header), there's an option to preview "speculative"
-            changes to the game data. These changes are already announced officially, but haven't yet
-            made it into the Game Master because they haven't yet been added to the game. Such changes
-            include releases of new Pokémon species or forms, releases of the shadow form for a Pokémon,
-            and modifications to the moves a Pokémon can learn.</p>
+        <p>In the site settings (accessible via the header), <b>Data Preview</b> includes upcoming
+            changes and projections for future forms. A projection is not confirmation of final
+            Pokémon GO stats or raid availability. Open <a href="?audit">Data Audit</a> to inspect
+            release flags, stat provenance, corrections, and the selected calculation scope.</p>
         <p>By default this setting is enabled so that upcoming releases can easily be previewed and shared.
             You can disable these changes in order to show only the currently-available data.</p>
         <p>Rankings use current source data while <b>Include unreleased</b> is off. Turn it on to
             include unreleased attackers and raid-tagged bosses; enabling <b>Data Preview</b> also
             applies announced changes. This release choice is shared with the Raid Leaderboard
             and remembered in the current browser tab.</p>
+        <p>Incomplete placeholder learnsets are excluded from attacker and boss calculations,
+            including unreleased mode. Their records remain visible in Data Audit. A genuine
+            zero-power fast move such as Splash is not automatically treated as incomplete.</p>
+        <h3>How are raid groups weighted?</h3>
+        <p>The leaderboard defaults to equal raid groups. Genesect, Deoxys, Arceus, and Silvally
+            each share one total weight across their included forms. Other major forms, including
+            Armored Mewtwo, Origin, Therian, Primal, Crowned, and fusion forms, have separate groups.
+            Points are averaged within a shared group. Additional regular, Shadow, or Super formats
+            share the form's allocation; separate Shadow profiles and their history are deferred.</p>
+        <h3>How do I report an incorrect flag or stat?</h3>
+        <p>Open <b>Data details</b> on a Pokémon page, or find it in <a href="?audit">Data Audit</a>.
+            <b>Copy details</b> includes the page link, source and effective flags, moves, stats,
+            ranking eligibility, group, and weight. Paste those details with the correction to review.
+            Released means historically available; a raid tag by itself does not prove raid history.</p>
         <h3>How do I add new moves to a Pokémon?</h3>
         <p>On the Pokémon's dex page, scroll to the "movesets" area. In the header, you can press
             the Edit (pencil) button to open the learnset editor.</p>
