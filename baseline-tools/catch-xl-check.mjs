@@ -29,7 +29,7 @@ function fixture() {
         FormatTranslation(key,params={}) {let s=key.split('.').reduce((o,k)=>o?.[k],strings)||key;
             for(const [k,v] of Object.entries(params))s=s.replaceAll('{'+k+'}',v);return s;},
         GetTranslation:(key,fallback)=>fallback||key,TranslatedSpeciesName:(id,name)=>name||String(id)});
-    for(const name of ['dataload','settings','pokemon_enums','data-rules','catch-xl','pokemon_utils','raid-points','data-audit'])
+    for(const name of ['dataload','settings','pokemon_enums','data-rules','catch-xl','pokemon_utils','rankings','raid-points','data-audit'])
         vm.runInContext(read('../scripts/'+name+'.js'),context);
     vm.runInContext(`jb_pkm=roster;jb_source_pkm=structuredClone(roster);jb_catch_profiles=manifest;
         jb_spec=[];jb_audit_manifest={};jb_max_id=890;settings_speculative=false;
@@ -115,6 +115,20 @@ test('unreleased encounters carry projections and strong tests include performan
     assert.equal(json('IsStrongCatchXL({eligible:true},1.8,100)'),true);
     assert.equal(json('IsStrongCatchXL({eligible:null},1.8,95)'),false);
     assert.equal(json('IsStrongCatchXL({eligible:true},.94,95)'),false);
+});
+
+test('Best uses a non-transformed reference while Shadows, fusions, Crowned forms and Ultra Beasts remain eligible',()=>{
+    const {evaluate}=fixture();
+    const transformed=['Mega','MegaY','MegaZ','Primal','Ultra'].map((form,i)=>({form,rat:200-i}));
+    for(const pokemon of [
+        {form:'Normal',shadow:true}, {form:'Dawn_wings',name:'Necrozma'},
+        {form:'Crowned_sword',name:'Zacian'}, {form:'Normal',name:'Nihilego',class:'POKEMON_CLASS_ULTRA_BEAST'},
+    ]) {
+        const entries=[...transformed,{...pokemon,rat:100},{form:'Normal',rat:90}];
+        assert.equal(evaluate(`GetComparisonMon(${JSON.stringify(entries)})`),100);
+    }
+    assert.equal(evaluate(`GetComparisonMon(${JSON.stringify(transformed)})`),0);
+    assert.equal(evaluate('GetComparisonMon([])'),0);
 });
 
 test('preview promotions remain projected while verified local release corrections are respected',()=>{

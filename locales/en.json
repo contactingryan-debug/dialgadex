@@ -174,8 +174,8 @@
                 "authorlink": "Defined by",
                 "graphiclink": "Used in infographics by"
             },
-            "best": "Best",
-            "best-tooltip": "Compare to the absolute best Pokémon",
+            "best": "Best non-Mega",
+            "best-tooltip": "Compare to the best non-Mega attacker. Mega, Primal, and Ultra forms can exceed 100%.",
             "tiers": "Tiers",
             "tiers-tooltip": "§Determines how tiers are computed.\nDepends on comparison Pokémon.",
             "jenks-tooltip": "Algorithmic tiers based on minimum variance",
@@ -598,13 +598,15 @@
         "power-detail": "{power} base ({kind}); {effective} at Mega level {level}"
     },
     "catch-xl": {
+        "counter-only": "XL boosting options only",
+        "counter-empty": "No XL boosting counters match these settings. Check the transformation level, filters, or encounter mapping.",
         "strong-only": "Strong + XL only",
         "threshold": "Strong counter threshold",
         "coverage-header": "XL ≥{threshold}%",
         "coverage-detail": "Strong + XL: {coverage} weighted raids · {count} boss forms at ≥{threshold}% of the best non-Mega eDPS",
         "coverage-note": "XL coverage adds the existing boss weights for strong, compatible catches. It uses the displayed fixed Hidden Power build. Combat scores stay unchanged. P marks projected rules.",
         "active-note": "Catch XL requires the relevant transformation to be active when catching. Standard Megas and Primals need at least High Level (2). This is a chance bonus, not guaranteed extra XL.",
-        "counter-note": "Strong + XL uses the displayed moveset’s eDPS against the best non-Mega benchmark. The catch boost requires an active transformation; P marks a projected rule.",
+        "counter-note": "XL filtering keeps compatible boosters regardless of strength, using your selected metric and baseline. The catch boost requires an active transformation; P marks a projected rule.",
         "catch-label": "Catch: {pokemon}",
         "eligible": "XL compatible via {types}",
         "projected": "Projected XL match via {types} (P)",

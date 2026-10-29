@@ -16,7 +16,8 @@ exactly for all three reference bosses. See the
 
 New page loads use **eDPS, L50, Super Mega L4, 6-Stack, Type Affinity on,
 Off Types on, Mixed Types on, Party Power off, a 10-second relobby, and the
-Best baseline**.
+Best non-Mega baseline**. This reference excludes Mega, Primal, and Ultra forms;
+transformations can exceed 100%.
 The selected controls and the internal default filters use the same preset.
 The settings remain adjustable through the normal controls.
 
@@ -147,9 +148,10 @@ explicit user-approved projection, without inventing its level system or XL
 rate. This does not enable its placeholder learnset. Projected matches require
 Include unreleased and carry P labels.
 
-Individual raid counter lists show catch details and XL badges and have their
-own Strong + XL filter. The threshold uses eDPS for the displayed moveset even
-when another display metric is selected; its non-Mega reference remains fixed.
+Individual raid counter lists show catch details and XL badges and have an
+**XL boosting options only** filter with no strength threshold. Results use the
+selected metric and baseline from before XL filtering, then show the top ten
+compatible species. The strength threshold remains a leaderboard tool.
 Catch-form rules, boost types, evidence, source links and unknown mappings are
 inspectable in Data Audit and Copy details. An active transformation is required
 at catch time; the feature predicts compatibility, not a guaranteed extra XL

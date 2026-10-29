@@ -145,12 +145,13 @@
             a few different ways of building tiers, each with its own motivation and advantages.</p>
         <p>The Jenks and ESpace methods both rely on choosing a reference "Baseline" Pokémon as a point of
             comparison. This Pokémon is placed around the A-tier, then all other Pokémon are ranked relative to it.
-            There are different ways of selecting this "Baseline." The default "Budget" method looks for the
+            There are different ways of selecting this "Baseline." The "Budget" method looks for the
             best highly-available option (which excludes things like Megas, shadows, and legendaries).
             The ESpace method - which is designed to be used alongside the ESpace tiers option - looks for the
             best reasonably-available option (which excludes most limited Pokémon but includes things like
-            most shadows and most legendaries). The "Best" method just picks the very best option, without any
-            further filtering.</p>
+            most shadows and most legendaries). The default "Best non-Mega" method picks the best attacker
+            in the selected results excluding Mega, Primal, and Ultra transformations. Shadows, fusions,
+            and Crowned forms can set the reference. Transformations can exceed 100%.</p>
         <p>From here, the tier-making setting takes over. "Jenks" uses an optimization algorithm to find the best
             places to split the results into a new tier. It is sometimes called the "Natural Breaks" algorithm,
             because it tries to place these splits where there are already gaps in the data, very similar to how
@@ -325,10 +326,13 @@
             effective level and clickable move assumptions. Incomplete forms and boss-only
             Eternamax remain excluded. Scores measure each form’s own damage.</p>
         <h3>What does Strong + XL mean?</h3>
-        <p>A counter qualifies when its displayed moveset reaches the selected 90%, 95%, or 100%
+        <p>On the Raid Leaderboard, a counter qualifies when its displayed moveset reaches the selected 90%, 95%, or 100%
             of the best non-Mega eDPS and its active transformation can boost the caught Pokémon’s
             XL chance. The default is 95%. XL coverage uses the same boss weights and is separate
             from combat points. Different Hidden Power builds are not combined.</p>
+        <p>Individual Raid Counters use <b>XL boosting options only</b> without a strength threshold.
+            Compatible boosters remain ranked by the selected metric, with percentages using the selected
+            baseline from before the XL filter. The normal limit of ten species still applies.</p>
         <p>The catch form matters: Necrozma fusion raids yield regular Necrozma, and Crowned
             Zacian and Zamazenta yield their Hero forms. The Primal and Mega Rayquaza profiles
             use their special three-type catch bonuses. Standard profiles need High Level (2)

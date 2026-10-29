@@ -56,16 +56,70 @@ try {
     assert.match(await page.locator('.raid-breakdown').innerText(),/Strong \+ XL:.*weighted raids/);
     assert.match(await page.locator('.raid-breakdown').innerText(),/Catch:/);
     for(const width of [320,390,900]){await page.setViewportSize({width,height:844});await fits();}
-    // Use a qualifying matchup from the real matrix to exercise the native counter list.
-    await page.locator('.raid-breakdown .raid-boss-link').first().click();
-    await page.locator('#counters-grid .counters-rat-row').first().waitFor({timeout:120000});
+    // Mewtwo has both strong and weak compatible Megas. Capture the full native
+    // result so XL-only percentages can be checked against the unfiltered pool.
+    await page.evaluate(()=>{
+        const render=ProcessAndSetCountersFromArray;
+        window.counterRenders=0;
+        ProcessAndSetCountersFromArray=function(counters,...args){
+            window.counterInputs=counters;
+            render(counters,...args);window.counterRenders++;
+        };
+        SetXLStrongThreshold(100);
+        LoadPokedexAndUpdateURL(GetPokeDexMon(150,'Normal'));
+    });
+    await page.waitForFunction(()=>window.counterRenders>0&&!document.querySelector('#counters-loading'),null,{timeout:120000});
+    assert.equal(await page.locator('#counters-xl-threshold').count(),0);
+    assert.match(await page.locator('.counters-xl-controls').innerText(),/XL boosting options only/);
+    const beforeXL=await page.evaluate(()=>window.counterRenders);
     await page.locator('#counters-xl-only').check();
-    await page.waitForFunction(()=>!document.querySelector('#counters-loading'),null,{timeout:120000});
-    assert(await page.locator('#counters-grid .xl-badge').count()>0);
-    assert(await page.locator('#counters-grid .counters-rat-row td:first-child b').evaluateAll(elements=>
-        elements.every(el=>Number(el.textContent)>=95)),'Strong + XL percentages must use the non-Mega eDPS reference.');
-    assert(await page.evaluate(()=>[...document.querySelectorAll('#counters-grid .xl-badge')].every(el=>el.textContent.startsWith('XL'))));
+    await page.waitForFunction(n=>window.counterRenders>n&&!document.querySelector('#counters-loading'),beforeXL,{timeout:120000});
+    async function checkXLCounters() {
+        const expected=await page.evaluate(()=>{
+            const all=[...window.counterInputs].reverse();
+            const reference=all.find(p=>!IsMegaPrimalUltraForm(p)).rat;
+            const baseline=GetComparisonMon(all);
+            if(baseline!==reference)throw new Error('Best must use the non-Mega reference before XL filtering.');
+            const groups=new Map();
+            for(const p of all.filter(p=>p._catchXL?.eligible===true)) {
+                const key=GetUniqueIdentifier(p,false,false);
+                if(!groups.has(key))groups.set(key,[]);
+                groups.get(key).push(p);
+            }
+            return [...groups.values()].slice(0,10).flatMap(group=>group.slice(0,3)
+                .filter((p,i)=>i===0||p.rat/baseline>=.7).map(p=>Number((100*p.rat/baseline).toFixed(0))));
+        });
+        const actual=await page.locator('#counters-grid .counters-rat-row td:first-child b')
+            .evaluateAll(elements=>elements.map(el=>Number(el.textContent)));
+        assert.deepEqual(actual,expected,'XL filtering must preserve native metric ordering and the full-pool baseline.');
+        assert(actual.some(p=>p<95),'Compatible options below the former strength threshold must remain visible.');
+        assert.equal(await page.locator('#counters-grid .xl-badge').count(),actual.length);
+        return actual;
+    }
+    await checkXLCounters();
+    // The leaderboard threshold has no effect here, and DPS remains the selected metric.
+    const beforeDPS=await page.evaluate(()=>{const n=window.counterRenders;SetMetric('DPS');return n;});
+    await page.waitForFunction(n=>window.counterRenders>n&&!document.querySelector('#counters-loading'),beforeDPS,{timeout:120000});
+    const dpsCounters=await checkXLCounters();
+    await page.evaluate(async()=>{SetXLStrongThreshold(90);ResetPokedexCounters();await LoadPokedexCounters();});
+    assert.deepEqual(await checkXLCounters(),dpsCounters);
+    assert.equal(await page.evaluate(()=>settings_metric),'DPS');
     assert.match(await page.locator('#counters-catch-note').innerText(),/Catch:/);await fits();
+    // The same Best option is used in typed Attackers and Counters rankings.
+    let megaAbove100=false;
+    for(const versus of [false,true]) {
+        const baseline=await page.evaluate(async versus=>{
+            await LoadStrongestAndUpdateURL('Psychic',versus);
+            const reference=str_pokemons.find(p=>!IsMegaPrimalUltraForm(p));
+            return {reference:reference.pct,megaAbove100:str_pokemons.some(p=>IsMegaPrimalUltraForm(p)&&p.pct>100),
+                correct:str_pokemons.every(p=>Math.abs(p.pct-100*p.rat/reference.rat)<1e-9)};
+        },versus);
+        assert.equal(baseline.reference,100);assert(baseline.correct);
+        megaAbove100 ||= baseline.megaAbove100;
+    }
+    assert(megaAbove100,'Mega percentages must be allowed to exceed the best non-Mega reference.');
+    assert.match(await page.locator('#cmp-top').innerText(),/Best non-Mega/);
+    await page.evaluate(()=>{SetXLStrongThreshold(95);settings_metric='eDPS';});
     await page.evaluate(()=>{SetIncludeUnreleased(true);return LoadDataAuditAndUpdateURL('800 Ultra');});
     await page.locator('#audit-quality').selectOption('xl');
     const ultra=page.locator('.audit-entry[data-key="800/Ultra"]');

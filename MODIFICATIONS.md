@@ -197,3 +197,13 @@ The calculation formulas and upstream data sources are unchanged.
 - Show per-matchup catch details, eligibility and projection labels, counter
   badges and filters, and auditable/copyable rule provenance. Use a per-call
   eDPS reference for counter filtering without changing the selected metric.
+
+## October 29, 2026 — XL-only counters and non-Mega comparison
+
+- Make individual Raid Counters filter by catch XL eligibility without a
+  strength threshold. Keep the selected metric, normal species limit and
+  comparison baseline from before XL filtering. Keep Strong + XL and its
+  adjustable threshold on the Raid Leaderboard.
+- Change the Best baseline to Best non-Mega across rankings and raid counters.
+  Exclude Mega, Primal and Ultra transformations from the reference while
+  allowing Shadow, fusion and Crowned forms. Transformations may exceed 100%.

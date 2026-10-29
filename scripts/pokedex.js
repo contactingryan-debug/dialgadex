@@ -360,14 +360,10 @@ async function LoadPokedexCounters() {
         search_params.real_damage = true;
         const xlOnly=$('#counters-xl-only').is(':checked');
         if (xlOnly) search_params.mega=true;
-        $('#counters-xl-threshold').val(GetXLStrongThreshold());
 
         const enemy_params = GetEnemyParams(current_pkm_obj);
         const counters = await GetStrongestVersus(enemy_params, search_params);
-        const references=await GetStrongestVersus(enemy_params,{...GetDefaultSearchParams(),type:'Any',mega:false,
-            unreleased:search_params.unreleased,real_damage:true,metric:'eDPS'});
         if (request!==pokedexCounterRequest || current_pkm_obj!==boss) return;
-        const baseline=references.at(-1)?.rat || NaN;
         const roster=GetCalculationPokemon(search_params.unreleased);
         const byKey=new Map(roster.map(p=>[PokemonDataKey(p),p]));
         const encounter=GetRaidCatchEncounter(boss,roster);
@@ -376,13 +372,8 @@ async function LoadPokedexCounters() {
             const pokemon=byKey.get(PokemonDataKey(counter)) || counter;
             counter._catchEncounter=encounter;
             counter._catchXL=GetCatchXLMatch(GetCatchXLBoostProfile(pokemon),encounter,settings_supermega_level,search_params.unreleased);
-            const ratings=counter.all_rat || [{dps:counter.dps,tdo:counter.tdo}];
-            const edps=ratings.reduce((sum,r)=>sum+GetEDPS(r.dps,r.tdo,pokemon,enemy_params,true),0)/ratings.length;
-            counter._catchXLRatio=edps/baseline;
         }
-        const shown=xlOnly ? counters.filter(counter=>IsStrongCatchXL(counter._catchXL,counter._catchXLRatio)) : counters;
-        $('#counters-xl-empty').prop('hidden',shown.length>0).text(XLText('empty'));
-        ProcessAndSetCountersFromArray(shown);
+        ProcessAndSetCountersFromArray(counters);
         
         $("#counters").css("display", "revert");
     }
@@ -405,8 +396,13 @@ function ProcessAndSetCountersFromArray(counters,
     max_counters = 10, max_per_counter = 3, extra_moveset_cutoff = 0.7) {
 
     // reverses counters arrays to be in descending order
-    const xlOnly=$('#counters-xl-only').is(':checked');
-    counters=xlOnly ? [...counters].sort((a,b)=>b._catchXLRatio-a._catchXLRatio) : [...counters].reverse();
+    counters = [...counters].reverse();
+
+    // Preserve the selected metric and baseline before narrowing to XL boosters.
+    const top_compare = GetComparisonMon(counters);
+    if ($('#counters-xl-only').is(':checked'))
+        counters = counters.filter(counter => counter._catchXL?.eligible === true);
+    $('#counters-xl-empty').prop('hidden', counters.length > 0).text(XLText('counter-empty'));
 
     // simplifies counters arrays into maps where each pokemon species is a key
     let counters_s = new Map();
@@ -422,9 +418,6 @@ function ProcessAndSetCountersFromArray(counters,
     // for each pokemon species
     const all_counters = Array.from(counters_s.values()).slice(0, max_counters);
 
-    // gets strongest rat
-    const top_compare = xlOnly ? 1 : GetComparisonMon(counters);
-
     // sets counters in the page
 
     $("#counters-grid").empty();
@@ -438,7 +431,7 @@ function ProcessAndSetCountersFromArray(counters,
         for (let j = 0; j < all_counters[i].length && j < max_per_counter; j++) {
             let counter = all_counters[i][j];
 
-            let rat_pct = xlOnly ? 100*counter._catchXLRatio : 100 * counter.rat / top_compare;
+            let rat_pct = 100 * counter.rat / top_compare;
 
             if (j > 0 && rat_pct < extra_moveset_cutoff * 100)
                 continue;
@@ -1015,9 +1008,6 @@ async function UpdatePokemonStatsAndURL() {
  * Bind event handlers for a Pokedex page
  */
 function BindPokeDex() {
-    $('#counters-xl-threshold').on('change',function() {
-        SetXLStrongThreshold(this.value);ResetPokedexCounters();LoadPokedexCounters();
-    });
     // Custom IVs
     $("#stats-form").submit(function(e) {
         UpdatePokemonStatsAndURL();

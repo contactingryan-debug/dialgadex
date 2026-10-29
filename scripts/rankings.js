@@ -223,11 +223,9 @@ function GetComparisonMon(str_pokemons, type = null) {
     if (!Array.isArray(str_pokemons) || str_pokemons.length == 0) return 0;
 
     let top_compare;
-    const best_mon = str_pokemons[0].rat;
-    
     switch (settings_compare) {
         case "top":
-            top_compare = best_mon;
+            top_compare = str_pokemons.find(pokemon => !IsMegaPrimalUltraForm(pokemon))?.rat || 0;
             break;
         case "budget":
             try {
