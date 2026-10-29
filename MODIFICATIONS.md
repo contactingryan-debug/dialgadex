@@ -212,3 +212,5 @@ The calculation formulas and upstream data sources are unchanged.
   transformations while retaining regular counters. Apply it before the species
   limit without changing the selected metric or baseline. XL-only takes
   precedence when both filters are selected.
+- Enable Hide non-XL Megas / Primals / Ultras by default on new Raid Counters
+  page loads; users can turn it off to restore all transformations.

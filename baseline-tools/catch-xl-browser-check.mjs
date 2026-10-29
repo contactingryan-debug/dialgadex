@@ -71,7 +71,7 @@ try {
     await page.waitForFunction(()=>window.counterRenders>0&&!document.querySelector('#counters-loading'),null,{timeout:120000});
     assert.equal(await page.locator('#counters-xl-threshold').count(),0);
     assert.match(await page.locator('.counters-xl-controls').innerText(),/XL boosting options only/);
-    assert.equal(await page.locator('#counters-hide-non-xl').isChecked(),false);
+    assert.equal(await page.locator('#counters-hide-non-xl').isChecked(),true);
     async function setCounterFilter(selector,checked) {
         const before=await page.evaluate(()=>window.counterRenders);
         await page.locator(selector).setChecked(checked);
@@ -106,6 +106,8 @@ try {
         assert.equal(await page.locator('#counters-grid .xl-badge').count(),expected.badges);
         return actual;
     }
+    await checkXLCounters('mixed');
+    await setCounterFilter('#counters-hide-non-xl',false);
     const allCounters=await checkXLCounters('all');
     await setCounterFilter('#counters-hide-non-xl',true);
     await checkXLCounters('mixed');
