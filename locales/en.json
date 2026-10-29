@@ -53,7 +53,7 @@
                 ]
             },
             "projected-levels": "Projection: with unreleased included and Super Mega level 4, every Mega, Primal, and Ultra form receives +2 levels once (L50 → L52).",
-            "projected-plus": "P marks a projected +move enabled by Include unreleased. Published power takes priority; unknown power, energy and timing use our saved model. Inspect assumptions by clicking the move or opening Data Audit."
+            "projected-plus": "P marks a projected +move enabled by Unreleased. Published power takes priority; unknown power, energy and timing use our saved model. Inspect assumptions by clicking the move or opening Data Audit."
         }
     },
     "dex": {
@@ -132,7 +132,7 @@
     "filters": {
         "species": {
             "title": "Species Filters",
-            "unreleased": "Include unreleased",
+            "unreleased": "Unreleased",
             "unreleased-tooltip": "Include unreleased attackers and raid bosses. Off uses current data; on also allows announced changes when Data Preview is enabled.",
             "mega": "Mega/Primal/Ultra",
             "shadow": "Shadow",
@@ -174,7 +174,7 @@
                 "authorlink": "Defined by",
                 "graphiclink": "Used in infographics by"
             },
-            "best": "Best non-Mega",
+            "best": "Best",
             "best-tooltip": "Compare to the best non-Mega attacker. Mega, Primal, and Ultra forms can exceed 100%.",
             "tiers": "Tiers",
             "tiers-tooltip": "§Determines how tiers are computed.\nDepends on comparison Pokémon.",
@@ -248,7 +248,7 @@
         "preview": "Data Preview",
         "darkmode": "Dark Mode",
         "language": "Language",
-        "preview-tooltip": "Apply announced data to rankings when Include unreleased is on. Current-only rankings use current data."
+        "preview-tooltip": "Apply announced data to rankings when Unreleased is on. Current-only rankings use current data."
     },
     "moves": {
         "type-helper": "type",
@@ -460,7 +460,7 @@
         "empty": "No scoring attackers match this search.",
         "more": "Show 25 more",
         "counts-note": "≥100% and ≥95% count boss forms reaching those percentages of the best non-Mega eDPS. Shadow and Legendary display filters keep the same reference pool and score scale.",
-        "data-note": "Include unreleased applies to both attackers and raid bosses. Current-only calculations exclude Data Preview. Scores measure battle coverage; upgrade cost and your current teams should guide your next investment.",
+        "data-note": "The Unreleased filter applies to both attackers and raid bosses. Current-only calculations exclude Data Preview. Scores measure battle coverage; upgrade cost and your current teams should guide your next investment.",
         "open-pokemon": "Open Pokémon details →",
         "entry-summary": "Total: {points} weighted points · Largest margin over a non-Mega alternative: +{lead}%",
         "moves-note": "Moves are optimized for each boss. * marks limited moves; extra charged moves or TMs may be needed. Percentages compare with the best attacker in the {reference} for that boss. Each contribution includes its boss weight.",
@@ -582,7 +582,7 @@
         "plus-projected": "Projected +move",
         "plus-unassigned": "No assigned +move; none invented",
         "plus-source": "Already in source learnset",
-        "plus-applied": "Enabled by Include unreleased",
+        "plus-applied": "Enabled by Unreleased",
         "plus-off": "Forecast available; not used in current-only rankings",
         "plus-incomplete": "Excluded: base move data incomplete",
         "max-battle-only": "Max Battle boss only; not a usable raid form"
@@ -616,7 +616,7 @@
         "unknown-catch": "Catch form unconfirmed; XL match unknown",
         "no-match": "No XL type match for this catch",
         "level-required": "XL type match via {types}; requires Mega/Primal level {minLevel}+",
-        "projection-off": "Projected XL match; enable Include unreleased",
+        "projection-off": "Projected XL match; enable Unreleased",
         "empty": "No strong + XL counters match these settings. Check the threshold, transformation level, or encounter mapping.",
         "unknown": "Unconfirmed encounter",
         "no-encounter": "No ordinary raid encounter",

@@ -11,12 +11,12 @@ let pageRequest = 0;
 
 const pages = [
     {id: 'pokedex-page', template_path: 'templates/pokedex.html?v=4e7321b67978', binder: BindPokeDex},
-    {id: 'strongest', template_path: 'templates/rankings.html?v=93f40607af0e', binder: BindRankings},
-    {id: 'raid-leaderboard', template_path: 'templates/raid-leaderboard.html?v=2b9e86ea44ed', binder: BindRaidLeaderboard},
+    {id: 'strongest', template_path: 'templates/rankings.html?v=025d116aff59', binder: BindRankings},
+    {id: 'raid-leaderboard', template_path: 'templates/raid-leaderboard.html?v=31f25f359856', binder: BindRaidLeaderboard},
     {id: 'data-audit', template_path: 'templates/data-audit.html?v=553dad90b622', binder: BindDataAudit},
     {id: 'move-data', template_path: 'templates/moves.html', binder: BindMoveData},
     {id: 'type-matrix', template_path: 'templates/typechart.html', binder: BuildTypeChart},
-    {id: 'faq', template_path: 'templates/faq.html?v=11218ef4d57e'},
+    {id: 'faq', template_path: 'templates/faq.html?v=289b360027ef'},
     {id: 'about', template_path: 'templates/about.html'}
 ];
 

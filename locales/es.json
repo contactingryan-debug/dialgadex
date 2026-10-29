@@ -53,7 +53,7 @@
                 ]
             },
             "projected-levels": "Proyección: con no lanzados y nivel Super Mega 4, cada forma Mega, Primigenia y Ultra recibe +2 niveles una vez (N50 → N52).",
-            "projected-plus": "P indica un movimiento + proyectado, activado por Incluir no lanzados. La potencia publicada tiene prioridad; la potencia, energía y duración desconocidas usan nuestro modelo. Pulsa el movimiento o abre la auditoría para ver los supuestos."
+            "projected-plus": "P indica un movimiento + proyectado, activado por No disponibles. La potencia publicada tiene prioridad; la potencia, energía y duración desconocidas usan nuestro modelo. Pulsa el movimiento o abre la auditoría para ver los supuestos."
         }
     },
     "dex": {
@@ -132,7 +132,7 @@
     "filters": {
         "species": {
             "title": "Filtros de Especies",
-            "unreleased": "Incluir no disponibles",
+            "unreleased": "No disponibles",
             "unreleased-tooltip": "Incluye atacantes y jefes de incursión aún no disponibles. Desactivado usa datos actuales; activado también permite cambios anunciados si Vista previa está activada.",
             "mega": "Mega/Primigenio/Ultra",
             "shadow": "Oscuro",
@@ -174,7 +174,7 @@
                 "authorlink": "Hecho por",
                 "graphiclink": "Usado en infografías por"
             },
-            "best": "Mejor sin Mega",
+            "best": "Mejor",
             "best-tooltip": "Compara con el mejor atacante sin Mega. Las formas Mega, Primigenias y Ultra pueden superar el 100%.",
             "tiers": "Gradas",
             "tiers-tooltip": "§Determina cómo se calculan las gradas.\nDepende del Pokémon de comparación.",
@@ -248,7 +248,7 @@
         "preview": "Vista Previa",
         "darkmode": "Modo Oscuro",
         "language": "Idioma",
-        "preview-tooltip": "Aplica datos anunciados a las clasificaciones cuando Incluir no disponibles está activado. Las clasificaciones actuales usan datos actuales."
+        "preview-tooltip": "Aplica datos anunciados a las clasificaciones cuando No disponibles está activado. Las clasificaciones actuales usan datos actuales."
     },
     "moves": {
         "type-helper": "del tipo",
@@ -460,7 +460,7 @@
         "empty": "Ningún atacante con puntos coincide con la búsqueda.",
         "more": "Mostrar 25 más",
         "counts-note": "≥100% y ≥95% cuentan formas de jefes que alcanzan esos porcentajes del mejor eDPS sin Mega. Los filtros de oscuros y legendarios mantienen la misma referencia y escala.",
-        "data-note": "Incluir no disponibles se aplica a atacantes y jefes. Los cálculos solo actuales excluyen la Vista previa. Las puntuaciones miden cobertura; considera el coste de mejora y tus equipos actuales.",
+        "data-note": "El filtro No disponibles se aplica a atacantes y jefes. Los cálculos solo actuales excluyen la Vista previa. Las puntuaciones miden cobertura; considera el coste de mejora y tus equipos actuales.",
         "open-pokemon": "Ver detalles del Pokémon →",
         "entry-summary": "Total: {points} puntos ponderados · Mayor ventaja frente a una alternativa sin Mega: +{lead}%",
         "moves-note": "Los movimientos se optimizan para cada jefe. * indica movimientos limitados; pueden requerirse MT o movimientos adicionales. Los porcentajes se comparan con el mejor atacante del {reference}. Cada contribución incluye el peso del jefe.",
@@ -582,7 +582,7 @@
         "plus-projected": "Movimiento + proyectado",
         "plus-unassigned": "Sin movimiento + asignado; no se inventa ninguno",
         "plus-source": "Ya incluido en la fuente",
-        "plus-applied": "Activado por Incluir no lanzados",
+        "plus-applied": "Activado por No disponibles",
         "plus-off": "Proyección disponible; no se usa en clasificaciones actuales",
         "plus-incomplete": "Excluido: datos de movimientos incompletos",
         "max-battle-only": "Solo jefe de Combate Max; forma no utilizable en incursiones"
@@ -616,7 +616,7 @@
         "unknown-catch": "Forma de captura sin confirmar; compatibilidad XL desconocida",
         "no-match": "Ningún tipo coincide para el bonus XL",
         "level-required": "Coincide por {types}; requiere nivel Mega/Primigenio {minLevel}+",
-        "projection-off": "XL proyectado; activa Incluir no lanzados",
+        "projection-off": "XL proyectado; activa No disponibles",
         "empty": "Ningún counter cumple estas condiciones de fuerza y XL. Revisa el umbral, nivel de transformación o forma de captura.",
         "unknown": "Encuentro sin confirmar",
         "no-encounter": "Sin encuentro de incursión normal",

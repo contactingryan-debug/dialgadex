@@ -214,3 +214,5 @@ The calculation formulas and upstream data sources are unchanged.
   precedence when both filters are selected.
 - Enable Hide non-XL Megas / Primals / Ultras by default on new Raid Counters
   page loads; users can turn it off to restore all transformations.
+- Shorten the species filter label to Unreleased and the comparison baseline
+  label to Best. Keep the existing non-Mega reference and filtering behavior.

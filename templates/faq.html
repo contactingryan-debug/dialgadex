@@ -149,7 +149,7 @@
             best highly-available option (which excludes things like Megas, shadows, and legendaries).
             The ESpace method - which is designed to be used alongside the ESpace tiers option - looks for the
             best reasonably-available option (which excludes most limited Pokémon but includes things like
-            most shadows and most legendaries). The default "Best non-Mega" method picks the best attacker
+            most shadows and most legendaries). The default "Best" method picks the best attacker
             in the selected results excluding Mega, Primal, and Ultra transformations. Shadows, fusions,
             and Crowned forms can set the reference. Transformations can exceed 100%.</p>
         <p>From here, the tier-making setting takes over. "Jenks" uses an optimization algorithm to find the best
@@ -290,7 +290,7 @@
             release flags, stat provenance, corrections, and the selected calculation scope.</p>
         <p>By default this setting is enabled so that upcoming releases can easily be previewed and shared.
             You can disable these changes in order to show only the currently-available data.</p>
-        <p>Rankings use current source data while <b>Include unreleased</b> is off. Turn it on to
+        <p>Rankings use current source data while <b>Unreleased</b> is off. Turn it on to
             include unreleased attackers and raid-tagged bosses; enabling <b>Data Preview</b> also
             applies announced changes. This release choice is shared with the Raid Leaderboard
             and remembered in the current browser tab.</p>
@@ -298,14 +298,14 @@
             including unreleased mode. Their records remain visible in Data Audit. A genuine
             zero-power fast move such as Splash is not automatically treated as incomplete.</p>
         <h3>Which forms receive the future +2 level projection?</h3>
-        <p>With <b>Include unreleased</b> on and <b>Super Mega level 4</b> selected, every Mega,
+        <p>With <b>Unreleased</b> on and <b>Super Mega level 4</b> selected, every Mega,
             Primal, and Ultra transformation uses the chosen base level +2, once (L50 → L52).
             Existing native boosts do not stack. The calculator uses the actual level multiplier
             for Attack, Defense, and HP; boss profiles stay at their raid stats. Data Preview is
             optional for this level rule. Ultra Beasts retain normal levels. Explicit calculator
             levels stay as entered, and incomplete moves still exclude a form from rankings.</p>
         <h3>How are predicted +moves included?</h3>
-        <p><b>Include unreleased</b> enables the saved form-specific +move assignments.
+        <p><b>Unreleased</b> enables the saved form-specific +move assignments.
             <b>P</b> marks a projection. Click a move for its base power and assumptions, or
             select <b>Projected +moves</b> in <a href="?audit&amp;data=plus">Data Audit</a>.
             Source and published powers take priority. Unknown base power uses
@@ -321,7 +321,7 @@
             non-Mega leader stays at 100. Ordinary scores do not change; transformations can
             exceed 100. Each boss still contributes at most five points. Search, Shadow and
             Legendary display filters keep this same benchmark.</p>
-        <p>Transformations use the selected Mega team size and Mega level. <b>Include unreleased</b>
+        <p>Transformations use the selected Mega team size and Mega level. <b>Unreleased</b>
             enables the existing +move predictions and level projection. Breakdowns show the
             effective level and clickable move assumptions. Incomplete forms and boss-only
             Eternamax remain excluded. Scores measure each form’s own damage.</p>

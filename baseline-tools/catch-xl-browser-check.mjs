@@ -140,7 +140,7 @@ try {
         megaAbove100 ||= baseline.megaAbove100;
     }
     assert(megaAbove100,'Mega percentages must be allowed to exceed the best non-Mega reference.');
-    assert.match(await page.locator('#cmp-top').innerText(),/Best non-Mega/);
+    assert.equal(await page.locator('#cmp-top [data-i18n="filters.display.best"]').innerText(),'Best');
     await page.evaluate(()=>{SetXLStrongThreshold(95);settings_metric='eDPS';});
     await page.evaluate(()=>{SetIncludeUnreleased(true);return LoadDataAuditAndUpdateURL('800 Ultra');});
     await page.locator('#audit-quality').selectOption('xl');

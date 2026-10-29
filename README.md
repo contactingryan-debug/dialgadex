@@ -5,7 +5,7 @@ based on upstream commit `0f958e7b09375fd58f327e42e3c41b2a7d18f27f`.
 
 This fork preserves the native calculation engine and verifies current-only
 raid-counter results against upstream. Optional future assumptions are enabled
-through Include unreleased and are identified in Data Audit.
+through Unreleased and are identified in Data Audit.
 
 **Baseline verified:** the local fork matches the official production site
 exactly for all three reference bosses. See the
@@ -16,12 +16,12 @@ exactly for all three reference bosses. See the
 
 New page loads use **eDPS, L50, Super Mega L4, 6-Stack, Type Affinity on,
 Off Types on, Mixed Types on, Party Power off, a 10-second relobby, and the
-Best non-Mega baseline**. This reference excludes Mega, Primal, and Ultra forms;
+Best baseline**. This reference excludes Mega, Primal, and Ultra forms;
 transformations can exceed 100%.
 The selected controls and the internal default filters use the same preset.
 The settings remain adjustable through the normal controls.
 
-With **Include unreleased on** and **Super Mega level 4**, all **Mega, Primal,
+With **Unreleased on** and **Super Mega level 4**, all **Mega, Primal,
 and Ultra transformations** use the selected base level +2, once: normally
 L50 → L52. The rule uses form identity, including Ultra Necrozma, rather than
 requiring a Super Mega raid tag. Existing native +2 boosts do not stack.
@@ -37,7 +37,7 @@ default attacker level and its assumption. Placeholder move exclusions still
 apply to Ultra Necrozma. Mega, Primal, and Ultra forms share the transformation
 filter/team-size setting and are excluded from the non-Mega investment pool.
 
-With **Include unreleased on**, the saved +move assignments are also available.
+With **Unreleased on**, the saved +move assignments are also available.
 Existing source definitions retain their values. Published power takes priority;
 unknown base power is `round_to_5(147.391 - 0.125502 × base GO Attack +
 16.80809 × duration_seconds)`. Unknown definitions assume 100 energy and inherit
@@ -85,11 +85,11 @@ is recorded in `?leaderboard&megas` and remembered for navigation in the tab.
 The current level, team size, Party Power, and relobby settings apply; eDPS
 remains the scoring metric.
 
-The shared **Include unreleased** option applies to both attackers and the
+The shared **Unreleased** option applies to both attackers and the
 raid-boss pool throughout the rankings, Each type summaries, and leaderboard.
 It is off by default and remembered for the browser tab. Current-only
 calculations use the source data and exclude announced Data Preview changes.
-With Include unreleased on, unreleased attackers and raid-tagged bosses are
+With Unreleased on, unreleased attackers and raid-tagged bosses are
 included; Data Preview additionally applies announced data when enabled.
 Release status and raid eligibility remain separate: an attacker need not have
 appeared in raids. The leaderboard URL records whether unreleased data is included.
@@ -117,7 +117,7 @@ The score measures battle coverage; acquisition costs and roster-aware
 upgrade recommendations remain a separate future step.
 
 Mega/Primal/Ultra forms use their separately selected native team size and Mega
-level. Include unreleased also applies the existing forecast +moves and +2 level
+level. Unreleased also applies the existing forecast +moves and +2 level
 rule, once; placeholder forms and boss-only Eternamax remain excluded. Expanded
 breakdowns show the effective attacker level and clickable move assumptions.
 
@@ -146,7 +146,7 @@ for Primal Kyogre, Primal Groudon and Mega Rayquaza. Standard Mega/Primal profil
 require at least High Level (2). Ultra Necrozma assumes Dragon/Psychic as an
 explicit user-approved projection, without inventing its level system or XL
 rate. This does not enable its placeholder learnset. Projected matches require
-Include unreleased and carry P labels.
+Unreleased and carry P labels.
 
 Individual raid counter lists show catch details and XL badges and have an
 **XL boosting options only** filter with no strength threshold. Results use the

@@ -77,7 +77,7 @@ try {
     await page.locator('#audit-unreleased').check();
     pinsir=page.locator('.audit-entry[data-key="127/Mega"]');
     await pinsir.locator('summary').click();await pinsir.locator('.audit-copy').waitFor();
-    assert.match(await pinsir.innerText(),/Enabled by Include unreleased/);
+    assert.match(await pinsir.innerText(),/Enabled by Unreleased/);
     assert.match(await pinsir.innerText(),/150 base \(estimated\); 195 at Mega level 4/);
     await pinsir.locator('.audit-copy').click();
     await pinsir.locator('.audit-copy-status').filter({hasText:'Copied'}).waitFor();

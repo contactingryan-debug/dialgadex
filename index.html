@@ -28,7 +28,7 @@
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_pkm.min.json" as="fetch" crossorigin />
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_fm.json" as="fetch" crossorigin />
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_cm.json" as="fetch" crossorigin />
-    <link rel="preload" href="locales/en.json?v=b3d7b6342ad2" as="fetch" crossorigin />
+    <link rel="preload" href="locales/en.json?v=648e5df79042" as="fetch" crossorigin />
     <link rel="preload" href="locales/pokedata/en.json" as="fetch" crossorigin />
 
     <script src="lib/jquery-3.6.0.min.js"></script>
@@ -36,7 +36,7 @@
     <script src="lib/jenks.js"></script>
     
     <script src="scripts/dataload.js?v=28155d8bcee7"></script>
-    <script src="scripts/translation.js?v=77c366c533bc"></script>
+    <script src="scripts/translation.js?v=09943e9431c3"></script>
     <script src="scripts/settings.js?v=63f6908f18cb"></script>
     <script src="scripts/pokemon_enums.js"></script>
     <script src="scripts/data-rules.js?v=489b486b3f8a"></script>
@@ -51,7 +51,7 @@
     <script src="scripts/raid-points.js?v=850e35a78bc8"></script>
     <script src="scripts/data-audit.js?v=e411e806a6cf"></script>
     <script src="scripts/raid-leaderboard.js?v=c682f1bea2a2"></script>
-    <script src="index.js?v=183c476e1271"></script>
+    <script src="index.js?v=ab19e589fe51"></script>
     
     <script src="components/type-selector.js?v=9ea0ae6e6f65"></script>
 </head>
@@ -62,7 +62,7 @@
 <div id="filter-settings" style="display: none;">
     <div class="settings-list">
         <div class="settings-subtitle" data-i18n="filters.species.title">Species Filters</div>
-        <span class="tooltip tooltip-bottom"><span data-i18n="filters.species.unreleased">Include unreleased</span>
+        <span class="tooltip tooltip-bottom"><span data-i18n="filters.species.unreleased">Unreleased</span>
             <span class="tooltiptext" data-i18n="filters.species.unreleased-tooltip">Include unreleased attackers and raid bosses. Off uses current data; on also allows announced changes when Data Preview is enabled.</span>
         </span>
             <label class="switch">
@@ -159,7 +159,7 @@
                         <p><i><span data-i18n="filters.display.espace-tooltip.graphiclink">Used in infographics by</span> <a href="https://reddit.com/u/bulbavisual">/u/bulbavisual</a></i></p>
                     </span>
                 </span>
-                <span id=cmp-top class="settings-opt settings-opt-sel unselectable tooltip"><span data-i18n="filters.display.best">Best non-Mega</span>
+                <span id=cmp-top class="settings-opt settings-opt-sel unselectable tooltip"><span data-i18n="filters.display.best">Best</span>
                     <span class="tooltiptext" data-i18n="filters.display.best-tooltip">Compare to the best non-Mega attacker. Mega, Primal, and Ultra forms can exceed 100%.</span>
                 </span>
             </div>
@@ -494,7 +494,7 @@
                                 <input type="number" id=relobby-time class="settings-num" value="10" min="0" max="300" step="1">
                             <div class=settings-subtitle data-i18n="settings.site">Site Settings</div>
                             <span class="tooltip tooltip-left"><span data-i18n="settings.preview">Data Preview</span>
-                                <span class="tooltiptext" data-i18n="settings.preview-tooltip">Apply announced data to rankings when Include unreleased is on. Current-only rankings use current data.</span>
+                                <span class="tooltiptext" data-i18n="settings.preview-tooltip">Apply announced data to rankings when Unreleased is on. Current-only rankings use current data.</span>
                             </span>
                                 <label class="switch">
                                     <input type="checkbox" value="speculative" id="settings-speculative" checked>

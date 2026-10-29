@@ -53,7 +53,7 @@
                 ]
             },
             "projected-levels": "Projection : avec les Pokémon non sortis et le niveau Super Méga 4, chaque forme Méga, Primo et Ultra reçoit une fois +2 niveaux (N50 → N52).",
-            "projected-plus": "P indique une attaque + projetée, activée par Inclure les non disponibles. La puissance publiée est prioritaire ; la puissance, l’énergie et la durée inconnues utilisent notre modèle. Cliquez sur l’attaque ou ouvrez l’audit pour voir les hypothèses."
+            "projected-plus": "P indique une attaque + projetée, activée par Non disponibles. La puissance publiée est prioritaire ; la puissance, l’énergie et la durée inconnues utilisent notre modèle. Cliquez sur l’attaque ou ouvrez l’audit pour voir les hypothèses."
         }
     },
     "dex": {
@@ -132,7 +132,7 @@
     "filters": {
         "species": {
             "title": "Filtre d'Epèces",
-            "unreleased": "Inclure les non disponibles",
+            "unreleased": "Non disponibles",
             "unreleased-tooltip": "Inclut les attaquants et boss de raid pas encore disponibles. Désactivé : données actuelles ; activé : modifications annoncées si Aperçu des données est activé.",
             "mega": "Méga/Primo/Ultra",
             "shadow": "Obscure",
@@ -174,7 +174,7 @@
                 "authorlink": "Défini par",
                 "graphiclink": "Utilisé dans les infographies par"
             },
-            "best": "Meilleur sans Méga",
+            "best": "Meilleur",
             "best-tooltip": "Comparer au meilleur attaquant sans Méga. Les formes Méga, Primo et Ultra peuvent dépasser 100 %.",
             "tiers": "Tiers",
             "tiers-tooltip": "§Détermine le mode de calcul des niveaux.\nDétermine le mode de calcul des niveaux.",
@@ -248,7 +248,7 @@
         "preview": "Aperçu des futures données",
         "darkmode": "Mode Sombre",
         "language": "Langue",
-        "preview-tooltip": "Applique les données annoncées aux classements lorsque Inclure les non disponibles est activé. Les classements actuels utilisent les données actuelles."
+        "preview-tooltip": "Applique les données annoncées aux classements lorsque Non disponibles est activé. Les classements actuels utilisent les données actuelles."
     },
     "moves": {
         "type-helper": "type",
@@ -460,7 +460,7 @@
         "empty": "Aucun attaquant ayant des points ne correspond à cette recherche.",
         "more": "Afficher 25 de plus",
         "counts-note": "≥100% et ≥95% comptent les formes de boss atteignant ces pourcentages du meilleur eDPS sans Méga. Les filtres Obscurs et Légendaires conservent la même référence et la même échelle.",
-        "data-note": "Inclure les non disponibles concerne les attaquants et les boss. Les calculs actuels excluent les données annoncées. Les scores mesurent la couverture ; tenez compte du coût et de vos équipes actuelles.",
+        "data-note": "Le filtre Non disponibles concerne les attaquants et les boss. Les calculs actuels excluent les données annoncées. Les scores mesurent la couverture ; tenez compte du coût et de vos équipes actuelles.",
         "open-pokemon": "Voir les détails du Pokémon →",
         "entry-summary": "Total : {points} points pondérés · Avantage maximal sur une alternative sans Méga : +{lead}%",
         "moves-note": "Les attaques sont optimisées pour chaque boss. * indique les attaques limitées ; des CT ou des attaques supplémentaires peuvent être nécessaires. Les pourcentages comparent au meilleur attaquant du {reference}. Chaque contribution inclut le poids du boss.",
@@ -582,7 +582,7 @@
         "plus-projected": "Attaque + projetée",
         "plus-unassigned": "Aucune attaque + attribuée ; aucune inventée",
         "plus-source": "Déjà présente dans la source",
-        "plus-applied": "Activée par Inclure les non disponibles",
+        "plus-applied": "Activée par Non disponibles",
         "plus-off": "Projection disponible ; inutilisée dans le classement actuel",
         "plus-incomplete": "Exclu : données d’attaques incomplètes",
         "max-battle-only": "Boss de Combat Dynamax uniquement ; forme inutilisable en raid"
@@ -616,7 +616,7 @@
         "unknown-catch": "Forme de capture non confirmée ; compatibilité XL inconnue",
         "no-match": "Aucun type compatible pour le bonus XL",
         "level-required": "Compatible via {types} ; niveau Méga/Primo {minLevel}+ requis",
-        "projection-off": "XL projeté ; activez Inclure les non disponibles",
+        "projection-off": "XL projeté ; activez Non disponibles",
         "empty": "Aucun bon contre avec bonus XL pour ces réglages. Vérifiez le seuil, le niveau de transformation ou la capture.",
         "unknown": "Rencontre non confirmée",
         "no-encounter": "Aucune rencontre de raid ordinaire",
