@@ -599,6 +599,7 @@
     },
     "catch-xl": {
         "counter-only": "Solo opciones con bonus XL",
+        "counter-hide-non-xl": "Ocultar Megas / Primigenios / Ultras sin bonus XL",
         "counter-empty": "Ningún counter con bonus XL coincide con estos ajustes. Revisa el nivel de transformación, los filtros o la forma de captura.",
         "strong-only": "Solo buenos counters + XL",
         "threshold": "Umbral de buen counter",
@@ -606,7 +607,7 @@
         "coverage-detail": "Buen counter + XL: {coverage} incursiones ponderadas · {count} formas al ≥{threshold}% del mejor eDPS sin Mega",
         "coverage-note": "La cobertura XL suma los pesos existentes de los jefes con buen rendimiento y captura compatible. Usa el tipo fijo de Poder Oculto mostrado. La puntuación de combate no cambia. P indica una proyección.",
         "active-note": "El bonus XL requiere la transformación activa durante la captura. Las Megas y los Primigenios necesitan al menos nivel Alto (2). Aumenta la probabilidad, no garantiza XL adicional.",
-        "counter-note": "El filtro XL mantiene las opciones compatibles sin umbral de fuerza y usa tu métrica y referencia seleccionadas. El bonus requiere una transformación activa; P indica una proyección.",
+        "counter-note": "Los filtros XL usan la compatibilidad de captura sin umbral de fuerza y mantienen tu métrica y referencia. El bonus requiere una transformación activa; P indica una proyección.",
         "catch-label": "Captura: {pokemon}",
         "eligible": "XL compatible por {types}",
         "projected": "XL proyectado por {types} (P)",

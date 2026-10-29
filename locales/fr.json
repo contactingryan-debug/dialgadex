@@ -599,6 +599,7 @@
     },
     "catch-xl": {
         "counter-only": "Options avec bonus XL uniquement",
+        "counter-hide-non-xl": "Masquer les Méga / Primo / Ultra sans bonus XL",
         "counter-empty": "Aucun contre avec bonus XL ne correspond à ces réglages. Vérifiez le niveau de transformation, les filtres ou la capture.",
         "strong-only": "Bons contres + XL uniquement",
         "threshold": "Seuil de bon contre",
@@ -606,7 +607,7 @@
         "coverage-detail": "Bon contre + XL : {coverage} raids pondérés · {count} formes à ≥{threshold}% du meilleur eDPS sans Méga",
         "coverage-note": "La couverture XL additionne les poids des boss pour les bons contres aux captures compatibles. Elle utilise le type fixe de Puissance Cachée affiché. Le score de combat ne change pas. P indique une projection.",
         "active-note": "Le bonus XL nécessite la transformation active lors de la capture. Les Méga et Primo nécessitent au moins le niveau Élevé (2). Il augmente la chance, sans garantir de XL supplémentaire.",
-        "counter-note": "Le filtre XL conserve les options compatibles sans seuil de puissance, avec la métrique et la référence choisies. Le bonus nécessite une transformation active ; P indique une projection.",
+        "counter-note": "Les filtres XL utilisent la compatibilité de capture sans seuil de puissance et conservent la métrique et la référence choisies. Le bonus nécessite une transformation active ; P indique une projection.",
         "catch-label": "Capture : {pokemon}",
         "eligible": "XL compatible via {types}",
         "projected": "XL projeté via {types} (P)",

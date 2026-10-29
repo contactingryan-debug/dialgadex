@@ -599,6 +599,7 @@
     },
     "catch-xl": {
         "counter-only": "XL boosting options only",
+        "counter-hide-non-xl": "Hide non-XL Megas / Primals / Ultras",
         "counter-empty": "No XL boosting counters match these settings. Check the transformation level, filters, or encounter mapping.",
         "strong-only": "Strong + XL only",
         "threshold": "Strong counter threshold",
@@ -606,7 +607,7 @@
         "coverage-detail": "Strong + XL: {coverage} weighted raids · {count} boss forms at ≥{threshold}% of the best non-Mega eDPS",
         "coverage-note": "XL coverage adds the existing boss weights for strong, compatible catches. It uses the displayed fixed Hidden Power build. Combat scores stay unchanged. P marks projected rules.",
         "active-note": "Catch XL requires the relevant transformation to be active when catching. Standard Megas and Primals need at least High Level (2). This is a chance bonus, not guaranteed extra XL.",
-        "counter-note": "XL filtering keeps compatible boosters regardless of strength, using your selected metric and baseline. The catch boost requires an active transformation; P marks a projected rule.",
+        "counter-note": "XL filters use catch compatibility without a strength cutoff, keeping your selected metric and baseline. The catch boost requires an active transformation; P marks a projected rule.",
         "catch-label": "Catch: {pokemon}",
         "eligible": "XL compatible via {types}",
         "projected": "Projected XL match via {types} (P)",

@@ -10,13 +10,13 @@ let current_pkm_obj = null; // current pokedex pokemon's pkm_obj
 let pageRequest = 0;
 
 const pages = [
-    {id: 'pokedex-page', template_path: 'templates/pokedex.html?v=04ef608ed223', binder: BindPokeDex},
+    {id: 'pokedex-page', template_path: 'templates/pokedex.html?v=eb6e30641f44', binder: BindPokeDex},
     {id: 'strongest', template_path: 'templates/rankings.html?v=93f40607af0e', binder: BindRankings},
     {id: 'raid-leaderboard', template_path: 'templates/raid-leaderboard.html?v=2b9e86ea44ed', binder: BindRaidLeaderboard},
     {id: 'data-audit', template_path: 'templates/data-audit.html?v=553dad90b622', binder: BindDataAudit},
     {id: 'move-data', template_path: 'templates/moves.html', binder: BindMoveData},
     {id: 'type-matrix', template_path: 'templates/typechart.html', binder: BuildTypeChart},
-    {id: 'faq', template_path: 'templates/faq.html?v=d59d8f942f48'},
+    {id: 'faq', template_path: 'templates/faq.html?v=4ff16bda9d0e'},
     {id: 'about', template_path: 'templates/about.html'}
 ];
 

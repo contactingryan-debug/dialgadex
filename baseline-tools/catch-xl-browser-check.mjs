@@ -71,32 +71,52 @@ try {
     await page.waitForFunction(()=>window.counterRenders>0&&!document.querySelector('#counters-loading'),null,{timeout:120000});
     assert.equal(await page.locator('#counters-xl-threshold').count(),0);
     assert.match(await page.locator('.counters-xl-controls').innerText(),/XL boosting options only/);
-    const beforeXL=await page.evaluate(()=>window.counterRenders);
-    await page.locator('#counters-xl-only').check();
-    await page.waitForFunction(n=>window.counterRenders>n&&!document.querySelector('#counters-loading'),beforeXL,{timeout:120000});
-    async function checkXLCounters() {
-        const expected=await page.evaluate(()=>{
+    assert.equal(await page.locator('#counters-hide-non-xl').isChecked(),false);
+    async function setCounterFilter(selector,checked) {
+        const before=await page.evaluate(()=>window.counterRenders);
+        await page.locator(selector).setChecked(checked);
+        await page.waitForFunction(n=>window.counterRenders>n&&!document.querySelector('#counters-loading'),before,{timeout:120000});
+    }
+    async function checkXLCounters(mode='only') {
+        const expected=await page.evaluate(mode=>{
             const all=[...window.counterInputs].reverse();
             const reference=all.find(p=>!IsMegaPrimalUltraForm(p)).rat;
             const baseline=GetComparisonMon(all);
             if(baseline!==reference)throw new Error('Best must use the non-Mega reference before XL filtering.');
             const groups=new Map();
-            for(const p of all.filter(p=>p._catchXL?.eligible===true)) {
+            const filtered=all.filter(p=>mode==='only' ? p._catchXL?.eligible===true
+                : mode==='mixed' ? !IsMegaPrimalUltraForm(p)||p._catchXL?.eligible===true : true);
+            for(const p of filtered) {
                 const key=GetUniqueIdentifier(p,false,false);
                 if(!groups.has(key))groups.set(key,[]);
                 groups.get(key).push(p);
             }
-            return [...groups.values()].slice(0,10).flatMap(group=>group.slice(0,3)
-                .filter((p,i)=>i===0||p.rat/baseline>=.7).map(p=>Number((100*p.rat/baseline).toFixed(0))));
-        });
+            const visible=[...groups.values()].slice(0,10).flatMap(group=>group.slice(0,3)
+                .filter((p,i)=>i===0||p.rat/baseline>=.7));
+            return {percentages:visible.map(p=>Number((100*p.rat/baseline).toFixed(0))),
+                badges:visible.filter(p=>p._catchXL?.eligible===true).length,
+                ordinary:visible.filter(p=>!IsMegaPrimalUltraForm(p)).length,
+                hasNonXLTransforms:all.some(p=>IsMegaPrimalUltraForm(p)&&p._catchXL?.eligible!==true)};
+        },mode);
         const actual=await page.locator('#counters-grid .counters-rat-row td:first-child b')
             .evaluateAll(elements=>elements.map(el=>Number(el.textContent)));
-        assert.deepEqual(actual,expected,'XL filtering must preserve native metric ordering and the full-pool baseline.');
-        assert(actual.some(p=>p<95),'Compatible options below the former strength threshold must remain visible.');
-        assert.equal(await page.locator('#counters-grid .xl-badge').count(),actual.length);
+        assert.deepEqual(actual,expected.percentages,'XL filtering must preserve native metric ordering and the full-pool baseline.');
+        if(mode==='only')assert(actual.some(p=>p<95),'Compatible options below the former strength threshold must remain visible.');
+        if(mode==='mixed'){assert(expected.ordinary>0,'The mixed filter must keep regular counters.');assert(expected.hasNonXLTransforms);}
+        assert.equal(await page.locator('#counters-grid .xl-badge').count(),expected.badges);
         return actual;
     }
-    await checkXLCounters();
+    const allCounters=await checkXLCounters('all');
+    await setCounterFilter('#counters-hide-non-xl',true);
+    await checkXLCounters('mixed');
+    for(const width of [320,390,900]){await page.setViewportSize({width,height:844});await fits();}
+    await setCounterFilter('#counters-hide-non-xl',false);
+    assert.deepEqual(await checkXLCounters('all'),allCounters,'Clearing the filter must restore the original counters.');
+    await setCounterFilter('#counters-hide-non-xl',true);
+    await setCounterFilter('#counters-xl-only',true);
+    const bothFilters=await checkXLCounters();
+    await setCounterFilter('#counters-hide-non-xl',false);
+    assert.deepEqual(await checkXLCounters(),bothFilters,'XL-only must take precedence when both filters are selected.');
     // The leaderboard threshold has no effect here, and DPS remains the selected metric.
     const beforeDPS=await page.evaluate(()=>{const n=window.counterRenders;SetMetric('DPS');return n;});
     await page.waitForFunction(n=>window.counterRenders>n&&!document.querySelector('#counters-loading'),beforeDPS,{timeout:120000});

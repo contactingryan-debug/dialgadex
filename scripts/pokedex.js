@@ -402,6 +402,8 @@ function ProcessAndSetCountersFromArray(counters,
     const top_compare = GetComparisonMon(counters);
     if ($('#counters-xl-only').is(':checked'))
         counters = counters.filter(counter => counter._catchXL?.eligible === true);
+    else if ($('#counters-hide-non-xl').is(':checked'))
+        counters = counters.filter(counter => !IsMegaPrimalUltraForm(counter) || counter._catchXL?.eligible === true);
     $('#counters-xl-empty').prop('hidden', counters.length > 0).text(XLText('counter-empty'));
 
     // simplifies counters arrays into maps where each pokemon species is a key

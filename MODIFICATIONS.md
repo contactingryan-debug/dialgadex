@@ -207,3 +207,8 @@ The calculation formulas and upstream data sources are unchanged.
 - Change the Best baseline to Best non-Mega across rankings and raid counters.
   Exclude Mega, Primal and Ultra transformations from the reference while
   allowing Shadow, fusion and Crowned forms. Transformations may exceed 100%.
+
+- Add an optional Raid Counters filter that hides non-XL Mega, Primal and Ultra
+  transformations while retaining regular counters. Apply it before the species
+  limit without changing the selected metric or baseline. XL-only takes
+  precedence when both filters are selected.

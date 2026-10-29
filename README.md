@@ -152,6 +152,9 @@ Individual raid counter lists show catch details and XL badges and have an
 **XL boosting options only** filter with no strength threshold. Results use the
 selected metric and baseline from before XL filtering, then show the top ten
 compatible species. The strength threshold remains a leaderboard tool.
+**Hide non-XL Megas / Primals / Ultras** instead keeps regular counters alongside
+compatible transformations. Both filters preserve the same metric and baseline;
+when both are selected, XL boosting options only takes precedence.
 Catch-form rules, boost types, evidence, source links and unknown mappings are
 inspectable in Data Audit and Copy details. An active transformation is required
 at catch time; the feature predicts compatibility, not a guaranteed extra XL
