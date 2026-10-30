@@ -19,7 +19,9 @@ try {
     await page.locator('.boss-tier-group').last().waitFor({timeout:120000});
     assert.equal(await page.title(), 'Boss List - DialgaDex');
     assert.deepEqual(await page.locator('#boss-list-groups thead th').allTextContents(), ['Released','Unreleased']);
-    assert.deepEqual(await page.locator('.boss-category').allTextContents(), ['Super Mega','Legendary Mega','Legendary','Mega']);
+    const categoryLabels = await page.locator('.boss-category').allTextContents();
+    assert.deepEqual(categoryLabels.filter(label => !['Paradox','Other'].includes(label)),
+        ['Super Mega','Legendary Mega','Legendary','Sub-Legendary','Mythical','Mega']);
     const report = await page.evaluate(() => {
         const groups = [...document.querySelectorAll('.boss-tier-group')];
         const rendered = groups.flatMap(group => [...group.querySelectorAll('.boss-cell')].flatMap(cell =>
@@ -90,5 +92,5 @@ try {
     await page.waitForFunction(() => document.querySelector('#boss-list')?.checkVisibility());
     assert.equal(await page.title(), 'Boss List - DialgaDex');
     assert.deepEqual(errors, []);
-    console.log('Boss List pools, four HP categories, current five-star profiles, links, history, reload and responsive two-column layout:', report);
+    console.log('Boss List species categories, current five-star profiles, links, history, reload and responsive two-column layout:', report);
 } finally { await browser.close(); }

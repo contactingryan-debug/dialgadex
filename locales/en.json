@@ -682,6 +682,10 @@
         "art-mega-emblem": "Mega emblem",
         "art-primal-emblem": "Primal emblem",
         "art-wormhole": "Ultra Wormhole",
-        "total-count": "{count} total"
+        "total-count": "{count} total",
+        "sub-legendary": "Sub-Legendary",
+        "mythical": "Mythical",
+        "paradox": "Paradox",
+        "other": "Other"
     }
 }

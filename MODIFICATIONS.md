@@ -332,3 +332,15 @@ The calculation formulas and upstream data sources are unchanged.
   Unreleased counts above the respective columns.
 - Omit the generic Mega form label in Boss List entries. Retain X/Y/Z, Primal,
   Ultra, and other distinguishing forms using the existing compact name style.
+
+## October 30, 2026 — Legendary, Sub-Legendary, and Mythical bosses
+
+- Split the 15,000 HP roster using the user's species classifications. All
+  alternate forms inherit the base species' category, including Ultra Beasts
+  under Sub-Legendary. Keep Mega/Primal/Super profiles in their HP sections.
+- Reserve a separate section for eligible Paradox raid species and hide it
+  when empty. The six current tagged records have placeholder learnsets and
+  remain excluded. Expose any unclassified future five-star boss as Other.
+- Preserve the complete current/future boss pools, section totals, release
+  columns, raid-group weights, and scoring. Non-raid Mythicals do not become
+  bosses merely because their species has a display category.

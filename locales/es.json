@@ -682,6 +682,10 @@
         "art-mega-emblem": "Emblema Mega",
         "art-primal-emblem": "Emblema primigenio",
         "art-wormhole": "Ultraumbral",
-        "total-count": "{count} en total"
+        "total-count": "{count} en total",
+        "sub-legendary": "Sublegendarios",
+        "mythical": "Singulares",
+        "paradox": "Paradoja",
+        "other": "Otros"
     }
 }

@@ -682,6 +682,10 @@
         "art-mega-emblem": "Emblème Méga",
         "art-primal-emblem": "Emblème Primo",
         "art-wormhole": "Ultra-Brèche",
-        "total-count": "{count} au total"
+        "total-count": "{count} au total",
+        "sub-legendary": "Sous-légendaires",
+        "mythical": "Fabuleux",
+        "paradox": "Paradoxe",
+        "other": "Autres"
     }
 }

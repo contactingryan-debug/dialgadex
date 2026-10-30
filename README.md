@@ -116,9 +116,16 @@ defining a fixed performance or investment threshold.
 Calculation notes appear below the list. The species funnel opens and closes
 on hover, matching Type Rankings, and retains touch and keyboard controls.
 **Boss List →** opens a two-column roster at `?bosses`: Released and Unreleased,
-with four HP categories: Super Mega (25,000), Legendary Mega (22,500),
-Legendary (15,000), and Mega (9,000). Entries link to each boss form's Pokémon
-page. Both columns use the same supported, usable boss pool as the rankings;
+with Super Mega (25,000), Legendary Mega (22,500), and Mega (9,000) sections.
+The 15,000 HP bosses split into Legendary, Sub-Legendary, and Mythical using
+the supplied species lists; Ultra Beasts are Sub-Legendary in this display.
+Eligible Paradox raid species have their own section, shown only when populated. All forms
+inherit their species category, while Mega/Primal/Super raid profiles retain
+their HP category. Unknown future five-star species remain visible under
+Other rather than being silently mislabeled or dropped. This display-only
+classification leaves the boss pool, weights, and combat calculations intact.
+Entries link to each boss form's Pokémon page. Both columns use the same
+supported, usable boss pool as the rankings;
 the future column adds only forms absent from the current pool. Release status
 uses current data even when Data Preview projects a future release. Incomplete
 learnsets and Max Battle-only forms remain excluded. Both columns stay visible
