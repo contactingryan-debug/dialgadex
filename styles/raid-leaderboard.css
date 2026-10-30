@@ -26,7 +26,7 @@
 #raid-status { font-size: .85rem; margin-bottom: 0; }
 #raid-progress { width: 100%; height: 8px; accent-color: var(--col-text); }
 .raid-variants > summary { cursor:pointer; padding:.4rem 0; color:var(--col-text); }
-.raid-grid { display:grid; grid-template-columns:var(--raid-tier-width) 32px 40px minmax(0,1fr) 84px 48px 48px; gap:.35rem; align-items:center; padding:0 .75rem 0 0; }
+.raid-grid { display:grid; grid-template-columns:var(--raid-tier-width) 32px 40px minmax(0,1fr) 84px 60px 60px; gap:.35rem; align-items:center; padding:0 .75rem 0 0; }
 #raid-column-headings { border-block:1px solid var(--col-outline); padding-block:.3rem; font-size:.75rem; background:var(--col-alt-bg); }
 #raid-column-headings button { min-height: 36px; border: 0; box-shadow: none; background: transparent; padding: 0; font-size: inherit; }
 #raid-column-headings button[aria-pressed="true"] { color: var(--col-text); text-decoration: underline; text-underline-offset: 4px; }

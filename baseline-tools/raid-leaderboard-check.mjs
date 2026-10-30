@@ -189,6 +189,13 @@ try {
     async function fits() {
         const size = await page.evaluate(() => ({scroll:document.documentElement.scrollWidth, width:innerWidth}));
         assert(size.scroll <= size.width + 1, 'The mobile page must fit horizontally.');
+        const clipped=await page.locator('.raid-entry > summary :is(.raid-score,.raid-first,.raid-near)').evaluateAll(cells=>
+            cells.filter(cell=>{
+                const range=document.createRange();range.selectNodeContents(cell.querySelector('strong')||cell);
+                const text=range.getBoundingClientRect(),box=cell.getBoundingClientRect();
+                return text.left<box.left-1||text.right>box.right+1;
+            }).map(cell=>cell.textContent));
+        assert.deepEqual(clipped,[],'Weighted decimal values must fit their numeric cells.');
     }
     await fits();
     if (process.env.RAID_LEADERBOARD_SCREENSHOT) {
@@ -274,8 +281,9 @@ try {
         'Regular Eternatus must remain in the investment pool.');
     assert(!await page.evaluate(()=>raidLeaderboardMatrix.attackers.some(p=>p.id===890&&p.form==='Eternamax')),
         'The Max Battle boss must not enter the investment pool.');
-    await page.setViewportSize({width:320,height:740});
-    await fits();
+    for(const width of [1100,390,320]){
+        await page.setViewportSize({width,height:740});await fits();
+    }
     await page.locator('#raid-rankings-back').click();
     await page.waitForFunction(() => document.querySelector('#strongest')?.checkVisibility());
     assert.equal((await page.locator('#filter-settings [data-i18n="filters.species.mega"]').textContent()).trim(),'Mega');
