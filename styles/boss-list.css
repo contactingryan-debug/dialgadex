@@ -17,10 +17,13 @@
 #boss-list-groups caption { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 #boss-list-groups thead th { width:50%; padding:.65rem .75rem; font-size:.9rem; background:var(--col-alt-bg); }
 .boss-tier-heading th { padding:.6rem .75rem; text-align:left; border-top:1px solid var(--col-outline); background:var(--col-widget); }
+.boss-tier-title { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.3rem .75rem; }
+.boss-total-count { margin-left:auto; color:var(--col-text-midkey); font-size:.75rem; font-weight:400; white-space:nowrap; }
 .boss-category { font-size:.95rem; font-weight:700; }
 .boss-hp { margin-left:.4rem; font-size:.8rem; font-weight:400; color:var(--col-text-midkey); white-space:nowrap; }
 .boss-cell { padding:.4rem .45rem; vertical-align:top; text-align:left; background:var(--col-row-bg); }
 .boss-cell + .boss-cell, #boss-column-unreleased { border-left:1px solid var(--col-outline); }
+.boss-column-count { display:flex; align-items:center; justify-content:space-between; gap:.4rem; margin:.2rem .35rem .4rem; color:var(--col-text-midkey); font-size:.7rem; font-variant-numeric:tabular-nums; }
 .boss-roster { margin:0; padding:0; list-style:none; }
 .boss-roster > li:nth-child(even) { background:var(--col-alt-bg); }
 .boss-entry { display:flex; align-items:center; gap:.4rem; min-height:40px; padding:.15rem .35rem; box-sizing:border-box; color:var(--col-text); text-decoration:none; }

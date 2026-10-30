@@ -61,10 +61,15 @@ function RenderBossList() {
         const section = $('<tbody class="boss-tier-group"></tbody>').attr('data-hp', group.hp);
         const headingID = 'boss-tier-' + group.key;
         const heading = $('<th colspan="2" scope="rowgroup"></th>').attr('id', headingID)
-            .append($('<span class="boss-category"></span>').text(BossListText(group.key)),
-                ' ', $('<span class="boss-hp"></span>').text(BossListText('hp', {
-                    hp: group.hp.toLocaleString(currentLocale),
-                })));
+            .append($('<div class="boss-tier-title"></div>').append(
+                $('<span class="boss-tier-label"></span>').append(
+                    $('<span class="boss-category"></span>').text(BossListText(group.key)),
+                    ' ', $('<span class="boss-hp"></span>').text(BossListText('hp', {
+                        hp: group.hp.toLocaleString(currentLocale),
+                    }))),
+                $('<span class="boss-total-count"></span>').text(BossListText('total-count', {
+                    count: (group.released.length + group.unreleased.length).toLocaleString(currentLocale),
+                }))));
         section.append($('<tr class="boss-tier-heading"></tr>').append(heading));
         const row = $('<tr class="boss-tier-rosters"></tr>');
         for (const availability of ['released', 'unreleased']) {
@@ -72,6 +77,9 @@ function RenderBossList() {
                 'data-availability': availability,
                 headers: headingID + ' boss-column-' + availability,
             });
+            cell.append($('<div class="boss-column-count"></div>').append(
+                $('<span></span>').text(BossListText(availability)),
+                $('<span></span>').text(group[availability].length.toLocaleString(currentLocale))));
             if (!group[availability].length) cell.append($('<p class="boss-empty"></p>').text(BossListText('empty')));
             else {
                 const roster = $('<ul class="boss-roster"></ul>');
@@ -85,7 +93,7 @@ function RenderBossList() {
                         .css({'background-image': 'url(' + ICONS_URL + ')',
                             'background-position': coords.x + 'px ' + coords.y + 'px'});
                     // On source records, shadow means attacker availability, not a Shadow raid profile.
-                    link.append(sprite, RaidLeaderboardName({...pokemon, shadow:false}).addClass('boss-name'));
+                    link.append(sprite, RaidLeaderboardName({...pokemon, shadow:false}, true).addClass('boss-name'));
                     roster.append($('<li></li>').append(link));
                 }
                 cell.append(roster);

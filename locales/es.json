@@ -681,6 +681,7 @@
         "art-raid-emblem": "Emblema de incursión",
         "art-mega-emblem": "Emblema Mega",
         "art-primal-emblem": "Emblema primigenio",
-        "art-wormhole": "Ultraumbral"
+        "art-wormhole": "Ultraumbral",
+        "total-count": "{count} en total"
     }
 }

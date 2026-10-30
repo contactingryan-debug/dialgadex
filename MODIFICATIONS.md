@@ -325,3 +325,10 @@ The calculation formulas and upstream data sources are unchanged.
   at its original size and keep the gallery compact on mobile.
 - Bundle the unmodified PNGs from a pinned PokeMiners asset revision and
   record their source filenames and attribution.
+
+## October 30, 2026 — Boss counts and compact form labels
+
+- Show the number of listed boss forms in each HP section, with Released and
+  Unreleased counts above the respective columns.
+- Omit the generic Mega form label in Boss List entries. Retain X/Y/Z, Primal,
+  Ultra, and other distinguishing forms using the existing compact name style.

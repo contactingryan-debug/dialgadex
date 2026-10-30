@@ -681,6 +681,7 @@
         "art-raid-emblem": "Emblème de raid",
         "art-mega-emblem": "Emblème Méga",
         "art-primal-emblem": "Emblème Primo",
-        "art-wormhole": "Ultra-Brèche"
+        "art-wormhole": "Ultra-Brèche",
+        "total-count": "{count} au total"
     }
 }

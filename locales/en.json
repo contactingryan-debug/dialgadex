@@ -681,6 +681,7 @@
         "art-raid-emblem": "Raid emblem",
         "art-mega-emblem": "Mega emblem",
         "art-primal-emblem": "Primal emblem",
-        "art-wormhole": "Ultra Wormhole"
+        "art-wormhole": "Ultra Wormhole",
+        "total-count": "{count} total"
     }
 }
