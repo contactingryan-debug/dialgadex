@@ -671,6 +671,16 @@
         "mega": "Méga",
         "hp": "{hp} PV",
         "empty": "Aucun",
-        "note": "Disponible signifie déjà accessible, pas nécessairement dans la rotation actuelle. La colonne À venir montre les formes de boss supplémentaires autorisées par le filtre correspondant ; les attaques incomplètes sont exclues."
+        "note": "Disponible signifie déjà accessible, pas nécessairement dans la rotation actuelle. La colonne À venir montre les formes de boss supplémentaires autorisées par le filtre correspondant ; les attaques incomplètes sont exclues.",
+        "art-title": "Choix des illustrations de raid",
+        "art-enlarge": "Sélectionnez une image pour l’agrandir.",
+        "art-legendary": "Œuf légendaire",
+        "art-mega": "Œuf Méga",
+        "art-dark-mega": "Œuf Méga sombre",
+        "art-primal": "Œuf Primo",
+        "art-raid-emblem": "Emblème de raid",
+        "art-mega-emblem": "Emblème Méga",
+        "art-primal-emblem": "Emblème Primo",
+        "art-wormhole": "Ultra-Brèche"
     }
 }

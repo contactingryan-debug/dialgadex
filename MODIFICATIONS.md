@@ -317,3 +317,11 @@ The calculation formulas and upstream data sources are unchanged.
   to their current five-star profile, with 15,000 HP. Preserve raw source tags
   and source links in Data Audit. Current upstream active forms already use
   tier 5; the correction also covers Enamorus's unsupported Normal alias.
+
+## October 30, 2026 — Raid graphic options
+
+- Add a collapsible, initially open A–H gallery above the Boss List: four egg
+  images, regular/Mega/Primal emblems, and an Ultra Wormhole. Open each image
+  at its original size and keep the gallery compact on mobile.
+- Bundle the unmodified PNGs from a pinned PokeMiners asset revision and
+  record their source filenames and attribution.

@@ -671,6 +671,16 @@
         "mega": "Mega",
         "hp": "{hp} HP",
         "empty": "None",
-        "note": "Released means previously available, not currently in rotation. Unreleased shows additional boss forms allowed by the Unreleased filter; incomplete movesets are excluded."
+        "note": "Released means previously available, not currently in rotation. Unreleased shows additional boss forms allowed by the Unreleased filter; incomplete movesets are excluded.",
+        "art-title": "Raid graphic options",
+        "art-enlarge": "Select an image to enlarge.",
+        "art-legendary": "Legendary egg",
+        "art-mega": "Mega egg",
+        "art-dark-mega": "Dark Mega egg",
+        "art-primal": "Primal egg",
+        "art-raid-emblem": "Raid emblem",
+        "art-mega-emblem": "Mega emblem",
+        "art-primal-emblem": "Primal emblem",
+        "art-wormhole": "Ultra Wormhole"
     }
 }

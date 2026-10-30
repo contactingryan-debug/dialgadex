@@ -671,6 +671,16 @@
         "mega": "Mega",
         "hp": "{hp} PS",
         "empty": "Ninguno",
-        "note": "Disponible significa que ya se ha podido obtener, no que esté en la rotación actual. La otra columna muestra las formas de jefes adicionales permitidas por el filtro de no disponibles; se excluyen los movimientos incompletos."
+        "note": "Disponible significa que ya se ha podido obtener, no que esté en la rotación actual. La otra columna muestra las formas de jefes adicionales permitidas por el filtro de no disponibles; se excluyen los movimientos incompletos.",
+        "art-title": "Opciones de imágenes de incursión",
+        "art-enlarge": "Selecciona una imagen para ampliarla.",
+        "art-legendary": "Huevo legendario",
+        "art-mega": "Huevo Mega",
+        "art-dark-mega": "Huevo Mega oscuro",
+        "art-primal": "Huevo primigenio",
+        "art-raid-emblem": "Emblema de incursión",
+        "art-mega-emblem": "Emblema Mega",
+        "art-primal-emblem": "Emblema primigenio",
+        "art-wormhole": "Ultraumbral"
     }
 }
