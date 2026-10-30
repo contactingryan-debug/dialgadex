@@ -81,6 +81,8 @@ test('worker keeps non-Mega benchmarks, scores and counts identical when transfo
     assert(!before.matrix.attackers.some(p=>p.transformed));
     assert(after.matrix.attackers.some(p=>p.transformed&&p.id===150));
     assert(after.matrix.attackers.some(p=>p.transformed&&p.id===382));
+    assert(after.matrix.attackers.filter(p=>p.transformed).some(p=>p.matchups.some(m=>m.ratio>0&&m.ratio<.7)),
+        'Retain low-performance Mega options for positive XL wins.');
     for(const p of before.matrix.attackers)assert.deepEqual(after.matrix.attackers.find(a=>a.key===p.key),p);
     const baseline=JSON.parse(await evaluate('JSON.stringify(ScoreRaidMatrix('+JSON.stringify(before.matrix)+'))'));
     const expanded=JSON.parse(await evaluate('JSON.stringify(ScoreRaidMatrix('+JSON.stringify(after.matrix)+'))'));

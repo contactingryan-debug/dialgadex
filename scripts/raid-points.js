@@ -36,8 +36,62 @@ function GetRaidBossWeights(bosses, weighting = 'groups') {
     return {weights, groupCount: groups.size};
 }
 
-/** Select elite for Attacker; the existing linear rule remains the Mega scale. */
+/** Award one XL-boosting transformed build per boss, using native eDPS order. */
+function ScoreRaidMegaXLMatrix(matrix, options = {}) {
+    const weighting = ['forms', 'species'].includes(options.weighting) ? options.weighting : 'groups';
+    const {weights, groupCount} = GetRaidBossWeights(matrix.bosses, weighting);
+    const builds = matrix.attackers.filter(attacker => attacker.transformed).map(attacker => {
+        const byBoss = new Map();
+        for (const matchup of attacker.matchups) {
+            if (!matrix.bosses[matchup.bossIndex] || !Number.isFinite(matchup.ratio)
+                    || matchup.ratio <= 0 || matchup.xl?.eligible !== true) continue;
+            const previous = byBoss.get(matchup.bossIndex);
+            if (!previous || matchup.ratio > previous.ratio) byBoss.set(matchup.bossIndex, matchup);
+        }
+        return {...attacker, matchups:[...byBoss.values()]};
+    });
+    const winners = new Map();
+    for (const build of builds) for (const matchup of build.matchups) {
+        const previous = winners.get(matchup.bossIndex);
+        if (!previous || matchup.ratio > previous.ratio
+                || (matchup.ratio === previous.ratio && build.key.localeCompare(previous.key) < 0))
+            winners.set(matchup.bossIndex, {key:build.key, ratio:matchup.ratio});
+    }
+    const entries = builds.map(build => {
+        const matchups = build.matchups.map(matchup => {
+            const won = winners.get(matchup.bossIndex)?.key === build.key;
+            const points = won ? (matchup.ratio >= .95 - 1e-9 ? 10 : 1) : 0;
+            return {...matchup, won, points, weightedPoints:points * weights[matchup.bossIndex]};
+        });
+        const wins = matchups.filter(matchup => matchup.won);
+        const points = wins.reduce((sum, matchup) => sum + matchup.weightedPoints, 0);
+        const coverage = threshold => wins.filter(matchup => matchup.ratio >= threshold - 1e-9)
+            .reduce((sum, matchup) => sum + weights[matchup.bossIndex], 0);
+        return {...build, matchups, points, score:points, first:coverage(1), near:coverage(.95),
+            positive:wins.reduce((sum, matchup) => sum + weights[matchup.bossIndex], 0),
+            lead:Math.max(0, ...wins.map(matchup => matchup.lead || 0)),
+            xlProjected:wins.filter(matchup => matchup.xl.projected).length};
+    });
+    // Winning Hidden Power builds remain separate; their boss wins are never combined.
+    const variants = new Map();
+    for (const row of entries) {
+        const identity = JSON.stringify([row.id, row.form, !!row.shadow, row.level]);
+        if (!variants.has(identity)) variants.set(identity, []);
+        variants.get(identity).push(row);
+    }
+    for (const group of variants.values()) for (const row of group)
+        row.variants = group.map(variant => ({key:variant.key, hiddenPowerType:variant.hiddenPowerType,
+            points:variant.points, near:variant.near, positive:variant.positive}));
+    const rows = entries.filter(row => row.points > 0)
+        .sort((a, b) => b.points - a.points || b.near - a.near || b.positive - a.positive || a.key.localeCompare(b.key));
+    return {rows, scoring:'mega-xl', weighting, weights, groupCount, bossCount:matrix.bosses.length,
+        speciesCount:new Set(matrix.bosses.map(boss => boss.id)).size,
+        totalWeight:weights.reduce((sum, weight) => sum + weight, 0), bestPoints:rows[0]?.points || 0};
+}
+
+/** Select elite for Attacker and mega-xl for the XL-winning Mega leaderboard. */
 function ScoreRaidMatrix(matrix, options = {}) {
+    if (options.scoring === 'mega-xl') return ScoreRaidMegaXLMatrix(matrix, options);
     const scoring = options.scoring === 'elite' ? 'elite' : 'linear';
     const floor = scoring === 'elite' ? 95 : [70, 80, 90].includes(Number(options.floor)) ? Number(options.floor) : 80;
     const weighting = ['forms', 'species'].includes(options.weighting) ? options.weighting : 'groups';
@@ -66,8 +120,10 @@ function ScoreRaidMatrix(matrix, options = {}) {
         const entry = {
             ...attacker, matchups,
             points,
-            first: matchups.filter(matchup => matchup.ratio >= 1 - 1e-9).length,
-            near: matchups.filter(matchup => matchup.ratio >= 0.95 - 1e-9).length,
+            first: matchups.filter(matchup => matchup.ratio >= 1 - 1e-9)
+                .reduce((sum, matchup) => sum + weights[matchup.bossIndex], 0),
+            near: matchups.filter(matchup => matchup.ratio >= 0.95 - 1e-9)
+                .reduce((sum, matchup) => sum + weights[matchup.bossIndex], 0),
             lead: Math.max(0, ...matchups.map(matchup => matchup.lead || 0)),
             xlCoverage, xlCount:strongXL.length, xlProjected:strongXL.filter(matchup=>matchup.xl.projected).length,
         };

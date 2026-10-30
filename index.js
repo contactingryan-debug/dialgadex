@@ -12,7 +12,7 @@ let pageRequest = 0;
 const pages = [
     {id: 'pokedex-page', template_path: 'templates/pokedex.html?v=4e7321b67978', binder: BindPokeDex},
     {id: 'strongest', template_path: 'templates/rankings.html?v=8ebda7e173cf', binder: BindRankings},
-    {id: 'raid-leaderboard', template_path: 'templates/raid-leaderboard.html?v=fc13823e5746', binder: BindRaidLeaderboard},
+    {id: 'raid-leaderboard', template_path: 'templates/raid-leaderboard.html?v=d5ac286322a0', binder: BindRaidLeaderboard},
     {id: 'data-audit', template_path: 'templates/data-audit.html?v=553dad90b622', binder: BindDataAudit},
     {id: 'move-data', template_path: 'templates/moves.html', binder: BindMoveData},
     {id: 'type-matrix', template_path: 'templates/typechart.html', binder: BuildTypeChart},

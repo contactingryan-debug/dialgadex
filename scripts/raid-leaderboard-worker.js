@@ -81,8 +81,8 @@ self.onmessage = async event => {
             benchmarks.push(best);
             for (const {index, moveset} of counters) {
                 const ratio = moveset.rat / best;
-                // All supported scoring floors can be recomputed from this compact matrix.
-                if (ratio < 0.7 - 1e-9) continue;
+                // Mega XL winners can earn points at any positive performance.
+                if (ratio < 0.7 - 1e-9 && !attackers[index].transformed) continue;
                 const runnerUp = ratio >= 1 - 1e-9
                     ? referenceCounters.find(counter => identities[counter.index] !== identities[index]) : null;
                 attackers[index].matchups.push({bossIndex, ratio, edps: moveset.rat,

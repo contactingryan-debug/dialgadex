@@ -21,35 +21,52 @@ try {
     async function fits() {assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'XL view overflows.');}
     await ready();
     assert.equal(await page.locator('#raid-megas').isChecked(),true);
-    assert.equal(await page.locator('#raid-xl-only').isChecked(),true);
+    assert.equal(await page.locator('#raid-xl-only').count(),0);
+    assert.equal(await page.evaluate(()=>raidLeaderboardResult.scoring),'mega-xl');
     assert(await page.locator('.raid-entry').count()>0);
     const verified=await page.evaluate(()=>{
         let matches=0;
+        const winners=new Map();
+        for(const row of raidLeaderboardMatrix.attackers.filter(r=>r.transformed))for(const m of row.matchups){
+            if(m.xl?.eligible!==true||!Number.isFinite(m.ratio)||m.ratio<=0)continue;
+            const previous=winners.get(m.bossIndex);
+            if(!previous||m.ratio>previous.ratio||(m.ratio===previous.ratio&&row.key.localeCompare(previous.key)<0))
+                winners.set(m.bossIndex,{key:row.key,ratio:m.ratio});
+        }
+        const awarded=new Set();
         for(const row of raidLeaderboardResult.rows) {
-            const expected=row.matchups.reduce((sum,m)=>sum+(m.xl?.eligible&&m.ratio>=.95-1e-9?raidLeaderboardResult.weights[m.bossIndex]:0),0);
-            if(Math.abs(row.xlCoverage-expected)>1e-10)throw new Error('XL coverage weighting differs.');
-            for(const m of row.matchups.filter(m=>m.xl?.eligible)) {
+            const wins=row.matchups.filter(m=>m.points>0);
+            const near=wins.reduce((sum,m)=>sum+(m.ratio>=.95-1e-9?raidLeaderboardResult.weights[m.bossIndex]:0),0);
+            const positive=wins.reduce((sum,m)=>sum+raidLeaderboardResult.weights[m.bossIndex],0);
+            if(Math.abs(row.near-near)>1e-10||Math.abs(row.positive-positive)>1e-10
+                ||Math.abs(row.points-(9*near+positive))>1e-9||row.score!==row.points)
+                throw new Error('Weighted XL-winning coverage or raw 10/1 score differs.');
+            for(const m of wins) {
+                if(winners.get(m.bossIndex)?.key!==row.key||awarded.has(m.bossIndex))throw new Error('A runner-up or duplicate received points.');
+                awarded.add(m.bossIndex);
+                if(m.points!==(m.ratio>=.95-1e-9?10:1))throw new Error('Wrong XL winner points.');
                 const encounter=raidLeaderboardMatrix.bosses[m.bossIndex].catch;
                 if(!m.xl.matchedTypes.length||m.xl.matchedTypes.some(t=>!encounter.types.includes(t)||!row.xlProfile.types.includes(t)))
                     throw new Error('XL type intersection differs.');
                 matches++;
             }
         }
+        if(awarded.size!==winners.size)throw new Error('A boss with a positive XL option was omitted.');
         for(const [id,form,types] of [[888,'Crowned_sword',['Fairy']],[889,'Crowned_shield',['Fighting']],
             [800,'Dawn_wings',['Psychic']],[800,'Dusk_mane',['Psychic']]]) {
             const encounter=raidLeaderboardMatrix.bosses.find(b=>b.id===id&&b.form===form)?.catch;
             if(JSON.stringify(encounter?.types)!==JSON.stringify(types))throw new Error('Incorrect catch typing '+id+'/'+form);
         }
         const visible=[...document.querySelectorAll('.raid-entry')].map(el=>raidLeaderboardResult.rows.find(r=>r.key===el.dataset.key));
-        if(visible.some(r=>!(r.xlCoverage>0)))throw new Error('A non-qualifying attacker passed Strong + XL.');
-        if(visible.some((r,i)=>i&&r.xlCoverage>visible[i-1].xlCoverage+1e-10))throw new Error('XL sort is incorrect.');
-        return {matches,dualAttackers:raidLeaderboardResult.rows.filter(r=>r.xlCoverage>0).length};
+        if(visible.some(r=>!(r.positive>0)))throw new Error('A non-winning attacker was displayed.');
+        if(visible.some((r,i)=>i&&r.near>visible[i-1].near+1e-10))throw new Error('Weighted coverage sort is incorrect.');
+        return {matches,winningBuilds:raidLeaderboardResult.rows.length,bossWinners:winners.size};
     });
     assert.equal(await page.locator('.raid-score-options').count(),0);
-    assert.equal(await page.evaluate(()=>raidLeaderboardState.xlThreshold),95);
+    assert.deepEqual(await page.locator('#raid-column-headings button').allTextContents(),['≥95%','>0%','Score']);
     await page.locator('.raid-entry > summary').first().click();
     await page.locator('.raid-breakdown .raid-matchup').first().waitFor();
-    assert.match(await page.locator('.raid-breakdown').innerText(),/Strong \+ XL:.*weighted raids/);
+    assert.match(await page.locator('.raid-breakdown').innerText(),/XL wins:.*weighted at ≥95%/);
     assert.match(await page.locator('.raid-breakdown').innerText(),/Catch:/);
     for(const width of [320,390,900]){await page.setViewportSize({width,height:844});await fits();}
     // Mewtwo has both strong and weak compatible Megas. Capture the full native
@@ -153,19 +170,18 @@ try {
     await page.locator('#audit-quality').selectOption('catch-unknown');
     assert(await page.locator('.audit-entry').count()>0);
     await page.evaluate(()=>LoadRaidLeaderboardAndUpdateURL());await ready(true);
-    // Level changes alter XL eligibility without rewriting the battle-point formula.
+    // Without active catch-XL eligibility, the new Mega leaderboard awards no points.
     const levelState=await page.evaluate(async()=>{
-        SetXLStrongThreshold(95);raidLeaderboardState.xlThreshold=95;
-        const before=raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score]);
+        const before=raidLeaderboardMatrix.attackers.map(r=>[r.key,r.matchups.map(m=>m.ratio)]);
         for(const row of raidLeaderboardMatrix.attackers)for(const m of row.matchups)
             m.xl=GetCatchXLMatch(row.xlProfile,raidLeaderboardMatrix.bosses[m.bossIndex].catch,1,true);
         RefreshRaidLeaderboardScores();
-        return {before,after:raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score]),
-            qualifying:raidLeaderboardResult.rows.filter(r=>r.xlCoverage>0).length};
+        return {before,after:raidLeaderboardMatrix.attackers.map(r=>[r.key,r.matchups.map(m=>m.ratio)]),
+            qualifying:raidLeaderboardResult.rows.length};
     });
     assert.deepEqual(levelState.after,levelState.before);assert.equal(levelState.qualifying,0);
     await page.reload();
-    await page.waitForFunction(()=>document.querySelector('#raid-xl-only'),null,{timeout:120000});
+    await page.waitForFunction(()=>document.querySelector('#raid-title'),null,{timeout:120000});
     await page.evaluate(()=>LoadFAQAndUpdateURL());
     assert.deepEqual(errors,[]);
     console.log('Catch mappings, weighted XL coverage, filters, thresholds, counter badges, Ultra audit/copy and mobile:',JSON.stringify(verified));

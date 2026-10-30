@@ -85,12 +85,20 @@ try {
         for(const row of raidLeaderboardResult.rows){
             const expected=row.matchups.reduce((sum,m)=>sum+raidLeaderboardResult.weights[m.bossIndex]
                 *((m.ratio>=1-1e-9?1:0)+(m.ratio>=.95-1e-9?1:0)),0);
-            if(Math.abs(row.points-expected)>1e-9||row.points<=0||row.near<1)
+            const first=row.matchups.filter(m=>m.ratio>=1-1e-9).reduce((sum,m)=>sum+raidLeaderboardResult.weights[m.bossIndex],0);
+            const near=row.matchups.filter(m=>m.ratio>=.95-1e-9).reduce((sum,m)=>sum+raidLeaderboardResult.weights[m.bossIndex],0);
+            if(Math.abs(row.points-expected)>1e-9||row.points<=0||row.near<=0||Math.abs(row.first-first)>1e-9||Math.abs(row.near-near)>1e-9)
                 throw new Error('Incorrect elite points or non-qualifying attacker: '+row.key);
         }
         return {count:raidLeaderboardResult.rows.length,leader:raidLeaderboardResult.rows[0].score};
     });
     assert.equal(elite.leader,100);
+    assert(await page.locator('.raid-entry').evaluateAll(elements=>elements.every(el=>getComputedStyle(el).borderBottomWidth==='0px')));
+    assert(await page.locator('.raid-entry').evaluateAll(elements=>elements.every(el=>{
+        const row=raidLeaderboardResult.rows.find(r=>r.key===el.dataset.key);
+        return el.querySelector('.raid-first').textContent===RaidLeaderboardWeight(row.first)
+            &&el.querySelector('.raid-near').textContent===RaidLeaderboardWeight(row.near);
+    })));
     assert.equal(await page.evaluate(()=>raidLeaderboardState.weighting),'groups');
     assert.deepEqual(await page.locator('#nav-drawer .menu a').allTextContents(),
         ['Raid Leaderboard','Type Rankings','Data Audit','Move Data','Type Chart']);

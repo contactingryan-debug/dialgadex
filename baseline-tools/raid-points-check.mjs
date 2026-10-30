@@ -27,11 +27,60 @@ test('Attacker totals retain boss-group weights, tied wins and leader-at-100 sca
     assert.equal(result.scoring,'elite');assert.equal(result.floor,95);
     const mixed=result.rows.find(r=>r.key==='mixed');
     assert.equal(mixed.points,1.5);assert.equal(mixed.score,75);
-    assert.equal(mixed.first,1);assert.equal(mixed.near,2);
+    assert.equal(mixed.first,.5);assert.equal(mixed.near,1);
     assert.equal(result.rows[0].key,'winner');assert.equal(result.rows[0].score,100);
     assert(!result.rows.some(r=>r.key==='weak'));
     assert.equal(result.totalWeight,2);
     assert.deepEqual(ScoreRaidMatrix(matrix,{scoring:'elite',floor:90}).rows,result.rows);
+});
+
+test('Mega XL points go only to the highest eligible transformed option, including winners below 70%',()=>{
+    const xl=(bossIndex,ratio,eligible=true)=>({...matchup(bossIndex,ratio),xl:{eligible}});
+    const matrix={bosses:[{id:649,form:'Normal'},{id:649,form:'Burn'},{id:150}],attackers:[
+        attacker('a',1,[xl(0,1.2),xl(1,.8),xl(2,.5)],{transformed:true,form:'Mega'}),
+        attacker('b',2,[xl(0,1.1),xl(1,.9),xl(2,.4)],{transformed:true,form:'Primal'}),
+        attacker('ordinary',3,[xl(0,4),xl(1,4),xl(2,4)]),
+        attacker('non-xl',4,[xl(0,3,false),xl(1,3,false),xl(2,3,false)],{transformed:true}),
+        attacker('unknown',5,[xl(0,5,null)],{transformed:true}),
+    ]};
+    const result=ScoreRaidMatrix(matrix,{scoring:'mega-xl'});
+    const a=result.rows.find(r=>r.key==='a'),b=result.rows.find(r=>r.key==='b');
+    assert.equal(result.scoring,'mega-xl');assert.equal(result.rows.length,2);
+    assert.equal(a.near,.5);assert.equal(a.positive,1.5);assert.equal(a.points,6);assert.equal(a.score,6);
+    assert.equal(b.near,0);assert.equal(b.positive,.5);assert.equal(b.points,.5);
+    assert.equal(b.matchups.find(m=>m.bossIndex===0).points,0,'Even a strong runner-up earns nothing.');
+    assert.equal(a.matchups.find(m=>m.bossIndex===2).points,1);
+    assert.equal(result.rows.reduce((sum,r)=>sum+r.positive,0),result.totalWeight);
+    for(const row of result.rows)assert.equal(row.points,9*row.near+row.positive);
+    assert.equal(matrix.attackers[0].matchups[0].points,undefined,'Do not mutate the battle matrix.');
+});
+
+test('Mega XL 95% boundary, positive-only coverage and invalid inputs are explicit',()=>{
+    const ratios=[.95-2e-9,.95,1.5,.00001,0,-1,NaN,Infinity];
+    const result=ScoreRaidMatrix({bosses:ratios.map((_,id)=>({id})),attackers:[
+        attacker('mega',1,ratios.map((ratio,bossIndex)=>({...matchup(bossIndex,ratio),xl:{eligible:true}})),{transformed:true}),
+    ]},{scoring:'mega-xl'});
+    assert.equal(result.rows[0].near,2);assert.equal(result.rows[0].positive,4);assert.equal(result.rows[0].points,22);
+    assert.equal(ScoreRaidMatrix({bosses:[{id:1}],attackers:[]},{scoring:'mega-xl'}).rows.length,0);
+});
+
+test('Mega XL ties award one stable build and shared raid formats retain one total weight',()=>{
+    const bosses=[{id:150,form:'Mega'},{id:150,form:'Mega',raidFormat:'super'}];
+    const rows=[attacker('b',2,[0,1].map(bossIndex=>({...matchup(bossIndex,1),xl:{eligible:true}})),{transformed:true}),
+        attacker('a',1,[{...matchup(0,.9),xl:{eligible:true}},...[0,1].map(bossIndex=>({...matchup(bossIndex,1),xl:{eligible:true}}))],{transformed:true})];
+    const first=ScoreRaidMatrix({bosses,attackers:rows},{scoring:'mega-xl'});
+    const second=ScoreRaidMatrix({bosses,attackers:[...rows].reverse()},{scoring:'mega-xl'});
+    assert.deepEqual(first,second);assert.equal(first.rows.length,1);assert.equal(first.rows[0].key,'a');
+    assert.equal(first.rows[0].matchups.length,2);assert.equal(first.rows[0].points,10);
+    assert.equal(first.rows[0].positive,1);assert.equal(first.rows[0].near,1);
+});
+
+test('Mega XL winning Hidden Power builds keep separate scores and never combine their wins',()=>{
+    const result=ScoreRaidMatrix({bosses:[{id:1},{id:2}],attackers:[
+        attacker('fire',121,[{...matchup(0,1),xl:{eligible:true}}],{form:'Mega',transformed:true,hiddenPowerType:'Fire'}),
+        attacker('ice',121,[{...matchup(1,1),xl:{eligible:true}}],{form:'Mega',transformed:true,hiddenPowerType:'Ice'}),
+    ]},{scoring:'mega-xl'});
+    assert.equal(result.rows.length,2);assert(result.rows.every(r=>r.points===10&&r.positive===1&&r.variants.length===2));
 });
 
 test('Attacker scoring deduplicates a boss and selects one fixed Hidden Power build under the new point rules',()=>{

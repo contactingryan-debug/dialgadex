@@ -31,11 +31,11 @@ try {
         assert(visible.length>0);
         assert(visible.every(row=>row.transformed===megas&&row.rank===row.expectedRank),
             'Each leaderboard must contain only its own category and start ranking at one.');
-        assert.equal(await page.locator('#raid-xl-only').isVisible(),megas);
+        assert.equal(await page.locator('#raid-xl-only').count(),0);
         assert.equal(await page.locator('#raid-shadows-control').evaluate(el=>el.hidden),megas);
-        assert.equal(await page.evaluate(()=>raidLeaderboardResult.scoring),megas?'linear':'elite');
+        assert.equal(await page.evaluate(()=>raidLeaderboardResult.scoring),megas?'mega-xl':'elite');
         const expected=await page.evaluate(()=>raidLeaderboardResult.rows.filter(r=>!!r.transformed===!!raidLeaderboardState.includeMegas
-            &&(!raidLeaderboardState.xlOnly||r.xlCoverage>0)&& (raidLeaderboardState.shadows||!r.shadow)
+            &&(raidLeaderboardState.shadows||!r.shadow)
             &&(raidLeaderboardState.legendaries||!r.legendary)).length);
         assert.equal(visible.length,expected,'Show every scoring attacker.');
         assert.equal(await page.locator('.raid-tier').count(),visible.length);
@@ -53,13 +53,23 @@ try {
     assert.equal(await page.locator('#raid-megas').isChecked(),true);
     assert.equal(await page.locator('#raid-intro-text').count(),0);
     assert.equal(await page.locator('#raid-loading').isVisible(),false);
-    assert(await page.locator('.raid-entry > summary .raid-form').count()>20);
+    assert(await page.locator('.raid-entry > summary .raid-form').count()<await page.locator('.raid-entry').count(),
+        'Ordinary Mega forms must omit the redundant parenthesized label.');
     assert(await page.locator('.raid-entry > summary .raid-species').evaluateAll(elements=>
         elements.every(el=>!/^Mega |^Primal /.test(el.textContent))));
     assert(await page.locator('.raid-entry > summary .raid-form').evaluateAll(elements=>
-        elements.every(el=>/^\((?:Mega(?: [XYZ])?|Primal|Ultra)\)$/.test(el.textContent))));
+        elements.every(el=>/^\((?:[XYZ]|Primal|Ultra|[A-Za-z ]+)(?:, [A-Za-z ]+)?\)$/.test(el.textContent)
+            &&!el.textContent.includes('Mega'))));
+    assert.deepEqual(await page.evaluate(()=>[
+        [384,'Mega Rayquaza','Mega'],[6,'Mega Charizard X','Mega'],[6,'Mega Charizard Y','MegaY'],
+        [382,'Primal Kyogre','Primal'],[800,'Necrozma','Ultra'],
+    ].map(([id,name,form])=>RaidLeaderboardName({id,name,form},true).find('.raid-form').text())),
+        ['','(X)','(Y)','(Primal)','(Ultra)']);
+    assert.equal(await page.evaluate(()=>RaidLeaderboardName({id:384,name:'Mega Rayquaza',form:'Mega'})
+        .find('.raid-form').text()),'(Mega)','Boss breakdowns must retain the fought Mega form.');
     for (const id of [382,383]) {
-        const key=await page.evaluate(id=>raidLeaderboardResult.rows.find(r=>r.transformed&&r.id===id).key,id);
+        const key=await page.evaluate(id=>raidLeaderboardResult.rows.find(r=>r.transformed&&r.id===id)?.key,id);
+        if(!key)continue;
         assert.equal(await page.locator('.raid-entry').filter({has:page.locator('.raid-form')})
             .evaluateAll((elements,key)=>elements.find(el=>el.dataset.key===key).querySelector('summary .raid-form').textContent,key),'(Primal)');
     }
@@ -88,7 +98,11 @@ try {
                     for(const row of raidLeaderboardMatrix.attackers.filter(r=>r.transformed)) {
                         const recorded=row.matchups.find(m=>m.bossIndex===bossIndex);
                         if(!recorded)continue;
-                        const p=jb_pkm.find(p=>p.id===row.id&&p.form===row.form);
+                        let p=jb_pkm.find(p=>p.id===row.id&&p.form===row.form);
+                        if(row.hiddenPowerType){
+                            const moves=GetPokemonMoves(p,'All'),keep=m=>!m.startsWith('Hidden Power')||m==='Hidden Power '+row.hiddenPowerType;
+                            p={...p,fm:moves[0].filter(keep),elite_fm:moves[2].filter(keep)};delete p.fm_add;delete p.fm_rem;
+                        }
                         const expected=GetStrongestAgainstSpecificEnemy(p,false,row.level,enemy,{...search,mega:true}).at(-1);
                         if(Math.abs(expected.rat-recorded.edps)>1e-8||expected.cm!==recorded.cm
                                 ||Math.abs(recorded.ratio-recorded.edps/best.rat)>1e-10)
@@ -115,10 +129,11 @@ try {
     assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score])),currentAll.scores,
         'Changing the Attacker score must not alter the Mega scoring scale.');
     assert.equal(await page.evaluate(()=>window.megaWorkerStarts),starts,'Returning to the previous pool should use its cache.');
-    await page.locator('#raid-xl-only').check();
-    await page.locator('#raid-column-headings button[data-sort="xlCoverage"]').click();
+    assert.deepEqual(await page.locator('#raid-column-headings button').allTextContents(),['≥95%','>0%','Score']);
+    await page.locator('#raid-column-headings button[data-sort="near"]').click();
+    assert.equal(new URL(page.url()).searchParams.get('sort'),'near');
     await page.locator('#raid-mode-label').click();await ready(false);
-    assert.equal(await page.locator('#raid-xl-only').isChecked(),false);
+    assert.equal(await page.locator('#raid-xl-only').count(),0);
     assert(!new URL(page.url()).searchParams.has('xl'));
     assert.equal(await page.evaluate(()=>raidLeaderboardState.sort),'score');
     await page.locator('#raid-mode-label').click();await ready(true);
@@ -132,10 +147,9 @@ try {
         if(raidLeaderboardMatrix.attackers.filter(p=>p.transformed).some(p=>p.level!==52))throw new Error('Projected level mismatch.');
         const row=raidLeaderboardResult.rows.find(r=>r.transformed&&r.matchups.some(m=>m.points>0&&FindChargedMove(m.cm)?._plus_projection));
         if(!row)throw new Error('No scoring forecast +move.');
-        return {key:row.key,id:row.id,form:row.form,score:row.score,
-            above100:raidLeaderboardResult.rows.some(r=>r.transformed&&r.score>100)};
+        return {key:row.key,id:row.id,form:row.form,score:row.score,rawPoints:row.score===row.points};
     });
-    assert(projected.above100);
+    assert(projected.rawPoints);
     await page.locator('#raid-plus-note').waitFor();await page.locator('#raid-level-note').waitFor();
     const index=await page.locator('.raid-entry').evaluateAll((elements,key)=>elements.findIndex(e=>e.dataset.key===key),projected.key);
     const entry=page.locator('.raid-entry').nth(index);

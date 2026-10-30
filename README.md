@@ -80,10 +80,9 @@ It defaults to released non-Mega/Primal/Ultra attackers, including Shadows,
 fusions, and Crowned forms, against released tier 4+ bosses using native eDPS.
 Use the **Attacker / Mega** toggle in the title to switch between separate
 leaderboards. **Attacker** shows only non-Mega forms; **Mega** shows only Mega,
-Primal, and Ultra transformations. XL controls appear in the Mega view. The
-benchmark remains the best non-Mega attacker per boss. Each view scales scores
-against the best non-Mega total under its own scoring rules. Mega scores and
-matchup percentages may exceed 100. The Mega view
+Primal, and Ultra transformations. The benchmark remains the best non-Mega
+attacker per boss. Attacker scores scale the leading total to 100; Mega scores
+show weighted points directly. Matchup percentages may exceed 100. The Mega view
 is recorded in `?leaderboard&megas` and remembered for navigation in the tab.
 The current level, team size, Party Power, and relobby settings apply; eDPS
 remains the scoring metric.
@@ -99,6 +98,8 @@ Each consecutive tier forms an uninterrupted color band with one letter,
 centered in its visible portion as you scroll or expand an entry. Form labels
 omit Form/Forme and repeated species names. A relevant fixed Hidden Power type
 appears as a compact parenthesized type; unused Hidden Power labels stay hidden.
+Mega leaderboard names omit the redundant Mega label, retaining X/Y/Z, Primal,
+Ultra, and any relevant Hidden Power type. Leaderboard rows have no dividers.
 Calculation notes appear below the list. The species funnel opens and closes
 on hover, matching Type Rankings, and retains touch and keyboard controls.
 **Boss List →** currently returns to the leaderboard until the boss page is built.
@@ -118,28 +119,34 @@ release pool. **Attacker** scoring awards **2 points at ≥100%, 1 point at
 are ranked. A win earns two points total; the ≥95% count already includes wins.
 Old minimum-performance URL settings do not change these fixed tiers.
 
-**Mega** scoring retains the 0–5-point curve, defaulting to zero at 80% and five
-at 100%: `5 * clamp((relative_eDPS - 0.8) / 0.2, 0, 1)`. Mega performance above
-100% remains capped at five.
+**Mega** scoring selects the highest-eDPS XL-boosting transformed build for each
+boss form. That winner earns **10 points at ≥95%** of best non-Mega eDPS, or
+**1 point at >0–<95%**. All other options earn zero. Exact ties select one build
+by stable build key, so they cannot duplicate a boss's allocation. Candidates
+below the former 70% calculation cutoff remain eligible for the one-point award.
 
 Both views apply the same boss weights. Each raid group has total
 weight one. Genesect, Deoxys, Arceus, and Silvally share it across included forms;
 other major forms have separate groups. A form's allocation is shared across
 raid formats, so regular/Shadow or ordinary/Super versions cannot add weight.
-Separate Shadow raid profiles and their availability audit are deferred. The displayed score
-is its weighted point total relative to the best non-Mega total (100) on that
-view's scoring scale. The two views use different point rules.
+Separate Shadow raid profiles and their availability audit are deferred.
+Attacker Score is its weighted point total relative to the leading Attacker
+total (100). Mega Score is the weighted point total, without normalization.
 
 Both views use fixed equal raid-group weights. Shadow and Legendary display
 filters preserve the reference pool and score scale. Both views retain the same
 per-boss eDPS benchmark. The list has no search bar or scoring-options menu;
 the shared header retains calculation settings and species filters.
 Each entry expands to contributing bosses, weighted points, relative eDPS,
-and the optimal moves. ≥100% and ≥95% count boss forms reaching those
-percentages of the best non-Mega eDPS. Winning margin uses the strongest other
+and the optimal moves. All coverage columns sum boss weights. Attacker columns
+are Score, ≥100%, and ≥95%; the ≥95% total includes ≥100% coverage. Mega columns
+are ≥95%, >0%, and Score; >0% includes all winning XL options, including ≥95%.
+Winning margin uses the strongest other
 non-Mega build; a transformed attacker compares with the best non-Mega build.
-Hidden Power types are separate fixed builds: only the best aggregate build
-is displayed, with alternative build totals available in its breakdown.
+Hidden Power types are separate fixed builds. Attacker displays the best aggregate
+build per form. Mega displays each winning fixed build separately, preserving
+the highest XL option for every boss without combining incompatible types.
+Alternative build totals are available in the breakdown.
 The score measures battle coverage; acquisition costs and roster-aware
 upgrade recommendations remain a separate future step.
 
@@ -154,13 +161,12 @@ rankings and individual counters retain their calculation formulas.
 
 ## Catch XL compatibility
 
-The separate **XL ≥95%** leaderboard column adds the selected raid-group weights
-for bosses where the displayed build reaches the chosen 90%, 95%, or 100% of
-best non-Mega eDPS and its active transformation can boost the catch's XL chance.
-It preserves combat points and the non-Mega reference. Sort by this column or
-use **Strong + XL only**, which also enables transformations. URL parameters
-`xl`, `xl-min`, and `sort=xl` preserve the view. Fixed Hidden Power builds are
-never combined to inflate XL coverage.
+The Mega leaderboard awards only the highest-eDPS XL-boosting option for each
+boss, with weighted ≥95% and >0% coverage columns. Its quality threshold is fixed
+at 95%; there is no Strong + XL filter. Species display filters preserve the
+winner pool and scores rather than promoting a runner-up. Legacy `xl` URLs open
+the Mega view and `sort=xl` maps to ≥95%; `xl-min` no longer changes scoring.
+Fixed Hidden Power builds are never combined to inflate XL coverage.
 
 The caught form is resolved separately from the fought form. Mega/Primal raids
 use the base encounter; Necrozma/Kyurem fusions revert, Crowned Zacian/Zamazenta
@@ -178,7 +184,7 @@ Unreleased and carry P labels.
 Individual raid counter lists show catch details and XL badges and have an
 **XL boosting options only** filter with no strength threshold. Results use the
 selected metric and baseline from before XL filtering, then show the top ten
-compatible species. The strength threshold remains a leaderboard tool.
+compatible species. The Mega leaderboard uses its fixed 95% quality threshold.
 **Hide non-XL Megas / Primals / Ultras** is enabled by default, keeping regular
 counters alongside compatible transformations. Both filters preserve the same metric and baseline;
 when both are selected, XL boosting options only takes precedence.
@@ -253,8 +259,9 @@ Mobile toggle, direct-link, reload, and navigation checks cover the new view.
 Raid scoring checks cover point boundaries, form weighting, tied leaders,
 duplicate movesets, and fixed Hidden Power builds. The leaderboard browser
 check compares every boss benchmark and the leading entries' movesets with
-the native calculator, then exercises mobile layout, scoring controls,
-search, display filters, URLs, history, and cancellation.
+the native calculator, then exercises mobile layout, weighted coverage columns,
+display filters, URLs, history, and cancellation. Mega checks independently
+verify one XL winner per boss, 10/1-point awards, fixed builds, and raw scores.
 
 The manual workflow also accepts a deployed URL. No repository variable or
 secret is needed. Its `baseline-comparison` artifact records inputs, data

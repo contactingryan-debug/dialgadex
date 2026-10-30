@@ -52,23 +52,17 @@
         <button id="raid-retry" hidden data-i18n="raid-leaderboard.retry">Try again</button>
     </div>
     <div id="raid-results" hidden>
-        <div class="raid-controls">
-            <div class="raid-display-filters">
-                <label class="raid-mega-control" hidden><input id="raid-xl-only" type="checkbox"> <span data-i18n="catch-xl.strong-only">Strong + XL only</span></label>
-            </div>
-        </div>
-        <div id="raid-column-headings" class="raid-grid"><span data-i18n="raid-leaderboard.tier">Tier</span><span>#</span><span aria-hidden="true"></span><span data-i18n="raid-leaderboard.pokemon">Pokémon</span><button data-sort="score" aria-pressed="true" data-i18n="raid-leaderboard.score">Score</button><button data-sort="first" aria-pressed="false" data-i18n="raid-leaderboard.first">≥100%</button><button data-sort="near" aria-pressed="false" data-i18n="raid-leaderboard.near">≥95%</button><button id="raid-xl-heading" data-sort="xlCoverage" aria-pressed="false">XL ≥95%</button></div>
+        <div id="raid-column-headings" class="raid-grid"><span data-i18n="raid-leaderboard.tier">Tier</span><span>#</span><span aria-hidden="true"></span><span data-i18n="raid-leaderboard.pokemon">Pokémon</span></div>
         <div id="raid-list"></div>
         <p id="raid-empty" hidden data-i18n="raid-leaderboard.empty">No scoring attackers match these filters.</p>
         <div class="raid-method">
             <p id="raid-plus-note" class="raid-muted" data-i18n="strongest.notes.projected-plus" hidden></p>
             <p id="raid-level-note" class="raid-muted" data-i18n="strongest.notes.projected-levels" hidden></p>
             <p data-i18n="raid-leaderboard.tier-note">Tiers use Jenks natural breaks on Raid Score within this leaderboard. Species filters keep the same tier assignments.</p>
-            <p class="raid-mega-control" hidden data-i18n="catch-xl.coverage-note">XL coverage adds the existing boss weights for strong, compatible catches. It uses the displayed fixed Hidden Power build. Combat scores stay unchanged. P marks projected rules.</p>
             <p class="raid-mega-control" hidden data-i18n="catch-xl.active-note">Catch XL requires the relevant transformation to be active when catching. Standard Megas and Primals need at least High Level (2). This is a chance bonus, not guaranteed extra XL.</p>
             <p id="raid-method-summary"></p>
             <p id="raid-weight-summary"></p>
-            <p data-i18n="raid-leaderboard.counts-note">#1 and ≤5% count boss forms. Tied leaders each count as #1. Display filters keep the same reference pool and score scale.</p>
+            <p id="raid-counts-note"></p>
             <p data-i18n="raid-leaderboard.data-note">The Unreleased filter applies to both attackers and raid bosses. Current-only calculations exclude Data Preview. Scores measure battle coverage; upgrade cost and your current teams should guide your next investment.</p>
         </div>
     </div>

@@ -247,3 +247,23 @@ The calculation formulas and upstream data sources are unchanged.
   a compact parenthesized type. Replace repeated tier cells with continuous
   bands and one letter centered in the visible portion, including expanded
   entries and filtered or sorted lists. Preserve scoring and tier assignments.
+
+## October 30, 2026 — Weighted XL winners and cleaner leaderboard rows
+
+- Remove dividers between Pokémon on both Raid Leaderboards.
+- Score only the highest-eDPS XL-boosting Mega/Primal/Ultra build per boss form:
+  10 points at ≥95% of best non-Mega eDPS, 1 point below 95% with positive eDPS,
+  and zero for other options. Resolve exact ties to one stable build. Retain
+  positive transformed matchups below the former 70% matrix cutoff.
+- Show Mega columns in the order ≥95%, >0%, Score. Sum boss weights for both
+  coverage columns, with >0% including ≥95% winners. Show raw weighted points
+  as Mega Score; preserve the Attacker leaderboard's existing 2/1 scoring and
+  leading score of 100. Weight its ≥100% and ≥95% columns as well.
+- Remove Strong + XL only and its threshold controls. Preserve species display
+  filters without promoting runner-ups, and migrate legacy XL links to Mega.
+- Keep winning fixed Hidden Power builds separate on Mega so each boss retains
+  its actual best XL option. Ordinary Attacker still shows the best aggregate
+  fixed build per form.
+- Omit generic Mega brackets in Mega summaries; retain compact X/Y/Z, Primal,
+  Ultra and relevant Hidden Power labels. Keep full boss form labels in
+  expanded matchups.
