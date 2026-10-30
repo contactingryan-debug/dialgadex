@@ -43,6 +43,13 @@ try {
     }
     async function fits() {
         assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Leaderboard overflows.');
+        const clipped=await page.locator('.raid-entry > summary :is(.raid-score,.raid-near,.raid-positive)').evaluateAll(cells=>
+            cells.filter(cell=>{
+                const range=document.createRange();range.selectNodeContents(cell.querySelector('strong')||cell);
+                const text=range.getBoundingClientRect(),box=cell.getBoundingClientRect();
+                return text.left<box.left-1||text.right>box.right+1;
+            }).map(cell=>cell.textContent));
+        assert.deepEqual(clipped,[],'Weighted decimal values must fit their numeric cells.');
     }
     async function openFilters() {
         if(!await page.locator('#raid-filter-drawer').evaluate(el=>el.open))

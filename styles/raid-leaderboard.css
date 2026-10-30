@@ -68,8 +68,9 @@
 #raid-empty { padding: 1rem; }
 @media (max-width:600px) {
     .raid-card { --raid-tier-width:22px; }
-    .raid-grid { grid-template-columns:var(--raid-tier-width) 22px 32px minmax(0,1fr) 48px 36px 32px; gap:.2rem; padding:0 .35rem 0 0; }
+    .raid-grid { grid-template-columns:var(--raid-tier-width) 22px 32px minmax(0,1fr) 48px 36px 34px; gap:.2rem; padding:0 .35rem 0 0; }
     .raid-entry > summary { font-size:.75rem; min-height:40px; }
+    .raid-entry > summary :is(.raid-score,.raid-first,.raid-near,.raid-positive) { font-size:.8em; }
     .raid-sprite { transform:scale(.8); }
     .raid-loading, .raid-method { padding:.75rem; }
     .raid-breakdown { padding:.75rem .75rem .75rem calc(var(--raid-tier-width) + .75rem); }
@@ -95,6 +96,6 @@
 #counters-catch-note, #counters-xl-empty { font-size:.8rem; padding:.4rem; overflow-wrap:anywhere; }
 @media(max-width:600px) {
     .raid-mega-view { --raid-tier-width:20px; }
-    .raid-mega-view .raid-grid { grid-template-columns:var(--raid-tier-width) 20px 28px minmax(0,1fr) 34px 32px 48px; gap:.15rem; }
+    .raid-mega-view .raid-grid { grid-template-columns:var(--raid-tier-width) 20px 28px minmax(0,1fr) 34px 34px 52px; gap:.15rem; }
     .raid-mega-view .raid-sprite { transform:scale(.7); }
 }

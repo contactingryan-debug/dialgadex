@@ -267,3 +267,5 @@ The calculation formulas and upstream data sources are unchanged.
 - Omit generic Mega brackets in Mega summaries; retain compact X/Y/Z, Primal,
   Ultra and relevant Hidden Power labels. Keep full boss form labels in
   expanded matchups.
+- Fit fractional coverage and raw scores within mobile columns, including
+  Unreleased results with three decimal places.
