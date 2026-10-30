@@ -5,9 +5,48 @@ import {test} from 'node:test';
 
 const scoring = vm.createContext({});
 vm.runInContext(readFileSync(new URL('../scripts/raid-points.js', import.meta.url), 'utf8'), scoring);
-const {RaidPointValue, ScoreRaidMatrix} = scoring;
+const {RaidPointValue, RaidAttackerPointValue, ScoreRaidMatrix} = scoring;
 const attacker = (key, id, matchups, extra = {}) => ({key, id, form: 'Normal', shadow: false, level: 50, matchups, ...extra});
 const matchup = (bossIndex, ratio, lead = 0) => ({bossIndex, ratio, lead});
+
+test('Attacker points count only wins and near-best matchups, using the same threshold tolerance as the coverage columns',()=>{
+    for(const [ratio,expected] of [[.8,0],[.949,0],[.95-2e-9,0],[.95,1],[.999,1],[1-2e-9,1],[1,2],[1.7,2]])
+        assert.equal(RaidAttackerPointValue(ratio),expected);
+    for(const ratio of [NaN,Infinity,-Infinity])assert.equal(RaidAttackerPointValue(ratio),0);
+    assert.equal(RaidAttackerPointValue(.95-1e-10),1);
+    assert.equal(RaidAttackerPointValue(1-1e-10),2);
+});
+
+test('Attacker totals retain boss-group weights, tied wins and leader-at-100 scaling while excluding sub-95-only builds',()=>{
+    const matrix={bosses:[{id:649,form:'Normal'},{id:649,form:'Burn'},{id:150,form:'Normal'}],attackers:[
+        attacker('mixed',1,[matchup(0,1),matchup(1,.95),matchup(2,.94)]),
+        attacker('winner',2,[matchup(2,1)]),
+        attacker('weak',3,[matchup(0,.94),matchup(1,.94),matchup(2,.94)]),
+    ]};
+    const result=ScoreRaidMatrix(matrix,{scoring:'elite',floor:70});
+    assert.equal(result.scoring,'elite');assert.equal(result.floor,95);
+    const mixed=result.rows.find(r=>r.key==='mixed');
+    assert.equal(mixed.points,1.5);assert.equal(mixed.score,75);
+    assert.equal(mixed.first,1);assert.equal(mixed.near,2);
+    assert.equal(result.rows[0].key,'winner');assert.equal(result.rows[0].score,100);
+    assert(!result.rows.some(r=>r.key==='weak'));
+    assert.equal(result.totalWeight,2);
+    assert.deepEqual(ScoreRaidMatrix(matrix,{scoring:'elite',floor:90}).rows,result.rows);
+});
+
+test('Attacker scoring deduplicates a boss and selects one fixed Hidden Power build under the new point rules',()=>{
+    const result=ScoreRaidMatrix({bosses:[{id:1},{id:2}],attackers:[
+        attacker('grass',486,[matchup(0,.96),matchup(0,1)],{hiddenPowerType:'Grass'}),
+        attacker('fire',486,[matchup(0,.95),matchup(1,.95)],{hiddenPowerType:'Fire'}),
+        attacker('tied',150,[matchup(0,1)]),
+        attacker('xl-only',25,[{...matchup(1,.92),xl:{eligible:true}}]),
+    ]},{scoring:'elite',xlThreshold:90});
+    const fixed=result.rows.find(r=>r.id===486);
+    assert.equal(fixed.hiddenPowerType,'Grass');assert.equal(fixed.points,2);
+    assert.equal(fixed.matchups.length,1);assert.equal(fixed.variants.length,2);
+    assert.equal(result.rows.find(r=>r.key==='tied').points,2);
+    assert(!result.rows.some(r=>r.key==='xl-only'));
+});
 
 test('points reflect performance gaps continuously, with bounded invalid inputs', () => {
     for (const [ratio, expected] of [[1,5], [.95,3.75], [.9,2.5], [.85,1.25], [.8,0], [.6,0], [2,5]])

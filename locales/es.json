@@ -436,7 +436,7 @@
         "settings-summary": "eDPS · Nivel {level} · Equipo de {team} · Poder de equipo: {party} · Reingreso: {relobby}s",
         "off": "desactivado",
         "pool": "{forms} formas de jefe · {groups} grupos de puntuación",
-        "method-summary": "Cada jefe otorga 0 puntos al {floor}% del mejor eDPS del {reference} y hasta 5 puntos al 100% o más. Se suman los puntos ponderados. El líder sin Mega obtiene 100; las transformaciones pueden superarlo.",
+        "method-summary": "Puntuación Mega: cada jefe otorga 0 puntos al {floor}% del mejor eDPS del {reference} y hasta 5 puntos al 100% o más. Se aplican los pesos. El mejor total sin Mega en esta escala de 0–5 fija 100; las transformaciones pueden superarlo.",
         "weight-species-note": "Especies iguales: cada especie tiene un peso total de uno, repartido entre sus formas incluidas en incursiones de nivel alto.",
         "weight-forms-note": "Formas iguales: cada forma de jefe incluida tiene el mismo peso.",
         "fixed-hp": "Poder Oculto: {type}",
@@ -470,7 +470,7 @@
         "weight-groups": "Grupos de incursión iguales",
         "weight-groups-note": "Cada grupo tiene peso total uno. Genesect, Deoxys, Arceus y Silvally lo comparten entre sus formas; las demás formas principales son grupos separados. Los formatos normal, oscuro y supermega comparten el peso de su forma. Los perfiles oscuros separados quedan pendientes.",
         "boss-weight": "Peso {weight} · Grupo {group}",
-        "pool-non-mega": "Solo atacantes sin Mega, incluidos Oscuros, fusiones y formas Coronadas. Selecciona Megas en el título para ver Mega / Primigenio / Ultra.",
+        "pool-non-mega": "Solo atacantes sin Mega, incluidos Oscuros, fusiones y formas Coronadas. Solo puntúan las victorias al ≥100% y los enfrentamientos cercanos al mejor al ≥95%. Selecciona Megas en el título para Mega / Primigenio / Ultra.",
         "mega-settings": "Nivel Mega {level} · Tamaño del equipo de transformaciones: {team}. La puntuación usa el daño propio de cada forma.",
         "reference-non-mega": "grupo sin Mega",
         "build-level": "Nivel del atacante: L{level}",
@@ -484,7 +484,8 @@
         "mega-intro": "Formas Mega, Primigenias y Ultra clasificadas por su rendimiento en incursiones de alto nivel. Selecciona un Pokémon para ver sus enfrentamientos.",
         "mega-meta-title": "Clasificación de Megas de incursión - DialgaDex",
         "mega-meta-description": "Compara formas Mega, Primigenias y Ultra por puntos eDPS y cobertura XL con una referencia fija sin Mega.",
-        "pool-mega": "Solo formas Mega, Primigenias y Ultra. Cada jefe usa su mejor counter sin Mega como referencia; el líder global sin Mega marca 100. Las puntuaciones pueden superar 100."
+        "pool-mega": "Solo formas Mega, Primigenias y Ultra. Cada jefe usa su mejor eDPS sin Mega como referencia. Esta vista mantiene la escala de 0–5 puntos; su total de referencia sin Mega fija 100.",
+        "attacker-method-summary": "Cada jefe otorga 2 puntos al ≥100% de su mejor eDPS sin Mega, 1 punto del 95% al <100% y 0 por debajo del 95%. Se aplican los pesos de los jefes. Solo se clasifican atacantes con enfrentamientos válidos; el mayor total ponderado obtiene 100."
     },
     "data-audit": {
         "nav": "Auditoría de datos",

@@ -80,9 +80,9 @@ fusions, and Crowned forms, against released tier 4+ bosses using native eDPS.
 Use the **Attacker / Mega** toggle in the title to switch between separate
 leaderboards. **Attacker** shows only non-Mega forms; **Mega** shows only Mega,
 Primal, and Ultra transformations. XL controls appear in the Mega view. The
-benchmark remains the best non-Mega attacker per boss, and the overall
-non-Mega leader remains 100. Ordinary scores stay unchanged when transformations
-are calculated; Mega scores and matchup percentages may exceed 100. The Mega view
+benchmark remains the best non-Mega attacker per boss. Each view scales scores
+against the best non-Mega total under its own scoring rules. Mega scores and
+matchup percentages may exceed 100. The Mega view
 is recorded in `?leaderboard&megas` and remembered for navigation in the tab.
 The current level, team size, Party Power, and relobby settings apply; eDPS
 remains the scoring metric.
@@ -96,19 +96,27 @@ included; Data Preview additionally applies announced data when enabled.
 Release status and raid eligibility remain separate: an attacker need not have
 appeared in raids. The leaderboard URL records whether unreleased data is included.
 
-For each boss, divide attacker eDPS by the best non-Mega eDPS in the selected release pool. The
-default awards points linearly from zero at 80% performance to five at 100%:
-`5 * clamp((relative_eDPS - 0.8) / 0.2, 0, 1)`. Each raid group has total
+For each boss, divide attacker eDPS by the best non-Mega eDPS in the selected
+release pool. **Attacker** scoring awards **2 points at ≥100%, 1 point at
+95–<100%, and 0 below 95%**. Only attackers with at least one qualifying matchup
+are ranked. A win earns two points total; the ≥95% count already includes wins.
+Old minimum-performance URL settings do not change these fixed tiers.
+
+**Mega** scoring retains the 0–5-point curve, defaulting to zero at 80% and five
+at 100%: `5 * clamp((relative_eDPS - 0.8) / 0.2, 0, 1)`. Its performance floor
+can be set to 70%, 80%, or 90%. Mega performance above 100% remains capped at five.
+
+Both views apply the same boss weights. Each raid group has total
 weight one. Genesect, Deoxys, Arceus, and Silvally share it across included forms;
 other major forms have separate groups. A form's allocation is shared across
 raid formats, so regular/Shadow or ordinary/Super versions cannot add weight.
 Separate Shadow raid profiles and their availability audit are deferred. The displayed score
-is its weighted point total relative to the overall non-Mega leader (100).
-Points remain capped at five per boss, including Mega performance above 100%.
+is its weighted point total relative to the best non-Mega total (100) on that
+view's scoring scale. The two views use different point rules.
 
-Scoring options support 70%, 80%, and 90% floors, equal species, and equal forms.
+Both views support equal raid groups, equal species, and equal forms.
 Search, Shadow, and Legendary display filters preserve the reference pool and
-score scale. Switching to the Mega view retains this same reference.
+score scale. Both views retain the same per-boss eDPS benchmark.
 Each entry expands to contributing bosses, weighted points, relative eDPS,
 and the optimal moves. ≥100% and ≥95% count boss forms reaching those
 percentages of the best non-Mega eDPS. Winning margin uses the strongest other

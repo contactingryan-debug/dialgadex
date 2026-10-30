@@ -34,6 +34,18 @@ try {
     assert.equal(await page.title(), 'Raid Attacker Leaderboard - DialgaDex');
     assert(await page.locator('.raid-entry').count() > 10);
     assert.equal(await page.locator('#raid-floor').inputValue(), '80');
+    assert.equal(await page.evaluate(()=>raidLeaderboardResult.scoring),'elite');
+    assert.equal(await page.evaluate(()=>raidLeaderboardResult.floor),95);
+    const elite=await page.evaluate(()=>{
+        for(const row of raidLeaderboardResult.rows){
+            const expected=row.matchups.reduce((sum,m)=>sum+raidLeaderboardResult.weights[m.bossIndex]
+                *((m.ratio>=1-1e-9?1:0)+(m.ratio>=.95-1e-9?1:0)),0);
+            if(Math.abs(row.points-expected)>1e-9||row.points<=0||row.near<1)
+                throw new Error('Incorrect elite points or non-qualifying attacker: '+row.key);
+        }
+        return {count:raidLeaderboardResult.rows.length,leader:raidLeaderboardResult.rows[0].score};
+    });
+    assert.equal(elite.leader,100);
     assert.equal(await page.locator('#raid-weighting').inputValue(), 'groups');
     const parity = await page.evaluate(async () => {
         if (JSON.stringify([jb_pkm, jb_fm, jb_cm]) !== window.raidOriginalData)
@@ -43,7 +55,8 @@ try {
         const preview = settings_speculative;
         const originalPokemon = jb_pkm;
         const checks = raidLeaderboardResult.rows.slice(0, 12);
-        const hp = raidLeaderboardResult.rows.find(row => row.id === 486 && row.shadow);
+        const hp = raidLeaderboardResult.rows.find(row => row.id === 486 && row.shadow)
+            || raidLeaderboardMatrix.attackers.find(row=>row.id===486&&row.shadow&&row.hiddenPowerType);
         if (!hp?.hiddenPowerType) throw new Error('Missing a fixed Hidden Power build.');
         checks.push(hp);
         let benchmarks = 0, movesets = 0;
@@ -104,12 +117,15 @@ try {
         await page.locator('.raid-entry > summary').first().tap();
         await page.screenshot({path:process.env.RAID_LEADERBOARD_SCREENSHOT, fullPage:false});
     }
-    await page.locator('#raid-search').fill('Regigigas');
-    await page.locator('.raid-entry > summary').first().tap();
-    await page.locator('.raid-fixed-note').waitFor();
-    assert.match(await page.locator('.raid-fixed-note').textContent(), /one fixed Hidden Power/);
+    const hpId=await page.evaluate(()=>raidLeaderboardResult.rows.find(row=>row.hiddenPowerType)?.id);
+    if(hpId){
+        await page.locator('#raid-search').fill(String(hpId));
+        await page.locator('.raid-entry > summary').first().tap();
+        await page.locator('.raid-fixed-note').waitFor();
+        assert.match(await page.locator('.raid-fixed-note').textContent(), /one fixed Hidden Power/);
+    }
     await page.locator('#raid-search').fill('Kyurem');
-    assert.equal(await page.locator('.raid-entry').count(), 2);
+    assert.equal(await page.locator('.raid-entry').count(),await page.evaluate(()=>raidLeaderboardResult.rows.filter(r=>r.name.includes('Kyurem')).length));
     await page.locator('#raid-search').fill('no such pokemon xyz');
     assert.equal(await page.locator('#raid-empty').isVisible(), true);
     await page.locator('#raid-search').fill('');
@@ -119,14 +135,16 @@ try {
     assert.deepEqual(await page.evaluate(() => raidLeaderboardResult.rows.map(row => [row.key,row.score])), originalScores);
     await page.locator('#raid-shadows').check();
     await page.locator('.raid-score-options > summary').tap();
-    await page.locator('#raid-floor').selectOption('90');
-    assert.equal(new URL(page.url()).searchParams.get('floor'), '90');
-    assert.equal(await page.evaluate(() => raidLeaderboardResult.floor), 90);
+    assert.equal(await page.locator('#raid-floor').isVisible(),false);
+    await page.evaluate(()=>{raidLeaderboardState.floor=70;UpdateRaidLeaderboardURL();RefreshRaidLeaderboardScores();});
+    assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(row=>[row.key,row.score])),originalScores,
+        'Legacy performance-floor settings must not affect Attacker scoring.');
     await page.locator('#raid-weighting').selectOption('forms');
     assert.equal(new URL(page.url()).searchParams.get('weight'), 'forms');
     await page.reload();
     await ready();
-    assert.equal(await page.locator('#raid-floor').inputValue(), '90');
+    assert.equal(await page.locator('#raid-floor').isVisible(),false);
+    assert.equal(await page.evaluate(()=>raidLeaderboardResult.floor),95);
     assert.equal(await page.locator('#raid-weighting').inputValue(), 'forms');
     await page.locator('#raid-more').tap();
     assert(await page.locator('.raid-entry').count() > 25);

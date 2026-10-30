@@ -436,7 +436,7 @@
         "settings-summary": "eDPS · Level {level} · Team of {team} · Party Power: {party} · Relobby: {relobby}s",
         "off": "off",
         "pool": "{forms} boss forms · {groups} scoring groups",
-        "method-summary": "Each boss awards 0 points at {floor}% of the best eDPS in the {reference} and up to 5 points at 100% or above. Weighted points are added across bosses. The overall non-Mega leader scores 100; transformations can score higher.",
+        "method-summary": "Mega scoring: each boss awards 0 points at {floor}% of the best eDPS in the {reference} and up to 5 points at 100% or above. Boss weights apply. The best non-Mega total on this same 0–5 scale sets 100; transformations can score higher.",
         "weight-species-note": "Equal species: each boss species has one total weight, shared evenly across its included high-tier raid forms.",
         "weight-forms-note": "Equal forms: every included high-tier boss form has the same weight.",
         "fixed-hp": "Hidden Power: {type}",
@@ -470,7 +470,7 @@
         "weight-groups": "Equal raid groups",
         "weight-groups-note": "Each raid group has total weight one. Genesect, Deoxys, Arceus, and Silvally share it across their included forms; other major forms are separate groups. Regular, Shadow, and Super formats share a form’s allocation. Separate Shadow profiles are deferred.",
         "boss-weight": "Weight {weight} · Group {group}",
-        "pool-non-mega": "Non-Mega attackers only, including Shadows, fusions, and Crowned forms. Select Mega in the title for Mega / Primal / Ultra rankings.",
+        "pool-non-mega": "Non-Mega attackers only, including Shadows, fusions, and Crowned forms. Scores count only ≥100% wins and ≥95% near-best matchups. Select Mega in the title for Mega / Primal / Ultra rankings.",
         "mega-settings": "Mega level {level} · Transformation team size: {team}. Scores use each form’s own damage.",
         "reference-non-mega": "non-Mega pool",
         "build-level": "Attacker level: L{level}",
@@ -484,7 +484,8 @@
         "mega-intro": "Mega, Primal, and Ultra forms ranked across high-tier raids. Select a Pokémon to see its contributing matchups.",
         "mega-meta-title": "Raid Mega Leaderboard - DialgaDex",
         "mega-meta-description": "Compare Mega, Primal, and Ultra raid attackers using eDPS points and XL coverage against a fixed non-Mega benchmark.",
-        "pool-mega": "Mega, Primal, and Ultra forms only. Each boss is scored against its best non-Mega counter; the overall non-Mega leader sets 100. Scores can exceed 100."
+        "pool-mega": "Mega, Primal, and Ultra forms only. Each boss uses its best non-Mega eDPS as the benchmark. This view keeps the 0–5-point scoring scale; its non-Mega reference total sets 100.",
+        "attacker-method-summary": "Each boss awards 2 points at ≥100% of its best non-Mega eDPS, 1 point at 95–<100%, and 0 below 95%. Boss weights apply. Only attackers with qualifying matchups are ranked; the leading weighted total scores 100."
     },
     "data-audit": {
         "nav": "Data Audit",

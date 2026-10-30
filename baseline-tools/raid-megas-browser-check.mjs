@@ -33,6 +33,7 @@ try {
             'Each leaderboard must contain only its own category and start ranking at one.');
         assert.equal(await page.locator('#raid-xl-only').isVisible(),megas);
         assert.equal(await page.locator('#raid-shadows').isVisible(),!megas);
+        assert.equal(await page.evaluate(()=>raidLeaderboardResult.scoring),megas?'linear':'elite');
     }
     async function fits() {
         assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Leaderboard overflows.');
@@ -44,7 +45,8 @@ try {
     if(process.env.RAID_LEADERBOARD_SCREENSHOT)await page.screenshot({path:process.env.RAID_LEADERBOARD_SCREENSHOT.replace(/\.png$/,'-mega.png')});
     for(const width of [320,390,900]){await page.setViewportSize({width,height:844});await fits();}
     const currentAll=await page.evaluate(()=>({
-        ordinary:raidLeaderboardResult.rows.filter(r=>!r.transformed),bosses:raidLeaderboardMatrix.bosses,
+        ordinary:raidLeaderboardMatrix.attackers.filter(r=>!r.transformed),bosses:raidLeaderboardMatrix.bosses,
+        scores:raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score]),
         transforms:raidLeaderboardMatrix.attackers.filter(r=>r.transformed).length,
     }));
     assert(currentAll.transforms>20);
@@ -82,7 +84,7 @@ try {
     await page.locator('#raid-mode-label').click();await ready(false);
     assert.equal(await page.locator('#raid-search').inputValue(),'150','Mode changes must preserve search.');
     assert(!new URL(page.url()).searchParams.has('megas'));
-    const currentOrdinary=await page.evaluate(()=>({rows:raidLeaderboardResult.rows,bosses:raidLeaderboardMatrix.bosses}));
+    const currentOrdinary=await page.evaluate(()=>({rows:raidLeaderboardMatrix.attackers,bosses:raidLeaderboardMatrix.bosses}));
     assert.deepEqual(currentAll.ordinary,currentOrdinary.rows);
     assert.deepEqual(currentAll.bosses,currentOrdinary.bosses);
     await page.locator('#raid-search').fill('');
@@ -92,6 +94,8 @@ try {
     const starts=await page.evaluate(()=>window.megaWorkerStarts);
     await page.locator('#raid-megas').focus();
     await page.locator('#raid-megas').press('Space');await ready(true);
+    assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score])),currentAll.scores,
+        'Changing the Attacker score must not alter the Mega scoring scale.');
     assert.equal(await page.evaluate(()=>window.megaWorkerStarts),starts,'Returning to the previous pool should use its cache.');
     await page.locator('#raid-xl-only').check();
     await page.locator('#raid-column-headings button[data-sort="xlCoverage"]').click();

@@ -6,6 +6,13 @@ function RaidPointValue(ratio, floor = 80) {
     return 5 * Math.max(0, Math.min(1, (ratio - threshold) / (1 - threshold)));
 }
 
+/** Attacker scoring: one credit for near-best coverage and one more for a win. */
+function RaidAttackerPointValue(ratio) {
+    if (!Number.isFinite(ratio)) return 0;
+    if (ratio >= 1 - 1e-9) return 2;
+    return ratio >= 0.95 - 1e-9 ? 1 : 0;
+}
+
 /** A form keeps one allocation across regular, Shadow, and Super raid formats. */
 function GetRaidGroupKey(boss, weighting = 'groups') {
     if (weighting === 'species') return `species:${boss.id}`;
@@ -29,8 +36,10 @@ function GetRaidBossWeights(bosses, weighting = 'groups') {
     return {weights, groupCount: groups.size};
 }
 
+/** Select elite for Attacker; the existing linear rule remains the Mega scale. */
 function ScoreRaidMatrix(matrix, options = {}) {
-    const floor = [70, 80, 90].includes(Number(options.floor)) ? Number(options.floor) : 80;
+    const scoring = options.scoring === 'elite' ? 'elite' : 'linear';
+    const floor = scoring === 'elite' ? 95 : [70, 80, 90].includes(Number(options.floor)) ? Number(options.floor) : 80;
     const weighting = ['forms', 'species'].includes(options.weighting) ? options.weighting : 'groups';
     const xlThreshold = [90,95,100].includes(Number(options.xlThreshold)) ? Number(options.xlThreshold) : 95;
     const speciesCounts = new Map();
@@ -47,13 +56,13 @@ function ScoreRaidMatrix(matrix, options = {}) {
             if (!previous || matchup.ratio > previous.ratio) byBoss.set(matchup.bossIndex, matchup);
         }
         const matchups = [...byBoss.values()].map(matchup => {
-            const points = RaidPointValue(matchup.ratio, floor);
+            const points = scoring === 'elite' ? RaidAttackerPointValue(matchup.ratio) : RaidPointValue(matchup.ratio, floor);
             return {...matchup, points, weightedPoints: points * weights[matchup.bossIndex]};
         });
         const points = matchups.reduce((sum, matchup) => sum + matchup.weightedPoints, 0);
         const strongXL = matchups.filter(matchup=>matchup.xl?.eligible === true && matchup.ratio >= xlThreshold/100 - 1e-9);
         const xlCoverage = strongXL.reduce((sum,matchup)=>sum+weights[matchup.bossIndex],0);
-        if (points <= 1e-10 && xlCoverage <= 1e-10) continue;
+        if (points <= 1e-10 && (scoring === 'elite' || xlCoverage <= 1e-10)) continue;
         const entry = {
             ...attacker, matchups,
             points,
@@ -76,9 +85,9 @@ function ScoreRaidMatrix(matrix, options = {}) {
             xlCoverage:variant.xlCoverage,
         }))};
     }).sort(compare);
-    // Keep ordinary scores stable when transformations are added to the display.
+    // Use the best non-Mega total under the same point rule as this view.
     const best = rows.find(row => !row.transformed)?.points || 1;
     for (const row of rows) row.score = 100 * row.points / best;
-    return {rows, floor, weighting, xlThreshold, weights, groupCount, bossCount: matrix.bosses.length, speciesCount: speciesCounts.size,
+    return {rows, scoring, floor, weighting, xlThreshold, weights, groupCount, bossCount: matrix.bosses.length, speciesCount: speciesCounts.size,
         totalWeight: weights.reduce((sum, weight) => sum + weight, 0), bestPoints: best};
 }

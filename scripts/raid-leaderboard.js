@@ -247,12 +247,13 @@ async function LoadRaidLeaderboard({preserveQuery = false} = {}) {
 
 function RefreshRaidLeaderboardScores() {
     if (!raidLeaderboardMatrix) return;
-    raidLeaderboardResult = ScoreRaidMatrix(raidLeaderboardMatrix, raidLeaderboardState);
+    raidLeaderboardResult = ScoreRaidMatrix(raidLeaderboardMatrix, {...raidLeaderboardState,
+        scoring:raidLeaderboardState.includeMegas ? 'linear' : 'elite'});
     raidLeaderboardVisible = 25;
     $('#raid-status').text(RaidLeaderboardText('pool', {
         forms: raidLeaderboardResult.bossCount, groups: raidLeaderboardResult.groupCount,
     }));
-    $('#raid-method-summary').text(RaidLeaderboardText('method-summary', {floor: raidLeaderboardState.floor,
+    $('#raid-method-summary').text(RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'method-summary' : 'attacker-method-summary', {floor: raidLeaderboardState.floor,
         reference: RaidLeaderboardText('reference-non-mega')}));
     $('#raid-weight-summary').text(RaidLeaderboardText('weight-' + raidLeaderboardState.weighting + '-note'));
     $('#raid-xl-heading').text(XLText('coverage-header',{threshold:raidLeaderboardState.xlThreshold}));

@@ -222,3 +222,7 @@ The calculation formulas and upstream data sources are unchanged.
   selected with the title toggle. Keep the non-Mega benchmark and score scale,
   remember the view in navigation and URLs, retain search when toggling, and
   show XL controls only for transformations. Audit inclusion follows the view.
+- Replace Attacker scoring with two weighted tiers: 2 points at ≥100%, 1 point
+  at 95–<100%, and zero below 95%. Omit attackers with no qualifying matchups,
+  retain one fixed Hidden Power build, and scale the leader to 100. Remove the
+  floor selector from this view; keep Mega scoring and its floor settings.

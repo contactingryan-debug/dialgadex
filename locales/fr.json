@@ -436,7 +436,7 @@
         "settings-summary": "eDPS · Niveau {level} · Équipe de {team} · Puissance d’équipe : {party} · Retour au combat : {relobby}s",
         "off": "désactivée",
         "pool": "{forms} formes de boss · {groups} groupes de score",
-        "method-summary": "Chaque boss accorde 0 point à {floor}% du meilleur eDPS du {reference} et jusqu’à 5 points à 100% ou plus. Les points pondérés sont additionnés. Le leader sans Méga obtient 100 ; les transformations peuvent le dépasser.",
+        "method-summary": "Score Méga : chaque boss accorde 0 point à {floor}% du meilleur eDPS du {reference} et jusqu’à 5 points à 100% ou plus. Les poids sont appliqués. Le meilleur total sans Méga sur cette échelle de 0–5 fixe 100 ; les transformations peuvent le dépasser.",
         "weight-species-note": "Espèces égales : chaque espèce a un poids total de un, réparti entre ses formes incluses dans les raids de haut niveau.",
         "weight-forms-note": "Formes égales : chaque forme de boss incluse a le même poids.",
         "fixed-hp": "Puissance Cachée : {type}",
@@ -470,7 +470,7 @@
         "weight-groups": "Groupes de raid égaux",
         "weight-groups-note": "Chaque groupe a un poids total de un. Genesect, Deoxys, Arceus et Silvally le partagent entre leurs formes ; les autres formes majeures sont des groupes séparés. Les formats normal, obscur et Super partagent le poids de leur forme. Les profils obscurs séparés sont reportés.",
         "boss-weight": "Poids {weight} · Groupe {group}",
-        "pool-non-mega": "Attaquants sans Méga uniquement, y compris les Obscurs, les fusions et les formes Couronnées. Sélectionnez Méga dans le titre pour le classement Méga / Primo / Ultra.",
+        "pool-non-mega": "Attaquants sans Méga uniquement, y compris les Obscurs, les fusions et les formes Couronnées. Seules les victoires à ≥100% et les performances proches du meilleur à ≥95% comptent. Sélectionnez Méga dans le titre pour Méga / Primo / Ultra.",
         "mega-settings": "Niveau Méga {level} · Taille de l’équipe des transformations : {team}. Le score utilise les dégâts propres à chaque forme.",
         "reference-non-mega": "groupe sans Méga",
         "build-level": "Niveau de l’attaquant : L{level}",
@@ -484,7 +484,8 @@
         "mega-intro": "Formes Méga, Primo et Ultra classées selon leurs performances dans les raids de haut niveau. Sélectionnez un Pokémon pour voir ses contributions.",
         "mega-meta-title": "Classement des Méga de raid - DialgaDex",
         "mega-meta-description": "Comparez les formes Méga, Primo et Ultra selon les points eDPS et la couverture XL avec une référence fixe sans Méga.",
-        "pool-mega": "Formes Méga, Primo et Ultra uniquement. Chaque boss est comparé à son meilleur contre sans Méga ; le leader global sans Méga fixe 100. Les scores peuvent dépasser 100."
+        "pool-mega": "Formes Méga, Primo et Ultra uniquement. Chaque boss utilise son meilleur eDPS sans Méga comme référence. Cette vue conserve l’échelle de 0–5 points ; son total de référence sans Méga fixe 100.",
+        "attacker-method-summary": "Chaque boss accorde 2 points à ≥100% de son meilleur eDPS sans Méga, 1 point de 95% à <100% et 0 en dessous de 95%. Les poids des boss sont appliqués. Seuls les attaquants avec des combats admissibles sont classés ; le meilleur total pondéré obtient 100."
     },
     "data-audit": {
         "nav": "Audit des données",
