@@ -95,6 +95,10 @@ includes Mythical Pokémon and Ultra Beasts, as in Type Rankings.
 Both views show every scoring attacker at once, with native mini sprites and
 S/A/B/C/D/F tier colors. Jenks natural breaks assign tiers from Raid Score
 within the selected view. Species display filters keep those tier assignments.
+Each consecutive tier forms an uninterrupted color band with one letter,
+centered in its visible portion as you scroll or expand an entry. Form labels
+omit Form/Forme and repeated species names. A relevant fixed Hidden Power type
+appears as a compact parenthesized type; unused Hidden Power labels stay hidden.
 Calculation notes appear below the list. The species funnel opens and closes
 on hover, matching Type Rankings, and retains touch and keyboard controls.
 **Boss List →** currently returns to the leaderboard until the boss page is built.

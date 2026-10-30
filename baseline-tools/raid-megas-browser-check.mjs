@@ -39,6 +39,7 @@ try {
             &&(raidLeaderboardState.legendaries||!r.legendary)).length);
         assert.equal(visible.length,expected,'Show every scoring attacker.');
         assert.equal(await page.locator('.raid-tier').count(),visible.length);
+        assert.equal(await page.locator('.raid-tier-letter').count(),await page.locator('.raid-tier-group').count());
     }
     async function fits() {
         assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Leaderboard overflows.');

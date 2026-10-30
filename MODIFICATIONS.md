@@ -242,3 +242,8 @@ The calculation formulas and upstream data sources are unchanged.
   while retaining touch and keyboard operation. Remove list search, scoring
   controls, duplicate calculation/release summaries and the result count.
   Fix equal raid-group weighting and retain the Mega Strong + XL filter.
+- Shorten gray form labels by removing Form/Forme and repeated species names.
+  Show a fixed Hidden Power type only when a contributing moveset uses it, as
+  a compact parenthesized type. Replace repeated tier cells with continuous
+  bands and one letter centered in the visible portion, including expanded
+  entries and filtered or sorted lists. Preserve scoring and tier assignments.

@@ -5,6 +5,8 @@ let raidLeaderboardCache = new Map();
 let raidLeaderboardMatrix = null;
 let raidLeaderboardResult = null;
 let raidLeaderboardTiers = new Map();
+let raidLeaderboardTierFrame = 0;
+let raidLeaderboardTierObserver = null;
 let raidLeaderboardState = {};
 let raidLeaderboardIncludeMegas = false;
 try { raidLeaderboardIncludeMegas = sessionStorage.getItem('dialgadex-raid-megas') === 'true'; } catch (_) {}
@@ -53,6 +55,10 @@ function GetRaidLeaderboardSnapshot() {
 function BindRaidLeaderboard() {
     const iconSheet = new Image();
     iconSheet.src = ICONS_URL;
+    $(window).off('.raidTierLabels').on('scroll.raidTierLabels resize.raidTierLabels', QueueRaidLeaderboardTierLabels);
+    raidLeaderboardTierObserver?.disconnect();
+    raidLeaderboardTierObserver = new ResizeObserver(QueueRaidLeaderboardTierLabels);
+    raidLeaderboardTierObserver.observe(document.getElementById('raid-list'));
     // Match Type Rankings on hover while retaining touch and keyboard controls.
     const hoverFilters = () => matchMedia('(hover: hover) and (pointer: fine)').matches;
     $('#raid-filter-drawer').on('mouseenter', function() {
@@ -265,10 +271,39 @@ function RaidLeaderboardName(pokemon) {
             form = GetTranslation('terms.mega', 'Mega') + suffix;
         } else if (pokemon.form === 'Ultra') form = 'Ultra';
     }
+    const speciesText = TranslatedSpeciesName(pokemon.id, species);
+    const escapedSpecies = speciesText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    form = form.replace(/\bForme?\b/gi, '')
+        .replace(new RegExp('(^|\\s)' + escapedSpecies + '(?=\\s|$)', 'gi'), '$1')
+        .replace(/\s+/g, ' ').trim();
+    const hiddenPowerType = GetRaidLeaderboardHiddenPowerType(pokemon);
+    if (hiddenPowerType) form = [form, TranslatedTypeName(hiddenPowerType)].filter(Boolean).join(', ');
     const name = $('<span class="raid-name"></span>').append($('<span class="raid-species"></span>')
         .html(TranslatedSpeciesName(pokemon.id, species, pokemon.shadow)));
     if (form) name.append(' ', $('<span class="raid-form"></span>').text('(' + form + ')'));
     return name;
+}
+
+function GetRaidLeaderboardHiddenPowerType(row) {
+    return row.hiddenPowerType && row.matchups?.some(matchup =>
+        matchup.points > 1e-10 && /^Hidden Power(?: |$)/.test(matchup.fm)) ? row.hiddenPowerType : null;
+}
+
+function QueueRaidLeaderboardTierLabels() {
+    if (raidLeaderboardTierFrame) return;
+    raidLeaderboardTierFrame = requestAnimationFrame(() => {
+        raidLeaderboardTierFrame = 0;
+        if (!document.getElementById('raid-list')?.checkVisibility()) return;
+        const top = Math.max(0, document.querySelector('header').getBoundingClientRect().bottom);
+        const labels = [...document.querySelectorAll('#raid-list .raid-tier-band')].map(band => {
+            const rect = band.getBoundingClientRect();
+            const start = Math.max(rect.top, top), end = Math.min(rect.bottom, innerHeight);
+            const label = band.firstElementChild, half = label.offsetHeight / 2;
+            const center = end > start ? (start + end) / 2 - rect.top : rect.height / 2;
+            return {label, offset:Math.max(half, Math.min(rect.height - half, center))};
+        });
+        for (const {label, offset} of labels) label.style.top = offset + 'px';
+    });
 }
 
 /** Use the native Jenks implementation and tier palette without changing Type Rankings. */
@@ -307,11 +342,21 @@ function RenderRaidLeaderboard() {
         this.setAttribute('aria-pressed', String(this.dataset.sort === sort));
     });
     $('#raid-list').empty();
+    let group, previousTier;
     for (const [index, row] of rows.entries()) {
-        const entry = $('<details class="raid-entry"></details>').attr('data-key', row.key);
-        const summary = $('<summary class="raid-grid"></summary>');
         const tier = raidLeaderboardTiers.get(row.key) || 'F';
-        summary.append($('<span class="raid-tier tier-label"></span>').addClass('tier-' + tier).text(tier));
+        if (tier !== previousTier) {
+            group = $('<div class="raid-tier-group" role="group"></div>')
+                .attr({'data-tier':tier, 'aria-label':RaidLeaderboardText('tier') + ' ' + tier});
+            group.append($('<div class="raid-tier-band tier-label" aria-hidden="true"></div>')
+                .addClass('tier-' + tier).append($('<span class="raid-tier-letter"></span>').text(tier)));
+            $('#raid-list').append(group);
+            previousTier = tier;
+        }
+        const entry = $('<details class="raid-entry"></details>').attr('data-key', row.key)
+            .toggleClass('raid-entry-even', index % 2 === 1);
+        const summary = $('<summary class="raid-grid"></summary>');
+        summary.append($('<span class="raid-tier" aria-hidden="true"></span>'));
         summary.append($('<span class="raid-rank"></span>').text(index + 1));
         const coords = GetPokemonIconCoords(row.id, row.form);
         summary.append($('<span class="raid-sprite-slot" aria-hidden="true"></span>').append(
@@ -319,8 +364,6 @@ function RenderRaidLeaderboard() {
                 backgroundImage:'url("' + ICONS_URL + '")', backgroundPosition:coords.x + 'px ' + coords.y + 'px',
             })));
         const name = RaidLeaderboardName(row);
-        if (row.hiddenPowerType) name.append($('<small class="raid-fixed-type"></small>').text(
-            RaidLeaderboardText('fixed-hp', {type: TranslatedTypeName(row.hiddenPowerType)})));
         summary.append(name);
         const score = $('<span class="raid-score"></span>').attr('title', RaidLeaderboardText('points-title', {
             points: RaidLeaderboardNumber(row.points, 2),
@@ -333,10 +376,12 @@ function RenderRaidLeaderboard() {
         entry.append(summary);
         entry.on('toggle', function() {
             if (this.open && !this.querySelector('.raid-breakdown')) entry.append(BuildRaidLeaderboardBreakdown(row));
+            QueueRaidLeaderboardTierLabels();
         });
-        $('#raid-list').append(entry);
+        group.append(entry);
     }
     $('#raid-empty').prop('hidden', rows.length > 0);
+    QueueRaidLeaderboardTierLabels();
 }
 
 function BuildRaidLeaderboardBreakdown(row) {
@@ -361,7 +406,7 @@ function BuildRaidLeaderboardBreakdown(row) {
     })));
     container.append($('<p class="raid-muted"></p>').text(RaidLeaderboardText('moves-note', {
         reference: RaidLeaderboardText('reference-non-mega')})));
-    if (row.hiddenPowerType) {
+    if (GetRaidLeaderboardHiddenPowerType(row)) {
         container.append($('<p class="raid-fixed-note"></p>').text(RaidLeaderboardText('hp-note', {
             type: TranslatedTypeName(row.hiddenPowerType),
         })));

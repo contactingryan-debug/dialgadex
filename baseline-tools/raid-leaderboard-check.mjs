@@ -34,6 +34,24 @@ try {
         if(!await page.locator('#raid-filter-drawer').evaluate(el=>el.open))
             await page.locator('#raid-filter-trigger').click();
     }
+    async function checkTierBands() {
+        await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+        const valid=await page.locator('.raid-tier-group').evaluateAll(groups=>groups.every((group,index)=>{
+            const tier=group.dataset.tier,band=group.querySelector('.raid-tier-band'),label=band.querySelector('.raid-tier-letter');
+            const entries=[...group.querySelectorAll('.raid-entry')];
+            const bounds=band.getBoundingClientRect(),first=entries[0].getBoundingClientRect(),last=entries.at(-1).getBoundingClientRect();
+            const letter=label.getBoundingClientRect();
+            const top=Math.max(bounds.top,document.querySelector('header').getBoundingClientRect().bottom,0),bottom=Math.min(bounds.bottom,innerHeight);
+            const center=bottom>top?(top+bottom)/2-bounds.top:bounds.height/2;
+            const expected=bounds.top+Math.max(letter.height/2,Math.min(bounds.height-letter.height/2,center));
+            return band.textContent===tier&&band.querySelectorAll('.raid-tier-letter').length===1
+                &&entries.every(entry=>raidLeaderboardTiers.get(entry.dataset.key)===tier&&!entry.querySelector('.raid-tier').textContent)
+                &&Math.abs(bounds.top-first.top)<1&&Math.abs(bounds.bottom-last.bottom)<1
+                &&Math.abs(letter.top+letter.height/2-expected)<1
+                &&(index===0||groups[index-1].dataset.tier!==tier);
+        }));
+        assert(valid,'A tier must have one continuous band and one centered letter, including expanded rows.');
+    }
     await ready();
     assert.equal(await page.title(), 'Raid Attacker Leaderboard - DialgaDex');
     assert(new URL(page.url()).searchParams.has('leaderboard'),'The root URL must open the raid leaderboard.');
@@ -48,6 +66,17 @@ try {
         el.querySelector('.raid-tier')&&el.querySelector('.raid-sprite.pokemon-icon')&&el.querySelector('.raid-species'))));
     assert.equal(await page.locator('.raid-entry > summary .raid-species').first().evaluate(el=>getComputedStyle(el).fontWeight),'700');
     assert(await page.locator('.raid-entry .raid-form').evaluateAll(elements=>elements.every(el=>/^\(.+\)$/.test(el.textContent))));
+    assert(await page.locator('.raid-entry > summary .raid-form').evaluateAll(elements=>elements.every(el=>
+        !/\bForme?\b/.test(el.textContent)&&!el.textContent.includes(el.previousElementSibling.textContent))));
+    const labels=await page.locator('.raid-entry').evaluateAll(elements=>elements.map(el=>{
+        const row=raidLeaderboardResult.rows.find(r=>r.key===el.dataset.key);
+        return {id:row.id,form:row.form,shadow:row.shadow,label:el.querySelector('summary .raid-form')?.textContent};
+    }));
+    assert.equal(labels.find(row=>row.id===646&&row.form==='White')?.label,'(White)');
+    for(const row of labels.filter(row=>row.id===492))assert(!/Hidden Power|Ground|Flying/.test(row.label));
+    const regigigas=labels.find(row=>row.id===486&&row.shadow);
+    if(regigigas)assert.equal(regigigas.label,'(Ground)');
+    await checkTierBands();
     assert.equal(await page.locator('#raid-search,.raid-score-options,#raid-floor,#raid-weighting,#raid-result-count,#raid-data-scope,#raid-settings-summary,#raid-mega-settings').count(),0);
     assert.equal(await page.evaluate(()=>raidLeaderboardState.floor),80);
     assert.equal(await page.evaluate(()=>raidLeaderboardResult.scoring),'elite');
@@ -148,6 +177,7 @@ try {
     });
     assert.equal(breakdown.shown, breakdown.expected);
     assert(Math.abs(breakdown.sum - breakdown.total) < 1e-8);
+    await checkTierBands();
     async function fits() {
         const size = await page.evaluate(() => ({scroll:document.documentElement.scrollWidth, width:innerWidth}));
         assert(size.scroll <= size.width + 1, 'The mobile page must fit horizontally.');
@@ -157,7 +187,8 @@ try {
         await page.locator('.raid-entry > summary').first().tap();
         await page.screenshot({path:process.env.RAID_LEADERBOARD_SCREENSHOT, fullPage:false});
     }
-    const hpIndex=await page.locator('.raid-entry').evaluateAll(elements=>elements.findIndex(el=>el.querySelector('.raid-fixed-type')));
+    const hpIndex=await page.locator('.raid-entry').evaluateAll(elements=>elements.findIndex(el=>
+        GetRaidLeaderboardHiddenPowerType(raidLeaderboardResult.rows.find(row=>row.key===el.dataset.key))));
     if(hpIndex>=0){
         await page.locator('.raid-entry > summary').nth(hpIndex).tap();
         await page.locator('.raid-fixed-note').waitFor();
@@ -176,6 +207,7 @@ try {
     await page.locator('#raid-legendaries').check();
     assert.deepEqual(await page.evaluate(()=>Array.from(raidLeaderboardTiers)),tierAssignments,
         'Species filters must not change Jenks tiers.');
+    await checkTierBands();
     await page.locator('#raid-filter-trigger').click();
     const legacy=new URL(page.url());legacy.searchParams.set('weight','forms');legacy.searchParams.set('floor','70');
     await page.goto(legacy.toString());
@@ -189,6 +221,7 @@ try {
     await page.locator('#raid-column-headings button[data-sort="first"]').tap();
     const firstCounts = await page.locator('.raid-first').allTextContents();
     assert(firstCounts.map(Number).every((n,i,a) => i === 0 || a[i-1] >= n));
+    await checkTierBands();
     await page.setViewportSize({width:320,height:740});
     await fits();
     await page.setViewportSize({width:900,height:900});
