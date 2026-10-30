@@ -294,3 +294,5 @@ The calculation formulas and upstream data sources are unchanged.
 
 - Increase S/A/B/C sprites again, to 64px on desktop and 52px on mobile, with
   enough sprite-column space and row height to keep names and scores clear.
+- Refine that increase to the midpoint: 59px on desktop and 48px on mobile,
+  with proportionate sprite columns and row spacing.
