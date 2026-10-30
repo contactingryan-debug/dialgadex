@@ -269,3 +269,12 @@ The calculation formulas and upstream data sources are unchanged.
   expanded matchups.
 - Fit fractional coverage and raw scores within mobile columns, including
   Unreleased results with three decimal places.
+
+## October 30, 2026 — Score-only lists and larger sprites through C tier
+
+- Remove the coverage columns from both Raid Leaderboard summaries, retaining
+  Score and a fixed score order. Ignore legacy coverage-sort parameters.
+  Keep scoring, boss weights and expanded matchup details unchanged.
+- Enlarge S/A/B/C sprites and allow a little more row height on desktop and
+  mobile. Keep D/F sprites compact and preserve the continuous tier bands.
+  This visual emphasis follows existing relative Jenks tiers.

@@ -52,7 +52,7 @@
         <button id="raid-retry" hidden data-i18n="raid-leaderboard.retry">Try again</button>
     </div>
     <div id="raid-results" hidden>
-        <div id="raid-column-headings" class="raid-grid"><span data-i18n="raid-leaderboard.tier">Tier</span><span>#</span><span aria-hidden="true"></span><span data-i18n="raid-leaderboard.pokemon">Pokémon</span></div>
+        <div id="raid-column-headings" class="raid-grid"><span data-i18n="raid-leaderboard.tier">Tier</span><span>#</span><span aria-hidden="true"></span><span data-i18n="raid-leaderboard.pokemon">Pokémon</span><span id="raid-score-heading" data-i18n="raid-leaderboard.score">Score</span></div>
         <div id="raid-list"></div>
         <p id="raid-empty" hidden data-i18n="raid-leaderboard.empty">No scoring attackers match these filters.</p>
         <div class="raid-method">
@@ -62,7 +62,6 @@
             <p class="raid-mega-control" hidden data-i18n="catch-xl.active-note">Catch XL requires the relevant transformation to be active when catching. Standard Megas and Primals need at least High Level (2). This is a chance bonus, not guaranteed extra XL.</p>
             <p id="raid-method-summary"></p>
             <p id="raid-weight-summary"></p>
-            <p id="raid-counts-note"></p>
             <p data-i18n="raid-leaderboard.data-note">The Unreleased filter applies to both attackers and raid bosses. Current-only calculations exclude Data Preview. Scores measure battle coverage; upgrade cost and your current teams should guide your next investment.</p>
         </div>
     </div>

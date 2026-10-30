@@ -59,11 +59,12 @@ try {
         }
         const visible=[...document.querySelectorAll('.raid-entry')].map(el=>raidLeaderboardResult.rows.find(r=>r.key===el.dataset.key));
         if(visible.some(r=>!(r.positive>0)))throw new Error('A non-winning attacker was displayed.');
-        if(visible.some((r,i)=>i&&r.near>visible[i-1].near+1e-10))throw new Error('Weighted coverage sort is incorrect.');
+        if(visible.some((r,i)=>i&&r.score>visible[i-1].score+1e-10))throw new Error('Score sort is incorrect.');
         return {matches,winningBuilds:raidLeaderboardResult.rows.length,bossWinners:winners.size};
     });
     assert.equal(await page.locator('.raid-score-options').count(),0);
-    assert.deepEqual(await page.locator('#raid-column-headings button').allTextContents(),['≥95%','>0%','Score']);
+    assert.equal(await page.locator('#raid-score-heading').textContent(),'Score');
+    assert.equal(await page.locator('.raid-first,.raid-near,.raid-positive').count(),0);
     await page.locator('.raid-entry > summary').first().click();
     await page.locator('.raid-breakdown .raid-matchup').first().waitFor();
     assert.match(await page.locator('.raid-breakdown').innerText(),/XL wins:.*weighted at ≥95%/);

@@ -94,11 +94,8 @@ try {
     });
     assert.equal(elite.leader,100);
     assert(await page.locator('.raid-entry').evaluateAll(elements=>elements.every(el=>getComputedStyle(el).borderBottomWidth==='0px')));
-    assert(await page.locator('.raid-entry').evaluateAll(elements=>elements.every(el=>{
-        const row=raidLeaderboardResult.rows.find(r=>r.key===el.dataset.key);
-        return el.querySelector('.raid-first').textContent===RaidLeaderboardWeight(row.first)
-            &&el.querySelector('.raid-near').textContent===RaidLeaderboardWeight(row.near);
-    })));
+    assert.equal(await page.locator('#raid-score-heading').textContent(),'Score');
+    assert.equal(await page.locator('.raid-first,.raid-near,.raid-positive').count(),0);
     assert.equal(await page.evaluate(()=>raidLeaderboardState.weighting),'groups');
     assert.deepEqual(await page.locator('#nav-drawer .menu a').allTextContents(),
         ['Raid Leaderboard','Type Rankings','Data Audit','Move Data','Type Chart']);
@@ -189,7 +186,7 @@ try {
     async function fits() {
         const size = await page.evaluate(() => ({scroll:document.documentElement.scrollWidth, width:innerWidth}));
         assert(size.scroll <= size.width + 1, 'The mobile page must fit horizontally.');
-        const clipped=await page.locator('.raid-entry > summary :is(.raid-score,.raid-first,.raid-near)').evaluateAll(cells=>
+        const clipped=await page.locator('.raid-entry > summary .raid-score').evaluateAll(cells=>
             cells.filter(cell=>{
                 const range=document.createRange();range.selectNodeContents(cell.querySelector('strong')||cell);
                 const text=range.getBoundingClientRect(),box=cell.getBoundingClientRect();
@@ -224,7 +221,7 @@ try {
         'Species filters must not change Jenks tiers.');
     await checkTierBands();
     await page.locator('#raid-filter-trigger').click();
-    const legacy=new URL(page.url());legacy.searchParams.set('weight','forms');legacy.searchParams.set('floor','70');
+    const legacy=new URL(page.url());legacy.searchParams.set('weight','forms');legacy.searchParams.set('floor','70');legacy.searchParams.set('sort','first');
     await page.goto(legacy.toString());
     await ready();
     assert.equal(await page.evaluate(()=>raidLeaderboardResult.floor),95);
@@ -233,9 +230,9 @@ try {
     assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(row=>[row.key,row.score])),originalScores,
         'Legacy scoring options must not alter the fixed equal-group leaderboard.');
     assert.equal(await page.locator('.raid-entry').count(),await page.evaluate(()=>raidLeaderboardResult.rows.length));
-    await page.locator('#raid-column-headings button[data-sort="first"]').tap();
-    const firstCounts = await page.locator('.raid-first').allTextContents();
-    assert(firstCounts.map(Number).every((n,i,a) => i === 0 || a[i-1] >= n));
+    assert.equal(await page.evaluate(()=>raidLeaderboardState.sort),'score');
+    const scores=await page.locator('.raid-score strong').allTextContents();
+    assert(scores.map(Number).every((n,i,a)=>i===0||a[i-1]>=n));
     await checkTierBands();
     await page.setViewportSize({width:320,height:740});
     await fits();

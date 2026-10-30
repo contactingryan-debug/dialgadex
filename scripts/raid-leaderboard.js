@@ -105,11 +105,6 @@ function BindRaidLeaderboard() {
         RenderRaidLeaderboard();
     });
     $('#raid-retry').on('click', () => LoadRaidLeaderboard());
-    $('#raid-column-headings').on('click', 'button', function() {
-        raidLeaderboardState.sort = this.dataset.sort;
-        UpdateRaidLeaderboardURL();
-        RenderRaidLeaderboard();
-    });
     $('#raid-rankings-back').on('click', function(event) {
         event.preventDefault();
         LoadStrongestAndUpdateURL('Any');
@@ -125,7 +120,6 @@ function UpdateRaidLeaderboardURL() {
     params.set('leaderboard', '');
     if (raidLeaderboardState.unreleased) params.set('unreleased', '');
     if (raidLeaderboardState.includeMegas) params.set('megas', '');
-    if (raidLeaderboardState.sort !== 'score') params.set('sort', raidLeaderboardState.sort);
     if (!raidLeaderboardState.shadows) params.set('no-shadows', '');
     if (!raidLeaderboardState.legendaries) params.set('no-legendaries', '');
     UpdateURL('?' + params.toString());
@@ -144,13 +138,12 @@ async function LoadRaidLeaderboard() {
     const params = new URLSearchParams(location.search);
     if (!params.has('leaderboard')) return;
     const includeMegas = params.has('megas') || params.has('xl');
-    const requestedSort = params.get('sort') === 'xl' ? 'near' : params.get('sort');
     raidLeaderboardState = {
         unreleased: params.has('unreleased'),
         includeMegas,
         floor: 80, weighting: 'groups',
         shadows: !params.has('no-shadows'), legendaries: !params.has('no-legendaries'),
-        sort: (includeMegas ? ['near','positive','score'] : ['first','near','score']).includes(requestedSort) ? requestedSort : 'score',
+        sort: 'score',
     };
     SetIncludeUnreleased(raidLeaderboardState.unreleased);
     SetRaidLeaderboardIncludeMegas(raidLeaderboardState.includeMegas);
@@ -165,12 +158,7 @@ async function LoadRaidLeaderboard() {
     $('#raid-filter-trigger').attr('aria-label', GetTranslation('filters.species.title', 'Species Filters'));
     $('#raid-shadows').prop('checked', raidLeaderboardState.shadows);
     $('#raid-legendaries').prop('checked', raidLeaderboardState.legendaries);
-    const columns = includeMegas ? ['near','positive','score'] : ['score','first','near'];
-    $('#raid-column-headings button').remove();
-    for (const column of columns) $('#raid-column-headings').append($('<button></button>')
-        .attr({'data-sort':column, 'title':RaidLeaderboardText(column === 'score' ? 'score-tooltip' : 'weighted-coverage')})
-        .text(RaidLeaderboardText(column)));
-    $('#raid-counts-note').text(RaidLeaderboardText(includeMegas ? 'mega-counts-note' : 'counts-note'));
+    $('#raid-score-heading').attr('title', RaidLeaderboardText('score-tooltip'));
     $('#raid-plus-note, #raid-level-note').prop('hidden', true);
     document.title = RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'mega-meta-title' : 'meta-title');
     $('meta[name=description]').attr('content', RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'mega-meta-description' : 'meta-description'));
@@ -328,11 +316,7 @@ function RenderRaidLeaderboard() {
         if (!raidLeaderboardState.legendaries && row.legendary) return false;
         return true;
     });
-    const sort = raidLeaderboardState.sort;
-    rows.sort((a, b) => b[sort] - a[sort] || b.points - a.points || a.key.localeCompare(b.key));
-    $('#raid-column-headings button').each(function() {
-        this.setAttribute('aria-pressed', String(this.dataset.sort === sort));
-    });
+    rows.sort((a, b) => b.points - a.points || a.key.localeCompare(b.key));
     $('#raid-list').empty();
     let group, previousTier;
     for (const [index, row] of rows.entries()) {
@@ -363,10 +347,7 @@ function RenderRaidLeaderboard() {
         const scorePercent = raidLeaderboardState.includeMegas ? 100 * row.score / raidLeaderboardResult.bestPoints : row.score;
         score.append($('<span class="raid-score-fill"></span>').css('width', Math.min(100, scorePercent) + '%'));
         score.append($('<strong></strong>').text(raidLeaderboardState.includeMegas ? RaidLeaderboardWeight(row.score) : RaidLeaderboardNumber(row.score)));
-        const near = $('<span class="raid-near"></span>').text(RaidLeaderboardWeight(row.near));
-        if (raidLeaderboardState.includeMegas) summary.append(near,
-            $('<span class="raid-positive"></span>').text(RaidLeaderboardWeight(row.positive)), score);
-        else summary.append(score, $('<span class="raid-first"></span>').text(RaidLeaderboardWeight(row.first)), near);
+        summary.append(score);
         entry.append(summary);
         entry.on('toggle', function() {
             if (this.open && !this.querySelector('.raid-breakdown')) entry.append(BuildRaidLeaderboardBreakdown(row));

@@ -100,6 +100,10 @@ omit Form/Forme and repeated species names. A relevant fixed Hidden Power type
 appears as a compact parenthesized type; unused Hidden Power labels stay hidden.
 Mega leaderboard names omit the redundant Mega label, retaining X/Y/Z, Primal,
 Ultra, and any relevant Hidden Power type. Leaderboard rows have no dividers.
+Both views show Score as the only numeric result column and always rank by it.
+S/A/B/C entries use larger sprites and a little more row space; D/F entries
+remain compact. This emphasis follows the relative Jenks tiers, rather than
+defining a fixed performance or investment threshold.
 Calculation notes appear below the list. The species funnel opens and closes
 on hover, matching Type Rankings, and retains touch and keyboard controls.
 **Boss List →** currently returns to the leaderboard until the boss page is built.
@@ -138,9 +142,9 @@ filters preserve the reference pool and score scale. Both views retain the same
 per-boss eDPS benchmark. The list has no search bar or scoring-options menu;
 the shared header retains calculation settings and species filters.
 Each entry expands to contributing bosses, weighted points, relative eDPS,
-and the optimal moves. All coverage columns sum boss weights. Attacker columns
-are Score, ≥100%, and ≥95%; the ≥95% total includes ≥100% coverage. Mega columns
-are ≥95%, >0%, and Score; >0% includes all winning XL options, including ≥95%.
+and the optimal moves. Weighted coverage remains part of scoring and the Mega
+breakdown, while the main list displays only Score. Legacy coverage-sort URLs
+also use Score order.
 Winning margin uses the strongest other
 non-Mega build; a transformed attacker compares with the best non-Mega build.
 Hidden Power types are separate fixed builds. Attacker displays the best aggregate
@@ -162,10 +166,10 @@ rankings and individual counters retain their calculation formulas.
 ## Catch XL compatibility
 
 The Mega leaderboard awards only the highest-eDPS XL-boosting option for each
-boss, with weighted ≥95% and >0% coverage columns. Its quality threshold is fixed
+boss, with weighted ≥95% and >0% coverage in its expanded breakdown. Its quality threshold is fixed
 at 95%; there is no Strong + XL filter. Species display filters preserve the
 winner pool and scores rather than promoting a runner-up. Legacy `xl` URLs open
-the Mega view and `sort=xl` maps to ≥95%; `xl-min` no longer changes scoring.
+the Mega view; legacy sort parameters and `xl-min` no longer change its order or scoring.
 Fixed Hidden Power builds are never combined to inflate XL coverage.
 
 The caught form is resolved separately from the fought form. Mega/Primal raids
@@ -259,7 +263,7 @@ Mobile toggle, direct-link, reload, and navigation checks cover the new view.
 Raid scoring checks cover point boundaries, form weighting, tied leaders,
 duplicate movesets, and fixed Hidden Power builds. The leaderboard browser
 check compares every boss benchmark and the leading entries' movesets with
-the native calculator, then exercises mobile layout, weighted coverage columns,
+the native calculator, then exercises mobile layout, score-only columns,
 display filters, URLs, history, and cancellation. Mega checks independently
 verify one XL winner per boss, 10/1-point awards, fixed builds, and raw scores.
 

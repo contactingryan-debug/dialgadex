@@ -43,7 +43,7 @@ try {
     }
     async function fits() {
         assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Leaderboard overflows.');
-        const clipped=await page.locator('.raid-entry > summary :is(.raid-score,.raid-near,.raid-positive)').evaluateAll(cells=>
+        const clipped=await page.locator('.raid-entry > summary .raid-score').evaluateAll(cells=>
             cells.filter(cell=>{
                 const range=document.createRange();range.selectNodeContents(cell.querySelector('strong')||cell);
                 const text=range.getBoundingClientRect(),box=cell.getBoundingClientRect();
@@ -136,9 +136,8 @@ try {
     assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score])),currentAll.scores,
         'Changing the Attacker score must not alter the Mega scoring scale.');
     assert.equal(await page.evaluate(()=>window.megaWorkerStarts),starts,'Returning to the previous pool should use its cache.');
-    assert.deepEqual(await page.locator('#raid-column-headings button').allTextContents(),['≥95%','>0%','Score']);
-    await page.locator('#raid-column-headings button[data-sort="near"]').click();
-    assert.equal(new URL(page.url()).searchParams.get('sort'),'near');
+    assert.equal(await page.locator('#raid-score-heading').textContent(),'Score');
+    assert.equal(await page.locator('.raid-first,.raid-near,.raid-positive').count(),0);
     await page.locator('#raid-mode-label').click();await ready(false);
     assert.equal(await page.locator('#raid-xl-only').count(),0);
     assert(!new URL(page.url()).searchParams.has('xl'));
