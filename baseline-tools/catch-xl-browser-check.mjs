@@ -38,14 +38,16 @@ try {
             const wins=row.matchups.filter(m=>m.points>0);
             const near=wins.reduce((sum,m)=>sum+(m.ratio>=.95-1e-9?raidLeaderboardResult.weights[m.bossIndex]:0),0);
             const positive=wins.reduce((sum,m)=>sum+raidLeaderboardResult.weights[m.bossIndex],0);
+            const weakPoints=wins.filter(m=>m.ratio<.95-1e-9)
+                .reduce((sum,m)=>sum+raidLeaderboardResult.weights[m.bossIndex]*m.ratio/.95,0);
             if(Math.abs(row.near-near)>1e-10||Math.abs(row.positive-positive)>1e-10
-                ||Math.abs(row.points-(9*near+positive))>1e-9
+                ||Math.abs(row.points-(10*near+weakPoints))>1e-9
                 ||Math.abs(row.score-100*row.points/raidLeaderboardResult.bestPoints)>1e-9)
-                throw new Error('Weighted XL-winning coverage or normalized 10/1 score differs.');
+                throw new Error('Weighted XL-winning coverage or proportional Mega score differs.');
             for(const m of wins) {
                 if(winners.get(m.bossIndex)?.key!==row.key||awarded.has(m.bossIndex))throw new Error('A runner-up or duplicate received points.');
                 awarded.add(m.bossIndex);
-                if(m.points!==(m.ratio>=.95-1e-9?10:1))throw new Error('Wrong XL winner points.');
+                if(Math.abs(m.points-(m.ratio>=.95-1e-9?10:m.ratio/.95))>1e-10)throw new Error('Wrong XL winner points.');
                 const encounter=raidLeaderboardMatrix.bosses[m.bossIndex].catch;
                 if(!m.xl.matchedTypes.length||m.xl.matchedTypes.some(t=>!encounter.types.includes(t)||!row.xlProfile.types.includes(t)))
                     throw new Error('XL type intersection differs.');

@@ -296,3 +296,10 @@ The calculation formulas and upstream data sources are unchanged.
   enough sprite-column space and row height to keep names and scores clear.
 - Refine that increase to the midpoint: 59px on desktop and 48px on mobile,
   with proportionate sprite columns and row spacing.
+
+## October 30, 2026 — Proportional Mega credit below 95%
+
+- Award each winning XL option below 95% its relative eDPS divided by 0.95,
+  replacing the flat one point. Keep 10 points at ≥95%, the single best XL
+  option per boss, shared boss weights, Super Max pool behavior, and a leading
+  normalized score of 100. Explain the formula in all supported languages.

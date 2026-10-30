@@ -134,9 +134,11 @@ Old minimum-performance URL settings do not change these fixed tiers.
 
 **Mega** scoring selects the highest-eDPS XL-boosting transformed build for each
 boss form. That winner earns **10 points at ≥95%** of best non-Mega eDPS, or
-**1 point at >0–<95%**. All other options earn zero. Exact ties select one build
+**performance% ÷ 95 points below 95%**, increasing linearly toward one point.
+For example, 50% earns about 0.526 points, 80% earns 0.842, and 94% earns 0.989.
+The jump to 10 points at 95% is intentional. All other options earn zero. Exact ties select one build
 by stable build key, so they cannot duplicate a boss's allocation. Candidates
-below the former 70% calculation cutoff remain eligible for the one-point award.
+below the former 70% calculation cutoff remain eligible for proportional credit.
 
 Both views apply the same boss weights. Each raid group has total
 weight one. Genesect, Deoxys, Arceus, and Silvally share it across included forms;
@@ -145,8 +147,8 @@ raid formats, so regular/Shadow or ordinary/Super versions cannot add weight.
 Separate Shadow raid profiles and their availability audit are deferred.
 Attacker Score is its weighted point total relative to the leading Attacker
 total (100). Mega Score uses the same leading-total normalization within its
-eligible transformed pool. Its underlying 10/1 points and boss weights remain
-unchanged.
+eligible transformed pool. Boss weights apply to the 10-point strong awards and
+proportional weak awards before normalization.
 
 Both views use fixed equal raid-group weights. Shadow and Legendary display
 filters preserve the reference pool and score scale. Both views retain the same
@@ -277,7 +279,7 @@ duplicate movesets, and fixed Hidden Power builds. The leaderboard browser
 check compares every boss benchmark and the leading entries' movesets with
 the native calculator, then exercises mobile layout, score-only columns,
 display filters, URLs, history, and cancellation. Mega checks independently
-verify one XL winner per boss, 10/1-point awards, fixed builds, Super Max
+verify one XL winner per boss, proportional weak awards and the 95% bonus, fixed builds, Super Max
 availability and projection behavior, and a leading score of 100.
 
 The manual workflow also accepts a deployed URL. No repository variable or

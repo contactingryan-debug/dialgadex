@@ -62,7 +62,7 @@ function ScoreRaidMegaXLMatrix(matrix, options = {}) {
     const entries = builds.map(build => {
         const matchups = build.matchups.map(matchup => {
             const won = winners.get(matchup.bossIndex)?.key === build.key;
-            const points = won ? (matchup.ratio >= .95 - 1e-9 ? 10 : 1) : 0;
+            const points = won ? (matchup.ratio >= .95 - 1e-9 ? 10 : matchup.ratio / .95) : 0;
             return {...matchup, won, points, weightedPoints:points * weights[matchup.bossIndex]};
         });
         const wins = matchups.filter(matchup => matchup.won);
