@@ -1,6 +1,6 @@
 .raid-page-links { display:flex; justify-content:space-between; gap:1rem; }
 .raid-back { display: inline-block; padding: .25rem 0; color: var(--col-text); }
-.raid-card { --raid-tier-width:32px; --raid-sprite-scale:1; --raid-row-height:38px; --raid-priority-sprite-scale:1.35; --raid-priority-row-height:48px; margin-top:.8rem; }
+.raid-card { --raid-tier-width:32px; --raid-sprite-scale:1; --raid-row-height:38px; --raid-priority-sprite-scale:1.6; --raid-priority-row-height:54px; margin-top:.8rem; }
 .raid-card h1 { margin: 0; }
 .raid-title { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:.3em; padding:.5rem 3rem; }
 .raid-title input.toggling { display:block; position:absolute; opacity:0; width:1px; height:1px; margin:0; }
@@ -26,7 +26,7 @@
 #raid-status { font-size: .85rem; margin-bottom: 0; }
 #raid-progress { width: 100%; height: 8px; accent-color: var(--col-text); }
 .raid-variants > summary { cursor:pointer; padding:.4rem 0; color:var(--col-text); }
-.raid-grid { display:grid; grid-template-columns:var(--raid-tier-width) 32px 56px minmax(0,1fr) 84px; gap:.35rem; align-items:center; padding:0 .75rem 0 0; }
+.raid-grid { display:grid; grid-template-columns:var(--raid-tier-width) 32px 68px minmax(0,1fr) 84px; gap:.35rem; align-items:center; padding:0 .75rem 0 0; }
 #raid-column-headings { border-block:1px solid var(--col-outline); padding-block:.3rem; font-size:.75rem; background:var(--col-alt-bg); }
 .raid-grid > :nth-child(n+5), #raid-column-headings > :nth-child(-n+3) { text-align:center; }
 .raid-grid > :nth-child(4) { text-align:left; }
@@ -66,8 +66,8 @@
 .raid-method p { margin: .4rem 0; }
 #raid-empty { padding: 1rem; }
 @media (max-width:600px) {
-    .raid-card { --raid-tier-width:22px; --raid-sprite-scale:.8; --raid-row-height:40px; --raid-priority-sprite-scale:1.1; --raid-priority-row-height:46px; }
-    .raid-grid { grid-template-columns:var(--raid-tier-width) 22px 46px minmax(0,1fr) 68px; gap:.2rem; padding:0 .35rem 0 0; }
+    .raid-card { --raid-tier-width:22px; --raid-sprite-scale:.8; --raid-row-height:40px; --raid-priority-sprite-scale:1.3; --raid-priority-row-height:50px; }
+    .raid-grid { grid-template-columns:var(--raid-tier-width) 22px 54px minmax(0,1fr) 68px; gap:.2rem; padding:0 .35rem 0 0; }
     .raid-entry > summary { font-size:.75rem; }
     .raid-loading, .raid-method { padding:.75rem; }
     .raid-breakdown { padding:.75rem .75rem .75rem calc(var(--raid-tier-width) + .75rem); }

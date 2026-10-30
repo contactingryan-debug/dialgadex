@@ -291,3 +291,6 @@ The calculation formulas and upstream data sources are unchanged.
 - Normalize Mega Score to its eligible pool's leading weighted total (100),
   matching the Attacker leaderboard's scale. Retain raw weighted 10/1 points,
   boss allocations and per-boss percentages in the expanded breakdown.
+
+- Increase S/A/B/C sprites again, to 64px on desktop and 52px on mobile, with
+  enough sprite-column space and row height to keep names and scores clear.
