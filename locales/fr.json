@@ -134,7 +134,8 @@
             "title": "Filtre d'Epèces",
             "unreleased": "Non disponibles",
             "unreleased-tooltip": "Inclut les attaquants et boss de raid pas encore disponibles. Désactivé : données actuelles ; activé : modifications annoncées si Aperçu des données est activé.",
-            "mega": "Méga/Primo/Ultra",
+            "mega": "Méga",
+            "mega-tooltip": "Inclut les transformations Méga, Primo et Ultra",
             "shadow": "Obscure",
             "legendary": "Legendaire",
             "legendary-tooltip": "Inclut également les Pokémon Fabuleux et les Ultra-Chimères"

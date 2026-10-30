@@ -134,7 +134,8 @@
             "title": "Species Filters",
             "unreleased": "Unreleased",
             "unreleased-tooltip": "Include unreleased attackers and raid bosses. Off uses current data; on also allows announced changes when Data Preview is enabled.",
-            "mega": "Mega/Primal/Ultra",
+            "mega": "Mega",
+            "mega-tooltip": "Includes Mega, Primal, and Ultra transformations",
             "shadow": "Shadow",
             "legendary": "Legendary",
             "legendary-tooltip": "Also includes Mythical Pokémon and Ultrabeasts"

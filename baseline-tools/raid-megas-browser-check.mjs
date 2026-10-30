@@ -32,11 +32,16 @@ try {
         assert(visible.every(row=>row.transformed===megas&&row.rank===row.expectedRank),
             'Each leaderboard must contain only its own category and start ranking at one.');
         assert.equal(await page.locator('#raid-xl-only').isVisible(),megas);
-        assert.equal(await page.locator('#raid-shadows').isVisible(),!megas);
+        assert.equal(await page.locator('#raid-shadows-control').evaluate(el=>el.hidden),megas);
         assert.equal(await page.evaluate(()=>raidLeaderboardResult.scoring),megas?'linear':'elite');
     }
     async function fits() {
         assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Leaderboard overflows.');
+    }
+    async function openFilters() {
+        if(!await page.locator('#raid-filter-drawer').evaluate(el=>el.open))
+            await page.locator('#raid-filter-trigger').click();
+        assert.equal(await page.locator('#raid-shadows').isVisible(),false,'Shadow controls must remain hidden in the Mega view.');
     }
     await ready(true);
     assert.equal(await page.locator('#raid-megas').isChecked(),true);
@@ -104,6 +109,7 @@ try {
     assert(!new URL(page.url()).searchParams.has('xl'));
     assert.equal(await page.evaluate(()=>raidLeaderboardState.sort),'score');
     await page.locator('#raid-mode-label').click();await ready(true);
+    await openFilters();
     await page.locator('#raid-unreleased').check();await ready(true,true);
     const futureParity=await nativeParity(true);
     assert(futureParity>10);
@@ -130,6 +136,7 @@ try {
     assert.match(await page.locator('#move-projection-note').innerText(),/scaling applies separately/);
     await page.evaluate(()=>document.querySelector('#move-edit').close());
     const stableScores=await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.score]));
+    await openFilters();
     await page.locator('#raid-legendaries').uncheck();
     assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.score])),stableScores);
     await page.locator('#menu-icon > .drawer-icon').click();

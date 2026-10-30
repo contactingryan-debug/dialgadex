@@ -87,6 +87,10 @@ is recorded in `?leaderboard&megas` and remembered for navigation in the tab.
 The current level, team size, Party Power, and relobby settings apply; eDPS
 remains the scoring metric.
 
+The funnel in the leaderboard header contains the Species Filters: Unreleased,
+Shadow, and Legendary. Shadow is shown in the Attacker view. Legendary also
+includes Mythical Pokémon and Ultra Beasts, as in Type Rankings.
+
 The shared **Unreleased** option applies to both attackers and the
 raid-boss pool throughout the rankings, Each type summaries, and leaderboard.
 It is off by default and remembered for the browser tab. Current-only

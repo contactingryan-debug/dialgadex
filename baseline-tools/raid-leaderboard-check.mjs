@@ -30,6 +30,10 @@ try {
         await page.waitForFunction(() => typeof raidLeaderboardResult !== 'undefined' && raidLeaderboardResult,
             null, {timeout: 180000});
     }
+    async function openFilters() {
+        if(!await page.locator('#raid-filter-drawer').evaluate(el=>el.open))
+            await page.locator('#raid-filter-trigger').click();
+    }
     await ready();
     assert.equal(await page.title(), 'Raid Attacker Leaderboard - DialgaDex');
     assert(await page.locator('.raid-entry').count() > 10);
@@ -47,6 +51,28 @@ try {
     });
     assert.equal(elite.leader,100);
     assert.equal(await page.locator('#raid-weighting').inputValue(), 'groups');
+    assert.equal(await page.locator('#raid-filters').isVisible(),false);
+    await openFilters();
+    assert.equal(await page.locator('#raid-filters input[type="checkbox"]').count(),3);
+    assert.equal(await page.locator('#raid-filters .settings-subtitle').innerText(),'Species Filters');
+    for(const width of [320,390,900]){
+        await page.setViewportSize({width,height:844});await fits();
+        assert(await page.locator('#raid-filters').evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1;}),
+            'The species filter drawer must fit the screen.');
+        assert(await page.locator('#raid-filters .tooltiptext').evaluateAll(elements=>elements.every(el=>{
+            const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1;
+        })),'Species filter tooltips must fit the screen.');
+        if(width===320&&process.env.RAID_LEADERBOARD_SCREENSHOT)
+            await page.screenshot({path:process.env.RAID_LEADERBOARD_SCREENSHOT.replace(/\.png$/,'-filters.png')});
+    }
+    await page.setViewportSize({width:390,height:844});
+    await page.locator('#raid-search').click();
+    assert.equal(await page.locator('#raid-filters').isVisible(),false,'Clicking outside must close the drawer.');
+    await page.locator('#raid-filter-trigger').focus();
+    await page.locator('#raid-filter-trigger').press('Space');
+    assert.equal(await page.locator('#raid-filters').isVisible(),true);
+    await page.locator('#raid-filter-trigger').press('Escape');
+    assert.equal(await page.locator('#raid-filters').isVisible(),false);
     const parity = await page.evaluate(async () => {
         if (JSON.stringify([jb_pkm, jb_fm, jb_cm]) !== window.raidOriginalData)
             throw new Error('The worker changed main-page Pokémon or move data.');
@@ -130,10 +156,17 @@ try {
     assert.equal(await page.locator('#raid-empty').isVisible(), true);
     await page.locator('#raid-search').fill('');
     const originalScores = await page.evaluate(() => raidLeaderboardResult.rows.map(row => [row.key,row.score]));
+    await openFilters();
     await page.locator('#raid-shadows').uncheck();
     assert.equal(await page.locator('.raid-entry .shadow-text').count(), 0);
     assert.deepEqual(await page.evaluate(() => raidLeaderboardResult.rows.map(row => [row.key,row.score])), originalScores);
     await page.locator('#raid-shadows').check();
+    await page.locator('#raid-legendaries').uncheck();
+    assert(await page.evaluate(()=>[...document.querySelectorAll('.raid-entry')].every(el=>
+        !raidLeaderboardResult.rows.find(r=>r.key===el.dataset.key).legendary)));
+    assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(row=>[row.key,row.score])),originalScores);
+    await page.locator('#raid-legendaries').check();
+    await page.locator('#raid-filter-trigger').click();
     await page.locator('.raid-score-options > summary').tap();
     assert.equal(await page.locator('#raid-floor').isVisible(),false);
     await page.evaluate(()=>{raidLeaderboardState.floor=70;UpdateRaidLeaderboardURL();RefreshRaidLeaderboardScores();});
@@ -177,6 +210,7 @@ try {
     });
     assert.equal(availability.currentBosses,currentPool.bosses);
     assert(availability.releasedOnly && availability.futureBosses > 0);
+    await openFilters();
     await page.locator('#raid-unreleased').check();
     await page.waitForFunction(() => (raidLeaderboardResult && raidLeaderboardMatrix?.settings.includeUnreleased)
             || document.querySelector('#raid-retry:not([hidden])'),
@@ -197,6 +231,7 @@ try {
     await fits();
     await page.locator('#raid-rankings-back').click();
     await page.waitForFunction(() => document.querySelector('#strongest')?.checkVisibility());
+    assert.equal((await page.locator('#filter-settings [data-i18n="filters.species.mega"]').textContent()).trim(),'Mega');
     assert.equal(await page.evaluate(() => GetSearchParms('Any',false).unreleased),true);
     await page.reload();
     await page.waitForFunction(() => document.querySelector('#strongest')?.checkVisibility());

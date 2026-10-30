@@ -226,3 +226,7 @@ The calculation formulas and upstream data sources are unchanged.
   at 95–<100%, and zero below 95%. Omit attackers with no qualifying matchups,
   retain one fixed Hidden Power build, and scale the leader to 100. Remove the
   floor selector from this view; keep Mega scoring and its floor settings.
+- Move Unreleased, Shadow and Legendary controls into a species-only funnel
+  drawer at the top right of the raid leaderboard header. Keep existing filter
+  behavior and support touch, keyboard and outside-click dismissal. Shorten
+  the shared Type Rankings transformation filter label to Mega.

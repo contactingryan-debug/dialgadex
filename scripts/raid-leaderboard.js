@@ -51,6 +51,22 @@ function GetRaidLeaderboardSnapshot() {
 }
 
 function BindRaidLeaderboard() {
+    // Use native details for mouse, touch and keyboard operation of this drawer.
+    $('#raid-filter-drawer').on('click', function(event) {
+        event.stopPropagation();
+        $('.drawer-popup').not('#raid-filters').css('display', '');
+        $('.drawer-icon-focused').removeClass('drawer-icon-focused');
+    }).on('keydown', function(event) {
+        if (event.key === 'Escape') {
+            this.open = false;
+            $('#raid-filter-trigger').trigger('focus');
+            event.preventDefault();
+        }
+    });
+    $(document).off('click.raidSpeciesFilters').on('click.raidSpeciesFilters', function(event) {
+        if (!$(event.target).closest('#raid-filter-drawer').length)
+            $('#raid-filter-drawer').prop('open', false);
+    });
     $('#raid-unreleased').on('change', function() {
         SetIncludeUnreleased(this.checked);
         raidLeaderboardState.unreleased = this.checked;
@@ -160,7 +176,8 @@ async function LoadRaidLeaderboard({preserveQuery = false} = {}) {
     $('#raid-mode-label .option-2').attr('aria-hidden', String(!raidLeaderboardState.includeMegas));
     $('#raid-title').attr('aria-label', RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'mega-title' : 'title'));
     $('.raid-mega-control').prop('hidden', !raidLeaderboardState.includeMegas);
-    $('#raid-shadows-control').prop('hidden', raidLeaderboardState.includeMegas);
+    $('#raid-shadows-control, #raid-shadows-label').prop('hidden', raidLeaderboardState.includeMegas);
+    $('#raid-filter-trigger').attr('aria-label', GetTranslation('filters.species.title', 'Species Filters'));
     SetXLStrongThreshold(raidLeaderboardState.xlThreshold);
     $('#raid-xl-only').prop('checked',raidLeaderboardState.xlOnly);
     $('#raid-xl-threshold').val(raidLeaderboardState.xlThreshold);

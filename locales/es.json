@@ -134,7 +134,8 @@
             "title": "Filtros de Especies",
             "unreleased": "No disponibles",
             "unreleased-tooltip": "Incluye atacantes y jefes de incursión aún no disponibles. Desactivado usa datos actuales; activado también permite cambios anunciados si Vista previa está activada.",
-            "mega": "Mega/Primigenio/Ultra",
+            "mega": "Mega",
+            "mega-tooltip": "Incluye transformaciones Mega, Primigenias y Ultra",
             "shadow": "Oscuro",
             "legendary": "Legendario",
             "legendary-tooltip": "También incluye Pokémon Singulares y Ultraentes"

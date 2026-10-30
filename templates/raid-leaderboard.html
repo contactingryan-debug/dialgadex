@@ -10,11 +10,42 @@
             </span>
         </label>
         <span data-i18n="raid-leaderboard.title-suffix">Leaderboard</span>
-    </h1></div>
+    </h1>
+        <div class="absolute-right row">
+            <details id="raid-filter-drawer" class="drawer v-middle">
+                <summary id="raid-filter-trigger" aria-label="Species Filters" aria-controls="raid-filters">
+                    <img class="drawer-icon" src="imgs/filter.svg" alt="" aria-hidden="true">
+                </summary>
+                <div id="raid-filters" class="drawer-popup">
+                    <div class="settings-list">
+                        <div class="settings-subtitle" data-i18n="filters.species.title">Species Filters</div>
+                        <span class="tooltip tooltip-bottom"><span id="raid-unreleased-label" data-i18n="filters.species.unreleased">Unreleased</span>
+                            <span class="tooltiptext" data-i18n="filters.species.unreleased-tooltip">Include unreleased attackers and raid bosses. Off uses current data; on also allows announced changes when Data Preview is enabled.</span>
+                        </span>
+                        <label class="switch" for="raid-unreleased">
+                            <input id="raid-unreleased" type="checkbox" aria-labelledby="raid-unreleased-label">
+                            <span class="slider"></span>
+                        </label>
+                        <span id="raid-shadows-label" data-i18n="filters.species.shadow">Shadow</span>
+                        <label id="raid-shadows-control" class="switch" for="raid-shadows">
+                            <input id="raid-shadows" type="checkbox" checked aria-labelledby="raid-shadows-label">
+                            <span class="slider"></span>
+                        </label>
+                        <span class="tooltip tooltip-bottom"><span id="raid-legendaries-label" data-i18n="filters.species.legendary">Legendary</span>
+                            <span class="tooltiptext" data-i18n="filters.species.legendary-tooltip">Also includes Mythical Pokémon and Ultrabeasts</span>
+                        </span>
+                        <label class="switch" for="raid-legendaries">
+                            <input id="raid-legendaries" type="checkbox" checked aria-labelledby="raid-legendaries-label">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </div>
     <div class="raid-intro">
         <p id="raid-intro-text" data-i18n="raid-leaderboard.intro">Raid attackers ranked across high-tier raids. Select a Pokémon to see its contributing matchups.</p>
         <p id="raid-attacker-pool" class="raid-muted"></p>
-        <label class="raid-release-filter"><input id="raid-unreleased" type="checkbox"> <span data-i18n="filters.species.unreleased">Unreleased</span></label>
         <p id="raid-data-scope" class="raid-muted"></p>
         <p id="raid-settings-summary" class="raid-muted"></p>
         <p id="raid-mega-settings" class="raid-muted" hidden></p>
@@ -28,8 +59,6 @@
         <div class="raid-controls">
             <label class="raid-search-label"><span data-i18n="raid-leaderboard.search">Search Pokémon</span><input id="raid-search" type="search" autocomplete="off"></label>
             <div class="raid-display-filters">
-                <label id="raid-shadows-control"><input id="raid-shadows" type="checkbox" checked> <span data-i18n="raid-leaderboard.show-shadows">Shadows</span></label>
-                <label><input id="raid-legendaries" type="checkbox" checked> <span data-i18n="raid-leaderboard.show-legendaries">Legendary / Mythical / Ultra Beast</span></label>
                 <label class="raid-mega-control" hidden><input id="raid-xl-only" type="checkbox"> <span data-i18n="catch-xl.strong-only">Strong + XL only</span></label>
             </div>
             <details class="raid-score-options">
