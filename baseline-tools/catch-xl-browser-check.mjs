@@ -39,8 +39,9 @@ try {
             const near=wins.reduce((sum,m)=>sum+(m.ratio>=.95-1e-9?raidLeaderboardResult.weights[m.bossIndex]:0),0);
             const positive=wins.reduce((sum,m)=>sum+raidLeaderboardResult.weights[m.bossIndex],0);
             if(Math.abs(row.near-near)>1e-10||Math.abs(row.positive-positive)>1e-10
-                ||Math.abs(row.points-(9*near+positive))>1e-9||row.score!==row.points)
-                throw new Error('Weighted XL-winning coverage or raw 10/1 score differs.');
+                ||Math.abs(row.points-(9*near+positive))>1e-9
+                ||Math.abs(row.score-100*row.points/raidLeaderboardResult.bestPoints)>1e-9)
+                throw new Error('Weighted XL-winning coverage or normalized 10/1 score differs.');
             for(const m of wins) {
                 if(winners.get(m.bossIndex)?.key!==row.key||awarded.has(m.bossIndex))throw new Error('A runner-up or duplicate received points.');
                 awarded.add(m.bossIndex);

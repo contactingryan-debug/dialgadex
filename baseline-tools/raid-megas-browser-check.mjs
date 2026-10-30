@@ -33,6 +33,7 @@ try {
             'Each leaderboard must contain only its own category and start ranking at one.');
         assert.equal(await page.locator('#raid-xl-only').count(),0);
         assert.equal(await page.locator('#raid-shadows-control').evaluate(el=>el.hidden),megas);
+        assert.equal(await page.locator('#raid-super-max-control').evaluate(el=>el.hidden),!megas);
         assert.equal(await page.evaluate(()=>raidLeaderboardResult.scoring),megas?'mega-xl':'elite');
         const expected=await page.evaluate(()=>raidLeaderboardResult.rows.filter(r=>!!r.transformed===!!raidLeaderboardState.includeMegas
             &&(raidLeaderboardState.shadows||!r.shadow)
@@ -40,6 +41,7 @@ try {
         assert.equal(visible.length,expected,'Show every scoring attacker.');
         assert.equal(await page.locator('.raid-tier').count(),visible.length);
         assert.equal(await page.locator('.raid-tier-letter').count(),await page.locator('.raid-tier-group').count());
+        assert.equal(await page.evaluate(()=>raidLeaderboardResult.rows[0].score),100);
     }
     async function fits() {
         assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Leaderboard overflows.');
@@ -138,13 +140,33 @@ try {
     assert.equal(await page.evaluate(()=>window.megaWorkerStarts),starts,'Returning to the previous pool should use its cache.');
     assert.equal(await page.locator('#raid-score-heading').textContent(),'Score');
     assert.equal(await page.locator('.raid-first,.raid-near,.raid-positive').count(),0);
+    await openFilters();
+    assert.equal(await page.locator('#raid-super-max-label').textContent(),'Super Max');
+    const filterStarts=await page.evaluate(()=>window.megaWorkerStarts);
+    await page.locator('#raid-super-max').check();
+    assert(new URL(page.url()).searchParams.has('super-max'));
+    assert(await page.evaluate(()=>raidLeaderboardResult.superMaxOnly&&raidLeaderboardResult.rows.length>0
+        &&raidLeaderboardResult.rows.every(r=>r.superMaxUnlocked)&&raidLeaderboardResult.rows[0].score===100));
+    assert.equal(await page.evaluate(()=>window.megaWorkerStarts),filterStarts,'Super Max reuses the native battle matrix.');
     await page.locator('#raid-mode-label').click();await ready(false);
+    assert.equal(await page.locator('#raid-super-max').isVisible(),false);
     assert.equal(await page.locator('#raid-xl-only').count(),0);
     assert(!new URL(page.url()).searchParams.has('xl'));
     assert.equal(await page.evaluate(()=>raidLeaderboardState.sort),'score');
     await page.locator('#raid-mode-label').click();await ready(true);
+    assert.equal(await page.locator('#raid-super-max').isChecked(),true);
+    await page.reload();await ready(true);
+    assert.equal(await page.locator('#raid-super-max').isChecked(),true);
+    await openFilters();await page.locator('#raid-super-max').uncheck();
+    assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score])),currentAll.scores);
+    await page.locator('#raid-super-max').check();
     await openFilters();
     await page.locator('#raid-unreleased').check();await ready(true,true);
+    const futureSuperMax=await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score]));
+    assert.equal(await page.evaluate(()=>raidLeaderboardResult.superMaxOnly),false);
+    await openFilters();await page.locator('#raid-super-max').uncheck();
+    assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score])),futureSuperMax);
+    await page.locator('#raid-super-max').check();
     const futureParity=await nativeParity(true);
     assert(futureParity>10);
     const projected=await page.evaluate(()=>{
@@ -153,9 +175,10 @@ try {
         if(raidLeaderboardMatrix.attackers.filter(p=>p.transformed).some(p=>p.level!==52))throw new Error('Projected level mismatch.');
         const row=raidLeaderboardResult.rows.find(r=>r.transformed&&r.matchups.some(m=>m.points>0&&FindChargedMove(m.cm)?._plus_projection));
         if(!row)throw new Error('No scoring forecast +move.');
-        return {key:row.key,id:row.id,form:row.form,score:row.score,rawPoints:row.score===row.points};
+        return {key:row.key,id:row.id,form:row.form,score:row.score,
+            normalized:Math.abs(row.score-100*row.points/raidLeaderboardResult.bestPoints)<1e-9};
     });
-    assert(projected.rawPoints);
+    assert(projected.normalized);
     await page.locator('#raid-plus-note').waitFor();await page.locator('#raid-level-note').waitFor();
     const index=await page.locator('.raid-entry').evaluateAll((elements,key)=>elements.findIndex(e=>e.dataset.key===key),projected.key);
     const entry=page.locator('.raid-entry').nth(index);

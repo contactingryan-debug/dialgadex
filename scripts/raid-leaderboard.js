@@ -9,13 +9,22 @@ let raidLeaderboardTierFrame = 0;
 let raidLeaderboardTierObserver = null;
 let raidLeaderboardState = {};
 let raidLeaderboardIncludeMegas = false;
+let raidLeaderboardSuperMaxOnly = false;
 try { raidLeaderboardIncludeMegas = sessionStorage.getItem('dialgadex-raid-megas') === 'true'; } catch (_) {}
+try { raidLeaderboardSuperMaxOnly = sessionStorage.getItem('dialgadex-raid-super-max') === 'true'; } catch (_) {}
 
 function GetRaidLeaderboardIncludeMegas() { return raidLeaderboardIncludeMegas; }
 
 function SetRaidLeaderboardIncludeMegas(include) {
     raidLeaderboardIncludeMegas = !!include;
     try { sessionStorage.setItem('dialgadex-raid-megas', String(raidLeaderboardIncludeMegas)); } catch (_) {}
+}
+
+function GetRaidLeaderboardSuperMaxOnly() { return raidLeaderboardSuperMaxOnly; }
+
+function SetRaidLeaderboardSuperMaxOnly(include) {
+    raidLeaderboardSuperMaxOnly = !!include;
+    try { sessionStorage.setItem('dialgadex-raid-super-max', String(raidLeaderboardSuperMaxOnly)); } catch (_) {}
 }
 
 function RaidLeaderboardText(key, params = {}) {
@@ -93,6 +102,7 @@ function BindRaidLeaderboard() {
     $('#raid-megas').on('change', function() {
         SetRaidLeaderboardIncludeMegas(this.checked);
         raidLeaderboardState.includeMegas = this.checked;
+        raidLeaderboardState.superMaxOnly = GetRaidLeaderboardSuperMaxOnly();
         raidLeaderboardState.sort = 'score';
         UpdateRaidLeaderboardURL();
         LoadRaidLeaderboard();
@@ -105,6 +115,12 @@ function BindRaidLeaderboard() {
         RenderRaidLeaderboard();
     });
     $('#raid-retry').on('click', () => LoadRaidLeaderboard());
+    $('#raid-super-max').on('change', function() {
+        SetRaidLeaderboardSuperMaxOnly(this.checked);
+        raidLeaderboardState.superMaxOnly = this.checked;
+        UpdateRaidLeaderboardURL();
+        RefreshRaidLeaderboardScores();
+    });
     $('#raid-rankings-back').on('click', function(event) {
         event.preventDefault();
         LoadStrongestAndUpdateURL('Any');
@@ -120,6 +136,7 @@ function UpdateRaidLeaderboardURL() {
     params.set('leaderboard', '');
     if (raidLeaderboardState.unreleased) params.set('unreleased', '');
     if (raidLeaderboardState.includeMegas) params.set('megas', '');
+    if (raidLeaderboardState.includeMegas && raidLeaderboardState.superMaxOnly) params.set('super-max', '');
     if (!raidLeaderboardState.shadows) params.set('no-shadows', '');
     if (!raidLeaderboardState.legendaries) params.set('no-legendaries', '');
     UpdateURL('?' + params.toString());
@@ -127,7 +144,7 @@ function UpdateRaidLeaderboardURL() {
 
 function LoadRaidLeaderboardAndUpdateURL() {
     UpdateURL('?leaderboard' + (GetIncludeUnreleased() ? '&unreleased' : '')
-        + (GetRaidLeaderboardIncludeMegas() ? '&megas' : ''));
+        + (GetRaidLeaderboardIncludeMegas() ? '&megas' + (GetRaidLeaderboardSuperMaxOnly() ? '&super-max' : '') : ''));
     return LoadRaidLeaderboard();
 }
 
@@ -141,12 +158,14 @@ async function LoadRaidLeaderboard() {
     raidLeaderboardState = {
         unreleased: params.has('unreleased'),
         includeMegas,
+        superMaxOnly: includeMegas ? params.has('super-max') : GetRaidLeaderboardSuperMaxOnly(),
         floor: 80, weighting: 'groups',
         shadows: !params.has('no-shadows'), legendaries: !params.has('no-legendaries'),
         sort: 'score',
     };
     SetIncludeUnreleased(raidLeaderboardState.unreleased);
     SetRaidLeaderboardIncludeMegas(raidLeaderboardState.includeMegas);
+    if (includeMegas) SetRaidLeaderboardSuperMaxOnly(raidLeaderboardState.superMaxOnly);
     $('#raid-megas').prop('checked', raidLeaderboardState.includeMegas);
     $('#raid-megas').attr('aria-label', RaidLeaderboardText('mode-label'));
     $('#raid-mode-label').attr('title', RaidLeaderboardText('mode-help'));
@@ -154,6 +173,7 @@ async function LoadRaidLeaderboard() {
     $('#raid-mode-label .option-2').attr('aria-hidden', String(!raidLeaderboardState.includeMegas));
     $('#raid-title').attr('aria-label', RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'mega-title' : 'title'));
     $('.raid-mega-control').prop('hidden', !raidLeaderboardState.includeMegas);
+    $('#raid-super-max').prop('checked', raidLeaderboardState.superMaxOnly);
     $('#raid-shadows-control, #raid-shadows-label').prop('hidden', raidLeaderboardState.includeMegas);
     $('#raid-filter-trigger').attr('aria-label', GetTranslation('filters.species.title', 'Species Filters'));
     $('#raid-shadows').prop('checked', raidLeaderboardState.shadows);
@@ -177,7 +197,7 @@ async function LoadRaidLeaderboard() {
         if (raidLeaderboardCache.has(key)) matrix = raidLeaderboardCache.get(key);
         else {
             matrix = await new Promise((resolve, reject) => {
-                const worker = new Worker('scripts/raid-leaderboard-worker.js?v=96c2f239fe99');
+                const worker = new Worker('scripts/raid-leaderboard-worker.js?v=7809d4566b87');
                 raidLeaderboardWorker = worker;
                 raidLeaderboardReject = reject;
                 worker.onmessage = event => {
@@ -344,9 +364,8 @@ function RenderRaidLeaderboard() {
         const score = $('<span class="raid-score"></span>').attr('title', RaidLeaderboardText('points-title', {
             points: RaidLeaderboardNumber(row.points, 2),
         }));
-        const scorePercent = raidLeaderboardState.includeMegas ? 100 * row.score / raidLeaderboardResult.bestPoints : row.score;
-        score.append($('<span class="raid-score-fill"></span>').css('width', Math.min(100, scorePercent) + '%'));
-        score.append($('<strong></strong>').text(raidLeaderboardState.includeMegas ? RaidLeaderboardWeight(row.score) : RaidLeaderboardNumber(row.score)));
+        score.append($('<span class="raid-score-fill"></span>').css('width', Math.min(100, row.score) + '%'));
+        score.append($('<strong></strong>').text(RaidLeaderboardNumber(row.score)));
         summary.append(score);
         entry.append(summary);
         entry.on('toggle', function() {

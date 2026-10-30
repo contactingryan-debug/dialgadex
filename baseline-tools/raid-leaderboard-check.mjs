@@ -101,7 +101,8 @@ try {
         ['Raid Leaderboard','Type Rankings','Data Audit','Move Data','Type Chart']);
     assert.equal(await page.locator('#raid-filters').isVisible(),false);
     await openFilters();
-    assert.equal(await page.locator('#raid-filters input[type="checkbox"]').count(),3);
+    assert.equal(await page.locator('#raid-filters input[type="checkbox"]:visible').count(),3);
+    assert.equal(await page.locator('#raid-super-max').isVisible(),false);
     assert.equal(await page.locator('#raid-filters .settings-subtitle').innerText(),'Species Filters');
     for(const width of [320,390,900]){
         await page.setViewportSize({width,height:844});await fits();

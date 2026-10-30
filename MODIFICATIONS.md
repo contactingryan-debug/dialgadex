@@ -278,3 +278,16 @@ The calculation formulas and upstream data sources are unchanged.
 - Enlarge S/A/B/C sprites and allow a little more row height on desktop and
   mobile. Keep D/F sprites compact and preserve the continuous tier bands.
   This visual emphasis follows existing relative Jenks tiers.
+
+## October 30, 2026 — Super Max pool and Mega leader at 100
+
+- Add a Mega-only Super Max switch to the funnel. Current-only calculations
+  restrict the competing pool to released tier 8/9 transformations with a known
+  non-projected XL profile. Select each boss's best XL option from that pool.
+  Reuse the existing native matrix and preserve the non-Mega eDPS benchmark.
+- With Unreleased enabled, assume Super Max for every transformation; toggling
+  the filter leaves results identical. Remember the selection across tab
+  navigation and reloads with a `super-max` URL parameter.
+- Normalize Mega Score to its eligible pool's leading weighted total (100),
+  matching the Attacker leaderboard's scale. Retain raw weighted 10/1 points,
+  boss allocations and per-boss percentages in the expanded breakdown.

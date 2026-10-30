@@ -40,7 +40,9 @@ function GetRaidBossWeights(bosses, weighting = 'groups') {
 function ScoreRaidMegaXLMatrix(matrix, options = {}) {
     const weighting = ['forms', 'species'].includes(options.weighting) ? options.weighting : 'groups';
     const {weights, groupCount} = GetRaidBossWeights(matrix.bosses, weighting);
-    const builds = matrix.attackers.filter(attacker => attacker.transformed).map(attacker => {
+    const superMaxOnly = !!options.superMaxOnly && !matrix.settings?.includeUnreleased;
+    const builds = matrix.attackers.filter(attacker => attacker.transformed
+        && (!superMaxOnly || attacker.superMaxUnlocked === true)).map(attacker => {
         const byBoss = new Map();
         for (const matchup of attacker.matchups) {
             if (!matrix.bosses[matchup.bossIndex] || !Number.isFinite(matchup.ratio)
@@ -67,7 +69,7 @@ function ScoreRaidMegaXLMatrix(matrix, options = {}) {
         const points = wins.reduce((sum, matchup) => sum + matchup.weightedPoints, 0);
         const coverage = threshold => wins.filter(matchup => matchup.ratio >= threshold - 1e-9)
             .reduce((sum, matchup) => sum + weights[matchup.bossIndex], 0);
-        return {...build, matchups, points, score:points, first:coverage(1), near:coverage(.95),
+        return {...build, matchups, points, first:coverage(1), near:coverage(.95),
             positive:wins.reduce((sum, matchup) => sum + weights[matchup.bossIndex], 0),
             lead:Math.max(0, ...wins.map(matchup => matchup.lead || 0)),
             xlProjected:wins.filter(matchup => matchup.xl.projected).length};
@@ -84,9 +86,11 @@ function ScoreRaidMegaXLMatrix(matrix, options = {}) {
             points:variant.points, near:variant.near, positive:variant.positive}));
     const rows = entries.filter(row => row.points > 0)
         .sort((a, b) => b.points - a.points || b.near - a.near || b.positive - a.positive || a.key.localeCompare(b.key));
-    return {rows, scoring:'mega-xl', weighting, weights, groupCount, bossCount:matrix.bosses.length,
+    const best = rows[0]?.points || 0;
+    for (const row of rows) row.score = 100 * (row.points / best);
+    return {rows, scoring:'mega-xl', weighting, superMaxOnly, weights, groupCount, bossCount:matrix.bosses.length,
         speciesCount:new Set(matrix.bosses.map(boss => boss.id)).size,
-        totalWeight:weights.reduce((sum, weight) => sum + weight, 0), bestPoints:rows[0]?.points || 0};
+        totalWeight:weights.reduce((sum, weight) => sum + weight, 0), bestPoints:best};
 }
 
 /** Select elite for Attacker and mega-xl for the XL-winning Mega leaderboard. */

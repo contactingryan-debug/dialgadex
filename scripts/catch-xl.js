@@ -50,6 +50,13 @@ function GetCatchXLBoostProfile(pokemon, manifest = GetCatchXLManifest()) {
         note:info.note,sources:info.sources || []};
 }
 
+/** Current Super Max availability, including a known matching-type XL profile. */
+function HasSuperMaxUnlocked(pokemon) {
+    if (!IsMegaPrimalUltraForm(pokemon) || !pokemon.released || ![8, 9].includes(pokemon.raid_tier)) return false;
+    const profile = GetCatchXLBoostProfile(pokemon);
+    return profile.types.length > 0 && !['unknown', 'none', 'projected'].includes(profile.status);
+}
+
 function GetCatchXLMatch(profile, encounter, level = 4, includeUnreleased = false) {
     if (!profile?.types?.length) return {eligible:profile?.status === 'unknown' ? null : false,
         reason:profile?.status === 'unknown' ? 'unknown-profile' : 'no-profile',matchedTypes:[]};

@@ -46,13 +46,35 @@ test('Mega XL points go only to the highest eligible transformed option, includi
     const result=ScoreRaidMatrix(matrix,{scoring:'mega-xl'});
     const a=result.rows.find(r=>r.key==='a'),b=result.rows.find(r=>r.key==='b');
     assert.equal(result.scoring,'mega-xl');assert.equal(result.rows.length,2);
-    assert.equal(a.near,.5);assert.equal(a.positive,1.5);assert.equal(a.points,6);assert.equal(a.score,6);
+    assert.equal(a.near,.5);assert.equal(a.positive,1.5);assert.equal(a.points,6);assert.equal(a.score,100);
     assert.equal(b.near,0);assert.equal(b.positive,.5);assert.equal(b.points,.5);
+    assert(Math.abs(b.score-100*.5/6)<1e-10);
     assert.equal(b.matchups.find(m=>m.bossIndex===0).points,0,'Even a strong runner-up earns nothing.');
     assert.equal(a.matchups.find(m=>m.bossIndex===2).points,1);
     assert.equal(result.rows.reduce((sum,r)=>sum+r.positive,0),result.totalWeight);
     for(const row of result.rows)assert.equal(row.points,9*row.near+row.positive);
     assert.equal(matrix.attackers[0].matchups[0].points,undefined,'Do not mutate the battle matrix.');
+});
+
+test('Super Max narrows the competing pool, promotes its best XL options, and normalizes its leader to 100',()=>{
+    const xl=(bossIndex,ratio)=>({...matchup(bossIndex,ratio),xl:{eligible:true}});
+    const matrix={settings:{includeUnreleased:false},bosses:[{id:1},{id:2}],attackers:[
+        attacker('ordinary-mega',6,[xl(0,1.3),xl(1,1.2)],{transformed:true,superMaxUnlocked:false}),
+        attacker('super-max',150,[xl(0,1.1),xl(1,.8)],{transformed:true,superMaxUnlocked:true}),
+        attacker('not-a-mega',888,[xl(0,2),xl(1,2)],{superMaxUnlocked:true}),
+    ]};
+    const all=ScoreRaidMatrix(matrix,{scoring:'mega-xl'});
+    assert.equal(all.rows[0].key,'ordinary-mega');assert.equal(all.rows[0].points,20);assert.equal(all.rows[0].score,100);
+    const filtered=ScoreRaidMatrix(matrix,{scoring:'mega-xl',superMaxOnly:true});
+    assert.equal(filtered.superMaxOnly,true);assert.equal(filtered.rows.length,1);
+    assert.equal(filtered.rows[0].key,'super-max');assert.equal(filtered.rows[0].points,11);assert.equal(filtered.rows[0].score,100);
+    assert.deepEqual(filtered.weights,all.weights);assert.equal(filtered.bestPoints,11);
+    assert.equal(matrix.attackers[1].matchups[0].points,undefined);
+    const future={...matrix,settings:{includeUnreleased:true}};
+    assert.deepEqual(ScoreRaidMatrix(future,{scoring:'mega-xl',superMaxOnly:true}),
+        ScoreRaidMatrix(future,{scoring:'mega-xl'}),'Unreleased assumes Super Max for every transformation.');
+    const empty=ScoreRaidMatrix({...matrix,attackers:matrix.attackers.slice(0,1)},{scoring:'mega-xl',superMaxOnly:true});
+    assert.equal(empty.rows.length,0);assert.equal(empty.bestPoints,0);
 });
 
 test('Mega XL 95% boundary, positive-only coverage and invalid inputs are explicit',()=>{

@@ -5,7 +5,7 @@
 .raid-title { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:.3em; padding:.5rem 3rem; }
 .raid-title input.toggling { display:block; position:absolute; opacity:0; width:1px; height:1px; margin:0; }
 .raid-title .toggling:focus-visible + .togglebutton { outline:2px solid var(--col-text); outline-offset:3px; }
-.raid-mega-control[hidden], #raid-filters #raid-shadows-control[hidden], #raid-shadows-label[hidden] { display:none; }
+.raid-mega-control[hidden], #raid-filters .raid-mega-control[hidden], #raid-filters #raid-shadows-control[hidden], #raid-shadows-label[hidden] { display:none; }
 #raid-filter-trigger { display:flex; align-items:center; justify-content:center; min-width:44px; height:100%; cursor:pointer; list-style:none; scroll-margin-top:calc(var(--header-height) + .5rem); }
 #raid-filter-trigger::-webkit-details-marker { display:none; }
 #raid-filter-trigger:focus-visible { outline:2px solid var(--col-text); outline-offset:-3px; }

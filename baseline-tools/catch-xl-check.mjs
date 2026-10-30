@@ -44,6 +44,15 @@ function fixture() {
     return {evaluate,json:code=>JSON.parse(evaluate('JSON.stringify('+code+')'))};
 }
 
+test('Super Max requires a released level-4 form and a known full XL profile',()=>{
+    const {json}=fixture();
+    for(const raid_tier of [8,9])assert.equal(json('HasSuperMaxUnlocked({...get(6,"Mega"),raid_tier:'+raid_tier+'})'),true);
+    for(const patch of [{raid_tier:5},{raid_tier:8,released:false},{raid_tier:8,types:[]},{raid_tier:8,_catchXLProjected:true}])
+        assert.equal(json('HasSuperMaxUnlocked({...get(6,"Mega"),...'+JSON.stringify(patch)+'})'),false);
+    assert.equal(json('HasSuperMaxUnlocked({...get(6,"Normal"),raid_tier:8})'),false);
+    assert.equal(json('HasSuperMaxUnlocked({...get(800,"Ultra"),released:true,raid_tier:9})'),false);
+});
+
 test('Mega catches use the base encounter typing instead of the fought form',()=>{
     const {json}=fixture();
     assert.deepEqual(json('catchOf(6,"Mega").types'),['Fire','Flying']);

@@ -1,6 +1,6 @@
 /* Reuse the native calculator in isolation so navigation and settings remain responsive. */
 let jb_pkm, jb_fm, jb_cm, jb_max_id, jb_catch_profiles;
-importScripts('catch-xl.js?v=6117a414b307');
+importScripts('catch-xl.js?v=c27bc8c73735');
 importScripts('pokemon_enums.js?v=664952cd50b0', 'settings.js?v=63f6908f18cb', 'data-rules.js?v=489b486b3f8a', 'pokemon_utils.js?v=1745f81d1ee5', 'calc.js?v=cab94d1b01ba');
 
 function IsRaidLeaderboardMega(pokemon) {
@@ -58,6 +58,7 @@ self.onmessage = async event => {
             key: candidate.key, id: candidate.pkm.id, name: candidate.pkm.name, form: candidate.pkm.form,
             shadow: candidate.shadow, level: candidate.level, legendary: !!candidate.pkm.class,
             transformed: IsRaidLeaderboardMega(candidate.pkm),
+            superMaxUnlocked: HasSuperMaxUnlocked(candidate.pkm),
             projectedLevel: UsesProjectedAttackerLevel(candidate.pkm, search.unreleased),
             xlProfile: GetCatchXLBoostProfile(candidate.pkm),
             hiddenPowerType: candidate.hiddenPowerType, matchups: [],

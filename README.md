@@ -81,8 +81,8 @@ fusions, and Crowned forms, against released tier 4+ bosses using native eDPS.
 Use the **Attacker / Mega** toggle in the title to switch between separate
 leaderboards. **Attacker** shows only non-Mega forms; **Mega** shows only Mega,
 Primal, and Ultra transformations. The benchmark remains the best non-Mega
-attacker per boss. Attacker scores scale the leading total to 100; Mega scores
-show weighted points directly. Matchup percentages may exceed 100. The Mega view
+attacker per boss. Both leaderboards scale their leading weighted total to 100.
+Raw weighted points remain in expanded details. Matchup percentages may exceed 100. The Mega view
 is recorded in `?leaderboard&megas` and remembered for navigation in the tab.
 The current level, team size, Party Power, and relobby settings apply; eDPS
 remains the scoring metric.
@@ -90,6 +90,15 @@ remains the scoring metric.
 The funnel in the leaderboard header contains the Species Filters: Unreleased,
 Shadow, and Legendary. Shadow is shown in the Attacker view. Legendary also
 includes Mythical Pokémon and Ultra Beasts, as in Type Rankings.
+The Mega funnel also contains **Super Max**, off by default. With Unreleased
+off, it restricts the competing pool to released forms with an existing Super
+Mega tag (raid tier 8/9, the model's level-4 availability signal) and a known,
+non-projected XL boost profile. Each boss then awards its best eligible XL
+option within that pool, and that pool's leader scores 100. Toggling Super Max
+reuses the native battle matrix; it does not change the non-Mega benchmark.
+With Unreleased on, every transformation is assumed Super Max, so the filter
+does not change results. Its selection is remembered for the tab and encoded
+as `super-max` in Mega URLs.
 
 Both views show every scoring attacker at once, with native mini sprites and
 S/A/B/C/D/F tier colors. Jenks natural breaks assign tiers from Raid Score
@@ -135,7 +144,9 @@ other major forms have separate groups. A form's allocation is shared across
 raid formats, so regular/Shadow or ordinary/Super versions cannot add weight.
 Separate Shadow raid profiles and their availability audit are deferred.
 Attacker Score is its weighted point total relative to the leading Attacker
-total (100). Mega Score is the weighted point total, without normalization.
+total (100). Mega Score uses the same leading-total normalization within its
+eligible transformed pool. Its underlying 10/1 points and boss weights remain
+unchanged.
 
 Both views use fixed equal raid-group weights. Shadow and Legendary display
 filters preserve the reference pool and score scale. Both views retain the same
@@ -168,7 +179,8 @@ rankings and individual counters retain their calculation formulas.
 The Mega leaderboard awards only the highest-eDPS XL-boosting option for each
 boss, with weighted ≥95% and >0% coverage in its expanded breakdown. Its quality threshold is fixed
 at 95%; there is no Strong + XL filter. Species display filters preserve the
-winner pool and scores rather than promoting a runner-up. Legacy `xl` URLs open
+winner pool and scores rather than promoting a runner-up. Super Max instead
+restricts the competing pool before winners are selected. Legacy `xl` URLs open
 the Mega view; legacy sort parameters and `xl-min` no longer change its order or scoring.
 Fixed Hidden Power builds are never combined to inflate XL coverage.
 
@@ -265,7 +277,8 @@ duplicate movesets, and fixed Hidden Power builds. The leaderboard browser
 check compares every boss benchmark and the leading entries' movesets with
 the native calculator, then exercises mobile layout, score-only columns,
 display filters, URLs, history, and cancellation. Mega checks independently
-verify one XL winner per boss, 10/1-point awards, fixed builds, and raw scores.
+verify one XL winner per boss, 10/1-point awards, fixed builds, Super Max
+availability and projection behavior, and a leading score of 100.
 
 The manual workflow also accepts a deployed URL. No repository variable or
 secret is needed. Its `baseline-comparison` artifact records inputs, data
