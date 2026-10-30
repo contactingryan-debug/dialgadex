@@ -427,7 +427,7 @@
         "back": "← Type Rankings",
         "intro": "Raid attackers ranked across high-tier raids. Select a Pokémon to see its contributing matchups.",
         "meta-title": "Raid Attacker Leaderboard - DialgaDex",
-        "meta-description": "Compare raid attackers, optionally including Mega, Primal, and Ultra forms, using eDPS points and boss coverage.",
+        "meta-description": "Compare non-Mega raid attackers using eDPS points and boss coverage.",
         "preparing": "Preparing raid matchups…",
         "progress": "Calculating bosses: {completed} / {total}",
         "progress-label": "Calculation progress",
@@ -470,12 +470,21 @@
         "weight-groups": "Equal raid groups",
         "weight-groups-note": "Each raid group has total weight one. Genesect, Deoxys, Arceus, and Silvally share it across their included forms; other major forms are separate groups. Regular, Shadow, and Super formats share a form’s allocation. Separate Shadow profiles are deferred.",
         "boss-weight": "Weight {weight} · Group {group}",
-        "include-megas": "Include Mega / Primal / Ultra",
-        "pool-all": "Mega, Primal, and Ultra forms included. Benchmarks stay fixed to the best non-Mega attacker; ordinary scores stay the same. Megas can exceed 100.",
-        "pool-non-mega": "Non-Mega attacker pool. Enable Mega / Primal / Ultra to add transformations against the same non-Mega benchmark.",
+        "pool-non-mega": "Non-Mega attackers only, including Shadows, fusions, and Crowned forms. Select Mega in the title for Mega / Primal / Ultra rankings.",
         "mega-settings": "Mega level {level} · Transformation team size: {team}. Scores use each form’s own damage.",
         "reference-non-mega": "non-Mega pool",
-        "build-level": "Attacker level: L{level}"
+        "build-level": "Attacker level: L{level}",
+        "title-prefix": "Raid",
+        "title-suffix": "Leaderboard",
+        "mode-attacker": "Attacker",
+        "mode-mega": "Mega",
+        "mode-label": "Mega / Primal / Ultra leaderboard",
+        "mode-help": "Switch between non-Mega attackers and Mega / Primal / Ultra forms",
+        "mega-title": "Raid Mega Leaderboard",
+        "mega-intro": "Mega, Primal, and Ultra forms ranked across high-tier raids. Select a Pokémon to see its contributing matchups.",
+        "mega-meta-title": "Raid Mega Leaderboard - DialgaDex",
+        "mega-meta-description": "Compare Mega, Primal, and Ultra raid attackers using eDPS points and XL coverage against a fixed non-Mega benchmark.",
+        "pool-mega": "Mega, Primal, and Ultra forms only. Each boss is scored against its best non-Mega counter; the overall non-Mega leader sets 100. Scores can exceed 100."
     },
     "data-audit": {
         "nav": "Data Audit",
@@ -534,7 +543,7 @@
         "included": "Included",
         "no-raid-tag": "No raid tag",
         "below-cutoff": "Below the tier 4+ cutoff",
-        "mega-attacker": "Enable Mega / Primal / Ultra on the leaderboard",
+        "mega-attacker": "Select the Mega leaderboard for this transformation",
         "projected": "Projected",
         "verified": "Verified raid history",
         "announced": "Announced raid",
@@ -585,7 +594,8 @@
         "plus-applied": "Enabled by Unreleased",
         "plus-off": "Forecast available; not used in current-only rankings",
         "plus-incomplete": "Excluded: base move data incomplete",
-        "max-battle-only": "Max Battle boss only; not a usable raid form"
+        "max-battle-only": "Max Battle boss only; not a usable raid form",
+        "ordinary-attacker": "Select the Attacker leaderboard for this non-Mega form"
     },
     "plus-moves": {
         "projected": "Projected +move",

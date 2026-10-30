@@ -90,7 +90,7 @@ function GetPokemonAuditInfo(id, form, context) {
         preview, selected, display, supported, quality, reasons, bossReasons,
         tier, corrections, restrictions, statReview, releaseReview, applied, evidence, projectedStats, statsChanged,
         weight: context.weightMap.get(key) || 0, group: GetRaidGroupKey(display),
-        attackerIncluded: !reasons.length, leaderboardIncluded: !reasons.length && (!mega || !!context.includeMegas),
+        attackerIncluded: !reasons.length, leaderboardIncluded: !reasons.length && mega === !!context.includeMegas,
         bossIncluded: !bossReasons.length, mega, attackerLevels, projectedLevel, plusMove, encounter, xlProfile};
 }
 
@@ -99,8 +99,9 @@ function AuditRankingReason(reasons) {
 }
 
 function AuditLeaderboardReason(info, context) {
-    return !info.reasons.length && info.mega && !context.includeMegas
-        ? AuditText('mega-attacker') : AuditRankingReason(info.reasons);
+    if (!info.reasons.length && info.mega !== !!context.includeMegas)
+        return AuditText(info.mega ? 'mega-attacker' : 'ordinary-attacker');
+    return AuditRankingReason(info.reasons);
 }
 
 function AuditRaidProfile(info) {
@@ -219,7 +220,7 @@ function PokemonAuditCopyText(info, context) {
         `Raid profile: ${AuditRaidProfile(info)}`,
         `Moves: ${AuditText(info.quality.code)}; fast: ${(info.display.fm || []).join(', ')}; charged: ${(info.display.cm || []).join(', ')}`,
         `Attacker pool: ${AuditRankingReason(info.reasons)}`,
-        `Raid leaderboard: ${AuditLeaderboardReason(info, context)}; Mega/Primal/Ultra option: ${!!context.includeMegas}`,
+        `Raid leaderboard: ${AuditLeaderboardReason(info, context)}; view: ${context.includeMegas ? 'Mega/Primal/Ultra only' : 'Non-Mega attackers only'}`,
         `Boss pool: ${AuditRankingReason(info.bossReasons)}`,
         `Default group: ${info.group}; weight in selected pool: ${info.weight}`,
         `Stats (Attack/Defense/Stamina): ${AuditStatText(info.display.stats)}; ${AuditStatSource(info)}`,

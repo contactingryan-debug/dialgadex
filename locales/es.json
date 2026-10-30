@@ -427,7 +427,7 @@
         "back": "← Clasificaciones por tipo",
         "intro": "Atacantes clasificados según su rendimiento en incursiones de alto nivel. Selecciona un Pokémon para ver sus enfrentamientos.",
         "meta-title": "Clasificación de atacantes de incursiones - DialgaDex",
-        "meta-description": "Compara atacantes de incursiones, incluidas opcionalmente las formas Mega, Primigenia y Ultra, según eDPS y cobertura.",
+        "meta-description": "Compara atacantes de incursiones sin Mega por puntos eDPS y cobertura de jefes.",
         "preparing": "Preparando enfrentamientos…",
         "progress": "Calculando jefes: {completed} / {total}",
         "progress-label": "Progreso del cálculo",
@@ -470,12 +470,21 @@
         "weight-groups": "Grupos de incursión iguales",
         "weight-groups-note": "Cada grupo tiene peso total uno. Genesect, Deoxys, Arceus y Silvally lo comparten entre sus formas; las demás formas principales son grupos separados. Los formatos normal, oscuro y supermega comparten el peso de su forma. Los perfiles oscuros separados quedan pendientes.",
         "boss-weight": "Peso {weight} · Grupo {group}",
-        "include-megas": "Incluir Mega / Primigenio / Ultra",
-        "pool-all": "Se incluyen Mega, Primigenio y Ultra. La referencia sigue siendo el mejor atacante sin Mega; las puntuaciones normales no cambian. Las transformaciones pueden superar 100.",
-        "pool-non-mega": "Grupo de atacantes sin Mega. Activa Mega / Primigenio / Ultra para añadir transformaciones con la misma referencia sin Mega.",
+        "pool-non-mega": "Solo atacantes sin Mega, incluidos Oscuros, fusiones y formas Coronadas. Selecciona Megas en el título para ver Mega / Primigenio / Ultra.",
         "mega-settings": "Nivel Mega {level} · Tamaño del equipo de transformaciones: {team}. La puntuación usa el daño propio de cada forma.",
         "reference-non-mega": "grupo sin Mega",
-        "build-level": "Nivel del atacante: L{level}"
+        "build-level": "Nivel del atacante: L{level}",
+        "title-prefix": "Clasificación de",
+        "title-suffix": "de incursión",
+        "mode-attacker": "Atacantes",
+        "mode-mega": "Megas",
+        "mode-label": "Clasificación de Mega / Primigenio / Ultra",
+        "mode-help": "Alterna entre atacantes sin Mega y formas Mega / Primigenio / Ultra",
+        "mega-title": "Clasificación de Megas de incursión",
+        "mega-intro": "Formas Mega, Primigenias y Ultra clasificadas por su rendimiento en incursiones de alto nivel. Selecciona un Pokémon para ver sus enfrentamientos.",
+        "mega-meta-title": "Clasificación de Megas de incursión - DialgaDex",
+        "mega-meta-description": "Compara formas Mega, Primigenias y Ultra por puntos eDPS y cobertura XL con una referencia fija sin Mega.",
+        "pool-mega": "Solo formas Mega, Primigenias y Ultra. Cada jefe usa su mejor counter sin Mega como referencia; el líder global sin Mega marca 100. Las puntuaciones pueden superar 100."
     },
     "data-audit": {
         "nav": "Auditoría de datos",
@@ -534,7 +543,7 @@
         "included": "Incluido",
         "no-raid-tag": "Sin etiqueta de incursión",
         "below-cutoff": "Por debajo del nivel 4+",
-        "mega-attacker": "Activa Mega / Primigenio / Ultra en la clasificación",
+        "mega-attacker": "Selecciona la clasificación de Megas para esta transformación",
         "projected": "Proyectado",
         "verified": "Historial verificado",
         "announced": "Incursión anunciada",
@@ -585,7 +594,8 @@
         "plus-applied": "Activado por No disponibles",
         "plus-off": "Proyección disponible; no se usa en clasificaciones actuales",
         "plus-incomplete": "Excluido: datos de movimientos incompletos",
-        "max-battle-only": "Solo jefe de Combate Max; forma no utilizable en incursiones"
+        "max-battle-only": "Solo jefe de Combate Max; forma no utilizable en incursiones",
+        "ordinary-attacker": "Selecciona la clasificación de Atacantes para esta forma sin Mega"
     },
     "plus-moves": {
         "projected": "Movimiento + proyectado",

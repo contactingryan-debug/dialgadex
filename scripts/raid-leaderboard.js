@@ -60,9 +60,12 @@ function BindRaidLeaderboard() {
     $('#raid-megas').on('change', function() {
         SetRaidLeaderboardIncludeMegas(this.checked);
         raidLeaderboardState.includeMegas = this.checked;
-        if (!this.checked) raidLeaderboardState.xlOnly = false;
+        if (!this.checked) {
+            raidLeaderboardState.xlOnly = false;
+            if (raidLeaderboardState.sort === 'xlCoverage') raidLeaderboardState.sort = 'score';
+        }
         UpdateRaidLeaderboardURL();
-        LoadRaidLeaderboard();
+        LoadRaidLeaderboard({preserveQuery:true});
     });
     $('#raid-xl-only').on('change',function() {
         raidLeaderboardState.xlOnly = this.checked;
@@ -132,7 +135,8 @@ function LoadRaidLeaderboardAndUpdateURL() {
     return LoadRaidLeaderboard();
 }
 
-async function LoadRaidLeaderboard() {
+async function LoadRaidLeaderboard({preserveQuery = false} = {}) {
+    const query = preserveQuery ? raidLeaderboardState.query || '' : '';
     CancelRaidLeaderboardLoad();
     const request = raidLeaderboardRequest;
     if (!await LoadPage('raid-leaderboard') || request !== raidLeaderboardRequest) return;
@@ -145,11 +149,18 @@ async function LoadRaidLeaderboard() {
         floor: [70, 80, 90].includes(Number(params.get('floor'))) ? Number(params.get('floor')) : 80,
         weighting: ['forms', 'species'].includes(params.get('weight')) ? params.get('weight') : 'groups',
         shadows: !params.has('no-shadows'), legendaries: !params.has('no-legendaries'),
-        query: '', sort: params.get('sort') === 'xl' ? 'xlCoverage' : 'score',
+        query, sort: (params.has('megas') || params.has('xl')) && params.get('sort') === 'xl' ? 'xlCoverage' : 'score',
     };
     SetIncludeUnreleased(raidLeaderboardState.unreleased);
     SetRaidLeaderboardIncludeMegas(raidLeaderboardState.includeMegas);
     $('#raid-megas').prop('checked', raidLeaderboardState.includeMegas);
+    $('#raid-megas').attr('aria-label', RaidLeaderboardText('mode-label'));
+    $('#raid-mode-label').attr('title', RaidLeaderboardText('mode-help'));
+    $('#raid-mode-label .option-1').attr('aria-hidden', String(raidLeaderboardState.includeMegas));
+    $('#raid-mode-label .option-2').attr('aria-hidden', String(!raidLeaderboardState.includeMegas));
+    $('#raid-title').attr('aria-label', RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'mega-title' : 'title'));
+    $('.raid-mega-control').prop('hidden', !raidLeaderboardState.includeMegas);
+    $('#raid-shadows-control').prop('hidden', raidLeaderboardState.includeMegas);
     SetXLStrongThreshold(raidLeaderboardState.xlThreshold);
     $('#raid-xl-only').prop('checked',raidLeaderboardState.xlOnly);
     $('#raid-xl-threshold').val(raidLeaderboardState.xlThreshold);
@@ -157,13 +168,15 @@ async function LoadRaidLeaderboard() {
     $('#raid-weighting').val(raidLeaderboardState.weighting);
     $('#raid-shadows').prop('checked', raidLeaderboardState.shadows);
     $('#raid-legendaries').prop('checked', raidLeaderboardState.legendaries);
-    $('#raid-search').val('');
+    $('#raid-search').val(query);
     $('#raid-data-scope').text(RaidLeaderboardText(raidLeaderboardState.unreleased
         ? (settings_speculative ? 'scope-preview' : 'scope-unreleased') : 'scope-released'));
-    $('#raid-attacker-pool').text(RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'pool-all' : 'pool-non-mega'));
+    $('#raid-attacker-pool').text(RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'pool-mega' : 'pool-non-mega'));
+    const introKey = raidLeaderboardState.includeMegas ? 'mega-intro' : 'intro';
+    $('#raid-intro-text').attr('data-i18n', 'raid-leaderboard.' + introKey).text(RaidLeaderboardText(introKey));
     $('#raid-mega-settings, #raid-plus-note, #raid-level-note').prop('hidden', true);
-    document.title = RaidLeaderboardText('meta-title');
-    $('meta[name=description]').attr('content', RaidLeaderboardText('meta-description'));
+    document.title = RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'mega-meta-title' : 'meta-title');
+    $('meta[name=description]').attr('content', RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'mega-meta-description' : 'meta-description'));
     $('#raid-results, #raid-retry').prop('hidden', true);
     $('#raid-progress').prop('hidden', false).val(0);
     $('#raid-status').attr('role', 'status').text(RaidLeaderboardText('preparing'));
@@ -262,6 +275,9 @@ function RenderRaidLeaderboard() {
     $('#raid-results').toggleClass('raid-with-xl',!!raidLeaderboardState.includeMegas);
     const tokens = raidLeaderboardState.query.trim().split(/\s+/).filter(Boolean).map(CleanPokeName);
     const rows = raidLeaderboardResult.rows.filter(row => {
+        // Both calculation pools retain ordinary attackers for the fixed benchmark.
+        // Each visible leaderboard shows only its own category.
+        if (!!row.transformed !== !!raidLeaderboardState.includeMegas) return false;
         if (raidLeaderboardState.xlOnly && !(row.xlCoverage>0)) return false;
         if (!raidLeaderboardState.shadows && row.shadow) return false;
         if (!raidLeaderboardState.legendaries && row.legendary) return false;
@@ -314,9 +330,11 @@ function BuildRaidLeaderboardBreakdown(row) {
     });
     container.append(pokemonLink);
     container.append($('<p class="raid-muted"></p>').text(RaidLeaderboardText('build-level', {level: row.level})));
-    container.append($('<p class="raid-xl-summary"></p>').text(XLText('coverage-detail',{
-        coverage:RaidLeaderboardNumber(row.xlCoverage,2),count:row.xlCount,threshold:raidLeaderboardState.xlThreshold})));
-    if (row.xlProjected) container.append($('<p class="raid-muted"></p>').text(XLText('projected-count',{count:row.xlProjected})));
+    if (row.transformed) {
+        container.append($('<p class="raid-xl-summary"></p>').text(XLText('coverage-detail',{
+            coverage:RaidLeaderboardNumber(row.xlCoverage,2),count:row.xlCount,threshold:raidLeaderboardState.xlThreshold})));
+        if (row.xlProjected) container.append($('<p class="raid-muted"></p>').text(XLText('projected-count',{count:row.xlProjected})));
+    }
     if (raidLeaderboardState.xlOnly) container.append($('<p class="raid-muted"></p>').text(XLText('filtered-breakdown-note')));
     if (row.projectedLevel) container.append($('<p class="raid-muted"></p>').text(AuditText('projected-level-note')));
     container.append($('<p></p>').text(RaidLeaderboardText('entry-summary', {

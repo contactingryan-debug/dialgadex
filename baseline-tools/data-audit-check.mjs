@@ -159,11 +159,14 @@ test('audit inclusion and copied details reflect explicit custom calculation edi
     assert.equal(json('jb_source_pkm.find(p=>p.id===800&&p.form==="Ultra").cm_add ?? null'),null);
 });
 
-test('audit eligibility reflects the optional Mega-equivalent leaderboard pool',()=>{
+test('audit eligibility follows the exclusive Attacker and Mega leaderboard views',()=>{
     const {evaluate,json}=fixture();
     assert.equal(json('GetPokemonAuditInfo(150,"Mega",BuildPokemonAuditContext()).leaderboardIncluded'),false);
+    assert.equal(json('GetPokemonAuditInfo(150,"Normal",BuildPokemonAuditContext()).leaderboardIncluded'),true);
     evaluate('GetRaidLeaderboardIncludeMegas=()=>true');
     assert.equal(json('GetPokemonAuditInfo(150,"Mega",BuildPokemonAuditContext()).leaderboardIncluded'),true);
-    assert.match(evaluate('PokemonAuditCopyText(GetPokemonAuditInfo(150,"Mega",BuildPokemonAuditContext()),BuildPokemonAuditContext())'),/Raid leaderboard: Included; Mega\/Primal\/Ultra option: true/);
+    assert.equal(json('GetPokemonAuditInfo(150,"Normal",BuildPokemonAuditContext()).leaderboardIncluded'),false);
+    assert.match(evaluate('PokemonAuditCopyText(GetPokemonAuditInfo(150,"Mega",BuildPokemonAuditContext()),BuildPokemonAuditContext())'),/Raid leaderboard: Included; view: Mega\/Primal\/Ultra only/);
+    assert.match(evaluate('PokemonAuditCopyText(GetPokemonAuditInfo(150,"Normal",BuildPokemonAuditContext()),BuildPokemonAuditContext())'),/Select the Attacker leaderboard/);
     assert.equal(json('GetPokemonAuditInfo(800,"Ultra",BuildPokemonAuditContext()).leaderboardIncluded'),false);
 });

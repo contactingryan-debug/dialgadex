@@ -218,3 +218,7 @@ The calculation formulas and upstream data sources are unchanged.
   label to Best. Keep the existing non-Mega reference and filtering behavior.
 - Remove the Data Audit shortcut from the Raid Attacker Leaderboard page and
   capitalize its Type Rankings link. Data Audit remains in the navigation menu.
+- Split the Raid Leaderboard into non-Mega Attacker and Mega/Primal/Ultra views,
+  selected with the title toggle. Keep the non-Mega benchmark and score scale,
+  remember the view in navigation and URLs, retain search when toggling, and
+  show XL controls only for transformations. Audit inclusion follows the view.

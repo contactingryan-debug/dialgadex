@@ -427,7 +427,7 @@
         "back": "← Classements par type",
         "intro": "Attaquants classés selon leurs performances dans les raids de haut niveau. Sélectionnez un Pokémon pour voir ses contributions.",
         "meta-title": "Classement des attaquants de raid - DialgaDex",
-        "meta-description": "Comparez les attaquants de raid, avec les formes Méga, Primo et Ultra en option, selon les points eDPS et la couverture.",
+        "meta-description": "Comparez les attaquants de raid sans Méga selon les points eDPS et la couverture des boss.",
         "preparing": "Préparation des combats…",
         "progress": "Calcul des boss : {completed} / {total}",
         "progress-label": "Progression du calcul",
@@ -470,12 +470,21 @@
         "weight-groups": "Groupes de raid égaux",
         "weight-groups-note": "Chaque groupe a un poids total de un. Genesect, Deoxys, Arceus et Silvally le partagent entre leurs formes ; les autres formes majeures sont des groupes séparés. Les formats normal, obscur et Super partagent le poids de leur forme. Les profils obscurs séparés sont reportés.",
         "boss-weight": "Poids {weight} · Groupe {group}",
-        "include-megas": "Inclure Méga / Primo / Ultra",
-        "pool-all": "Méga, Primo et Ultra sont inclus. La référence reste le meilleur attaquant sans Méga ; les scores ordinaires ne changent pas. Les transformations peuvent dépasser 100.",
-        "pool-non-mega": "Groupe d’attaquants sans Méga. Activez Méga / Primo / Ultra pour ajouter les transformations avec la même référence sans Méga.",
+        "pool-non-mega": "Attaquants sans Méga uniquement, y compris les Obscurs, les fusions et les formes Couronnées. Sélectionnez Méga dans le titre pour le classement Méga / Primo / Ultra.",
         "mega-settings": "Niveau Méga {level} · Taille de l’équipe des transformations : {team}. Le score utilise les dégâts propres à chaque forme.",
         "reference-non-mega": "groupe sans Méga",
-        "build-level": "Niveau de l’attaquant : L{level}"
+        "build-level": "Niveau de l’attaquant : L{level}",
+        "title-prefix": "Classement des",
+        "title-suffix": "de raid",
+        "mode-attacker": "Attaquants",
+        "mode-mega": "Méga",
+        "mode-label": "Classement Méga / Primo / Ultra",
+        "mode-help": "Alterner entre les attaquants sans Méga et les formes Méga / Primo / Ultra",
+        "mega-title": "Classement des Méga de raid",
+        "mega-intro": "Formes Méga, Primo et Ultra classées selon leurs performances dans les raids de haut niveau. Sélectionnez un Pokémon pour voir ses contributions.",
+        "mega-meta-title": "Classement des Méga de raid - DialgaDex",
+        "mega-meta-description": "Comparez les formes Méga, Primo et Ultra selon les points eDPS et la couverture XL avec une référence fixe sans Méga.",
+        "pool-mega": "Formes Méga, Primo et Ultra uniquement. Chaque boss est comparé à son meilleur contre sans Méga ; le leader global sans Méga fixe 100. Les scores peuvent dépasser 100."
     },
     "data-audit": {
         "nav": "Audit des données",
@@ -534,7 +543,7 @@
         "included": "Inclus",
         "no-raid-tag": "Aucune catégorie de raid",
         "below-cutoff": "Sous le seuil de niveau 4+",
-        "mega-attacker": "Activez Méga / Primo / Ultra dans le classement",
+        "mega-attacker": "Sélectionnez le classement Méga pour cette transformation",
         "projected": "Projeté",
         "verified": "Historique de raid vérifié",
         "announced": "Raid annoncé",
@@ -585,7 +594,8 @@
         "plus-applied": "Activée par Non disponibles",
         "plus-off": "Projection disponible ; inutilisée dans le classement actuel",
         "plus-incomplete": "Exclu : données d’attaques incomplètes",
-        "max-battle-only": "Boss de Combat Dynamax uniquement ; forme inutilisable en raid"
+        "max-battle-only": "Boss de Combat Dynamax uniquement ; forme inutilisable en raid",
+        "ordinary-attacker": "Sélectionnez le classement Attaquants pour cette forme sans Méga"
     },
     "plus-moves": {
         "projected": "Attaque + projetée",

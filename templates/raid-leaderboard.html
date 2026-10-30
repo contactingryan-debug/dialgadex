@@ -1,9 +1,18 @@
 <a id="raid-rankings-back" class="raid-back" href="?strongest" data-i18n="raid-leaderboard.back">← Type Rankings</a>
 <div class="card raid-card">
-    <div class="card-header"><h1 class="card-title" data-i18n="raid-leaderboard.title">Raid Attacker Leaderboard</h1></div>
+    <div class="card-header"><h1 id="raid-title" class="card-title raid-title">
+        <span data-i18n="raid-leaderboard.title-prefix">Raid</span>
+        <input id="raid-megas" class="toggling" type="checkbox" role="switch" aria-label="Mega / Primal / Ultra leaderboard">
+        <label id="raid-mode-label" class="togglebutton" for="raid-megas">
+            <span class="action">
+                <span class="option-1" data-i18n="raid-leaderboard.mode-attacker">Attacker</span>
+                <span class="option-2" data-i18n="raid-leaderboard.mode-mega" aria-hidden="true">Mega</span>
+            </span>
+        </label>
+        <span data-i18n="raid-leaderboard.title-suffix">Leaderboard</span>
+    </h1></div>
     <div class="raid-intro">
-        <p data-i18n="raid-leaderboard.intro">Raid attackers ranked across high-tier raids. Select a Pokémon to see its contributing matchups.</p>
-        <label class="raid-release-filter"><input id="raid-megas" type="checkbox"> <span data-i18n="raid-leaderboard.include-megas">Include Mega / Primal / Ultra</span></label>
+        <p id="raid-intro-text" data-i18n="raid-leaderboard.intro">Raid attackers ranked across high-tier raids. Select a Pokémon to see its contributing matchups.</p>
         <p id="raid-attacker-pool" class="raid-muted"></p>
         <label class="raid-release-filter"><input id="raid-unreleased" type="checkbox"> <span data-i18n="filters.species.unreleased">Unreleased</span></label>
         <p id="raid-data-scope" class="raid-muted"></p>
@@ -19,14 +28,14 @@
         <div class="raid-controls">
             <label class="raid-search-label"><span data-i18n="raid-leaderboard.search">Search Pokémon</span><input id="raid-search" type="search" autocomplete="off"></label>
             <div class="raid-display-filters">
-                <label><input id="raid-shadows" type="checkbox" checked> <span data-i18n="raid-leaderboard.show-shadows">Shadows</span></label>
+                <label id="raid-shadows-control"><input id="raid-shadows" type="checkbox" checked> <span data-i18n="raid-leaderboard.show-shadows">Shadows</span></label>
                 <label><input id="raid-legendaries" type="checkbox" checked> <span data-i18n="raid-leaderboard.show-legendaries">Legendary / Mythical / Ultra Beast</span></label>
-                <label><input id="raid-xl-only" type="checkbox"> <span data-i18n="catch-xl.strong-only">Strong + XL only</span></label>
+                <label class="raid-mega-control" hidden><input id="raid-xl-only" type="checkbox"> <span data-i18n="catch-xl.strong-only">Strong + XL only</span></label>
             </div>
             <details class="raid-score-options">
                 <summary data-i18n="raid-leaderboard.score-options">Scoring options</summary>
                 <div class="raid-option-fields">
-                    <label><span data-i18n="catch-xl.threshold">Strong counter threshold</span><select id="raid-xl-threshold"><option value="90">≥90%</option><option value="95" selected>≥95%</option><option value="100">≥100%</option></select></label>
+                    <label class="raid-mega-control" hidden><span data-i18n="catch-xl.threshold">Strong counter threshold</span><select id="raid-xl-threshold"><option value="90">≥90%</option><option value="95" selected>≥95%</option><option value="100">≥100%</option></select></label>
                     <label><span data-i18n="raid-leaderboard.floor">Minimum performance</span><select id="raid-floor"><option value="70">70%</option><option value="80" selected>80%</option><option value="90">90%</option></select></label>
                     <label><span data-i18n="raid-leaderboard.weighting">Boss weighting</span><select id="raid-weighting"><option value="groups" selected data-i18n="raid-leaderboard.weight-groups">Equal raid groups</option><option value="species" data-i18n="raid-leaderboard.weight-species">Equal species</option><option value="forms" data-i18n="raid-leaderboard.weight-forms">Equal forms</option></select></label>
                 </div>
@@ -37,8 +46,8 @@
         <p id="raid-empty" hidden data-i18n="raid-leaderboard.empty">No scoring attackers match this search.</p>
         <div class="raid-list-footer"><span id="raid-result-count"></span><button id="raid-more" data-i18n="raid-leaderboard.more">Show 25 more</button></div>
         <div class="raid-method">
-            <p data-i18n="catch-xl.coverage-note">XL coverage adds the existing boss weights for strong, compatible catches. It uses the displayed fixed Hidden Power build. Combat scores stay unchanged. P marks projected rules.</p>
-            <p data-i18n="catch-xl.active-note">Catch XL requires the relevant transformation to be active when catching. Standard Megas and Primals need at least High Level (2). This is a chance bonus, not guaranteed extra XL.</p>
+            <p class="raid-mega-control" hidden data-i18n="catch-xl.coverage-note">XL coverage adds the existing boss weights for strong, compatible catches. It uses the displayed fixed Hidden Power build. Combat scores stay unchanged. P marks projected rules.</p>
+            <p class="raid-mega-control" hidden data-i18n="catch-xl.active-note">Catch XL requires the relevant transformation to be active when catching. Standard Megas and Primals need at least High Level (2). This is a chance bonus, not guaranteed extra XL.</p>
             <p id="raid-method-summary"></p>
             <p id="raid-weight-summary"></p>
             <p data-i18n="raid-leaderboard.counts-note">#1 and ≤5% count boss forms. Tied leaders each count as #1. Display filters keep the same reference pool and score scale.</p>

@@ -23,13 +23,26 @@ try {
             &&raidLeaderboardMatrix?.settings.includeMegas===megas
             &&raidLeaderboardMatrix?.settings.includeUnreleased===future,[megas,future],{timeout:240000});
         assert.equal(await page.locator('#raid-retry').isVisible(),false);
+        assert.equal(await page.title(),megas ? 'Raid Mega Leaderboard - DialgaDex' : 'Raid Attacker Leaderboard - DialgaDex');
+        const visible=await page.evaluate(()=>[...document.querySelectorAll('.raid-entry')].map((el,index)=>({
+            transformed:raidLeaderboardResult.rows.find(r=>r.key===el.dataset.key)?.transformed,
+            rank:Number(el.querySelector('.raid-rank').textContent),expectedRank:index+1,
+        })));
+        assert(visible.length>0);
+        assert(visible.every(row=>row.transformed===megas&&row.rank===row.expectedRank),
+            'Each leaderboard must contain only its own category and start ranking at one.');
+        assert.equal(await page.locator('#raid-xl-only').isVisible(),megas);
+        assert.equal(await page.locator('#raid-shadows').isVisible(),!megas);
     }
     async function fits() {
         assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Leaderboard overflows.');
     }
     await ready(true);
     assert.equal(await page.locator('#raid-megas').isChecked(),true);
-    assert.match(await page.locator('#raid-attacker-pool').innerText(),/ordinary scores stay the same/);
+    assert.match(await page.locator('#raid-attacker-pool').innerText(),/Mega, Primal, and Ultra forms only/);
+    assert.match(await page.locator('#raid-intro-text').innerText(),/^Mega, Primal, and Ultra/);
+    if(process.env.RAID_LEADERBOARD_SCREENSHOT)await page.screenshot({path:process.env.RAID_LEADERBOARD_SCREENSHOT.replace(/\.png$/,'-mega.png')});
+    for(const width of [320,390,900]){await page.setViewportSize({width,height:844});await fits();}
     const currentAll=await page.evaluate(()=>({
         ordinary:raidLeaderboardResult.rows.filter(r=>!r.transformed),bosses:raidLeaderboardMatrix.bosses,
         transforms:raidLeaderboardMatrix.attackers.filter(r=>r.transformed).length,
@@ -65,14 +78,28 @@ try {
     }
     const currentParity=await nativeParity(false);
     assert(currentParity>10);
-    await page.locator('#raid-megas').uncheck();await ready(false);
+    await page.locator('#raid-search').fill('150');
+    await page.locator('#raid-mode-label').click();await ready(false);
+    assert.equal(await page.locator('#raid-search').inputValue(),'150','Mode changes must preserve search.');
     assert(!new URL(page.url()).searchParams.has('megas'));
     const currentOrdinary=await page.evaluate(()=>({rows:raidLeaderboardResult.rows,bosses:raidLeaderboardMatrix.bosses}));
     assert.deepEqual(currentAll.ordinary,currentOrdinary.rows);
     assert.deepEqual(currentAll.bosses,currentOrdinary.bosses);
+    await page.locator('#raid-search').fill('');
+    assert.match(await page.locator('#raid-intro-text').innerText(),/^Raid attackers/);
+    await page.goBack();await ready(true);
+    await page.goForward();await ready(false);
     const starts=await page.evaluate(()=>window.megaWorkerStarts);
-    await page.locator('#raid-megas').check();await ready(true);
+    await page.locator('#raid-megas').focus();
+    await page.locator('#raid-megas').press('Space');await ready(true);
     assert.equal(await page.evaluate(()=>window.megaWorkerStarts),starts,'Returning to the previous pool should use its cache.');
+    await page.locator('#raid-xl-only').check();
+    await page.locator('#raid-column-headings button[data-sort="xlCoverage"]').click();
+    await page.locator('#raid-mode-label').click();await ready(false);
+    assert.equal(await page.locator('#raid-xl-only').isChecked(),false);
+    assert(!new URL(page.url()).searchParams.has('xl'));
+    assert.equal(await page.evaluate(()=>raidLeaderboardState.sort),'score');
+    await page.locator('#raid-mode-label').click();await ready(true);
     await page.locator('#raid-unreleased').check();await ready(true,true);
     const futureParity=await nativeParity(true);
     assert(futureParity>10);
@@ -99,12 +126,13 @@ try {
     assert.match(await page.locator('#move-projection-note').innerText(),/scaling applies separately/);
     await page.evaluate(()=>document.querySelector('#move-edit').close());
     const stableScores=await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.score]));
-    await page.locator('#raid-shadows').uncheck();
+    await page.locator('#raid-legendaries').uncheck();
     assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.score])),stableScores);
     await page.locator('#menu-icon > .drawer-icon').click();
     await page.locator('#data-audit-link').click();
     await page.waitForFunction(()=>document.querySelector('#data-audit')?.checkVisibility());
     assert(await page.evaluate(()=>GetPokemonAuditInfo(127,'Mega',BuildPokemonAuditContext()).leaderboardIncluded));
+    assert(!await page.evaluate(()=>GetPokemonAuditInfo(127,'Normal',BuildPokemonAuditContext()).leaderboardIncluded));
     await page.locator('#audit-leaderboard').click();await ready(true,true);
     assert(new URL(page.url()).searchParams.has('megas'));
     await page.reload();
