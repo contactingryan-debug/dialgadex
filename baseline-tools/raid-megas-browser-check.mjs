@@ -37,7 +37,7 @@ try {
         const expected=await page.evaluate(()=>raidLeaderboardResult.rows.filter(r=>!!r.transformed===!!raidLeaderboardState.includeMegas
             &&(!raidLeaderboardState.xlOnly||r.xlCoverage>0)&& (raidLeaderboardState.shadows||!r.shadow)
             &&(raidLeaderboardState.legendaries||!r.legendary)).length);
-        if(!await page.locator('#raid-search').inputValue())assert.equal(visible.length,expected,'Show every scoring attacker.');
+        assert.equal(visible.length,expected,'Show every scoring attacker.');
         assert.equal(await page.locator('.raid-tier').count(),visible.length);
     }
     async function fits() {
@@ -101,14 +101,11 @@ try {
     }
     const currentParity=await nativeParity(false);
     assert(currentParity>10);
-    await page.locator('#raid-search').fill('150');
     await page.locator('#raid-mode-label').click();await ready(false);
-    assert.equal(await page.locator('#raid-search').inputValue(),'150','Mode changes must preserve search.');
     assert(!new URL(page.url()).searchParams.has('megas'));
     const currentOrdinary=await page.evaluate(()=>({rows:raidLeaderboardMatrix.attackers,bosses:raidLeaderboardMatrix.bosses}));
     assert.deepEqual(currentAll.ordinary,currentOrdinary.rows);
     assert.deepEqual(currentAll.bosses,currentOrdinary.bosses);
-    await page.locator('#raid-search').fill('');
     await page.goBack();await ready(true);
     await page.goForward();await ready(false);
     const starts=await page.evaluate(()=>window.megaWorkerStarts);
@@ -134,7 +131,6 @@ try {
         if(raidLeaderboardMatrix.attackers.filter(p=>p.transformed).some(p=>p.level!==52))throw new Error('Projected level mismatch.');
         const row=raidLeaderboardResult.rows.find(r=>r.transformed&&r.matchups.some(m=>m.points>0&&FindChargedMove(m.cm)?._plus_projection));
         if(!row)throw new Error('No scoring forecast +move.');
-        raidLeaderboardState.query=String(row.id);document.querySelector('#raid-search').value=String(row.id);RenderRaidLeaderboard();
         return {key:row.key,id:row.id,form:row.form,score:row.score,
             above100:raidLeaderboardResult.rows.some(r=>r.transformed&&r.score>100)};
     });

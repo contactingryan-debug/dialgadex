@@ -234,3 +234,11 @@ The calculation formulas and upstream data sources are unchanged.
   tiers, native tier colors and mini sprites, bold species names, and gray
   parenthesized forms. Keep tier assignments stable through search and display
   filters. Move introductory settings and calculation notes below the list.
+- Make Raid Leaderboard the default page and logo destination, place it first
+  in navigation, and rename Attacker Rankings to Type Rankings below it. Remove
+  the extra leaderboard shortcut from Type Rankings and add a right-aligned
+  Boss List placeholder that returns to the home leaderboard.
+- Match the species funnel's font and desktop hover behavior to Type Rankings
+  while retaining touch and keyboard operation. Remove list search, scoring
+  controls, duplicate calculation/release summaries and the result count.
+  Fix equal raid-group weighting and retain the Mega Strong + XL filter.

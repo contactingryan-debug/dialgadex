@@ -24,7 +24,7 @@ try {
         }, {once: true});
     });
     const start = new URL(base);
-    start.search = '?leaderboard';
+    start.search = '';
     await page.goto(start.toString(), {waitUntil: 'domcontentloaded'});
     async function ready() {
         await page.waitForFunction(() => typeof raidLeaderboardResult !== 'undefined' && raidLeaderboardResult,
@@ -36,6 +36,7 @@ try {
     }
     await ready();
     assert.equal(await page.title(), 'Raid Attacker Leaderboard - DialgaDex');
+    assert(new URL(page.url()).searchParams.has('leaderboard'),'The root URL must open the raid leaderboard.');
     assert(await page.locator('.raid-entry').count() > 10);
     assert.equal(await page.locator('.raid-entry').count(),await page.evaluate(()=>raidLeaderboardResult.rows.length));
     assert.equal(await page.locator('#raid-more').count(),0);
@@ -47,7 +48,8 @@ try {
         el.querySelector('.raid-tier')&&el.querySelector('.raid-sprite.pokemon-icon')&&el.querySelector('.raid-species'))));
     assert.equal(await page.locator('.raid-entry > summary .raid-species').first().evaluate(el=>getComputedStyle(el).fontWeight),'700');
     assert(await page.locator('.raid-entry .raid-form').evaluateAll(elements=>elements.every(el=>/^\(.+\)$/.test(el.textContent))));
-    assert.equal(await page.locator('#raid-floor').inputValue(), '80');
+    assert.equal(await page.locator('#raid-search,.raid-score-options,#raid-floor,#raid-weighting,#raid-result-count,#raid-data-scope,#raid-settings-summary,#raid-mega-settings').count(),0);
+    assert.equal(await page.evaluate(()=>raidLeaderboardState.floor),80);
     assert.equal(await page.evaluate(()=>raidLeaderboardResult.scoring),'elite');
     assert.equal(await page.evaluate(()=>raidLeaderboardResult.floor),95);
     const elite=await page.evaluate(()=>{
@@ -60,7 +62,9 @@ try {
         return {count:raidLeaderboardResult.rows.length,leader:raidLeaderboardResult.rows[0].score};
     });
     assert.equal(elite.leader,100);
-    assert.equal(await page.locator('#raid-weighting').inputValue(), 'groups');
+    assert.equal(await page.evaluate(()=>raidLeaderboardState.weighting),'groups');
+    assert.deepEqual(await page.locator('#nav-drawer .menu a').allTextContents(),
+        ['Raid Leaderboard','Type Rankings','Data Audit','Move Data','Type Chart']);
     assert.equal(await page.locator('#raid-filters').isVisible(),false);
     await openFilters();
     assert.equal(await page.locator('#raid-filters input[type="checkbox"]').count(),3);
@@ -153,18 +157,12 @@ try {
         await page.locator('.raid-entry > summary').first().tap();
         await page.screenshot({path:process.env.RAID_LEADERBOARD_SCREENSHOT, fullPage:false});
     }
-    const hpId=await page.evaluate(()=>raidLeaderboardResult.rows.find(row=>row.hiddenPowerType)?.id);
-    if(hpId){
-        await page.locator('#raid-search').fill(String(hpId));
-        await page.locator('.raid-entry > summary').first().tap();
+    const hpIndex=await page.locator('.raid-entry').evaluateAll(elements=>elements.findIndex(el=>el.querySelector('.raid-fixed-type')));
+    if(hpIndex>=0){
+        await page.locator('.raid-entry > summary').nth(hpIndex).tap();
         await page.locator('.raid-fixed-note').waitFor();
         assert.match(await page.locator('.raid-fixed-note').textContent(), /one fixed Hidden Power/);
     }
-    await page.locator('#raid-search').fill('Kyurem');
-    assert.equal(await page.locator('.raid-entry').count(),await page.evaluate(()=>raidLeaderboardResult.rows.filter(r=>r.name.includes('Kyurem')).length));
-    await page.locator('#raid-search').fill('no such pokemon xyz');
-    assert.equal(await page.locator('#raid-empty').isVisible(), true);
-    await page.locator('#raid-search').fill('');
     const originalScores = await page.evaluate(() => raidLeaderboardResult.rows.map(row => [row.key,row.score]));
     await openFilters();
     await page.locator('#raid-shadows').uncheck();
@@ -177,20 +175,16 @@ try {
     assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(row=>[row.key,row.score])),originalScores);
     await page.locator('#raid-legendaries').check();
     assert.deepEqual(await page.evaluate(()=>Array.from(raidLeaderboardTiers)),tierAssignments,
-        'Search and species filters must not change Jenks tiers.');
+        'Species filters must not change Jenks tiers.');
     await page.locator('#raid-filter-trigger').click();
-    await page.locator('.raid-score-options > summary').tap();
-    assert.equal(await page.locator('#raid-floor').isVisible(),false);
-    await page.evaluate(()=>{raidLeaderboardState.floor=70;UpdateRaidLeaderboardURL();RefreshRaidLeaderboardScores();});
-    assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(row=>[row.key,row.score])),originalScores,
-        'Legacy performance-floor settings must not affect Attacker scoring.');
-    await page.locator('#raid-weighting').selectOption('forms');
-    assert.equal(new URL(page.url()).searchParams.get('weight'), 'forms');
-    await page.reload();
+    const legacy=new URL(page.url());legacy.searchParams.set('weight','forms');legacy.searchParams.set('floor','70');
+    await page.goto(legacy.toString());
     await ready();
-    assert.equal(await page.locator('#raid-floor').isVisible(),false);
     assert.equal(await page.evaluate(()=>raidLeaderboardResult.floor),95);
-    assert.equal(await page.locator('#raid-weighting').inputValue(), 'forms');
+    assert.equal(await page.evaluate(()=>raidLeaderboardState.floor),80);
+    assert.equal(await page.evaluate(()=>raidLeaderboardState.weighting),'groups');
+    assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(row=>[row.key,row.score])),originalScores,
+        'Legacy scoring options must not alter the fixed equal-group leaderboard.');
     assert.equal(await page.locator('.raid-entry').count(),await page.evaluate(()=>raidLeaderboardResult.rows.length));
     await page.locator('#raid-column-headings button[data-sort="first"]').tap();
     const firstCounts = await page.locator('.raid-first').allTextContents();
@@ -201,7 +195,8 @@ try {
     await fits();
     await page.locator('#raid-rankings-back').click();
     await page.waitForFunction(() => document.querySelector('#strongest')?.checkVisibility());
-    await page.locator('#strongest-raid-link').click();
+    assert.equal(await page.locator('#strongest-raid-link').count(),0);
+    await page.locator('#header-left').click();
     await ready();
     await page.goBack();
     await page.waitForFunction(() => document.querySelector('#strongest')?.checkVisibility());
@@ -259,6 +254,37 @@ try {
     assert.equal(await page.evaluate(() => raidLeaderboardWorker), null);
     await page.waitForTimeout(100);
     assert.equal(await page.locator('#raid-leaderboard').isVisible(), false);
+    const desktop=await browser.newPage({viewport:{width:1100,height:950},locale:'en-US',
+        ignoreHTTPSErrors:process.env.PLAYWRIGHT_IGNORE_HTTPS_ERRORS==='1'});
+    desktop.on('pageerror',error=>errors.push(error.message));
+    await desktop.goto(base,{waitUntil:'domcontentloaded'});
+    await desktop.locator('#raid-filter-trigger').waitFor();
+    assert.equal(await desktop.locator('#raid-filters').isVisible(),false);
+    await desktop.locator('#raid-filter-trigger').hover();
+    await desktop.waitForFunction(()=>document.querySelector('#raid-filter-drawer').open);
+    await desktop.locator('#raid-legendaries-label').hover();
+    assert.equal(await desktop.locator('#raid-filters').isVisible(),true,'Moving into the popup must keep it open.');
+    const font=await desktop.locator('#raid-unreleased-label').evaluate(el=>{
+        const css=getComputedStyle(el);return [css.fontFamily,css.fontSize,css.fontWeight];
+    });
+    if(process.env.RAID_LEADERBOARD_SCREENSHOT)await desktop.screenshot({path:process.env.RAID_LEADERBOARD_SCREENSHOT.replace(/\.png$/,'-desktop.png')});
+    await desktop.mouse.move(0,0);
+    await desktop.waitForFunction(()=>!document.querySelector('#raid-filter-drawer').open);
+    assert.equal(await desktop.locator('#raid-filters').isVisible(),false,'Moving away must close the popup.');
+    await desktop.locator('#raid-rankings-back').click();
+    await desktop.waitForFunction(()=>document.querySelector('#strongest')?.checkVisibility());
+    const typeFont=await desktop.locator('#filter-settings [data-i18n="filters.species.unreleased"]').evaluate(el=>{
+        const css=getComputedStyle(el);return [css.fontFamily,css.fontSize,css.fontWeight];
+    });
+    assert.deepEqual(font,typeFont,'Species filter fonts must match Type Rankings.');
+    assert.equal(await desktop.locator('#strongest-raid-link').count(),0);
+    await desktop.locator('#header-left').click();
+    await desktop.waitForFunction(()=>document.querySelector('#raid-leaderboard')?.checkVisibility());
+    const left=await desktop.locator('#raid-rankings-back').boundingBox();
+    const right=await desktop.locator('#raid-boss-list').boundingBox();assert(right.x>left.x+left.width);
+    await desktop.locator('#raid-boss-list').click();
+    assert(new URL(desktop.url()).searchParams.has('leaderboard'));
+    await desktop.close();
     assert.deepEqual(errors, []);
-    console.log('Direct URL, fixed-build breakdown, search, scoring controls, stable display filters, mobile fit, history and cancellation passed.');
+    console.log('Home/logo navigation, hover fonts, touch filters, fixed group weights, full lists, breakdowns, mobile fit, history and cancellation passed.');
 } finally { await browser.close(); }

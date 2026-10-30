@@ -356,7 +356,7 @@
     "site": {
         "disclaimer": "§DialgaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.\nPokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.",
         "links": {
-            "rankings": "Lista de Clasificación",
+            "rankings": "Clasificación por tipo",
             "moves": "Datos del Ataques",
             "types": "Efectividades de los Tipos",
             "FAQ": "PF",
@@ -458,7 +458,7 @@
         "score": "Puntuación",
         "first": "≥100%",
         "near": "≥95%",
-        "empty": "Ningún atacante con puntos coincide con la búsqueda.",
+        "empty": "Ningún atacante con puntuación coincide con estos filtros.",
         "more": "Mostrar 25 más",
         "counts-note": "≥100% y ≥95% cuentan formas de jefes que alcanzan esos porcentajes del mejor eDPS sin Mega. Los filtros de oscuros y legendarios mantienen la misma referencia y escala.",
         "data-note": "El filtro No disponibles se aplica a atacantes y jefes. Los cálculos solo actuales excluyen la Vista previa. Las puntuaciones miden cobertura; considera el coste de mejora y tus equipos actuales.",
@@ -488,7 +488,8 @@
         "pool-mega": "Solo formas Mega, Primigenias y Ultra. Cada jefe usa su mejor eDPS sin Mega como referencia. Esta vista mantiene la escala de 0–5 puntos; su total de referencia sin Mega fija 100.",
         "attacker-method-summary": "Cada jefe otorga 2 puntos al ≥100% de su mejor eDPS sin Mega, 1 punto del 95% al <100% y 0 por debajo del 95%. Se aplican los pesos de los jefes. Solo se clasifican atacantes con enfrentamientos válidos; el mayor total ponderado obtiene 100.",
         "tier": "Nivel",
-        "tier-note": "Los niveles usan los cortes naturales de Jenks según la puntuación de esta clasificación. La búsqueda y los filtros de especies conservan los mismos niveles."
+        "tier-note": "Los niveles usan los cortes naturales de Jenks sobre la puntuación de incursiones de esta clasificación. Los filtros de especies mantienen las mismas asignaciones de nivel.",
+        "boss-list": "Lista de jefes →"
     },
     "data-audit": {
         "nav": "Auditoría de datos",

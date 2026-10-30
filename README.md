@@ -73,7 +73,8 @@ movesets, and scores follow the corresponding individual view, including ties.
 
 ## Raid attacker leaderboard
 
-Open **Raid Leaderboard** from the rankings page or navigation menu, or use
+**Raid Leaderboard** is the home page. Open it with the DialgaDex logo, the
+navigation menu, or
 [`?leaderboard`](https://contactingryan-debug.github.io/dialgadex/?leaderboard).
 It defaults to released non-Mega/Primal/Ultra attackers, including Shadows,
 fusions, and Crowned forms, against released tier 4+ bosses using native eDPS.
@@ -93,8 +94,10 @@ includes Mythical Pokémon and Ultra Beasts, as in Type Rankings.
 
 Both views show every scoring attacker at once, with native mini sprites and
 S/A/B/C/D/F tier colors. Jenks natural breaks assign tiers from Raid Score
-within the selected view. Search and species display filters keep those tier
-assignments. Settings and calculation notes appear below the list.
+within the selected view. Species display filters keep those tier assignments.
+Calculation notes appear below the list. The species funnel opens and closes
+on hover, matching Type Rankings, and retains touch and keyboard controls.
+**Boss List →** currently returns to the leaderboard until the boss page is built.
 
 The shared **Unreleased** option applies to both attackers and the
 raid-boss pool throughout the rankings, Each type summaries, and leaderboard.
@@ -112,8 +115,8 @@ are ranked. A win earns two points total; the ≥95% count already includes wins
 Old minimum-performance URL settings do not change these fixed tiers.
 
 **Mega** scoring retains the 0–5-point curve, defaulting to zero at 80% and five
-at 100%: `5 * clamp((relative_eDPS - 0.8) / 0.2, 0, 1)`. Its performance floor
-can be set to 70%, 80%, or 90%. Mega performance above 100% remains capped at five.
+at 100%: `5 * clamp((relative_eDPS - 0.8) / 0.2, 0, 1)`. Mega performance above
+100% remains capped at five.
 
 Both views apply the same boss weights. Each raid group has total
 weight one. Genesect, Deoxys, Arceus, and Silvally share it across included forms;
@@ -123,9 +126,10 @@ Separate Shadow raid profiles and their availability audit are deferred. The dis
 is its weighted point total relative to the best non-Mega total (100) on that
 view's scoring scale. The two views use different point rules.
 
-Both views support equal raid groups, equal species, and equal forms.
-Search, Shadow, and Legendary display filters preserve the reference pool and
-score scale. Both views retain the same per-boss eDPS benchmark.
+Both views use fixed equal raid-group weights. Shadow and Legendary display
+filters preserve the reference pool and score scale. Both views retain the same
+per-boss eDPS benchmark. The list has no search bar or scoring-options menu;
+the shared header retains calculation settings and species filters.
 Each entry expands to contributing bosses, weighted points, relative eDPS,
 and the optimal moves. ≥100% and ≥95% count boss forms reaching those
 percentages of the best non-Mega eDPS. Winning margin uses the strongest other

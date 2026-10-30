@@ -356,7 +356,7 @@
     "site": {
         "disclaimer": "§DialgaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.\nPokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.",
         "links": {
-            "rankings": "Classement Attaquants",
+            "rankings": "Classement par type",
             "moves": "Classement Attaques",
             "types": "Tableau des efficacités de type",
             "FAQ": "FAQ",
@@ -458,7 +458,7 @@
         "score": "Score",
         "first": "≥100%",
         "near": "≥95%",
-        "empty": "Aucun attaquant ayant des points ne correspond à cette recherche.",
+        "empty": "Aucun attaquant avec un score ne correspond à ces filtres.",
         "more": "Afficher 25 de plus",
         "counts-note": "≥100% et ≥95% comptent les formes de boss atteignant ces pourcentages du meilleur eDPS sans Méga. Les filtres Obscurs et Légendaires conservent la même référence et la même échelle.",
         "data-note": "Le filtre Non disponibles concerne les attaquants et les boss. Les calculs actuels excluent les données annoncées. Les scores mesurent la couverture ; tenez compte du coût et de vos équipes actuelles.",
@@ -488,7 +488,8 @@
         "pool-mega": "Formes Méga, Primo et Ultra uniquement. Chaque boss utilise son meilleur eDPS sans Méga comme référence. Cette vue conserve l’échelle de 0–5 points ; son total de référence sans Méga fixe 100.",
         "attacker-method-summary": "Chaque boss accorde 2 points à ≥100% de son meilleur eDPS sans Méga, 1 point de 95% à <100% et 0 en dessous de 95%. Les poids des boss sont appliqués. Seuls les attaquants avec des combats admissibles sont classés ; le meilleur total pondéré obtient 100.",
         "tier": "Rang",
-        "tier-note": "Les rangs utilisent les seuils naturels de Jenks selon le score de ce classement. La recherche et les filtres d’espèces conservent les mêmes rangs."
+        "tier-note": "Les rangs utilisent les seuils naturels de Jenks sur le score de raid de ce classement. Les filtres d’espèces conservent les mêmes rangs.",
+        "boss-list": "Liste des boss →"
     },
     "data-audit": {
         "nav": "Audit des données",

@@ -45,12 +45,8 @@ try {
         if(visible.some((r,i)=>i&&r.xlCoverage>visible[i-1].xlCoverage+1e-10))throw new Error('XL sort is incorrect.');
         return {matches,dualAttackers:raidLeaderboardResult.rows.filter(r=>r.xlCoverage>0).length};
     });
-    const scores=await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score]));
-    await page.locator('.raid-score-options > summary').click();
-    await page.locator('#raid-xl-threshold').selectOption('100');
-    assert(new URL(page.url()).searchParams.get('xl-min')==='100');
-    assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score])),scores);
-    await page.locator('#raid-xl-threshold').selectOption('95');
+    assert.equal(await page.locator('.raid-score-options').count(),0);
+    assert.equal(await page.evaluate(()=>raidLeaderboardState.xlThreshold),95);
     await page.locator('.raid-entry > summary').first().click();
     await page.locator('.raid-breakdown .raid-matchup').first().waitFor();
     assert.match(await page.locator('.raid-breakdown').innerText(),/Strong \+ XL:.*weighted raids/);
@@ -169,7 +165,7 @@ try {
     });
     assert.deepEqual(levelState.after,levelState.before);assert.equal(levelState.qualifying,0);
     await page.reload();
-    await page.waitForFunction(()=>document.querySelector('#raid-xl-threshold'),null,{timeout:120000});
+    await page.waitForFunction(()=>document.querySelector('#raid-xl-only'),null,{timeout:120000});
     await page.evaluate(()=>LoadFAQAndUpdateURL());
     assert.deepEqual(errors,[]);
     console.log('Catch mappings, weighted XL coverage, filters, thresholds, counter badges, Ultra audit/copy and mobile:',JSON.stringify(verified));

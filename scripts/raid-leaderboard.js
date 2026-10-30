@@ -53,9 +53,18 @@ function GetRaidLeaderboardSnapshot() {
 function BindRaidLeaderboard() {
     const iconSheet = new Image();
     iconSheet.src = ICONS_URL;
-    // Use native details for mouse, touch and keyboard operation of this drawer.
-    $('#raid-filter-drawer').on('click', function(event) {
+    // Match Type Rankings on hover while retaining touch and keyboard controls.
+    const hoverFilters = () => matchMedia('(hover: hover) and (pointer: fine)').matches;
+    $('#raid-filter-drawer').on('mouseenter', function() {
+        if (hoverFilters()) this.open = true;
+    }).on('mouseleave', function() {
+        if (hoverFilters()) this.open = false;
+    }).on('click', function(event) {
         event.stopPropagation();
+        if (hoverFilters() && event.originalEvent?.detail && $(event.target).closest('#raid-filter-trigger').length) {
+            event.preventDefault();
+            this.open = true;
+        }
         $('.drawer-popup').not('#raid-filters').css('display', '');
         $('.drawer-icon-focused').removeClass('drawer-icon-focused');
     }).on('keydown', function(event) {
@@ -83,7 +92,7 @@ function BindRaidLeaderboard() {
             if (raidLeaderboardState.sort === 'xlCoverage') raidLeaderboardState.sort = 'score';
         }
         UpdateRaidLeaderboardURL();
-        LoadRaidLeaderboard({preserveQuery:true});
+        LoadRaidLeaderboard();
     });
     $('#raid-xl-only').on('change',function() {
         raidLeaderboardState.xlOnly = this.checked;
@@ -94,21 +103,7 @@ function BindRaidLeaderboard() {
         }
         UpdateRaidLeaderboardURL();RenderRaidLeaderboard();
     });
-    $('#raid-xl-threshold').on('change',function() {
-        SetXLStrongThreshold(this.value);raidLeaderboardState.xlThreshold=GetXLStrongThreshold();
-        UpdateRaidLeaderboardURL();RefreshRaidLeaderboardScores();
-    });
     $('#raid-progress').attr('aria-label', RaidLeaderboardText('progress-label'));
-    $('#raid-search').on('input', function() {
-        raidLeaderboardState.query = this.value;
-        RenderRaidLeaderboard();
-    });
-    $('#raid-floor, #raid-weighting').on('change', function() {
-        raidLeaderboardState.floor = Number($('#raid-floor').val());
-        raidLeaderboardState.weighting = $('#raid-weighting').val();
-        UpdateRaidLeaderboardURL();
-        RefreshRaidLeaderboardScores();
-    });
     $('#raid-shadows, #raid-legendaries').on('change', function() {
         raidLeaderboardState.shadows = $('#raid-shadows').is(':checked');
         raidLeaderboardState.legendaries = $('#raid-legendaries').is(':checked');
@@ -125,6 +120,10 @@ function BindRaidLeaderboard() {
         event.preventDefault();
         LoadStrongestAndUpdateURL('Any');
     });
+    $('#raid-boss-list').on('click', function(event) {
+        event.preventDefault();
+        LoadRaidLeaderboardAndUpdateURL();
+    });
 }
 
 function UpdateRaidLeaderboardURL() {
@@ -135,8 +134,6 @@ function UpdateRaidLeaderboardURL() {
     if (raidLeaderboardState.xlOnly) params.set('xl','');
     if (raidLeaderboardState.xlThreshold !== 95) params.set('xl-min',raidLeaderboardState.xlThreshold);
     if (raidLeaderboardState.sort === 'xlCoverage') params.set('sort','xl');
-    if (raidLeaderboardState.floor !== 80) params.set('floor', raidLeaderboardState.floor);
-    if (['forms', 'species'].includes(raidLeaderboardState.weighting)) params.set('weight', raidLeaderboardState.weighting);
     if (!raidLeaderboardState.shadows) params.set('no-shadows', '');
     if (!raidLeaderboardState.legendaries) params.set('no-legendaries', '');
     UpdateURL('?' + params.toString());
@@ -149,8 +146,7 @@ function LoadRaidLeaderboardAndUpdateURL() {
     return LoadRaidLeaderboard();
 }
 
-async function LoadRaidLeaderboard({preserveQuery = false} = {}) {
-    const query = preserveQuery ? raidLeaderboardState.query || '' : '';
+async function LoadRaidLeaderboard() {
     CancelRaidLeaderboardLoad();
     const request = raidLeaderboardRequest;
     if (!await LoadPage('raid-leaderboard') || request !== raidLeaderboardRequest) return;
@@ -160,10 +156,9 @@ async function LoadRaidLeaderboard({preserveQuery = false} = {}) {
         unreleased: params.has('unreleased'),
         includeMegas: params.has('megas') || params.has('xl'),
         xlOnly:params.has('xl'), xlThreshold:[90,95,100].includes(Number(params.get('xl-min'))) ? Number(params.get('xl-min')) : 95,
-        floor: [70, 80, 90].includes(Number(params.get('floor'))) ? Number(params.get('floor')) : 80,
-        weighting: ['forms', 'species'].includes(params.get('weight')) ? params.get('weight') : 'groups',
+        floor: 80, weighting: 'groups',
         shadows: !params.has('no-shadows'), legendaries: !params.has('no-legendaries'),
-        query, sort: (params.has('megas') || params.has('xl')) && params.get('sort') === 'xl' ? 'xlCoverage' : 'score',
+        sort: (params.has('megas') || params.has('xl')) && params.get('sort') === 'xl' ? 'xlCoverage' : 'score',
     };
     SetIncludeUnreleased(raidLeaderboardState.unreleased);
     SetRaidLeaderboardIncludeMegas(raidLeaderboardState.includeMegas);
@@ -178,15 +173,9 @@ async function LoadRaidLeaderboard({preserveQuery = false} = {}) {
     $('#raid-filter-trigger').attr('aria-label', GetTranslation('filters.species.title', 'Species Filters'));
     SetXLStrongThreshold(raidLeaderboardState.xlThreshold);
     $('#raid-xl-only').prop('checked',raidLeaderboardState.xlOnly);
-    $('#raid-xl-threshold').val(raidLeaderboardState.xlThreshold);
-    $('#raid-floor').val(raidLeaderboardState.floor);
-    $('#raid-weighting').val(raidLeaderboardState.weighting);
     $('#raid-shadows').prop('checked', raidLeaderboardState.shadows);
     $('#raid-legendaries').prop('checked', raidLeaderboardState.legendaries);
-    $('#raid-search').val(query);
-    $('#raid-data-scope').text(RaidLeaderboardText(raidLeaderboardState.unreleased
-        ? (settings_speculative ? 'scope-preview' : 'scope-unreleased') : 'scope-released'));
-    $('#raid-mega-settings, #raid-plus-note, #raid-level-note').prop('hidden', true);
+    $('#raid-plus-note, #raid-level-note').prop('hidden', true);
     document.title = RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'mega-meta-title' : 'meta-title');
     $('meta[name=description]').attr('content', RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'mega-meta-description' : 'meta-description'));
     $('#raid-results, #raid-retry').prop('hidden', true);
@@ -229,18 +218,8 @@ async function LoadRaidLeaderboard({preserveQuery = false} = {}) {
         if (request !== raidLeaderboardRequest) return;
         raidLeaderboardMatrix = matrix;
         const settings = matrix.settings;
-        $('#raid-settings-summary').text(RaidLeaderboardText('settings-summary', {
-            level: settings.xlBudget ? '40 / 50' : settings.levels.join(' / '),
-            team: settings.team, relobby: settings.relobby,
-            party: settings.party === 1 ? RaidLeaderboardText('off') : settings.party,
-        }));
-        $('#raid-mega-settings').prop('hidden', !settings.includeMegas).text(RaidLeaderboardText('mega-settings', {
-            level: settings.megaLevel, team: settings.megaTeam,
-        }));
         $('#raid-plus-note').prop('hidden', !(settings.includeMegas && settings.includeUnreleased));
         $('#raid-level-note').prop('hidden', !(settings.includeMegas && settings.includeUnreleased && settings.megaLevel === 4));
-        $('#raid-data-scope').text(RaidLeaderboardText(settings.includeUnreleased
-            ? (settings.preview ? 'scope-preview' : 'scope-unreleased') : 'scope-released'));
         RefreshRaidLeaderboardScores();
         $('#raid-progress').prop('hidden', true);
         $('#raid-results').prop('hidden', false);
@@ -313,7 +292,6 @@ function RaidLeaderboardNumber(number, digits = 1) {
 function RenderRaidLeaderboard() {
     if (!raidLeaderboardResult) return;
     $('#raid-results').toggleClass('raid-with-xl',!!raidLeaderboardState.includeMegas);
-    const tokens = raidLeaderboardState.query.trim().split(/\s+/).filter(Boolean).map(CleanPokeName);
     const rows = raidLeaderboardResult.rows.filter(row => {
         // Both calculation pools retain ordinary attackers for the fixed benchmark.
         // Each visible leaderboard shows only its own category.
@@ -321,9 +299,7 @@ function RenderRaidLeaderboard() {
         if (raidLeaderboardState.xlOnly && !(row.xlCoverage>0)) return false;
         if (!raidLeaderboardState.shadows && row.shadow) return false;
         if (!raidLeaderboardState.legendaries && row.legendary) return false;
-        const localized = RaidLeaderboardName(row).text();
-        const haystack = CleanPokeName([localized, row.name, row.form, row.shadow ? 'Shadow' : '', row.id].join(' '));
-        return tokens.every(token => haystack.includes(token));
+        return true;
     });
     const sort = raidLeaderboardState.sort;
     rows.sort((a, b) => b[sort] - a[sort] || b.points - a.points || a.key.localeCompare(b.key));
@@ -361,9 +337,6 @@ function RenderRaidLeaderboard() {
         $('#raid-list').append(entry);
     }
     $('#raid-empty').prop('hidden', rows.length > 0);
-    $('#raid-result-count').text(RaidLeaderboardText('result-count', {
-        shown: rows.length, total: rows.length,
-    }));
 }
 
 function BuildRaidLeaderboardBreakdown(row) {

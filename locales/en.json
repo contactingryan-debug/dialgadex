@@ -356,7 +356,7 @@
     "site": {
         "disclaimer": "§DialgaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.\nPokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.",
         "links": {
-            "rankings": "Attacker Rankings",
+            "rankings": "Type Rankings",
             "moves": "Move Data",
             "types": "Type Chart",
             "FAQ": "FAQ",
@@ -458,7 +458,7 @@
         "score": "Score",
         "first": "≥100%",
         "near": "≥95%",
-        "empty": "No scoring attackers match this search.",
+        "empty": "No scoring attackers match these filters.",
         "more": "Show 25 more",
         "counts-note": "≥100% and ≥95% count boss forms reaching those percentages of the best non-Mega eDPS. Shadow and Legendary display filters keep the same reference pool and score scale.",
         "data-note": "The Unreleased filter applies to both attackers and raid bosses. Current-only calculations exclude Data Preview. Scores measure battle coverage; upgrade cost and your current teams should guide your next investment.",
@@ -488,7 +488,8 @@
         "pool-mega": "Mega, Primal, and Ultra forms only. Each boss uses its best non-Mega eDPS as the benchmark. This view keeps the 0–5-point scoring scale; its non-Mega reference total sets 100.",
         "attacker-method-summary": "Each boss awards 2 points at ≥100% of its best non-Mega eDPS, 1 point at 95–<100%, and 0 below 95%. Boss weights apply. Only attackers with qualifying matchups are ranked; the leading weighted total scores 100.",
         "tier": "Tier",
-        "tier-note": "Tiers use Jenks natural breaks on Raid Score within this leaderboard. Search and species filters keep the same tier assignments."
+        "tier-note": "Tiers use Jenks natural breaks on Raid Score within this leaderboard. Species filters keep the same tier assignments.",
+        "boss-list": "Boss List →"
     },
     "data-audit": {
         "nav": "Data Audit",
