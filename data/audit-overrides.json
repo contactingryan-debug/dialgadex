@@ -1,6 +1,42 @@
 {
-    "reviewed": "2026-10-28",
+    "reviewed": "2026-10-30",
     "corrections": [
+        {
+            "key": "enamorus-current-five-star-raid",
+            "id": 905,
+            "forms": ["Normal", "Incarnate"],
+            "when": {"raid_tier": 7},
+            "values": {"raid_tier": 5},
+            "reason": "Incarnate Enamorus returned in five-star raids with 15,000 HP. Its original Elite raid profile is historical; a stale Elite tag must not select 20,000 HP for current calculations.",
+            "sources": [
+                "https://pokemongo.com/news/road-of-legends-2026",
+                "https://fight.pokebattler.com/raids"
+            ]
+        },
+        {
+            "key": "regidrago-current-five-star-raid",
+            "id": 895,
+            "form": "Normal",
+            "when": {"raid_tier": 7},
+            "values": {"raid_tier": 5},
+            "reason": "Regidrago's later five-star raids use 15,000 HP. Preserve the current five-star profile if the upstream data retains an old Elite tag.",
+            "sources": [
+                "https://pokemongo.com/news/road-of-legends-2026",
+                "https://fight.pokebattler.com/raids"
+            ]
+        },
+        {
+            "key": "regieleki-current-five-star-raid",
+            "id": 894,
+            "form": "Normal",
+            "when": {"raid_tier": 7},
+            "values": {"raid_tier": 5},
+            "reason": "Regieleki's later five-star raids use 15,000 HP. Preserve the current five-star profile if the upstream data retains an old Elite tag.",
+            "sources": [
+                "https://pokemongo.com/news/road-of-legends-2026",
+                "https://fight.pokebattler.com/raids"
+            ]
+        },
         {
             "key": "armored-mewtwo-raid",
             "id": 150,

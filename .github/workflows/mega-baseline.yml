@@ -39,6 +39,9 @@ jobs:
       - name: Verify audited data and placeholder eligibility
         run: npm run check:data-audit
         working-directory: baseline-tools
+      - name: Verify Boss List pools and current five-star profiles
+        run: npm run check:boss-list
+        working-directory: baseline-tools
       - name: Verify projected Mega, Primal, and Ultra levels
         run: npm run check:transformation-levels
         working-directory: baseline-tools
@@ -62,6 +65,11 @@ jobs:
           FORK_URL: ${{ inputs.fork_url || format('http://127.0.0.1:8765/{0}/', github.event.repository.name) }}
       - name: Verify data audit and copy details
         run: npm run check:data-audit-browser
+        working-directory: baseline-tools
+        env:
+          FORK_URL: ${{ inputs.fork_url || format('http://127.0.0.1:8765/{0}/', github.event.repository.name) }}
+      - name: Verify Boss List navigation and mobile layout
+        run: npm run check:boss-list-browser
         working-directory: baseline-tools
         env:
           FORK_URL: ${{ inputs.fork_url || format('http://127.0.0.1:8765/{0}/', github.event.repository.name) }}

@@ -657,5 +657,20 @@
         "audit-profiles": "Profils de bonus XL",
         "audit-unknown": "Captures à vérifier",
         "filtered-breakdown-note": "Les totaux de combat utilisent tous les raids. Seuls les bons contres avec bonus XL sont listés ci-dessous."
+    },
+    "boss-list": {
+        "title": "Liste des boss",
+        "meta-title": "Liste des boss - DialgaDex",
+        "description": "Boss de raid par PV et disponibilité.",
+        "back": "← Classement des raids",
+        "released": "Disponibles",
+        "unreleased": "À venir",
+        "super-mega": "Super Méga",
+        "legendary-mega": "Méga légendaires",
+        "legendary": "Légendaires",
+        "mega": "Méga",
+        "hp": "{hp} PV",
+        "empty": "Aucun",
+        "note": "Disponible signifie déjà accessible, pas nécessairement dans la rotation actuelle. La colonne À venir montre les formes de boss supplémentaires autorisées par le filtre correspondant ; les attaques incomplètes sont exclues."
     }
 }

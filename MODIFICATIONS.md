@@ -303,3 +303,17 @@ The calculation formulas and upstream data sources are unchanged.
   replacing the flat one point. Keep 10 points at ≥95%, the single best XL
   option per boss, shared boss weights, Super Max pool behavior, and a leading
   normalized score of 100. Explain the formula in all supported languages.
+
+## October 30, 2026 — Boss List and current five-star profiles
+
+- Add the Boss List page at `?bosses`, linked from both Raid Leaderboards and
+  the navigation menu. Show Released and Unreleased columns across Super Mega
+  (25,000 HP), Legendary Mega (22,500), Legendary (15,000), and Mega (9,000).
+  Use the rankings' eligible boss forms, preserve current release flags when
+  preview data is enabled, and link every entry to its Pokémon page.
+- Keep both columns visible on small screens. Use the established sprites,
+  bold species names, and compact gray form labels.
+- Correct stale Elite raid tags for Incarnate Enamorus, Regidrago, and Regieleki
+  to their current five-star profile, with 15,000 HP. Preserve raw source tags
+  and source links in Data Audit. Current upstream active forms already use
+  tier 5; the correction also covers Enamorus's unsupported Normal alias.

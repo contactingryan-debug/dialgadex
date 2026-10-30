@@ -11,6 +11,8 @@
     "check:release-filter": "node --test release-filter-check.mjs",
     "check:data-audit": "node --test data-audit-check.mjs",
     "check:data-audit-browser": "node data-audit-browser-check.mjs",
+    "check:boss-list": "node --test boss-list-check.mjs",
+    "check:boss-list-browser": "node boss-list-browser-check.mjs",
     "check:transformation-levels": "node --test transformation-level-check.mjs",
     "check:transformation-browser": "node transformation-level-browser-check.mjs",
     "check:plus-moves": "node --test plus-projections-check.mjs",

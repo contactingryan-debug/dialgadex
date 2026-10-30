@@ -127,7 +127,7 @@ function BindRaidLeaderboard() {
     });
     $('#raid-boss-list').on('click', function(event) {
         event.preventDefault();
-        LoadRaidLeaderboardAndUpdateURL();
+        LoadBossListAndUpdateURL();
     });
 }
 

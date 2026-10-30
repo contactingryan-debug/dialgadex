@@ -115,7 +115,18 @@ remain compact. This emphasis follows the relative Jenks tiers, rather than
 defining a fixed performance or investment threshold.
 Calculation notes appear below the list. The species funnel opens and closes
 on hover, matching Type Rankings, and retains touch and keyboard controls.
-**Boss List →** currently returns to the leaderboard until the boss page is built.
+**Boss List →** opens a two-column roster at `?bosses`: Released and Unreleased,
+with four HP categories: Super Mega (25,000), Legendary Mega (22,500),
+Legendary (15,000), and Mega (9,000). Entries link to each boss form's Pokémon
+page. Both columns use the same supported, usable boss pool as the rankings;
+the future column adds only forms absent from the current pool. Release status
+uses current data even when Data Preview projects a future release. Incomplete
+learnsets and Max Battle-only forms remain excluded. Both columns stay visible
+on mobile, independently of the leaderboard's Unreleased toggle.
+
+Enamorus (Incarnate), Regidrago, and Regieleki use their later five-star raid
+profile (15,000 HP). Narrow, sourced corrections replace stale Elite tags;
+current upstream five-star tags and unrelated raid profiles remain intact.
 
 The shared **Unreleased** option applies to both attackers and the
 raid-boss pool throughout the rankings, Each type summaries, and leaderboard.
@@ -308,9 +319,11 @@ FORK_URL=http://localhost:8000/ npm run check:each-counters
 npm run check:raid-points
 npm run check:release-filter
 npm run check:data-audit
+npm run check:boss-list
 npm run check:transformation-levels
 FORK_URL=http://localhost:8000/ npm run check:transformation-browser
 FORK_URL=http://localhost:8000/ npm run check:data-audit-browser
+FORK_URL=http://localhost:8000/ npm run check:boss-list-browser
 FORK_URL=http://localhost:8000/ npm run check:raid-leaderboard
 ```
 

@@ -657,5 +657,20 @@
         "audit-profiles": "XL boost profiles",
         "audit-unknown": "Catch mappings to review",
         "filtered-breakdown-note": "Combat totals still use all raids. Only Strong + XL matchups are listed below."
+    },
+    "boss-list": {
+        "title": "Boss List",
+        "meta-title": "Boss List - DialgaDex",
+        "description": "Raid bosses by HP and release status.",
+        "back": "← Raid Leaderboard",
+        "released": "Released",
+        "unreleased": "Unreleased",
+        "super-mega": "Super Mega",
+        "legendary-mega": "Legendary Mega",
+        "legendary": "Legendary",
+        "mega": "Mega",
+        "hp": "{hp} HP",
+        "empty": "None",
+        "note": "Released means previously available, not currently in rotation. Unreleased shows additional boss forms allowed by the Unreleased filter; incomplete movesets are excluded."
     }
 }

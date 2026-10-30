@@ -31,7 +31,7 @@ rewrite('scripts/raid-leaderboard-worker.js', lambda text: versions(text,
 rewrite('scripts/raid-leaderboard.js', lambda text: re.sub(r"raid-leaderboard-worker.js\?v=[^']+",
     'raid-leaderboard-worker.js?v=' + digest('scripts/raid-leaderboard-worker.js'), text))
 def template_versions(text):
-    for name in ['pokedex', 'rankings', 'raid-leaderboard', 'data-audit', 'faq']:
+    for name in ['pokedex', 'rankings', 'raid-leaderboard', 'boss-list', 'data-audit', 'faq']:
         path = 'templates/' + name + '.html'
         text = re.sub(re.escape(path) + r"(?:\?v=[^']+)?", path + '?v=' + digest(path), text)
     return text
@@ -39,8 +39,8 @@ rewrite('index.js', template_versions)
 def entry_versions(text):
     paths = ['scripts/' + name + '.js' for name in ['dataload', 'translation', 'settings',
         'data-rules', 'catch-xl', 'plus-projections', 'dialogs', 'moves', 'pokemon_utils', 'calc', 'pokedex', 'rankings', 'raid-points',
-        'data-audit', 'raid-leaderboard']]
-    paths += ['index.js', 'styles/raid-leaderboard.css', 'styles/data-audit.css']
+        'data-audit', 'raid-leaderboard', 'boss-list']]
+    paths += ['index.js', 'styles/raid-leaderboard.css', 'styles/data-audit.css', 'styles/boss-list.css']
     for path in paths:
         text = re.sub(re.escape(path) + r'(?:\?v=[^"]+)?', path + '?v=' + digest(path), text)
     return re.sub(r'locales/en.json\?v=[^"]+', 'locales/en.json?v=' + locale, text)

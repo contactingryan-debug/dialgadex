@@ -98,7 +98,7 @@ try {
     assert.equal(await page.locator('.raid-first,.raid-near,.raid-positive').count(),0);
     assert.equal(await page.evaluate(()=>raidLeaderboardState.weighting),'groups');
     assert.deepEqual(await page.locator('#nav-drawer .menu a').allTextContents(),
-        ['Raid Leaderboard','Type Rankings','Data Audit','Move Data','Type Chart']);
+        ['Raid Leaderboard','Boss List','Type Rankings','Data Audit','Move Data','Type Chart']);
     assert.equal(await page.locator('#raid-filters').isVisible(),false);
     await openFilters();
     assert.equal(await page.locator('#raid-filters input[type="checkbox"]:visible').count(),3);
@@ -330,7 +330,8 @@ try {
     const left=await desktop.locator('#raid-rankings-back').boundingBox();
     const right=await desktop.locator('#raid-boss-list').boundingBox();assert(right.x>left.x+left.width);
     await desktop.locator('#raid-boss-list').click();
-    assert(new URL(desktop.url()).searchParams.has('leaderboard'));
+    await desktop.locator('.boss-tier-group').first().waitFor();
+    assert(new URL(desktop.url()).searchParams.has('bosses'));
     await desktop.close();
     assert.deepEqual(errors, []);
     console.log('Home/logo navigation, hover fonts, touch filters, fixed group weights, full lists, breakdowns, mobile fit, history and cancellation passed.');

@@ -1,0 +1,29 @@
+.boss-list-card { margin-top:.8rem; }
+.boss-list-card h1 { margin:0; }
+#boss-list-groups { width:100%; table-layout:fixed; }
+#boss-list-groups caption { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+#boss-list-groups thead th { width:50%; padding:.65rem .75rem; font-size:.9rem; background:var(--col-alt-bg); }
+.boss-tier-heading th { padding:.6rem .75rem; text-align:left; border-top:1px solid var(--col-outline); background:var(--col-widget); }
+.boss-category { font-size:.95rem; font-weight:700; }
+.boss-hp { margin-left:.4rem; font-size:.8rem; font-weight:400; color:var(--col-text-midkey); white-space:nowrap; }
+.boss-cell { padding:.4rem .45rem; vertical-align:top; text-align:left; background:var(--col-row-bg); }
+.boss-cell + .boss-cell, #boss-column-unreleased { border-left:1px solid var(--col-outline); }
+.boss-roster { margin:0; padding:0; list-style:none; }
+.boss-roster > li:nth-child(even) { background:var(--col-alt-bg); }
+.boss-entry { display:flex; align-items:center; gap:.4rem; min-height:40px; padding:.15rem .35rem; box-sizing:border-box; color:var(--col-text); text-decoration:none; }
+.boss-entry:hover { background:var(--col-widget-back-hover); }
+.boss-entry:focus-visible { outline:2px solid var(--col-text); outline-offset:-2px; }
+.boss-sprite { display:block; flex:none; }
+.boss-name { min-width:0; font-size:.85rem; overflow-wrap:anywhere; }
+.boss-name .raid-species { font-weight:700; }
+.boss-empty { margin:.65rem .4rem; font-size:.8rem; color:var(--col-text-midkey); }
+.boss-list-note { margin:0; padding:.85rem 1rem; font-size:.75rem; color:var(--col-text-midkey); }
+@media (max-width:600px) {
+    #boss-list-groups thead th { padding:.6rem .4rem; font-size:.85rem; }
+    .boss-tier-heading th { padding:.55rem .6rem; }
+    .boss-cell { padding:.25rem .15rem; }
+    .boss-entry { gap:.15rem; padding:.2rem .15rem; min-height:44px; }
+    .boss-sprite { transform:scale(.8); margin-inline:-4px; }
+    .boss-name { font-size:.75rem; }
+    .boss-list-note { padding:.75rem; }
+}

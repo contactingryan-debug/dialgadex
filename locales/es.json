@@ -657,5 +657,20 @@
         "audit-profiles": "Perfiles de bonus XL",
         "audit-unknown": "Capturas por revisar",
         "filtered-breakdown-note": "Los totales de combate usan todas las incursiones. Abajo solo aparecen los enfrentamientos que cumplen fuerza + XL."
+    },
+    "boss-list": {
+        "title": "Lista de jefes",
+        "meta-title": "Lista de jefes - DialgaDex",
+        "description": "Jefes de incursión por PS y disponibilidad.",
+        "back": "← Clasificación de incursiones",
+        "released": "Disponibles",
+        "unreleased": "No disponibles",
+        "super-mega": "Super Mega",
+        "legendary-mega": "Mega legendarios",
+        "legendary": "Legendarios",
+        "mega": "Mega",
+        "hp": "{hp} PS",
+        "empty": "Ninguno",
+        "note": "Disponible significa que ya se ha podido obtener, no que esté en la rotación actual. La otra columna muestra las formas de jefes adicionales permitidas por el filtro de no disponibles; se excluyen los movimientos incompletos."
     }
 }
