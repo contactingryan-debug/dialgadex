@@ -51,7 +51,6 @@ function GetRaidLeaderboardSnapshot() {
 }
 
 function BindRaidLeaderboard() {
-    $('#raid-audit-link').on('click', event => { event.preventDefault(); LoadDataAuditAndUpdateURL(); });
     $('#raid-unreleased').on('change', function() {
         SetIncludeUnreleased(this.checked);
         raidLeaderboardState.unreleased = this.checked;

@@ -424,7 +424,7 @@
     "raid-leaderboard": {
         "nav": "Raid Leaderboard",
         "title": "Raid Attacker Leaderboard",
-        "back": "← Type rankings",
+        "back": "← Type Rankings",
         "intro": "Raid attackers ranked across high-tier raids. Select a Pokémon to see its contributing matchups.",
         "meta-title": "Raid Attacker Leaderboard - DialgaDex",
         "meta-description": "Compare raid attackers, optionally including Mega, Primal, and Ultra forms, using eDPS points and boss coverage.",

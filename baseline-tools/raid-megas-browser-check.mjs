@@ -101,7 +101,8 @@ try {
     const stableScores=await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.score]));
     await page.locator('#raid-shadows').uncheck();
     assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.score])),stableScores);
-    await page.locator('#raid-audit-link').click();
+    await page.locator('#menu-icon > .drawer-icon').click();
+    await page.locator('#data-audit-link').click();
     await page.waitForFunction(()=>document.querySelector('#data-audit')?.checkVisibility());
     assert(await page.evaluate(()=>GetPokemonAuditInfo(127,'Mega',BuildPokemonAuditContext()).leaderboardIncluded));
     await page.locator('#audit-leaderboard').click();await ready(true,true);
