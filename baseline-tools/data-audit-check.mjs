@@ -49,6 +49,39 @@ test('documented corrections preserve raw flags and remain reversible with previ
     assert.deepEqual(json('GetCalculationPokemon(false)'),current);
 });
 
+test('Solgaleo and Lunala retain sourced five-star corrections in both pools and through preview toggles', () => {
+    const {evaluate,json} = fixture();
+    evaluate(`for (const id of [791,792]) {
+        const raw={...structuredClone(jb_source_pkm.find(p=>p.id===150&&p.form==='Normal')),
+            id,name:id===791?'Solgaleo':'Lunala',form:'Normal',released:true,shadow:false,
+            types:['Psychic',id===791?'Steel':'Ghost']};
+        delete raw.raid_tier;
+        jb_source_pkm.push(raw);
+        jb_pkm.push(ApplyPokemonAuditOverrides([structuredClone(raw)],manifest)[0]);
+    }`);
+    for (const future of [false,true]) for (const id of [791,792]) {
+        const boss=json(`GetRaidBosses(null,null,${future}).find(p=>p.id===${id})`);
+        assert.equal(boss.raid_tier,5);
+        assert.equal(boss.released,true);
+        assert.equal(json(`GetRaidStats(GetRaidBosses(null,null,${future}).find(p=>p.id===${id})).hp`),15000);
+    }
+    for (const id of [791,792]) {
+        const info=json(`GetPokemonAuditInfo(${id},'Normal',BuildPokemonAuditContext())`);
+        assert.equal(info.bossIncluded,true);
+        assert.equal(info.evidence,'verified');
+        assert.equal(info.weight,1);
+        assert.equal(info.source.raid_tier,undefined);
+        assert(info.corrections.some(rule=>rule.sources.includes('https://pokemongo.com/news/road-of-legends-2026')));
+    }
+    evaluate('PatchSpeculative(false);settings_speculative=false;PatchSpeculative(true);settings_speculative=true');
+    for (const id of [791,792]) {
+        assert.equal(json(`GetCalculationPokemon(false).find(p=>p.id===${id}).raid_tier`),5);
+        assert.equal(json(`jb_source_pkm.find(p=>p.id===${id}).raid_tier ?? null`),null);
+    }
+    evaluate('jb_pkm.find(p=>p.id===791).raid_tier=6;ApplyPokemonAuditOverrides(jb_pkm,manifest)');
+    assert.equal(json('jb_pkm.find(p=>p.id===791).raid_tier'),6,'Do not override an explicit upstream raid profile.');
+});
+
 test('placeholder moves are excluded as attackers and bosses even with unreleased enabled', async () => {
     const {evaluate,json} = fixture({future:true});
     const attackers = JSON.parse(await evaluate(`(async()=>{

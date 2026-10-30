@@ -34,9 +34,9 @@ try {
         if (pool.size !== rendered.length || rendered.some(row => !pool.has(row.key))) throw new Error('Bosses missing or duplicated.');
         if (groups.some(group => group.querySelectorAll('.boss-cell').length !== 2)) throw new Error('Each category needs two columns.');
         const released = GetRaidBosses(null,null,false);
-        for (const id of [894,895,905]) {
+        for (const id of [791,792,894,895,905]) {
             const boss = released.find(p => p.id === id && (id !== 905 || p.form === 'Incarnate'));
-            if (!boss || boss.raid_tier !== 5 || GetRaidStats(boss).hp !== 15000) throw new Error('Stale Elite profile: ' + id);
+            if (!boss || boss.raid_tier !== 5 || GetRaidStats(boss).hp !== 15000) throw new Error('Missing current five-star profile: ' + id);
         }
         const before = JSON.stringify(rendered);
         SetIncludeUnreleased(true); RenderBossList();
@@ -50,6 +50,8 @@ try {
     });
     for (const key of ['894/Normal','895/Normal','905/Incarnate'])
         assert.equal(await page.locator(`.boss-tier-group[data-hp="15000"] .boss-cell[data-availability="released"] .boss-entry[data-key="${key}"]`).count(), 1);
+    for (const id of [791,792])
+        assert.equal(await page.locator(`.boss-tier-group[data-category="legendary"] .boss-cell[data-availability="released"] .boss-entry[data-id="${id}"]`).count(), 1);
     assert.equal(await page.locator('.boss-entry[data-key="800/Ultra"],.boss-entry[data-key="890/Eternamax"]').count(), 0);
     assert(!await page.locator('.boss-name .raid-species').evaluateAll(names=>names.some(name=>name.textContent.startsWith('Shadow '))),
         'Shadow attacker availability must not rename an ordinary raid boss.');

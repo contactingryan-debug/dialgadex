@@ -344,3 +344,11 @@ The calculation formulas and upstream data sources are unchanged.
 - Preserve the complete current/future boss pools, section totals, release
   columns, raid-group weights, and scoring. Non-raid Mythicals do not become
   bosses merely because their species has a display category.
+
+## October 30, 2026 — Solgaleo and Lunala raid tags
+
+- Correct missing upstream raid tags for released Solgaleo and Lunala using
+  their verified five-star raid history. Both appear in Legendary / Released
+  with 15,000 HP and enter the shared raid-boss pool for rankings and affinity.
+- Preserve raw upstream records and source links in Data Audit. Only fill
+  absent tags; leave an explicit upstream raid profile intact.

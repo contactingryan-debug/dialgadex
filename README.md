@@ -246,7 +246,8 @@ future projections. A tag on an unreleased form is not evidence of a real raid.
 
 Upstream resources remain live. Narrow corrections and source links live in
 [`data/audit-overrides.json`](data/audit-overrides.json), while raw upstream
-records remain inspectable. This pass adds Armored Mewtwo's missing tier-5 tag
+records remain inspectable. This pass adds the missing tier-5 tags for Armored
+Mewtwo, Solgaleo, and Lunala
 and updates Minior's Meteor/Green release flags. Core forms are excluded from
 raid calculations because their transformation is currently restricted to
 non-raid battles. Future placeholder learnsets are excluded in both release
