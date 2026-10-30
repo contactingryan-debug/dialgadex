@@ -17,17 +17,18 @@
 #raid-filters .switch input:focus-visible + .slider { outline:2px solid var(--col-text); outline-offset:3px; }
 #raid-filters .tooltiptext { left:0; transform:none; min-width:0; width:16rem; max-width:calc(100vw - 2 * var(--site-margin) - 2rem); box-sizing:border-box; }
 #raid-filters .tooltiptext::after { left:1rem; }
-.raid-intro, .raid-controls, .raid-method { padding: .85rem 1rem; }
-.raid-intro p { margin: .25rem 0 .65rem; }
+.raid-loading, .raid-method { padding: .85rem 1rem; }
+.raid-loading[hidden] { display:none; }
 .raid-release-filter { display: flex; align-items: center; gap: .35rem; min-height: 40px; font-size: .85rem; }
 .raid-release-filter input { accent-color: var(--col-text); }
 .raid-muted, .raid-method, .raid-list-footer { color: var(--col-text-midkey); font-size: .8rem; }
 #raid-status { font-size: .85rem; margin-bottom: 0; }
 #raid-progress { width: 100%; height: 8px; accent-color: var(--col-text); }
-.raid-controls { border-top: 1px solid var(--col-outline); }
-.raid-search-label { display: grid; gap: .35rem; font-size: .8rem; }
+.raid-controls { display:flex; flex-wrap:wrap; align-items:flex-end; gap:.4rem .75rem; padding:.5rem .75rem; }
+.raid-search-label { display:grid; flex:1 1 8rem; min-width:0; gap:.25rem; font-size:.8rem; }
 #raid-search { width: 100%; box-sizing: border-box; min-height: 40px; border: 1px solid var(--col-outline); border-radius: 3px; padding: .4rem .6rem; color: var(--col-text); background: var(--col-row-bg); font: inherit; font-size: 16px; }
-.raid-display-filters { display: flex; flex-wrap: wrap; gap: .3rem 1rem; margin: .65rem 0; font-size: .8rem; }
+.raid-display-filters { display:flex; flex-wrap:wrap; gap:.3rem 1rem; margin:0; font-size:.8rem; }
+.raid-display-filters:has(> label[hidden]) { display:none; }
 .raid-display-filters label { display: flex; align-items: center; min-height: 32px; }
 .raid-display-filters input { accent-color: var(--col-text); }
 .raid-score-options { font-size: .8rem; }
@@ -35,22 +36,27 @@
 .raid-option-fields { display: flex; flex-wrap: wrap; gap: 1rem; padding: .5rem 0; }
 .raid-option-fields label { display: grid; gap: .35rem; }
 .raid-option-fields select { max-width: 100%; min-height: 36px; font: inherit; color: var(--col-text); background: var(--col-row-bg); border: 1px solid var(--col-outline); padding: .25rem; }
-.raid-grid { display: grid; grid-template-columns: 28px minmax(0,1fr) 100px 52px 52px; gap: .75rem; align-items: center; padding: .7rem 1rem; }
-#raid-column-headings { border-block: 1px solid var(--col-outline); font-size: .8rem; background: var(--col-alt-bg); }
+.raid-grid { display:grid; grid-template-columns:32px 32px 40px minmax(0,1fr) 84px 48px 48px; gap:.35rem; align-items:center; padding:0 .75rem 0 0; }
+#raid-column-headings { border-block:1px solid var(--col-outline); padding-block:.3rem; font-size:.75rem; background:var(--col-alt-bg); }
 #raid-column-headings button { min-height: 36px; border: 0; box-shadow: none; background: transparent; padding: 0; font-size: inherit; }
 #raid-column-headings button[aria-pressed="true"] { color: var(--col-text); text-decoration: underline; text-underline-offset: 4px; }
-.raid-grid > :nth-child(n+3) { text-align: center; }
+.raid-grid > :nth-child(n+5), #raid-column-headings > :nth-child(-n+3) { text-align:center; }
+.raid-grid > :nth-child(4) { text-align:left; }
 .raid-entry { border-bottom: 1px solid var(--col-outline); background: var(--col-row-bg); }
 .raid-entry:nth-child(even) { background: var(--col-alt-bg); }
-.raid-entry > summary { list-style: none; cursor: pointer; min-height: 42px; font-size: .9rem; }
+.raid-entry > summary { list-style:none; cursor:pointer; min-height:38px; box-sizing:border-box; font-size:.9rem; }
 .raid-entry > summary::-webkit-details-marker { display: none; }
 .raid-entry > summary:focus-visible { outline: 2px solid var(--col-widget); outline-offset: -2px; }
 .raid-entry[open] > summary { border-bottom: 1px solid var(--col-outline); }
-.raid-rank { font-size: .8rem; color: var(--col-text-midkey); }
+.raid-tier { display:flex; align-self:stretch; align-items:center; justify-content:center; font-size:.85rem; font-weight:700; }
+.raid-rank { font-size:.8rem; color:var(--col-text-midkey); text-align:center; }
+.raid-sprite-slot { display:flex; align-items:center; justify-content:center; min-width:0; }
+.raid-sprite { display:block; flex:none; }
 .raid-name { min-width: 0; overflow-wrap: anywhere; }
-.raid-form, .raid-fixed-type { display: block; color: var(--col-text-midkey); font-size: .75rem; }
-.raid-fixed-type { color: var(--col-text); }
-.raid-score { display: block; position: relative; padding: .3rem .1rem; border: 1px solid var(--col-outline); border-radius: 3px; overflow: hidden; }
+.raid-entry > summary .raid-species { font-weight:700; color:var(--col-text); }
+.raid-form { display:inline; color:var(--col-text-midkey); font-size:.85em; font-weight:400; }
+.raid-fixed-type { display:block; color:var(--col-text-midkey); font-size:.75rem; font-weight:400; }
+.raid-score { display:block; position:relative; padding:.15rem .1rem; border:1px solid var(--col-outline); border-radius:3px; overflow:hidden; }
 .raid-score-fill { position: absolute; inset: 0 auto 0 0; background: var(--col-widget); opacity: .25; }
 .raid-score strong { position: relative; font-variant-numeric: tabular-nums; }
 .raid-breakdown { padding: .7rem 1rem 1rem; background: var(--col-bg); }
@@ -67,19 +73,23 @@
 .raid-variants { font-size: .8rem; }
 .raid-variants ul { columns: 2; margin: .4rem 0 1rem; padding-left: 1.2rem; }
 .raid-list-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: .75rem; padding: .85rem 1rem; }
-.raid-list-footer button, #raid-retry { min-height: 40px; padding: .4rem .8rem; }
+#raid-retry { min-height:40px; padding:.4rem .8rem; }
 .raid-method { border-top: 1px solid var(--col-outline); }
 .raid-method p { margin: .4rem 0; }
 #raid-empty { padding: 1rem; }
 .rankings-raid-link { text-align: right; margin: .4rem 0; font-size: .85rem; }
 .rankings-raid-link a { color: var(--col-text); }
 @media (max-width:600px) {
-    .raid-grid { grid-template-columns: 20px minmax(0,1fr) 62px 30px 34px; gap: .35rem; padding: .65rem .55rem; }
-    .raid-entry > summary { font-size: .8rem; min-height: 48px; }
-    .raid-form, .raid-fixed-type { font-size: .68rem; }
-    .raid-intro, .raid-controls, .raid-method, .raid-breakdown { padding: .75rem; }
+    .raid-grid { grid-template-columns:22px 22px 32px minmax(0,1fr) 48px 36px 32px; gap:.2rem; padding:0 .35rem 0 0; }
+    .raid-entry > summary { font-size:.75rem; min-height:40px; }
+    .raid-fixed-type { font-size:.65rem; }
+    .raid-sprite { transform:scale(.8); }
+    .raid-loading, .raid-method, .raid-breakdown { padding:.75rem; }
     .raid-card .card-title { font-size: 1.1rem; }
-    .raid-rank, #raid-column-headings { font-size: .7rem; }
+    .raid-rank { font-size:.65rem; }
+    #raid-column-headings { font-size:.6rem; }
+    .raid-tier { font-size:.75rem; }
+    #raid-column-headings > :first-child { font-size:.6rem; }
     .raid-matchup-points { max-width: 85px; }
 }
 
@@ -87,7 +97,7 @@
 
 #raid-xl-heading, .raid-xl-coverage { display:none; }
 .raid-with-xl #raid-xl-heading, .raid-with-xl .raid-xl-coverage { display:block; }
-.raid-with-xl .raid-grid { grid-template-columns:28px minmax(0,1fr) 100px 52px 52px 64px; }
+.raid-with-xl .raid-grid { grid-template-columns:32px 32px 40px minmax(0,1fr) 84px 48px 48px 60px; }
 .raid-catch-label, .raid-xl-status { grid-column:1 / -1; font-size:.75rem; overflow-wrap:anywhere; }
 .raid-xl-status { color:var(--col-text-midkey); }
 .xl-badge { display:inline-block; border:1px solid var(--col-widget); border-radius:3px; padding:.05rem .2rem; font-size:.65rem; line-height:1.3; }
@@ -98,6 +108,7 @@
 .counters-xl-controls select { font:inherit; padding:.3rem; background:var(--col-row-bg); color:var(--col-text); border:1px solid var(--col-outline); }
 #counters-catch-note, #counters-xl-empty { font-size:.8rem; padding:.4rem; overflow-wrap:anywhere; }
 @media(max-width:600px) {
-    .raid-with-xl .raid-grid { grid-template-columns:20px minmax(0,1fr) 52px 28px 28px 38px; gap:.3rem; }
-    #raid-xl-heading { font-size:.65rem; }
+    .raid-with-xl .raid-grid { grid-template-columns:20px 20px 28px minmax(0,1fr) 42px 34px 30px 38px; gap:.15rem; }
+    .raid-with-xl .raid-sprite { transform:scale(.7); }
+    #raid-xl-heading { font-size:.6rem; }
 }

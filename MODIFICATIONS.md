@@ -230,3 +230,7 @@ The calculation formulas and upstream data sources are unchanged.
   drawer at the top right of the raid leaderboard header. Keep existing filter
   behavior and support touch, keyboard and outside-click dismissal. Shorten
   the shared Type Rankings transformation filter label to Mega.
+- Show all scoring attackers in both leaderboard views, with Jenks S/A/B/C/D/F
+  tiers, native tier colors and mini sprites, bold species names, and gray
+  parenthesized forms. Keep tier assignments stable through search and display
+  filters. Move introductory settings and calculation notes below the list.

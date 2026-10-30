@@ -91,6 +91,11 @@ The funnel in the leaderboard header contains the Species Filters: Unreleased,
 Shadow, and Legendary. Shadow is shown in the Attacker view. Legendary also
 includes Mythical Pokémon and Ultra Beasts, as in Type Rankings.
 
+Both views show every scoring attacker at once, with native mini sprites and
+S/A/B/C/D/F tier colors. Jenks natural breaks assign tiers from Raid Score
+within the selected view. Search and species display filters keep those tier
+assignments. Settings and calculation notes appear below the list.
+
 The shared **Unreleased** option applies to both attackers and the
 raid-boss pool throughout the rankings, Each type summaries, and leaderboard.
 It is off by default and remembered for the browser tab. Current-only

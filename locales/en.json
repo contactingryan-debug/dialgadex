@@ -445,7 +445,7 @@
         "other-hp": "Other fixed Hidden Power builds",
         "points": "points",
         "points-title": "{points} points",
-        "result-count": "Showing {shown} of {total} scoring attackers",
+        "result-count": "{total} scoring attackers",
         "search": "Search Pokémon",
         "show-shadows": "Shadows",
         "show-legendaries": "Legendary / Mythical / Ultra Beast",
@@ -486,7 +486,9 @@
         "mega-meta-title": "Raid Mega Leaderboard - DialgaDex",
         "mega-meta-description": "Compare Mega, Primal, and Ultra raid attackers using eDPS points and XL coverage against a fixed non-Mega benchmark.",
         "pool-mega": "Mega, Primal, and Ultra forms only. Each boss uses its best non-Mega eDPS as the benchmark. This view keeps the 0–5-point scoring scale; its non-Mega reference total sets 100.",
-        "attacker-method-summary": "Each boss awards 2 points at ≥100% of its best non-Mega eDPS, 1 point at 95–<100%, and 0 below 95%. Boss weights apply. Only attackers with qualifying matchups are ranked; the leading weighted total scores 100."
+        "attacker-method-summary": "Each boss awards 2 points at ≥100% of its best non-Mega eDPS, 1 point at 95–<100%, and 0 below 95%. Boss weights apply. Only attackers with qualifying matchups are ranked; the leading weighted total scores 100.",
+        "tier": "Tier",
+        "tier-note": "Tiers use Jenks natural breaks on Raid Score within this leaderboard. Search and species filters keep the same tier assignments."
     },
     "data-audit": {
         "nav": "Data Audit",

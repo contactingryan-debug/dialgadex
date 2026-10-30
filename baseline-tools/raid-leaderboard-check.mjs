@@ -37,6 +37,16 @@ try {
     await ready();
     assert.equal(await page.title(), 'Raid Attacker Leaderboard - DialgaDex');
     assert(await page.locator('.raid-entry').count() > 10);
+    assert.equal(await page.locator('.raid-entry').count(),await page.evaluate(()=>raidLeaderboardResult.rows.length));
+    assert.equal(await page.locator('#raid-more').count(),0);
+    assert.equal(await page.locator('#raid-loading').isVisible(),false);
+    assert.equal(await page.locator('#raid-intro-text').count(),0);
+    await page.evaluate(async()=>{const sheet=new Image();sheet.src=ICONS_URL;await sheet.decode();});
+    const tierAssignments=await page.evaluate(()=>Array.from(raidLeaderboardTiers));
+    assert(await page.locator('.raid-entry').evaluateAll(elements=>elements.every(el=>
+        el.querySelector('.raid-tier')&&el.querySelector('.raid-sprite.pokemon-icon')&&el.querySelector('.raid-species'))));
+    assert.equal(await page.locator('.raid-entry > summary .raid-species').first().evaluate(el=>getComputedStyle(el).fontWeight),'700');
+    assert(await page.locator('.raid-entry .raid-form').evaluateAll(elements=>elements.every(el=>/^\(.+\)$/.test(el.textContent))));
     assert.equal(await page.locator('#raid-floor').inputValue(), '80');
     assert.equal(await page.evaluate(()=>raidLeaderboardResult.scoring),'elite');
     assert.equal(await page.evaluate(()=>raidLeaderboardResult.floor),95);
@@ -66,7 +76,7 @@ try {
             await page.screenshot({path:process.env.RAID_LEADERBOARD_SCREENSHOT.replace(/\.png$/,'-filters.png')});
     }
     await page.setViewportSize({width:390,height:844});
-    await page.locator('#raid-search').click();
+    await page.locator('#raid-title > span').last().click();
     assert.equal(await page.locator('#raid-filters').isVisible(),false,'Clicking outside must close the drawer.');
     await page.locator('#raid-filter-trigger').focus();
     await page.locator('#raid-filter-trigger').press('Space');
@@ -166,6 +176,8 @@ try {
         !raidLeaderboardResult.rows.find(r=>r.key===el.dataset.key).legendary)));
     assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(row=>[row.key,row.score])),originalScores);
     await page.locator('#raid-legendaries').check();
+    assert.deepEqual(await page.evaluate(()=>Array.from(raidLeaderboardTiers)),tierAssignments,
+        'Search and species filters must not change Jenks tiers.');
     await page.locator('#raid-filter-trigger').click();
     await page.locator('.raid-score-options > summary').tap();
     assert.equal(await page.locator('#raid-floor').isVisible(),false);
@@ -179,10 +191,9 @@ try {
     assert.equal(await page.locator('#raid-floor').isVisible(),false);
     assert.equal(await page.evaluate(()=>raidLeaderboardResult.floor),95);
     assert.equal(await page.locator('#raid-weighting').inputValue(), 'forms');
-    await page.locator('#raid-more').tap();
-    assert(await page.locator('.raid-entry').count() > 25);
+    assert.equal(await page.locator('.raid-entry').count(),await page.evaluate(()=>raidLeaderboardResult.rows.length));
     await page.locator('#raid-column-headings button[data-sort="first"]').tap();
-    const firstCounts = await page.locator('.raid-entry > summary > :nth-child(4)').allTextContents();
+    const firstCounts = await page.locator('.raid-first').allTextContents();
     assert(firstCounts.map(Number).every((n,i,a) => i === 0 || a[i-1] >= n));
     await page.setViewportSize({width:320,height:740});
     await fits();

@@ -4,7 +4,7 @@ let raidLeaderboardRequest = 0;
 let raidLeaderboardCache = new Map();
 let raidLeaderboardMatrix = null;
 let raidLeaderboardResult = null;
-let raidLeaderboardVisible = 25;
+let raidLeaderboardTiers = new Map();
 let raidLeaderboardState = {};
 let raidLeaderboardIncludeMegas = false;
 try { raidLeaderboardIncludeMegas = sessionStorage.getItem('dialgadex-raid-megas') === 'true'; } catch (_) {}
@@ -51,6 +51,8 @@ function GetRaidLeaderboardSnapshot() {
 }
 
 function BindRaidLeaderboard() {
+    const iconSheet = new Image();
+    iconSheet.src = ICONS_URL;
     // Use native details for mouse, touch and keyboard operation of this drawer.
     $('#raid-filter-drawer').on('click', function(event) {
         event.stopPropagation();
@@ -90,7 +92,7 @@ function BindRaidLeaderboard() {
             SetRaidLeaderboardIncludeMegas(true);
             UpdateRaidLeaderboardURL();LoadRaidLeaderboard();return;
         }
-        UpdateRaidLeaderboardURL();raidLeaderboardVisible=25;RenderRaidLeaderboard();
+        UpdateRaidLeaderboardURL();RenderRaidLeaderboard();
     });
     $('#raid-xl-threshold').on('change',function() {
         SetXLStrongThreshold(this.value);raidLeaderboardState.xlThreshold=GetXLStrongThreshold();
@@ -99,7 +101,6 @@ function BindRaidLeaderboard() {
     $('#raid-progress').attr('aria-label', RaidLeaderboardText('progress-label'));
     $('#raid-search').on('input', function() {
         raidLeaderboardState.query = this.value;
-        raidLeaderboardVisible = 25;
         RenderRaidLeaderboard();
     });
     $('#raid-floor, #raid-weighting').on('change', function() {
@@ -112,15 +113,12 @@ function BindRaidLeaderboard() {
         raidLeaderboardState.shadows = $('#raid-shadows').is(':checked');
         raidLeaderboardState.legendaries = $('#raid-legendaries').is(':checked');
         UpdateRaidLeaderboardURL();
-        raidLeaderboardVisible = 25;
         RenderRaidLeaderboard();
     });
-    $('#raid-more').on('click', function() { raidLeaderboardVisible += 25; RenderRaidLeaderboard(); });
     $('#raid-retry').on('click', () => LoadRaidLeaderboard());
     $('#raid-column-headings button').on('click', function() {
         raidLeaderboardState.sort = this.dataset.sort;
         UpdateRaidLeaderboardURL();
-        raidLeaderboardVisible = 25;
         RenderRaidLeaderboard();
     });
     $('#raid-rankings-back').on('click', function(event) {
@@ -188,13 +186,11 @@ async function LoadRaidLeaderboard({preserveQuery = false} = {}) {
     $('#raid-search').val(query);
     $('#raid-data-scope').text(RaidLeaderboardText(raidLeaderboardState.unreleased
         ? (settings_speculative ? 'scope-preview' : 'scope-unreleased') : 'scope-released'));
-    $('#raid-attacker-pool').text(RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'pool-mega' : 'pool-non-mega'));
-    const introKey = raidLeaderboardState.includeMegas ? 'mega-intro' : 'intro';
-    $('#raid-intro-text').attr('data-i18n', 'raid-leaderboard.' + introKey).text(RaidLeaderboardText(introKey));
     $('#raid-mega-settings, #raid-plus-note, #raid-level-note').prop('hidden', true);
     document.title = RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'mega-meta-title' : 'meta-title');
     $('meta[name=description]').attr('content', RaidLeaderboardText(raidLeaderboardState.includeMegas ? 'mega-meta-description' : 'meta-description'));
     $('#raid-results, #raid-retry').prop('hidden', true);
+    $('#raid-loading').prop('hidden', false);
     $('#raid-progress').prop('hidden', false).val(0);
     $('#raid-status').attr('role', 'status').text(RaidLeaderboardText('preparing'));
     $('#raid-leaderboard').attr('aria-busy', 'true');
@@ -248,6 +244,7 @@ async function LoadRaidLeaderboard({preserveQuery = false} = {}) {
         RefreshRaidLeaderboardScores();
         $('#raid-progress').prop('hidden', true);
         $('#raid-results').prop('hidden', false);
+        $('#raid-loading').prop('hidden', true);
         $('#raid-leaderboard').attr('aria-busy', 'false');
     } catch (error) {
         if (request !== raidLeaderboardRequest || error.name === 'AbortError') return;
@@ -266,7 +263,8 @@ function RefreshRaidLeaderboardScores() {
     if (!raidLeaderboardMatrix) return;
     raidLeaderboardResult = ScoreRaidMatrix(raidLeaderboardMatrix, {...raidLeaderboardState,
         scoring:raidLeaderboardState.includeMegas ? 'linear' : 'elite'});
-    raidLeaderboardVisible = 25;
+    raidLeaderboardTiers = GetRaidLeaderboardTiers(raidLeaderboardResult.rows.filter(row =>
+        !!row.transformed === !!raidLeaderboardState.includeMegas));
     $('#raid-status').text(RaidLeaderboardText('pool', {
         forms: raidLeaderboardResult.bossCount, groups: raidLeaderboardResult.groupCount,
     }));
@@ -278,10 +276,34 @@ function RefreshRaidLeaderboardScores() {
 }
 
 function RaidLeaderboardName(pokemon) {
-    const name = $('<span class="raid-name"></span>').html(TranslatedSpeciesName(pokemon.id, pokemon.name, pokemon.shadow));
-    const form = GetFormText(pokemon.id, pokemon.form);
-    if (form) name.append($('<small class="raid-form"></small>').text(form));
+    let species = pokemon.name;
+    let form = GetFormText(pokemon.id, pokemon.form);
+    if (IsMegaPrimalUltraForm(pokemon)) {
+        species = species.replace(/^(?:Mega |Primal )/, '').replace(/ [XYZ]$/, '');
+        if (pokemon.form === 'Primal' || pokemon.name.startsWith('Primal ')) form = GetTranslation('terms.primal', 'Primal');
+        else if (/^Mega/.test(pokemon.form)) {
+            const suffix = pokemon.name.match(/ [XYZ]$/)?.[0] || ({MegaY:' Y',MegaZ:' Z'}[pokemon.form] || '');
+            form = GetTranslation('terms.mega', 'Mega') + suffix;
+        } else if (pokemon.form === 'Ultra') form = 'Ultra';
+    }
+    const name = $('<span class="raid-name"></span>').append($('<span class="raid-species"></span>')
+        .html(TranslatedSpeciesName(pokemon.id, species, pokemon.shadow)));
+    if (form) name.append(' ', $('<span class="raid-form"></span>').text('(' + form + ')'));
     return name;
+}
+
+/** Use the native Jenks implementation and tier palette without changing Type Rankings. */
+function GetRaidLeaderboardTiers(rows) {
+    const scored = rows.filter(row => Number.isFinite(row.score) && row.score >= 0)
+        .map(row => ({key:row.key, score:Number(row.score.toFixed(9))})).sort((a,b) => b.score - a.score);
+    if (!scored.length) return new Map();
+    const labels = ['S','A','B','C','D','F'];
+    const count = Math.min(labels.length, new Set(scored.map(row => row.score)).size);
+    const breaks = jenks_wrapper(scored.map(row => row.score), count);
+    return new Map(scored.map(row => {
+        const index = breaks.findIndex(boundary => row.score > boundary);
+        return [row.key, labels[index < 0 ? count - 1 : index]];
+    }));
 }
 
 function RaidLeaderboardNumber(number, digits = 1) {
@@ -309,10 +331,17 @@ function RenderRaidLeaderboard() {
         this.setAttribute('aria-pressed', String(this.dataset.sort === sort));
     });
     $('#raid-list').empty();
-    for (const [index, row] of rows.slice(0, raidLeaderboardVisible).entries()) {
+    for (const [index, row] of rows.entries()) {
         const entry = $('<details class="raid-entry"></details>').attr('data-key', row.key);
         const summary = $('<summary class="raid-grid"></summary>');
+        const tier = raidLeaderboardTiers.get(row.key) || 'F';
+        summary.append($('<span class="raid-tier tier-label"></span>').addClass('tier-' + tier).text(tier));
         summary.append($('<span class="raid-rank"></span>').text(index + 1));
+        const coords = GetPokemonIconCoords(row.id, row.form);
+        summary.append($('<span class="raid-sprite-slot" aria-hidden="true"></span>').append(
+            $('<span class="raid-sprite pokemon-icon"></span>').css({
+                backgroundImage:'url("' + ICONS_URL + '")', backgroundPosition:coords.x + 'px ' + coords.y + 'px',
+            })));
         const name = RaidLeaderboardName(row);
         if (row.hiddenPowerType) name.append($('<small class="raid-fixed-type"></small>').text(
             RaidLeaderboardText('fixed-hp', {type: TranslatedTypeName(row.hiddenPowerType)})));
@@ -322,7 +351,7 @@ function RenderRaidLeaderboard() {
         }));
         score.append($('<span class="raid-score-fill"></span>').css('width', Math.min(100, row.score) + '%'));
         score.append($('<strong></strong>').text(RaidLeaderboardNumber(row.score)));
-        summary.append(score, $('<span></span>').text(row.first), $('<span></span>').text(row.near),
+        summary.append(score, $('<span class="raid-first"></span>').text(row.first), $('<span class="raid-near"></span>').text(row.near),
             $('<span class="raid-xl-coverage"></span>').text(row.xlCoverage>0 ? RaidLeaderboardNumber(row.xlCoverage,1) : '—')
                 .attr('title',XLText('coverage-detail',{coverage:RaidLeaderboardNumber(row.xlCoverage,2),count:row.xlCount,threshold:raidLeaderboardState.xlThreshold})));
         entry.append(summary);
@@ -332,9 +361,8 @@ function RenderRaidLeaderboard() {
         $('#raid-list').append(entry);
     }
     $('#raid-empty').prop('hidden', rows.length > 0);
-    $('#raid-more').prop('hidden', rows.length <= raidLeaderboardVisible);
     $('#raid-result-count').text(RaidLeaderboardText('result-count', {
-        shown: Math.min(rows.length, raidLeaderboardVisible), total: rows.length,
+        shown: rows.length, total: rows.length,
     }));
 }
 

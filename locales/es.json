@@ -445,7 +445,7 @@
         "other-hp": "Otros tipos fijos de Poder Oculto",
         "points": "puntos",
         "points-title": "{points} puntos",
-        "result-count": "Mostrando {shown} de {total} atacantes con puntos",
+        "result-count": "{total} atacantes con puntos",
         "search": "Buscar Pokémon",
         "show-shadows": "Oscuros",
         "show-legendaries": "Legendario / Singular / Ultraente",
@@ -486,7 +486,9 @@
         "mega-meta-title": "Clasificación de Megas de incursión - DialgaDex",
         "mega-meta-description": "Compara formas Mega, Primigenias y Ultra por puntos eDPS y cobertura XL con una referencia fija sin Mega.",
         "pool-mega": "Solo formas Mega, Primigenias y Ultra. Cada jefe usa su mejor eDPS sin Mega como referencia. Esta vista mantiene la escala de 0–5 puntos; su total de referencia sin Mega fija 100.",
-        "attacker-method-summary": "Cada jefe otorga 2 puntos al ≥100% de su mejor eDPS sin Mega, 1 punto del 95% al <100% y 0 por debajo del 95%. Se aplican los pesos de los jefes. Solo se clasifican atacantes con enfrentamientos válidos; el mayor total ponderado obtiene 100."
+        "attacker-method-summary": "Cada jefe otorga 2 puntos al ≥100% de su mejor eDPS sin Mega, 1 punto del 95% al <100% y 0 por debajo del 95%. Se aplican los pesos de los jefes. Solo se clasifican atacantes con enfrentamientos válidos; el mayor total ponderado obtiene 100.",
+        "tier": "Nivel",
+        "tier-note": "Los niveles usan los cortes naturales de Jenks según la puntuación de esta clasificación. La búsqueda y los filtros de especies conservan los mismos niveles."
     },
     "data-audit": {
         "nav": "Auditoría de datos",

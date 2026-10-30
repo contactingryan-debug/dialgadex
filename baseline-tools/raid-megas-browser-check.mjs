@@ -34,6 +34,11 @@ try {
         assert.equal(await page.locator('#raid-xl-only').isVisible(),megas);
         assert.equal(await page.locator('#raid-shadows-control').evaluate(el=>el.hidden),megas);
         assert.equal(await page.evaluate(()=>raidLeaderboardResult.scoring),megas?'linear':'elite');
+        const expected=await page.evaluate(()=>raidLeaderboardResult.rows.filter(r=>!!r.transformed===!!raidLeaderboardState.includeMegas
+            &&(!raidLeaderboardState.xlOnly||r.xlCoverage>0)&& (raidLeaderboardState.shadows||!r.shadow)
+            &&(raidLeaderboardState.legendaries||!r.legendary)).length);
+        if(!await page.locator('#raid-search').inputValue())assert.equal(visible.length,expected,'Show every scoring attacker.');
+        assert.equal(await page.locator('.raid-tier').count(),visible.length);
     }
     async function fits() {
         assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Leaderboard overflows.');
@@ -45,8 +50,19 @@ try {
     }
     await ready(true);
     assert.equal(await page.locator('#raid-megas').isChecked(),true);
-    assert.match(await page.locator('#raid-attacker-pool').innerText(),/Mega, Primal, and Ultra forms only/);
-    assert.match(await page.locator('#raid-intro-text').innerText(),/^Mega, Primal, and Ultra/);
+    assert.equal(await page.locator('#raid-intro-text').count(),0);
+    assert.equal(await page.locator('#raid-loading').isVisible(),false);
+    assert(await page.locator('.raid-entry > summary .raid-form').count()>20);
+    assert(await page.locator('.raid-entry > summary .raid-species').evaluateAll(elements=>
+        elements.every(el=>!/^Mega |^Primal /.test(el.textContent))));
+    assert(await page.locator('.raid-entry > summary .raid-form').evaluateAll(elements=>
+        elements.every(el=>/^\((?:Mega(?: [XYZ])?|Primal|Ultra)\)$/.test(el.textContent))));
+    for (const id of [382,383]) {
+        const key=await page.evaluate(id=>raidLeaderboardResult.rows.find(r=>r.transformed&&r.id===id).key,id);
+        assert.equal(await page.locator('.raid-entry').filter({has:page.locator('.raid-form')})
+            .evaluateAll((elements,key)=>elements.find(el=>el.dataset.key===key).querySelector('summary .raid-form').textContent,key),'(Primal)');
+    }
+    await page.evaluate(async()=>{const sheet=new Image();sheet.src=ICONS_URL;await sheet.decode();});
     if(process.env.RAID_LEADERBOARD_SCREENSHOT)await page.screenshot({path:process.env.RAID_LEADERBOARD_SCREENSHOT.replace(/\.png$/,'-mega.png')});
     for(const width of [320,390,900]){await page.setViewportSize({width,height:844});await fits();}
     const currentAll=await page.evaluate(()=>({
@@ -93,7 +109,6 @@ try {
     assert.deepEqual(currentAll.ordinary,currentOrdinary.rows);
     assert.deepEqual(currentAll.bosses,currentOrdinary.bosses);
     await page.locator('#raid-search').fill('');
-    assert.match(await page.locator('#raid-intro-text').innerText(),/^Raid attackers/);
     await page.goBack();await ready(true);
     await page.goForward();await ready(false);
     const starts=await page.evaluate(()=>window.megaWorkerStarts);
