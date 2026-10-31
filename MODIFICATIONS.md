@@ -368,3 +368,13 @@ The calculation formulas and upstream data sources are unchanged.
   as Fire or Psychic. Hide the label entirely for their Normal forms.
 - Hide Incarnate on all Boss List entries while keeping Therian and other
   distinguishing forms intact.
+
+## October 31, 2026 — Confirmed Mega Chandelure release
+
+- Admit Mega Chandelure's complete released upstream announced record to
+  current calculations, including its Super Mega raid profile, Super Max
+  eligibility and published Ominous Wind+. Keep this independent of Data Preview.
+- Require an explicitly verified release review for this bridge. Preserve raw
+  source records and audit provenance, and prefer released main-feed records
+  automatically when they arrive. Other previews remain isolated from current
+  calculations.

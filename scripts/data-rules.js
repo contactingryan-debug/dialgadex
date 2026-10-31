@@ -50,6 +50,28 @@ function MarkPokemonMovePlaceholder(pokemon, previewOnly = false) {
     return pokemon;
 }
 
+/** Bridge confirmed releases while their complete records remain in the announced feed. */
+function ApplyVerifiedPokemonReleases(pokemon, announced = [], manifest = {}) {
+    for (const review of manifest.releaseReviews || []) {
+        // Neither a preview release flag nor an announcement date confirms a release.
+        if (review.raidStatus !== 'verified') continue;
+        const patch = announced.find(entry => PokemonAuditRuleMatches(review, entry));
+        if (!patch?.released) continue;
+        const index = pokemon.findIndex(entry => PokemonAuditRuleMatches(review, entry));
+        if (index >= 0 && pokemon[index].released) continue; // Prefer released main-feed data.
+        const entry = MarkPokemonMovePlaceholder({...(index >= 0 ? pokemon[index] : {}),
+            ...structuredClone(patch)}, true);
+        entry._verifiedRelease = review.key || PokemonDataKey(entry);
+        entry._auditCorrections = [...(entry._auditCorrections || []), {
+            key: entry._verifiedRelease,
+            fields: Object.keys(patch).filter(key => !['id', 'name', 'form', 'eff_date'].includes(key))
+        }];
+        if (index < 0) pokemon.push(entry);
+        else pokemon[index] = entry;
+    }
+    return pokemon;
+}
+
 /** Apply narrow, documented corrections before preview patches, preserving raw source data. */
 function ApplyPokemonAuditOverrides(pokemon, manifest = {}) {
     for (const entry of pokemon) {

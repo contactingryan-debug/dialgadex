@@ -178,6 +178,31 @@ test('preview-only records remain inspectable while excluded from the current ca
     assert(info.reasons.includes('preview-only'));
 });
 
+test('confirmed announced-feed releases retain provenance and current audit inclusion through preview toggles', () => {
+    const {evaluate,json}=fixture({preview:false});
+    evaluate(`jb_spec.push({...structuredClone(jb_source_pkm.find(p=>p.id===150&&p.form==='Normal')),
+        id:609,name:'Mega Chandelure',form:'Mega',released:true,shadow:false,raid_tier:8,
+        stats:{baseAttack:335,baseDefense:227,baseStamina:155}});
+        ApplyVerifiedPokemonReleases(jb_pkm,jb_spec,manifest)`);
+    for(const preview of [false,true,false]) {
+        evaluate(`PatchSpeculative(${preview});settings_speculative=${preview}`);
+        const info=json('GetPokemonAuditInfo(609,"Mega",BuildPokemonAuditContext())');
+        assert.equal(info.currentReleased,true);
+        assert.equal(info.source,undefined);
+        assert.equal(info.attackerIncluded,true);
+        assert.equal(info.bossIncluded,true);
+        assert.equal(info.evidence,'verified');
+        assert.equal(info.projectedStats,false);
+        assert.equal(info.weight,1);
+        assert.equal(info.applied[0].key,'mega-chandelure-release');
+        const copied=evaluate('PokemonAuditCopyText(GetPokemonAuditInfo(609,"Mega",BuildPokemonAuditContext()),BuildPokemonAuditContext())');
+        assert.match(copied,/Released: Yes; upstream: Unknown/);
+        assert.match(copied,/evidence: verified/);
+        assert.match(copied,/https:\/\/pokemongo.com\/news\/chandelure-super-mega-raid-day-2026/);
+        assert.equal(json('jb_source_pkm.some(p=>p.id===609&&p.form==="Mega")'),false);
+    }
+});
+
 test('unsupported preview aliases never become boss opportunities', () => {
     const {evaluate,json}=fixture({future:true});
     evaluate('jb_pkm.push({...structuredClone(jb_pkm.find(p=>p.id===800&&p.form==="Normal")),form:"Unsupported_alias"})');

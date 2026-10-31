@@ -38,6 +38,22 @@ try {
             const boss = released.find(p => p.id === id && (id !== 905 || p.form === 'Incarnate'));
             if (!boss || boss.raid_tier !== 5 || GetRaidStats(boss).hp !== 15000) throw new Error('Missing current five-star profile: ' + id);
         }
+        const preview = settings_speculative;
+        for (const usePreview of [false,true]) {
+            settings_speculative = usePreview; PatchSpeculative(usePreview);
+            const chandelure = GetRaidBosses(null,null,false).find(p => p.id === 609 && p.form === 'Mega');
+            if (!chandelure?.released || chandelure.raid_tier !== 8 || GetRaidStats(chandelure).hp !== 25000)
+                throw new Error('Mega Chandelure is missing its released Super Mega profile.');
+            if (!HasSuperMaxUnlocked(chandelure) || GetAttackerLevel(chandelure,50,false) !== 52)
+                throw new Error('Released Mega Chandelure must qualify for Super Max and its native level boost.');
+            const plus = GetPlusMoveProjectionInfo(chandelure,false);
+            if (plus?.status !== 'source' || plus.move.power !== 145 || plus.move.name !== 'Ominous Wind+')
+                throw new Error('Mega Chandelure must use its published Ominous Wind+ without forecasts.');
+            const audit = GetPokemonAuditInfo(609,'Mega',BuildPokemonAuditContext());
+            if (!audit.currentReleased || !audit.attackerIncluded || !audit.bossIncluded || audit.evidence !== 'verified')
+                throw new Error('Mega Chandelure audit disagrees with released calculation eligibility.');
+        }
+        if (settings_speculative !== preview) { settings_speculative = preview; PatchSpeculative(preview); }
         const before = JSON.stringify(rendered);
         SetIncludeUnreleased(true); RenderBossList();
         const after = [...document.querySelectorAll('.boss-tier-group')].flatMap(group =>

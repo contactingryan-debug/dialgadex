@@ -253,6 +253,14 @@ raid calculations because their transformation is currently restricted to
 non-raid battles. Future placeholder learnsets are excluded in both release
 modes, while genuine released Splash/Struggle learnsets remain usable.
 
+Most availability and raid-tag updates arrive automatically from the live main
+resource feed. If a confirmed release still exists only in the announced feed,
+an explicitly verified release review can admit that complete upstream record
+to current calculations, independently of Data Preview. This currently covers
+Mega Chandelure's October 31, 2026 Super Mega release, Super Max unlock and
+Ominous Wind+. Released main-feed records take precedence automatically; other
+announcements and preview release flags do not become current by date alone.
+
 Eternamax Eternatus remains visible for inspection but is excluded from ordinary
 raid calculations in both release modes: it is a Max Battle boss, not a
 player-usable raid form. Regular Eternatus remains eligible. Data details and

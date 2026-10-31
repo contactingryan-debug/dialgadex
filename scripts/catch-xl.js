@@ -14,6 +14,7 @@ function GetCatchXLManifest() {
 function IsCatchXLProjection(pokemon) {
     if (typeof pokemon._catchXLProjected === 'boolean') return pokemon._catchXLProjected;
     if (pokemon.released === false) return true;
+    if (pokemon._verifiedRelease) return false;
     if (typeof jb_source_pkm !== 'undefined' && Array.isArray(jb_source_pkm)) {
         const source=jb_source_pkm.find(p=>PokemonDataKey(p)===PokemonDataKey(pokemon));
         if (!source) return true;

@@ -1,5 +1,5 @@
 {
-    "reviewed": "2026-10-30",
+    "reviewed": "2026-10-31",
     "corrections": [
         {
             "key": "solgaleo-five-star-raid",
@@ -235,13 +235,15 @@
     ],
     "releaseReviews": [
         {
+            "key": "mega-chandelure-release",
             "id": 609,
             "form": "Mega",
             "effectiveDate": "2026-10-31",
-            "raidStatus": "announced",
-            "note": "Mega Chandelure is announced for Super Mega Raid Day on October 31, 2026. Preview availability is a future scenario until release.",
+            "raidStatus": "verified",
+            "note": "Mega Chandelure debuted in Super Mega Raids on October 31, 2026, with Super Max and Ominous Wind+. Until its released record reaches the main resource feed, use its complete released record from the upstream announced feed. Released main-feed records take precedence automatically.",
             "sources": [
-                "https://pokemongo.com/news/chandelure-super-mega-raid-day-2026"
+                "https://pokemongo.com/news/chandelure-super-mega-raid-day-2026",
+                "https://github.com/mgrann03/pokemon-resources/blob/main/pogo_pkm_manual_announced.json"
             ]
         }
     ],

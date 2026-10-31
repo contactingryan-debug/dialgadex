@@ -24,7 +24,8 @@ function GetRaidGroupLabel(pokemon, weighting = 'groups') {
 function BuildPokemonAuditContext() {
     const manifest = jb_audit_manifest || {};
     const source = typeof jb_source_pkm !== 'undefined' && jb_source_pkm ? jb_source_pkm : GetCalculationPokemon(false);
-    const current = ApplyPokemonAuditOverrides(structuredClone(source), manifest);
+    const current = ApplyPokemonAuditOverrides(
+        ApplyVerifiedPokemonReleases(structuredClone(source), jb_spec || [], manifest), manifest);
     const currentMap = new Map(current.map(pokemon => [PokemonDataKey(pokemon), pokemon]));
     const previewMap = new Map(current.map(pokemon => [PokemonDataKey(pokemon), structuredClone(pokemon)]));
     for (const patch of jb_spec || []) {
@@ -71,9 +72,10 @@ function GetPokemonAuditInfo(id, form, context) {
     const releaseReview = (context.manifest.releaseReviews || []).find(rule => PokemonAuditRuleMatches(rule, display));
     const applied = (selected || display)._auditCorrections || current?._auditCorrections || [];
     const evidence = !tier ? 'no-raid-tag' : corrections.some(rule => Object.hasOwn(rule.values, 'raid_tier'))
+        || (releaseReview?.raidStatus === 'verified' && current?.released)
         ? 'verified' : releaseReview?.raidStatus === 'announced' ? 'announced'
         : !current?.released ? 'projected' : 'source-tag';
-    const projectedStats = statReview?.kind === 'projection' || !source;
+    const projectedStats = statReview?.kind === 'projection' || (!source && !current?._verifiedRelease);
     const statsChanged = statReview && ['baseAttack', 'baseDefense', 'baseStamina']
         .some(stat => display.stats?.[stat] !== statReview.expected[stat]);
     const mega = IsMegaPrimalUltraForm(display);
@@ -112,7 +114,7 @@ function AuditRaidProfile(info) {
 }
 
 function AuditStatSource(info) {
-    if (info.statReview?.kind === 'projection' || !info.source) return AuditText('projected-stats');
+    if (info.projectedStats) return AuditText('projected-stats');
     if (info.statReview?.kind === 'game-data-placeholder') return AuditText('game-data-placeholder');
     return AuditText('upstream-stats');
 }

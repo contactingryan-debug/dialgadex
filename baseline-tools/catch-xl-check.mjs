@@ -53,6 +53,20 @@ test('Super Max requires a released level-4 form and a known full XL profile',()
     assert.equal(json('HasSuperMaxUnlocked({...get(800,"Ultra"),released:true,raid_tier:9})'),false);
 });
 
+test('a verified announced-feed release qualifies for current XL boosting and Super Max without a main-feed record',()=>{
+    const {evaluate,json}=fixture();
+    evaluate(`releasedMega={...structuredClone(get(6,'Mega')),id:609,name:'Mega Chandelure',
+        types:['Ghost','Fire'],raid_tier:8,_verifiedRelease:'mega-chandelure-release'};
+        jb_pkm.push(releasedMega)`);
+    assert.equal(json('jb_source_pkm.some(p=>p.id===609)'),false);
+    assert.equal(json('IsCatchXLProjection(releasedMega)'),false);
+    assert.equal(json('GetCatchXLBoostProfile(releasedMega).status'),'rule');
+    assert.equal(json('HasSuperMaxUnlocked(releasedMega)'),true);
+    assert.equal(json('GetCatchXLMatch(GetCatchXLBoostProfile(releasedMega),{types:["Ghost"],status:"known"},4,false).eligible'),true);
+    assert.equal(json('HasSuperMaxUnlocked({...releasedMega,released:false})'),false);
+    assert.equal(json('IsCatchXLProjection({...releasedMega,_verifiedRelease:undefined})'),true);
+});
+
 test('Mega catches use the base encounter typing instead of the fought form',()=>{
     const {json}=fixture();
     assert.deepEqual(json('catchOf(6,"Mega").types'),['Fire','Flying']);
