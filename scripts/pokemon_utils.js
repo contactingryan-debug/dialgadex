@@ -395,6 +395,7 @@ function GetRaidBosses(has_type = null, weak_to_type = null, include_unreleased 
             continue;
         if (!pkm_obj.raid_tier || pkm_obj.raid_tier < 4) // Not a high-tier boss
             continue;
+        if (!include_unreleased && !IsRaidBossReleased(pkm_obj)) continue;
 
         if (has_type) { // Find Pokemon with this type
             if (!pkm_obj.types.includes(has_type))

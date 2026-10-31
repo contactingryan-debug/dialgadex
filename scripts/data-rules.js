@@ -10,15 +10,26 @@ function IsMegaPrimalUltraForm(pokemon) {
         || /^(Mega |Primal |Ultra Necrozma$)/i.test(pokemon?.name || '');
 }
 
+/** Super Max can remain available after a form returns in ordinary Mega raids. */
+function IsSuperMaxAvailable(pokemon) {
+    return typeof pokemon?.super_max_released === 'boolean' ? pokemon.super_max_released
+        : [8, 9].includes(pokemon?.raid_tier);
+}
+
+/** A usable form can debut through research before ever appearing as a raid boss. */
+function IsRaidBossReleased(pokemon) {
+    return !!pokemon?.released && pokemon.raid_tier > 0 && pokemon.raid_released !== false;
+}
+
 function GetAttackerLevelBoost(pokemon, includeUnreleased = false) {
     if (settings_supermega_level !== 4 || !pokemon) return 0;
-    const currentBoost = [8, 9].includes(pokemon.raid_tier);
+    const currentBoost = IsSuperMaxAvailable(pokemon);
     const projectedBoost = includeUnreleased && IsMegaPrimalUltraForm(pokemon);
     return currentBoost || projectedBoost ? 2 : 0;
 }
 
 function UsesProjectedAttackerLevel(pokemon, includeUnreleased = false) {
-    return !!GetAttackerLevelBoost(pokemon, includeUnreleased) && ![8, 9].includes(pokemon.raid_tier);
+    return !!GetAttackerLevelBoost(pokemon, includeUnreleased) && !IsSuperMaxAvailable(pokemon);
 }
 
 /** Accept a base level; explicit calculator levels are already effective levels. */

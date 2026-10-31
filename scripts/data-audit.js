@@ -66,15 +66,18 @@ function GetPokemonAuditInfo(id, form, context) {
     const bossReasons = [...reasons];
     if (!tier) bossReasons.push('no-raid-tag');
     else if (tier < 4) bossReasons.push('below-cutoff');
+    else if (!context.includeUnreleased && current?.raid_released === false) bossReasons.push('raid-unreleased');
     const corrections = (context.manifest.corrections || []).filter(rule => PokemonAuditRuleMatches(rule, display));
     const restrictions = (context.manifest.restrictions || []).filter(rule => PokemonAuditRuleMatches(rule, display));
     const statReview = (context.manifest.statReviews || []).find(rule => PokemonAuditRuleMatches(rule, display));
     const releaseReview = (context.manifest.releaseReviews || []).find(rule => PokemonAuditRuleMatches(rule, display));
     const applied = (selected || display)._auditCorrections || current?._auditCorrections || [];
-    const evidence = !tier ? 'no-raid-tag' : corrections.some(rule => Object.hasOwn(rule.values, 'raid_tier'))
+    const currentRaidReleased = IsRaidBossReleased(current);
+    const evidence = !tier ? 'no-raid-tag' : !currentRaidReleased
+        ? releaseReview?.raidStatus === 'announced' ? 'announced' : 'projected'
+        : corrections.some(rule => Object.hasOwn(rule.values, 'raid_tier'))
         || (releaseReview?.raidStatus === 'verified' && current?.released)
-        ? 'verified' : releaseReview?.raidStatus === 'announced' ? 'announced'
-        : !current?.released ? 'projected' : 'source-tag';
+        ? 'verified' : releaseReview?.raidStatus === 'announced' ? 'announced' : 'source-tag';
     const projectedStats = statReview?.kind === 'projection' || (!source && !current?._verifiedRelease);
     const statsChanged = statReview && ['baseAttack', 'baseDefense', 'baseStamina']
         .some(stat => display.stats?.[stat] !== statReview.expected[stat]);
@@ -88,7 +91,7 @@ function GetPokemonAuditInfo(id, form, context) {
     const encounter = typeof GetRaidCatchEncounter === 'function' && (tier || mega)
         ? GetRaidCatchEncounter(selected || display,context.catchRoster) : null;
     const xlProfile = typeof GetCatchXLBoostProfile === 'function' ? GetCatchXLBoostProfile(selected || display) : null;
-    return {id, form, key, source, current, currentReleased: current?.released ?? (preview ? false : undefined),
+    return {id, form, key, source, current, currentReleased: current?.released ?? (preview ? false : undefined), currentRaidReleased,
         preview, selected, display, supported, quality, reasons, bossReasons,
         tier, corrections, restrictions, statReview, releaseReview, applied, evidence, projectedStats, statsChanged,
         weight: context.weightMap.get(key) || 0, group: GetRaidGroupKey(display),
@@ -125,6 +128,8 @@ function BuildPokemonAuditDetails(info, context) {
     const add = (key, value) => fields.append($('<dt></dt>').text(AuditText(key)), $('<dd></dd>').text(value));
     add('released', AuditYesNo(info.currentReleased));
     add('source-released', AuditYesNo(info.source?.released));
+    add('raid-released', AuditYesNo(info.currentRaidReleased));
+    if (info.mega) add('super-max-available', AuditYesNo(!!info.current?.released && IsSuperMaxAvailable(info.current)));
     add('shadow-available', AuditYesNo(info.current?.shadow ?? info.preview?.shadow));
     if (info.selected && info.current && info.selected.shadow !== info.current.shadow)
         add('shadow-calculation', AuditYesNo(info.selected.shadow));
@@ -215,6 +220,8 @@ function PokemonAuditCopyText(info, context) {
         'DialgaDex data review', `Pokémon: #${info.id} ${info.display.name} (${info.form})`, `URL: ${url}`,
         `Loaded at: ${new Date().toISOString()}; local review: ${context.manifest.reviewed || 'unknown'}`,
         `Released: ${AuditYesNo(info.currentReleased)}; upstream: ${AuditYesNo(info.source?.released)}`,
+        `Released in raids: ${AuditYesNo(info.currentRaidReleased)}; explicit upstream raid release flag: ${AuditYesNo(info.source?.raid_released)}`,
+        ...(info.mega ? [`Super Max available: ${AuditYesNo(!!info.current?.released && IsSuperMaxAvailable(info.current))}`] : []),
         `Shadow available: ${AuditYesNo(info.current?.shadow ?? info.preview?.shadow)}`,
         `Shadow flag in selected calculations: ${AuditYesNo(info.selected?.shadow)}`,
         `Preview availability: ${AuditYesNo(info.preview?.released)}`,

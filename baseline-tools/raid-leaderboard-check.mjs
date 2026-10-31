@@ -140,7 +140,7 @@ try {
             const search = {...GetDefaultSearchParams(), type:'Any', mega:false, real_damage:true};
             for (const [bossIndex, boss] of raidLeaderboardMatrix.bosses.entries()) {
                 const pokemon = jb_pkm.find(p => p.id === boss.id && p.form === boss.form);
-                if (!pokemon?.released || pokemon.raid_tier < 4) throw new Error('Invalid boss pool.');
+                if (!pokemon?.released || pokemon.raid_released === false || pokemon.raid_tier < 4) throw new Error('Invalid boss pool.');
                 const enemy = GetEnemyParams(pokemon);
                 const best = (await GetStrongestVersus(enemy, search)).at(-1);
                 if (Math.abs(best.rat - boss.bestEdps) > 1e-8)
@@ -256,8 +256,8 @@ try {
         const currentBosses = GetRaidBosses();
         const upcomingBosses = GetRaidBosses(null, null, true);
         return {currentBosses:currentBosses.length, upcomingBosses:upcomingBosses.length,
-            releasedOnly:currentBosses.every(p=>p.released),
-            futureBosses:upcomingBosses.filter(p=>!current.some(c=>c.id===p.id&&c.form===p.form&&c.released)).length,
+            releasedOnly:currentBosses.every(p=>p.released&&p.raid_released!==false),
+            futureBosses:upcomingBosses.filter(p=>!currentBosses.some(c=>c.id===p.id&&c.form===p.form)).length,
             previewPromotions:upcoming.filter(p=>p.released&&current.some(c=>c.id===p.id&&c.form===p.form&&!c.released)).length};
     });
     assert.equal(availability.currentBosses,currentPool.bosses);

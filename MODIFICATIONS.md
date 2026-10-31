@@ -386,3 +386,18 @@ The calculation formulas and upstream data sources are unchanged.
   choices and encode an explicit off choice as `no-super-max` in shared URLs.
 - Preserve the existing Unreleased behavior: all transformations are assumed
   Super Max in that mode, so the filter does not change its results.
+
+## October 31, 2026 — Separate raid profiles, raid debuts and Super Max
+
+- Move Raichu X/Y, Victreebel, Starmie, Dragonite, Skarmory, Malamar, Falinks,
+  Beedrill, Houndoom and Manectric to their verified regular Mega raid profiles
+  (tier 4, 9,000 HP), using the official GO Fest: Mega Finale schedule.
+- Track Super Max availability separately from raid tier. Preserve those
+  forms' current +2 attacker levels, published plus moves and full XL profile,
+  including Super Max filter eligibility after upstream adopts tier 4.
+- Keep Mega Chesnaught, Delphox and Greninja released as attackers while their
+  unverified raid debuts stay in the Unreleased boss pool and Boss List column.
+  Preserve their upstream hypothetical future raid profiles.
+- Expose raid release and Super Max availability separately in Data Audit and
+  copied details, with sourced corrections and regression coverage for both
+  calculation scopes, preview toggles and real browser data.

@@ -91,9 +91,8 @@ The funnel in the leaderboard header contains the Species Filters: Unreleased,
 Shadow, and Legendary. Shadow is shown in the Attacker view. Legendary also
 includes Mythical Pokémon and Ultra Beasts, as in Type Rankings.
 The Mega funnel also contains **Super Max**, on by default. With Unreleased
-off, it restricts the competing pool to released forms with an existing Super
-Mega tag (raid tier 8/9, the model's level-4 availability signal) and a known,
-non-projected XL boost profile. Each boss then awards its best eligible XL
+off, it restricts the competing pool to released forms with Super Max unlocked
+and a known, non-projected XL boost profile. Each boss then awards its best eligible XL
 option within that pool, and that pool's leader scores 100. Toggling Super Max
 reuses the native battle matrix; it does not change the non-Mega benchmark.
 With Unreleased on, every transformation is assumed Super Max, so the filter
@@ -134,6 +133,20 @@ on mobile, independently of the leaderboard's Unreleased toggle.
 Enamorus (Incarnate), Regidrago, and Regieleki use their later five-star raid
 profile (15,000 HP). Narrow, sourced corrections replace stale Elite tags;
 current upstream five-star tags and unrelated raid profiles remain intact.
+
+Raid profiles follow verified raid appearances, independently of Super Max.
+Raichu X/Y, Victreebel, Starmie, Dragonite, Skarmory, Malamar, Falinks, Beedrill,
+Houndoom, and Manectric use the regular Mega profile (9,000 HP) shown during
+Mega Finale. Their separate `super_max_released` flag preserves current level-4
+attacker boosts, plus moves and full XL eligibility even if the upstream raid
+tag later changes to tier 4. Tags 8/9 remain a fallback for other forms.
+
+Chesnaught, Delphox and Greninja remain released Mega attackers. Their Mega
+Evolutions debuted through research/GO Pass rather than raids, so
+`raid_released: false` keeps them out of current boss calculations and places
+their hypothetical upstream boss profiles in the Unreleased column. That column
+does not mean their Mega Evolutions are unavailable to use. Raid release and
+Super Max availability appear separately in Data Audit and copied details.
 
 The shared **Unreleased** option applies to both attackers and the
 raid-boss pool throughout the rankings, Each type summaries, and leaderboard.

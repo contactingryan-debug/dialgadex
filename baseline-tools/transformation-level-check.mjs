@@ -53,6 +53,23 @@ test('projected +2 requires unreleased mode and level 4; native boosts never dou
     }
 });
 
+test('Super Max availability determines attacker levels independently of a boss raid profile',()=>{
+    const {evaluate,json}=fixture();
+    evaluate(`regularMega={...jb_pkm[0],form:'Mega',raid_tier:4,super_max_released:true};
+        raidPendingMega={...regularMega,raid_released:false};
+        noSuperMax={...regularMega,raid_tier:8,super_max_released:false}`);
+    for(const name of ['regularMega','raidPendingMega']) {
+        assert.equal(json(`GetAttackerLevel(${name},50,false)`),52);
+        assert.equal(json(`GetAttackerLevel(${name},50,true)`),52);
+        assert.equal(json(`UsesProjectedAttackerLevel(${name},true)`),false);
+        assert.equal(json(`GetRaidStats(${name}).hp`),9000);
+        assert(json(`GetPokemonStats(${name},52).atk>GetPokemonStats(${name},50).atk`));
+    }
+    assert.equal(json('GetAttackerLevel(noSuperMax,50,false)'),50);
+    assert.equal(json('GetAttackerLevel(noSuperMax,50,true)'),52);
+    assert.equal(json('UsesProjectedAttackerLevel(noSuperMax,true)'),true);
+});
+
 test('multiple base levels remain independent across regular and transformed forms', async () => {
     const {evaluate}=fixture();
     evaluate('settings_default_level=[40,50]');

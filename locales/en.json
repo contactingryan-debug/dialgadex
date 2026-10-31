@@ -499,6 +499,9 @@
         "super-max-tooltip": "Only compete with forms that currently unlock level 4 and the full matching-type XL boost. With Unreleased on, all Mega/Primal/Ultra forms are assumed to qualify."
     },
     "data-audit": {
+        "raid-released": "Released in raids",
+        "super-max-available": "Super Max available",
+        "raid-unreleased": "Raid debut unreleased",
         "nav": "Data Audit",
         "title": "Pokémon Data Audit",
         "meta-title": "Pokémon Data Audit - DialgaDex",

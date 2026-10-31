@@ -2,11 +2,360 @@
     "reviewed": "2026-10-31",
     "corrections": [
         {
+            "key": "beedrill-super-max",
+            "id": 15,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Beedrill has Super Max unlocked independently of its current raid tier. Preserve its level-4 attacker boost, published plus move and full matching-type XL eligibility in regular Mega raids.",
+            "sources": [
+                "https://pokemongo.com/en/news/mega-squads-2026"
+            ]
+        },
+        {
+            "key": "beedrill-regular-mega-raid",
+            "id": 15,
+            "form": "Mega",
+            "when": {
+                "raid_tier": 8
+            },
+            "values": {
+                "raid_tier": 4
+            },
+            "reason": "Mega Beedrill appeared in ordinary Mega raids during GO Fest 2026: Mega Finale. Use the latest verified regular Mega profile (9,000 HP); a Super Max unlock is not a Super Mega raid classification.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale"
+            ]
+        },
+        {
+            "key": "raichu-x-super-max",
+            "id": 26,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Raichu X has Super Max unlocked independently of its current raid tier. Preserve its level-4 attacker boost, published plus move and full matching-type XL eligibility in regular Mega raids.",
+            "sources": [
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ]
+        },
+        {
+            "key": "raichu-x-regular-mega-raid",
+            "id": 26,
+            "form": "Mega",
+            "when": {
+                "raid_tier": 8
+            },
+            "values": {
+                "raid_tier": 4
+            },
+            "reason": "Mega Raichu X appeared in ordinary Mega raids during GO Fest 2026: Mega Finale. Use the latest verified regular Mega profile (9,000 HP); a Super Max unlock is not a Super Mega raid classification.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale"
+            ]
+        },
+        {
+            "key": "raichu-y-super-max",
+            "id": 26,
+            "form": "MegaY",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Raichu Y has Super Max unlocked independently of its current raid tier. Preserve its level-4 attacker boost, published plus move and full matching-type XL eligibility in regular Mega raids.",
+            "sources": [
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ]
+        },
+        {
+            "key": "raichu-y-regular-mega-raid",
+            "id": 26,
+            "form": "MegaY",
+            "when": {
+                "raid_tier": 8
+            },
+            "values": {
+                "raid_tier": 4
+            },
+            "reason": "Mega Raichu Y appeared in ordinary Mega raids during GO Fest 2026: Mega Finale. Use the latest verified regular Mega profile (9,000 HP); a Super Max unlock is not a Super Mega raid classification.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale"
+            ]
+        },
+        {
+            "key": "victreebel-super-max",
+            "id": 71,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Victreebel has Super Max unlocked independently of its current raid tier. Preserve its level-4 attacker boost, published plus move and full matching-type XL eligibility in regular Mega raids.",
+            "sources": [
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ]
+        },
+        {
+            "key": "victreebel-regular-mega-raid",
+            "id": 71,
+            "form": "Mega",
+            "when": {
+                "raid_tier": 8
+            },
+            "values": {
+                "raid_tier": 4
+            },
+            "reason": "Mega Victreebel appeared in ordinary Mega raids during GO Fest 2026: Mega Finale. Use the latest verified regular Mega profile (9,000 HP); a Super Max unlock is not a Super Mega raid classification.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale"
+            ]
+        },
+        {
+            "key": "starmie-super-max",
+            "id": 121,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Starmie has Super Max unlocked independently of its current raid tier. Preserve its level-4 attacker boost, published plus move and full matching-type XL eligibility in regular Mega raids.",
+            "sources": [
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ]
+        },
+        {
+            "key": "starmie-regular-mega-raid",
+            "id": 121,
+            "form": "Mega",
+            "when": {
+                "raid_tier": 8
+            },
+            "values": {
+                "raid_tier": 4
+            },
+            "reason": "Mega Starmie appeared in ordinary Mega raids during GO Fest 2026: Mega Finale. Use the latest verified regular Mega profile (9,000 HP); a Super Max unlock is not a Super Mega raid classification.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale"
+            ]
+        },
+        {
+            "key": "dragonite-super-max",
+            "id": 149,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Dragonite has Super Max unlocked independently of its current raid tier. Preserve its level-4 attacker boost, published plus move and full matching-type XL eligibility in regular Mega raids.",
+            "sources": [
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ]
+        },
+        {
+            "key": "dragonite-regular-mega-raid",
+            "id": 149,
+            "form": "Mega",
+            "when": {
+                "raid_tier": 8
+            },
+            "values": {
+                "raid_tier": 4
+            },
+            "reason": "Mega Dragonite appeared in ordinary Mega raids during GO Fest 2026: Mega Finale. Use the latest verified regular Mega profile (9,000 HP); a Super Max unlock is not a Super Mega raid classification.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale"
+            ]
+        },
+        {
+            "key": "skarmory-super-max",
+            "id": 227,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Skarmory has Super Max unlocked independently of its current raid tier. Preserve its level-4 attacker boost, published plus move and full matching-type XL eligibility in regular Mega raids.",
+            "sources": [
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ]
+        },
+        {
+            "key": "skarmory-regular-mega-raid",
+            "id": 227,
+            "form": "Mega",
+            "when": {
+                "raid_tier": 8
+            },
+            "values": {
+                "raid_tier": 4
+            },
+            "reason": "Mega Skarmory appeared in ordinary Mega raids during GO Fest 2026: Mega Finale. Use the latest verified regular Mega profile (9,000 HP); a Super Max unlock is not a Super Mega raid classification.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale"
+            ]
+        },
+        {
+            "key": "houndoom-super-max",
+            "id": 229,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Houndoom has Super Max unlocked independently of its current raid tier. Preserve its level-4 attacker boost, published plus move and full matching-type XL eligibility in regular Mega raids.",
+            "sources": [
+                "https://pokemongo.com/en/news/mega-squads-2026"
+            ]
+        },
+        {
+            "key": "houndoom-regular-mega-raid",
+            "id": 229,
+            "form": "Mega",
+            "when": {
+                "raid_tier": 8
+            },
+            "values": {
+                "raid_tier": 4
+            },
+            "reason": "Mega Houndoom appeared in ordinary Mega raids during GO Fest 2026: Mega Finale. Use the latest verified regular Mega profile (9,000 HP); a Super Max unlock is not a Super Mega raid classification.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale"
+            ]
+        },
+        {
+            "key": "manectric-super-max",
+            "id": 310,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Manectric has Super Max unlocked independently of its current raid tier. Preserve its level-4 attacker boost, published plus move and full matching-type XL eligibility in regular Mega raids.",
+            "sources": [
+                "https://pokemongo.com/news/fall-marathon-buddy-trek-2026"
+            ]
+        },
+        {
+            "key": "manectric-regular-mega-raid",
+            "id": 310,
+            "form": "Mega",
+            "when": {
+                "raid_tier": 8
+            },
+            "values": {
+                "raid_tier": 4
+            },
+            "reason": "Mega Manectric appeared in ordinary Mega raids during GO Fest 2026: Mega Finale. Use the latest verified regular Mega profile (9,000 HP); a Super Max unlock is not a Super Mega raid classification.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale"
+            ]
+        },
+        {
+            "key": "malamar-super-max",
+            "id": 687,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Malamar has Super Max unlocked independently of its current raid tier. Preserve its level-4 attacker boost, published plus move and full matching-type XL eligibility in regular Mega raids.",
+            "sources": [
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ]
+        },
+        {
+            "key": "malamar-regular-mega-raid",
+            "id": 687,
+            "form": "Mega",
+            "when": {
+                "raid_tier": 8
+            },
+            "values": {
+                "raid_tier": 4
+            },
+            "reason": "Mega Malamar appeared in ordinary Mega raids during GO Fest 2026: Mega Finale. Use the latest verified regular Mega profile (9,000 HP); a Super Max unlock is not a Super Mega raid classification.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale"
+            ]
+        },
+        {
+            "key": "falinks-super-max",
+            "id": 870,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Falinks has Super Max unlocked independently of its current raid tier. Preserve its level-4 attacker boost, published plus move and full matching-type XL eligibility in regular Mega raids.",
+            "sources": [
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ]
+        },
+        {
+            "key": "falinks-regular-mega-raid",
+            "id": 870,
+            "form": "Mega",
+            "when": {
+                "raid_tier": 8
+            },
+            "values": {
+                "raid_tier": 4
+            },
+            "reason": "Mega Falinks appeared in ordinary Mega raids during GO Fest 2026: Mega Finale. Use the latest verified regular Mega profile (9,000 HP); a Super Max unlock is not a Super Mega raid classification.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale"
+            ]
+        },
+        {
+            "key": "chesnaught-mega-raid-debut-pending",
+            "id": 652,
+            "form": "Mega",
+            "values": {
+                "raid_released": false
+            },
+            "reason": "Mega Chesnaught is available to use, including through GO Pass: Mega Finale, with its published plus move and Super Max eligibility. Its Mega form has no verified raid debut. Keep it available as an attacker. Its upstream raid profile remains a hypothetical boss under Unreleased until a raid debut is verified.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale",
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ],
+            "when": {
+                "raid_released": null
+            }
+        },
+        {
+            "key": "delphox-mega-raid-debut-pending",
+            "id": 655,
+            "form": "Mega",
+            "values": {
+                "raid_released": false
+            },
+            "reason": "Mega Delphox is available to use, including through GO Pass: Mega Finale, with its published plus move and Super Max eligibility. Its Mega form has no verified raid debut. Keep it available as an attacker. Its upstream raid profile remains a hypothetical boss under Unreleased until a raid debut is verified.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale",
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ],
+            "when": {
+                "raid_released": null
+            }
+        },
+        {
+            "key": "greninja-mega-raid-debut-pending",
+            "id": 658,
+            "form": "Mega",
+            "values": {
+                "raid_released": false
+            },
+            "reason": "Mega Greninja is available to use, including through GO Pass: Mega Finale, with its published plus move and Super Max eligibility. Its Mega form has no verified raid debut. Keep it available as an attacker. Its upstream raid profile remains a hypothetical boss under Unreleased until a raid debut is verified.",
+            "sources": [
+                "https://pokemongo.com/en/gofest/megafinale",
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ],
+            "when": {
+                "raid_released": null
+            }
+        },
+        {
             "key": "solgaleo-five-star-raid",
             "id": 791,
             "form": "Normal",
-            "when": {"raid_tier": null},
-            "values": {"raid_tier": 5},
+            "when": {
+                "raid_tier": null
+            },
+            "values": {
+                "raid_tier": 5
+            },
             "reason": "Solgaleo has appeared in five-star raids, including Road of Legends in July 2026. Its released upstream record is missing the raid tag; use the standard 15,000 HP profile.",
             "sources": [
                 "https://pokemongo.com/news/road-of-legends-2026"
@@ -16,8 +365,12 @@
             "key": "lunala-five-star-raid",
             "id": 792,
             "form": "Normal",
-            "when": {"raid_tier": null},
-            "values": {"raid_tier": 5},
+            "when": {
+                "raid_tier": null
+            },
+            "values": {
+                "raid_tier": 5
+            },
             "reason": "Lunala has appeared in five-star raids, including Road of Legends in July 2026. Its released upstream record is missing the raid tag; use the standard 15,000 HP profile.",
             "sources": [
                 "https://pokemongo.com/news/road-of-legends-2026"
@@ -26,9 +379,16 @@
         {
             "key": "enamorus-current-five-star-raid",
             "id": 905,
-            "forms": ["Normal", "Incarnate"],
-            "when": {"raid_tier": 7},
-            "values": {"raid_tier": 5},
+            "forms": [
+                "Normal",
+                "Incarnate"
+            ],
+            "when": {
+                "raid_tier": 7
+            },
+            "values": {
+                "raid_tier": 5
+            },
             "reason": "Incarnate Enamorus returned in five-star raids with 15,000 HP. Its original Elite raid profile is historical; a stale Elite tag must not select 20,000 HP for current calculations.",
             "sources": [
                 "https://pokemongo.com/news/road-of-legends-2026",
@@ -39,8 +399,12 @@
             "key": "regidrago-current-five-star-raid",
             "id": 895,
             "form": "Normal",
-            "when": {"raid_tier": 7},
-            "values": {"raid_tier": 5},
+            "when": {
+                "raid_tier": 7
+            },
+            "values": {
+                "raid_tier": 5
+            },
             "reason": "Regidrago's later five-star raids use 15,000 HP. Preserve the current five-star profile if the upstream data retains an old Elite tag.",
             "sources": [
                 "https://pokemongo.com/news/road-of-legends-2026",
@@ -51,8 +415,12 @@
             "key": "regieleki-current-five-star-raid",
             "id": 894,
             "form": "Normal",
-            "when": {"raid_tier": 7},
-            "values": {"raid_tier": 5},
+            "when": {
+                "raid_tier": 7
+            },
+            "values": {
+                "raid_tier": 5
+            },
             "reason": "Regieleki's later five-star raids use 15,000 HP. Preserve the current five-star profile if the upstream data retains an old Elite tag.",
             "sources": [
                 "https://pokemongo.com/news/road-of-legends-2026",
@@ -130,6 +498,42 @@
             "reason": "Our chosen 3% forecast rounds (50 + 1.75 × 115) × 0.97 = 243.7125 to 244 Stamina. The upstream projection floors HP too early and gives 243. This correction applies only while the form is unreleased and the reviewed source tuple matches.",
             "sources": [
                 "https://www.dittobase.com/pokemon-go/stat-converter"
+            ]
+        },
+        {
+            "key": "chesnaught-super-max",
+            "id": 652,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Chesnaught is a released Super Max-eligible attacker with its published plus move. Its level-4 and XL benefits do not depend on whether its Mega form has appeared in raids.",
+            "sources": [
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ]
+        },
+        {
+            "key": "delphox-super-max",
+            "id": 655,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Delphox is a released Super Max-eligible attacker with its published plus move. Its level-4 and XL benefits do not depend on whether its Mega form has appeared in raids.",
+            "sources": [
+                "https://pokemongo.com/news/more-mega-updates-2026"
+            ]
+        },
+        {
+            "key": "greninja-super-max",
+            "id": 658,
+            "form": "Mega",
+            "values": {
+                "super_max_released": true
+            },
+            "reason": "Mega Greninja is a released Super Max-eligible attacker with its published plus move. Its level-4 and XL benefits do not depend on whether its Mega form has appeared in raids.",
+            "sources": [
+                "https://pokemongo.com/news/more-mega-updates-2026"
             ]
         }
     ],

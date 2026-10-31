@@ -499,6 +499,9 @@
         "super-max-tooltip": "Seules les formes pouvant déjà débloquer le niveau 4 et le bonus XL maximal pour les types correspondants sont en compétition. Avec Non sortis, toutes les formes Méga/Primo/Ultra sont supposées admissibles."
     },
     "data-audit": {
+        "raid-released": "Disponible en raids",
+        "super-max-available": "Super Max disponible",
+        "raid-unreleased": "Première apparition en raid à venir",
         "nav": "Audit des données",
         "title": "Audit des données Pokémon",
         "meta-title": "Audit des données Pokémon - DialgaDex",

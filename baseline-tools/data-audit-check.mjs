@@ -16,7 +16,7 @@ function fixture({future = false, preview = true} = {}) {
             for (const [key, replacement] of Object.entries(params)) value = value.replaceAll('{'+key+'}', replacement);
             return value;
         }});
-    for (const name of ['dataload','settings','pokemon_enums','data-rules','pokemon_utils','raid-points','data-audit'])
+    for (const name of ['dataload','settings','pokemon_enums','data-rules','pokemon_utils','raid-points','data-audit','boss-list'])
         vm.runInContext(read('../scripts/'+name+'.js'), context);
     context.inputs = structuredClone(inputs);
     context.manifest = structuredClone(manifest);
@@ -227,4 +227,95 @@ test('audit eligibility follows the exclusive Attacker and Mega leaderboard view
     assert.match(evaluate('PokemonAuditCopyText(GetPokemonAuditInfo(150,"Mega",BuildPokemonAuditContext()),BuildPokemonAuditContext())'),/Raid leaderboard: Included; view: Mega\/Primal\/Ultra only/);
     assert.match(evaluate('PokemonAuditCopyText(GetPokemonAuditInfo(150,"Normal",BuildPokemonAuditContext()),BuildPokemonAuditContext())'),/Select the Attacker leaderboard/);
     assert.equal(json('GetPokemonAuditInfo(800,"Ultra",BuildPokemonAuditContext()).leaderboardIncluded'),false);
+});
+
+const regularSuperMaxMegas = [[15,'Mega'],[26,'Mega'],[26,'MegaY'],[71,'Mega'],[121,'Mega'],
+    [149,'Mega'],[227,'Mega'],[229,'Mega'],[310,'Mega'],[687,'Mega'],[870,'Mega']];
+const researchMegas = [[652,'Mega'],[655,'Mega'],[658,'Mega']];
+
+function addReleasedMegas(evaluate, forms) {
+    evaluate(`for (const [id,form] of ${JSON.stringify(forms)}) {
+        const raw={...structuredClone(jb_source_pkm.find(p=>p.id===150&&p.form==='Normal')),
+            id,form,name:'Mega test '+id,released:true,shadow:false,raid_tier:8,temp_cm:['Published plus move']};
+        delete raw.class;
+        jb_source_pkm.push(raw);
+        jb_pkm.push(ApplyPokemonAuditOverrides([structuredClone(raw)],manifest)[0]);
+        jb_spec.push({id,form,released:true,raid_tier:8});
+    }`);
+}
+
+test('regular Mega raid profiles retain released Super Max levels and raw upstream provenance',()=>{
+    const {evaluate,json}=fixture({preview:false});
+    addReleasedMegas(evaluate,regularSuperMaxMegas);
+    for(const preview of [false,true,false]) {
+        evaluate(`PatchSpeculative(${preview});settings_speculative=${preview}`);
+        for(const [id,form] of regularSuperMaxMegas) for(const future of [false,true]) {
+            const pokemon=json(`GetCalculationPokemon(${future}).find(p=>p.id===${id}&&p.form==='${form}')`);
+            assert.equal(pokemon.released,true);
+            assert.equal(pokemon.raid_tier,4);
+            assert.equal(pokemon.super_max_released,true);
+            assert.deepEqual(pokemon.temp_cm,['Published plus move']);
+            assert.equal(json(`GetRaidStats(${JSON.stringify(pokemon)}).hp`),9000);
+            assert.equal(json(`GetAttackerLevel(${JSON.stringify(pokemon)},50,${future})`),52);
+            assert.equal(json(`UsesProjectedAttackerLevel(${JSON.stringify(pokemon)},${future})`),false);
+            assert(json(`GetRaidBosses(null,null,${future}).some(p=>p.id===${id}&&p.form==='${form}')`));
+            const info=json(`GetPokemonAuditInfo(${id},'${form}',BuildPokemonAuditContext())`);
+            assert.equal(info.currentRaidReleased,true);
+            assert.equal(info.evidence,'verified');
+            assert.equal(info.source.raid_tier,8);
+            assert.equal(info.source.super_max_released,undefined);
+            assert.equal(info.weight,1);
+        }
+    }
+    // If upstream adopts the correct raid profile, the independent unlock survives.
+    evaluate(`for(const p of jb_source_pkm) if(${JSON.stringify(regularSuperMaxMegas)}
+        .some(([id,form])=>p.id===id&&p.form===form))p.raid_tier=4;
+        jb_pkm=ApplyPokemonAuditOverrides(structuredClone(jb_source_pkm),manifest)`);
+    assert.equal(json('GetAttackerLevel(jb_pkm.find(p=>p.id===15&&p.form==="Mega"),50,false)'),52);
+});
+
+test('research-released Megas remain current attackers while their raid debuts stay in the future boss pool',async()=>{
+    const {evaluate,json}=fixture({preview:false});
+    addReleasedMegas(evaluate,researchMegas);
+    for(const preview of [false,true,false]) {
+        evaluate(`PatchSpeculative(${preview});settings_speculative=${preview}`);
+        const attackers=JSON.parse(await evaluate(`(async()=>{const keys=[];
+            await SearchAll({...GetDefaultSearchParams(),mega:true,unreleased:false},p=>keys.push(PokemonDataKey(p)));
+            return JSON.stringify(keys)})()`));
+        for(const [id,form] of researchMegas) {
+            assert(attackers.includes(id+'/'+form));
+            assert.equal(json(`GetRaidBosses().some(p=>p.id===${id}&&p.form==='${form}')`),false);
+            assert.equal(json(`GetRaidBosses(null,null,true).some(p=>p.id===${id}&&p.form==='${form}')`),true);
+            const groups=json('GetBossListGroups()');
+            assert(groups.some(g=>g.unreleased.some(p=>p.id===id&&p.form===form)));
+            assert(!groups.some(g=>g.released.some(p=>p.id===id&&p.form===form)));
+            const info=json(`GetPokemonAuditInfo(${id},'${form}',BuildPokemonAuditContext())`);
+            assert.equal(info.currentReleased,true);
+            assert.equal(info.currentRaidReleased,false);
+            assert.equal(info.attackerIncluded,true);
+            assert.equal(info.bossIncluded,false);
+            assert.equal(info.evidence,'projected');
+            assert.equal(info.weight,0);
+            assert(info.bossReasons.includes('raid-unreleased'));
+            assert.deepEqual(info.attackerLevels,[52]);
+            const copied=evaluate(`PokemonAuditCopyText(GetPokemonAuditInfo(${id},'${form}',BuildPokemonAuditContext()),BuildPokemonAuditContext())`);
+            assert.match(copied,/Released: Yes/);
+            assert.match(copied,/Released in raids: No/);
+            assert.match(copied,/Super Max available: Yes/);
+            assert.equal(info.source.released,true);
+            assert.equal(info.source.raid_released,undefined);
+        }
+    }
+    evaluate('settings_include_unreleased=true');
+    const future=json('GetPokemonAuditInfo(652,"Mega",BuildPokemonAuditContext())');
+    assert.equal(future.bossIncluded,true);
+    assert.equal(future.weight,1);
+    assert.equal(future.currentRaidReleased,false);
+    // An explicit future upstream raid release supersedes the temporary exception.
+    evaluate(`raw=jb_source_pkm.find(p=>p.id===652&&p.form==='Mega');
+        raw.raid_released=true;raw.raid_tier=4;
+        updated=ApplyPokemonAuditOverrides([structuredClone(raw)],manifest)[0]`);
+    assert.equal(json('IsRaidBossReleased(updated)'),true);
+    assert.equal(json('GetAttackerLevel(updated,50,false)'),52);
+    assert.equal(json('IsRaidBossReleased({...updated,raid_tier:3})'),true);
 });

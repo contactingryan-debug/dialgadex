@@ -52,6 +52,27 @@ try {
             const audit = GetPokemonAuditInfo(609,'Mega',BuildPokemonAuditContext());
             if (!audit.currentReleased || !audit.attackerIncluded || !audit.bossIncluded || audit.evidence !== 'verified')
                 throw new Error('Mega Chandelure audit disagrees with released calculation eligibility.');
+            for (const [id,form] of [[15,'Mega'],[26,'Mega'],[26,'MegaY'],[71,'Mega'],[121,'Mega'],
+                    [149,'Mega'],[227,'Mega'],[229,'Mega'],[310,'Mega'],[687,'Mega'],[870,'Mega']]) {
+                const pokemon = GetRaidBosses().find(p=>p.id===id&&p.form===form);
+                if (!pokemon || pokemon.raid_tier !== 4 || GetRaidStats(pokemon).hp !== 9000)
+                    throw new Error('Missing regular Mega raid profile: '+id+'/'+form);
+                if (!HasSuperMaxUnlocked(pokemon) || GetAttackerLevel(pokemon,50,false) !== 52)
+                    throw new Error('Moving a boss to regular Mega raids removed Super Max: '+id+'/'+form);
+                if (GetPlusMoveProjectionInfo(pokemon,false)?.status !== 'source')
+                    throw new Error('A regular Mega lost its published plus move: '+id+'/'+form);
+            }
+            for (const id of [652,655,658]) {
+                const pokemon = GetCalculationPokemon(false).find(p=>p.id===id&&p.form==='Mega');
+                if (!pokemon?.released || !HasSuperMaxUnlocked(pokemon) || GetAttackerLevel(pokemon,50,false) !== 52)
+                    throw new Error('A research Mega must remain a released Super Max attacker: '+id);
+                if (GetRaidBosses().some(p=>p.id===id&&p.form==='Mega')
+                        || !GetRaidBosses(null,null,true).some(p=>p.id===id&&p.form==='Mega'))
+                    throw new Error('A research Mega raid debut must stay in the future boss pool: '+id);
+                const info = GetPokemonAuditInfo(id,'Mega',BuildPokemonAuditContext());
+                if (!info.attackerIncluded || info.bossIncluded || info.currentRaidReleased)
+                    throw new Error('Research Mega audit disagrees with separate attacker and boss release status: '+id);
+            }
         }
         if (settings_speculative !== preview) { settings_speculative = preview; PatchSpeculative(preview); }
         const before = JSON.stringify(rendered);
@@ -68,6 +89,12 @@ try {
         assert.equal(await page.locator(`.boss-tier-group[data-hp="15000"] .boss-cell[data-availability="released"] .boss-entry[data-key="${key}"]`).count(), 1);
     for (const id of [791,792])
         assert.equal(await page.locator(`.boss-tier-group[data-category="legendary"] .boss-cell[data-availability="released"] .boss-entry[data-id="${id}"]`).count(), 1);
+    for (const key of ['15/Mega','26/Mega','26/MegaY','71/Mega','121/Mega','149/Mega','227/Mega','229/Mega','310/Mega','687/Mega','870/Mega'])
+        assert.equal(await page.locator(`.boss-tier-group[data-category="mega"] .boss-cell[data-availability="released"] .boss-entry[data-key="${key}"]`).count(),1);
+    for (const id of [652,655,658]) {
+        assert.equal(await page.locator(`.boss-cell[data-availability="released"] .boss-entry[data-key="${id}/Mega"]`).count(),0);
+        assert.equal(await page.locator(`.boss-cell[data-availability="unreleased"] .boss-entry[data-key="${id}/Mega"]`).count(),1);
+    }
     assert.equal(await page.locator('.boss-entry[data-key="800/Ultra"],.boss-entry[data-key="890/Eternamax"]').count(), 0);
     assert(!await page.locator('.boss-name .raid-species').evaluateAll(names=>names.some(name=>name.textContent.startsWith('Shadow '))),
         'Shadow attacker availability must not rename an ordinary raid boss.');

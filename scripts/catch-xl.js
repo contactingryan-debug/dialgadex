@@ -53,7 +53,7 @@ function GetCatchXLBoostProfile(pokemon, manifest = GetCatchXLManifest()) {
 
 /** Current Super Max availability, including a known matching-type XL profile. */
 function HasSuperMaxUnlocked(pokemon) {
-    if (!IsMegaPrimalUltraForm(pokemon) || !pokemon.released || ![8, 9].includes(pokemon.raid_tier)) return false;
+    if (!IsMegaPrimalUltraForm(pokemon) || !pokemon.released || !IsSuperMaxAvailable(pokemon)) return false;
     const profile = GetCatchXLBoostProfile(pokemon);
     return profile.types.length > 0 && !['unknown', 'none', 'projected'].includes(profile.status);
 }

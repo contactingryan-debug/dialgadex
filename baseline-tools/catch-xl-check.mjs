@@ -53,6 +53,14 @@ test('Super Max requires a released level-4 form and a known full XL profile',()
     assert.equal(json('HasSuperMaxUnlocked({...get(800,"Ultra"),released:true,raid_tier:9})'),false);
 });
 
+test('a regular Mega raid can retain full current XL boosting and Super Max eligibility',()=>{
+    const {json}=fixture();
+    assert.equal(json('HasSuperMaxUnlocked({...get(6,"Mega"),raid_tier:4,super_max_released:true})'),true);
+    assert.equal(json('HasSuperMaxUnlocked({...get(6,"Mega"),raid_tier:8,super_max_released:false})'),false);
+    assert.equal(json('HasSuperMaxUnlocked({...get(6,"Mega"),raid_tier:8,super_max_released:true,raid_released:false})'),true);
+    assert.equal(json('HasSuperMaxUnlocked({...get(6,"Mega"),raid_tier:4,super_max_released:true,released:false})'),false);
+});
+
 test('a verified announced-feed release qualifies for current XL boosting and Super Max without a main-feed record',()=>{
     const {evaluate,json}=fixture();
     evaluate(`releasedMega={...structuredClone(get(6,'Mega')),id:609,name:'Mega Chandelure',

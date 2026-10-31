@@ -15,7 +15,7 @@ let jb_source_pkm, jb_audit_manifest, jb_plus_predictions;
 let jb_catch_profiles;
 const CATCH_XL_URL = 'data/catch-xl-profiles.json?v=ebb12b28669b';
 const PLUS_PREDICTIONS_URL = 'data/plus-move-projections.json?v=34aa9b4dd252';
-const AUDIT_MANIFEST_URL = 'data/audit-overrides.json?v=8c3d99a10ac8';
+const AUDIT_MANIFEST_URL = 'data/audit-overrides.json?v=c7006ae7f10c';
 
 /**
  * Load JSONs from resource repo

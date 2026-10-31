@@ -499,6 +499,9 @@
         "super-max-tooltip": "Compiten solo las formas que ya pueden desbloquear el nivel 4 y el máximo bonus XL para tipos coincidentes. Con No lanzados, se supone que todas las formas Mega/Primigenia/Ultra cumplen los requisitos."
     },
     "data-audit": {
+        "raid-released": "Disponible en incursiones",
+        "super-max-available": "Super Max disponible",
+        "raid-unreleased": "Debut en incursiones pendiente",
         "nav": "Auditoría de datos",
         "title": "Auditoría de datos Pokémon",
         "meta-title": "Auditoría de datos Pokémon - DialgaDex",
