@@ -54,13 +54,16 @@ function BossListPokemonName(pokemon) {
     const defaultForm = (pokemon.id === 487 && pokemon.form === 'Altered')
         || (pokemon.id === 649 && pokemon.form === 'Normal')
         || ([888,889].includes(pokemon.id) && pokemon.form === 'Hero')
-        || (pokemon.id === 386 && pokemon.form === 'Normal');
+        || ([386,493,773].includes(pokemon.id) && pokemon.form === 'Normal')
+        || pokemon.form === 'Incarnate';
     if (defaultForm) {
         const species = name.children('.raid-species');
         return name.empty().append(species);
     }
     let shortForm;
-    if (pokemon.id === 649 && ['Shock','Burn','Chill','Douse'].includes(pokemon.form))
+    if ([493,773].includes(pokemon.id) && POKEMON_TYPES.has(pokemon.form))
+        shortForm = TranslatedTypeName(pokemon.form);
+    else if (pokemon.id === 649 && ['Shock','Burn','Chill','Douse'].includes(pokemon.form))
         shortForm = BossListText('form-' + pokemon.form.toLowerCase());
     else if (pokemon.id === 386 && pokemon.form === 'Defense')
         shortForm = BossListText('form-defense');

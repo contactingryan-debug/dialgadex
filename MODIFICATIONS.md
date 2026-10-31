@@ -361,3 +361,10 @@ The calculation formulas and upstream data sources are unchanged.
   Defense on Defense Deoxys despite the source translation-key mismatch.
 - Keep Origin, Attack, Speed, Crowned, Primal, Ultra, and X/Y/Z labels intact.
   These changes affect Boss List display text only.
+
+## October 30, 2026 — Compact type forms and Incarnate defaults
+
+- Show Arceus and Silvally variants using only the localized type name, such
+  as Fire or Psychic. Hide the label entirely for their Normal forms.
+- Hide Incarnate on all Boss List entries while keeping Therian and other
+  distinguishing forms intact.
