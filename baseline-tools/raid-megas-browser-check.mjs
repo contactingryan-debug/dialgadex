@@ -12,6 +12,8 @@ try {
         ignoreHTTPSErrors:process.env.PLAYWRIGHT_IGNORE_HTTPS_ERRORS==='1'});
     const errors=[];page.on('pageerror',error=>errors.push(error.message));
     await page.addInitScript(()=>{
+        // A session carrying the former automatic off setting receives the new default.
+        sessionStorage.setItem('dialgadex-raid-super-max','false');
         window.megaWorkerStarts=0;
         const OriginalWorker=window.Worker;
         window.Worker=class extends OriginalWorker {constructor(...args){super(...args);window.megaWorkerStarts++;}};
@@ -59,6 +61,12 @@ try {
         assert.equal(await page.locator('#raid-shadows').isVisible(),false,'Shadow controls must remain hidden in the Mega view.');
     }
     await ready(true);
+    assert.equal(await page.locator('#raid-super-max').isChecked(),true,'Super Max starts enabled.');
+    assert(await page.evaluate(()=>raidLeaderboardResult.superMaxOnly
+        &&raidLeaderboardResult.rows.every(r=>r.superMaxUnlocked)));
+    await openFilters();await page.locator('#raid-super-max').uncheck();
+    assert(new URL(page.url()).searchParams.has('no-super-max'));
+    await page.locator('#raid-filter-trigger').click();
     assert.equal(await page.locator('#raid-megas').isChecked(),true);
     assert.equal(await page.locator('#raid-intro-text').count(),0);
     assert.equal(await page.locator('#raid-loading').isVisible(),false);
@@ -158,8 +166,11 @@ try {
     await page.reload();await ready(true);
     assert.equal(await page.locator('#raid-super-max').isChecked(),true);
     await openFilters();await page.locator('#raid-super-max').uncheck();
+    assert(new URL(page.url()).searchParams.has('no-super-max'));
+    await page.reload();await ready(true);
+    assert.equal(await page.locator('#raid-super-max').isChecked(),false,'An explicit off choice survives reload.');
     assert.deepEqual(await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score])),currentAll.scores);
-    await page.locator('#raid-super-max').check();
+    await openFilters();await page.locator('#raid-super-max').check();
     await openFilters();
     await page.locator('#raid-unreleased').check();await ready(true,true);
     const futureSuperMax=await page.evaluate(()=>raidLeaderboardResult.rows.map(r=>[r.key,r.points,r.score]));

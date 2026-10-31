@@ -378,3 +378,11 @@ The calculation formulas and upstream data sources are unchanged.
   source records and audit provenance, and prefer released main-feed records
   automatically when they arrive. Other previews remain isolated from current
   calculations.
+
+## October 31, 2026 — Super Max enabled by default
+
+- Start the Raid Mega Leaderboard with Super Max enabled, including sessions
+  that retained the previous automatic off setting. Remember subsequent user
+  choices and encode an explicit off choice as `no-super-max` in shared URLs.
+- Preserve the existing Unreleased behavior: all transformations are assumed
+  Super Max in that mode, so the filter does not change its results.

@@ -9,9 +9,11 @@ let raidLeaderboardTierFrame = 0;
 let raidLeaderboardTierObserver = null;
 let raidLeaderboardState = {};
 let raidLeaderboardIncludeMegas = false;
-let raidLeaderboardSuperMaxOnly = false;
+let raidLeaderboardSuperMaxOnly = true;
+// Earlier sessions also saved the old automatic off default. Start the new default once.
+const RAID_SUPER_MAX_STORAGE_KEY = 'dialgadex-raid-super-max-v2';
 try { raidLeaderboardIncludeMegas = sessionStorage.getItem('dialgadex-raid-megas') === 'true'; } catch (_) {}
-try { raidLeaderboardSuperMaxOnly = sessionStorage.getItem('dialgadex-raid-super-max') === 'true'; } catch (_) {}
+try { raidLeaderboardSuperMaxOnly = sessionStorage.getItem(RAID_SUPER_MAX_STORAGE_KEY) !== 'false'; } catch (_) {}
 
 function GetRaidLeaderboardIncludeMegas() { return raidLeaderboardIncludeMegas; }
 
@@ -24,7 +26,7 @@ function GetRaidLeaderboardSuperMaxOnly() { return raidLeaderboardSuperMaxOnly; 
 
 function SetRaidLeaderboardSuperMaxOnly(include) {
     raidLeaderboardSuperMaxOnly = !!include;
-    try { sessionStorage.setItem('dialgadex-raid-super-max', String(raidLeaderboardSuperMaxOnly)); } catch (_) {}
+    try { sessionStorage.setItem(RAID_SUPER_MAX_STORAGE_KEY, String(raidLeaderboardSuperMaxOnly)); } catch (_) {}
 }
 
 function RaidLeaderboardText(key, params = {}) {
@@ -136,7 +138,8 @@ function UpdateRaidLeaderboardURL() {
     params.set('leaderboard', '');
     if (raidLeaderboardState.unreleased) params.set('unreleased', '');
     if (raidLeaderboardState.includeMegas) params.set('megas', '');
-    if (raidLeaderboardState.includeMegas && raidLeaderboardState.superMaxOnly) params.set('super-max', '');
+    if (raidLeaderboardState.includeMegas)
+        params.set(raidLeaderboardState.superMaxOnly ? 'super-max' : 'no-super-max', '');
     if (!raidLeaderboardState.shadows) params.set('no-shadows', '');
     if (!raidLeaderboardState.legendaries) params.set('no-legendaries', '');
     UpdateURL('?' + params.toString());
@@ -144,7 +147,7 @@ function UpdateRaidLeaderboardURL() {
 
 function LoadRaidLeaderboardAndUpdateURL() {
     UpdateURL('?leaderboard' + (GetIncludeUnreleased() ? '&unreleased' : '')
-        + (GetRaidLeaderboardIncludeMegas() ? '&megas' + (GetRaidLeaderboardSuperMaxOnly() ? '&super-max' : '') : ''));
+        + (GetRaidLeaderboardIncludeMegas() ? '&megas' + (GetRaidLeaderboardSuperMaxOnly() ? '&super-max' : '&no-super-max') : ''));
     return LoadRaidLeaderboard();
 }
 
@@ -158,7 +161,8 @@ async function LoadRaidLeaderboard() {
     raidLeaderboardState = {
         unreleased: params.has('unreleased'),
         includeMegas,
-        superMaxOnly: includeMegas ? params.has('super-max') : GetRaidLeaderboardSuperMaxOnly(),
+        superMaxOnly: includeMegas ? params.has('super-max')
+            || (!params.has('no-super-max') && GetRaidLeaderboardSuperMaxOnly()) : GetRaidLeaderboardSuperMaxOnly(),
         floor: 80, weighting: 'groups',
         shadows: !params.has('no-shadows'), legendaries: !params.has('no-legendaries'),
         sort: 'score',

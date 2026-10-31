@@ -90,7 +90,7 @@ remains the scoring metric.
 The funnel in the leaderboard header contains the Species Filters: Unreleased,
 Shadow, and Legendary. Shadow is shown in the Attacker view. Legendary also
 includes Mythical Pokémon and Ultra Beasts, as in Type Rankings.
-The Mega funnel also contains **Super Max**, off by default. With Unreleased
+The Mega funnel also contains **Super Max**, on by default. With Unreleased
 off, it restricts the competing pool to released forms with an existing Super
 Mega tag (raid tier 8/9, the model's level-4 availability signal) and a known,
 non-projected XL boost profile. Each boss then awards its best eligible XL
@@ -98,7 +98,7 @@ option within that pool, and that pool's leader scores 100. Toggling Super Max
 reuses the native battle matrix; it does not change the non-Mega benchmark.
 With Unreleased on, every transformation is assumed Super Max, so the filter
 does not change results. Its selection is remembered for the tab and encoded
-as `super-max` in Mega URLs.
+as `super-max` in Mega URLs, or `no-super-max` when explicitly disabled.
 
 Both views show every scoring attacker at once, with native mini sprites and
 S/A/B/C/D/F tier colors. Jenks natural breaks assign tiers from Raid Score
