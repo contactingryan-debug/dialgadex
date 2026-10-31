@@ -686,6 +686,11 @@
         "sub-legendary": "Sublegendarios",
         "mythical": "Singulares",
         "paradox": "Paradoja",
-        "other": "Otros"
+        "other": "Otros",
+        "form-shock": "Fulgo",
+        "form-burn": "Piro",
+        "form-chill": "Crio",
+        "form-douse": "Hidro",
+        "form-defense": "Defensa"
     }
 }

@@ -352,3 +352,12 @@ The calculation formulas and upstream data sources are unchanged.
   with 15,000 HP and enter the shared raid-boss pool for rankings and affinity.
 - Preserve raw upstream records and source links in Data Audit. Only fill
   absent tags; leave an explicit upstream raid profile intact.
+
+## October 30, 2026 — Shorter Boss List form names
+
+- Hide Altered on Giratina, No Drive on Genesect, Hero of Many Battles on
+  Zacian/Zamazenta, and Normal on Deoxys in Boss List entries.
+- Shorten Genesect's other forms to Shock, Burn, Chill, and Douse. Restore
+  Defense on Defense Deoxys despite the source translation-key mismatch.
+- Keep Origin, Attack, Speed, Crowned, Primal, Ultra, and X/Y/Z labels intact.
+  These changes affect Boss List display text only.

@@ -48,6 +48,33 @@ function BossListText(key, params = {}) {
     return FormatTranslation('boss-list.' + key, params);
 }
 
+function BossListPokemonName(pokemon) {
+    // Source shadow flags describe attacker availability, not a Shadow raid form.
+    const name = RaidLeaderboardName({...pokemon, shadow:false}, true).addClass('boss-name');
+    const defaultForm = (pokemon.id === 487 && pokemon.form === 'Altered')
+        || (pokemon.id === 649 && pokemon.form === 'Normal')
+        || ([888,889].includes(pokemon.id) && pokemon.form === 'Hero')
+        || (pokemon.id === 386 && pokemon.form === 'Normal');
+    if (defaultForm) {
+        const species = name.children('.raid-species');
+        return name.empty().append(species);
+    }
+    let shortForm;
+    if (pokemon.id === 649 && ['Shock','Burn','Chill','Douse'].includes(pokemon.form))
+        shortForm = BossListText('form-' + pokemon.form.toLowerCase());
+    else if (pokemon.id === 386 && pokemon.form === 'Defense')
+        shortForm = BossListText('form-defense');
+    if (shortForm) {
+        let form = name.children('.raid-form');
+        if (!form.length) {
+            form = $('<span class="raid-form"></span>');
+            name.append(' ', form);
+        }
+        form.text('(' + shortForm + ')');
+    }
+    return name;
+}
+
 function GetBossListGroups() {
     const released = GetRaidBosses(null, null, false);
     const releasedKeys = new Set(released.map(PokemonDataKey));
@@ -131,8 +158,7 @@ function RenderBossList() {
                     const sprite = $('<span class="pokemon-icon boss-sprite" aria-hidden="true"></span>')
                         .css({'background-image': 'url(' + ICONS_URL + ')',
                             'background-position': coords.x + 'px ' + coords.y + 'px'});
-                    // On source records, shadow means attacker availability, not a Shadow raid profile.
-                    link.append(sprite, RaidLeaderboardName({...pokemon, shadow:false}, true).addClass('boss-name'));
+                    link.append(sprite, BossListPokemonName(pokemon));
                     roster.append($('<li></li>').append(link));
                 }
                 cell.append(roster);

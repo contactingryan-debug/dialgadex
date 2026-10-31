@@ -686,6 +686,11 @@
         "sub-legendary": "Sous-légendaires",
         "mythical": "Fabuleux",
         "paradox": "Paradoxe",
-        "other": "Autres"
+        "other": "Autres",
+        "form-shock": "Choc",
+        "form-burn": "Pyro",
+        "form-chill": "Cryo",
+        "form-douse": "Aqua",
+        "form-defense": "Défense"
     }
 }

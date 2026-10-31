@@ -686,6 +686,11 @@
         "sub-legendary": "Sub-Legendary",
         "mythical": "Mythical",
         "paradox": "Paradox",
-        "other": "Other"
+        "other": "Other",
+        "form-shock": "Shock",
+        "form-burn": "Burn",
+        "form-chill": "Chill",
+        "form-douse": "Douse",
+        "form-defense": "Defense"
     }
 }
