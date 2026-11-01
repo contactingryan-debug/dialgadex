@@ -2,7 +2,7 @@
 .boss-list-card h1 { margin:0; }
 .boss-art-card { margin-top:.8rem; }
 .boss-art-card h2 { margin:0; font-size:1rem; }
-.boss-art-grid { display:grid; grid-template-columns:repeat(9,minmax(0,1fr)); gap:.5rem; padding:.85rem .85rem .5rem; }
+.boss-art-grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:.5rem; padding:.85rem .85rem .5rem; }
 .boss-art-option { min-width:0; margin:0; padding:.3rem .15rem .5rem; border:1px solid var(--col-outline); border-radius:.4rem; background:var(--col-alt-bg); }
 .boss-art-preview { display:flex; align-items:center; justify-content:center; height:76px; border-radius:.25rem; }
 .boss-art-preview img { width:64px; height:64px; max-width:100%; object-fit:contain; }

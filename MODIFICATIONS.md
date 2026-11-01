@@ -415,3 +415,12 @@ The calculation formulas and upstream data sources are unchanged.
   existing translated form name.
 - Omit Incarnate from Enamorus in Raid Leaderboard names, matching the Boss
   List. Retain Therian and preserve the underlying form identities and scores.
+
+## November 1, 2026 — Super Mega and Shadow egg graphics
+
+- Extend the Boss List gallery beyond the original PokeMiners subset with
+  Super Mega, Super Legendary Mega, and Normal/Rare/Legendary Shadow eggs.
+  Bundle the unmodified game graphics from Serebii and GO Hub with attribution.
+- Correct the former Dark Mega label to Legendary Mega, and identify the blue
+  and red designs as Event and Elite eggs. Retain the Ultra Wormhole and omit
+  emblems. Keep desktop and mobile layouts compact with translated captions.
