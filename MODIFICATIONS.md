@@ -408,3 +408,10 @@ The calculation formulas and upstream data sources are unchanged.
   the pinned PokeMiners asset set, retaining the Ultra Wormhole as option I.
 - Remove the three emblem options and their unused assets. Keep original-image
   links, translated captions and the responsive gallery for choosing artwork.
+
+## October 31, 2026 — Floette and Enamorus form labels
+
+- Label Mega Floette as Floette (Eternal Flower) on the Boss List, using the
+  existing translated form name.
+- Omit Incarnate from Enamorus in Raid Leaderboard names, matching the Boss
+  List. Retain Therian and preserve the underlying form identities and scores.

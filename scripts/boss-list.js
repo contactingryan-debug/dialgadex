@@ -61,7 +61,9 @@ function BossListPokemonName(pokemon) {
         return name.empty().append(species);
     }
     let shortForm;
-    if ([493,773].includes(pokemon.id) && POKEMON_TYPES.has(pokemon.form))
+    if (pokemon.id === 670 && pokemon.form === 'Mega')
+        shortForm = TranslatedFormName('Eternal_flower');
+    else if ([493,773].includes(pokemon.id) && POKEMON_TYPES.has(pokemon.form))
         shortForm = TranslatedTypeName(pokemon.form);
     else if (pokemon.id === 649 && ['Shock','Burn','Chill','Douse'].includes(pokemon.form))
         shortForm = BossListText('form-' + pokemon.form.toLowerCase());

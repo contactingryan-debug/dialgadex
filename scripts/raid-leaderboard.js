@@ -264,6 +264,7 @@ function RefreshRaidLeaderboardScores() {
 function RaidLeaderboardName(pokemon, compactMega = false) {
     let species = pokemon.name;
     let form = GetFormText(pokemon.id, pokemon.form);
+    if (pokemon.id === 905 && pokemon.form === 'Incarnate') form = '';
     if (IsMegaPrimalUltraForm(pokemon)) {
         species = species.replace(/^(?:Mega |Primal )/, '').replace(/ [XYZ]$/, '');
         if (pokemon.form === 'Primal' || pokemon.name.startsWith('Primal ')) form = GetTranslation('terms.primal', 'Primal');
