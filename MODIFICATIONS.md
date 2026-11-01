@@ -401,3 +401,10 @@ The calculation formulas and upstream data sources are unchanged.
 - Expose raid release and Super Max availability separately in Data Audit and
   copied details, with sourced corrections and regression coverage for both
   calculation scopes, preview toggles and real browser data.
+
+## October 31, 2026 — All raid egg graphic options
+
+- Expand the Boss List gallery to all eight distinct raid egg designs from
+  the pinned PokeMiners asset set, retaining the Ultra Wormhole as option I.
+- Remove the three emblem options and their unused assets. Keep original-image
+  links, translated captions and the responsive gallery for choosing artwork.

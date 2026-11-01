@@ -9,11 +9,17 @@ Their presentation does not assign a raid difficulty or change calculations.
 
 | Local file | Original file under `Images/Raids/` |
 |---|---|
+| `normal-egg.png` | `raid_egg_0_icon.png` |
+| `rare-egg.png` | `raid_egg_1_icon.png` |
 | `legendary-egg.png` | `raid_egg_2_icon.png` |
 | `mega-egg.png` | `raid_egg_3_icon.png` |
 | `dark-mega-egg.png` | `raid_egg_4_icon.png` |
+| `blue-egg.png` | `raid_egg_5_icon.png` |
+| `red-egg.png` | `raid_egg_extended_icon.png` |
 | `primal-egg.png` | `raid_egg_primal_icon.png` |
-| `raid-emblem.png` | `ActivityLogRaidLogo.png` |
-| `mega-emblem.png` | `ActivityLogMegaRaidLogo.png` |
-| `primal-emblem.png` | `ActivityLogPrimalRaidLogo.png` |
 | `ultra-wormhole.png` | `raid_ultra_icon.png` |
+
+The gallery includes all eight distinct egg designs in the pinned Images tree.
+The `ic_raid_egg_*` aliases duplicate the normal/rare/legendary PNGs; notification
+assets are smaller versions of the same designs. Blue/red labels describe the
+artwork without assigning either design to a raid category. Emblems are omitted.
