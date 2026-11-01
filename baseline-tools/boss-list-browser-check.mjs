@@ -106,18 +106,48 @@ try {
                 const [a,b] = [...row.children].map(cell => cell.getBoundingClientRect());
                 return a.width > 0 && Math.abs(a.width-b.width) < 1 && a.right <= b.left + 1 && b.right <= innerWidth;
             }),
-            clipped:[...document.querySelectorAll('.boss-name')].filter(name => name.scrollWidth > name.clientWidth + 1).map(name=>name.textContent)}));
+            namesHidden:[...document.querySelectorAll('.boss-entry > .boss-name')]
+                .every(name=>getComputedStyle(name).display==='none'),
+            accessible:[...document.querySelectorAll('.boss-entry')].every(link=>link.getAttribute('aria-label')),
+            sharedRows:[...document.querySelectorAll('.boss-roster')].filter(roster=>roster.children.length>1)
+                .every(roster=>{const [a,b]=[...roster.querySelectorAll('.boss-entry')].map(link=>link.getBoundingClientRect());
+                    return Math.abs(a.top-b.top)<1&&b.left>a.left;}),
+            wraps:[...document.querySelectorAll('.boss-roster')].filter(roster=>roster.children.length>20)
+                .every(roster=>new Set([...roster.querySelectorAll('.boss-entry')].map(link=>link.getBoundingClientRect().top)).size>1)}));
         assert.equal(layout.overflow, false, `Page overflow at ${width}px.`);
         assert(layout.columns, `Released and Unreleased columns must stay side by side at ${width}px.`);
-        assert.deepEqual(layout.clipped, [], `Boss names clipped at ${width}px.`);
+        assert(layout.namesHidden&&layout.accessible,`Names should be hidden visually and remain accessible at ${width}px.`);
+        assert(layout.sharedRows&&layout.wraps,`Sprites should share rows and wrap at ${width}px.`);
+        const floette=page.locator('.boss-entry[data-key="670/Mega"]');
+        await floette.hover();
+        const popup=page.locator('#boss-name-popup');
+        await popup.waitFor({state:'visible'});
+        assert.equal(await popup.textContent(),'Floette (Eternal Flower)');
+        const box=await popup.boundingBox();
+        assert(box.x>=0&&box.x+box.width<=width&&box.y>=0&&box.y+box.height<=900,'Name popup must stay inside the viewport.');
+        await page.mouse.move(0,0);
+        await popup.waitFor({state:'hidden'});
         if (process.env.BOSS_LIST_SCREENSHOT && [1100,390].includes(width))
             await page.screenshot({path:process.env.BOSS_LIST_SCREENSHOT.replace(/\.png$/,`-${width}.png`)});
     }
     await page.setViewportSize({width:1100,height:900});
+    await page.locator('.boss-entry[data-key="905/Incarnate"]').focus();
+    await page.keyboard.press('Tab');
+    await page.locator('#boss-name-popup').waitFor({state:'visible'});
+    assert.equal(await page.locator('#boss-name-popup').textContent(),
+        await page.evaluate(()=>document.activeElement.getAttribute('aria-label')));
+    await page.keyboard.press('Escape');
+    await page.locator('#boss-name-popup').waitFor({state:'hidden'});
     await page.locator('.boss-entry[data-key="905/Incarnate"]').click();
     await page.waitForFunction(() => document.querySelector('#pokedex-page')?.checkVisibility());
     assert.equal(new URL(page.url()).searchParams.get('p'), '905');
     assert.equal(new URL(page.url()).searchParams.get('f'), 'Incarnate');
+    await page.goBack();
+    await page.waitForFunction(() => document.querySelector('#boss-list')?.checkVisibility());
+    await page.locator('.boss-entry[data-key="905/Incarnate"]').focus();
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(() => document.querySelector('#pokedex-page')?.checkVisibility());
+    assert.equal(new URL(page.url()).searchParams.get('f'),'Incarnate');
     await page.goBack();
     await page.waitForFunction(() => document.querySelector('#boss-list')?.checkVisibility());
     assert.equal(await page.locator('#boss-list-groups thead th').count(), 2, 'Repeated renders must retain the headers.');
@@ -136,6 +166,25 @@ try {
     await page.locator('#boss-list-link').click();
     await page.waitForFunction(() => document.querySelector('#boss-list')?.checkVisibility());
     assert.equal(await page.title(), 'Boss List - DialgaDex');
+    const touch=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true,
+        locale:'en-US',ignoreHTTPSErrors:process.env.PLAYWRIGHT_IGNORE_HTTPS_ERRORS==='1'});
+    touch.on('pageerror',error=>errors.push(error.message));
+    await touch.goto(start.toString(),{waitUntil:'domcontentloaded'});
+    const touchBoss=touch.locator('.boss-entry[data-key="905/Incarnate"]');
+    await touchBoss.waitFor({timeout:120000});
+    await touchBoss.tap();
+    await touch.locator('#boss-name-popup').waitFor({state:'visible'});
+    assert.equal(await touch.locator('#boss-name-popup').textContent(),'Enamorus');
+    assert(new URL(touch.url()).searchParams.has('bosses'),'The first tap previews the name.');
+    await touch.touchscreen.tap(2,100);
+    await touch.locator('#boss-name-popup').waitFor({state:'hidden'});
+    await touchBoss.tap();
+    await touch.locator('#boss-name-popup').waitFor({state:'visible'});
+    await touchBoss.tap();
+    await touch.waitForFunction(()=>document.querySelector('#pokedex-page')?.checkVisibility());
+    assert.equal(new URL(touch.url()).searchParams.get('p'),'905');
+    assert.equal(new URL(touch.url()).searchParams.get('f'),'Incarnate');
+    await touch.close();
     assert.deepEqual(errors, []);
-    console.log('Boss List species categories, current five-star profiles, links, history, reload and responsive two-column layout:', report);
+    console.log('Boss List pools, compact sprite rows, viewport-safe hover/focus names, touch previews, links, history and responsive layout:', report);
 } finally { await browser.close(); }

@@ -100,16 +100,81 @@ function GetBossListGroups() {
         || group.released.length || group.unreleased.length);
 }
 
+let bossListPopupTarget = null;
+let bossListTouchTarget = null;
+
+function HideBossListPopup() {
+    bossListPopupTarget?.removeAttribute('aria-describedby');
+    bossListTouchTarget?.classList.remove('boss-selected');
+    bossListPopupTarget = bossListTouchTarget = null;
+    $('#boss-name-popup').prop('hidden', true);
+}
+
+function PositionBossListPopup() {
+    const popup = document.getElementById('boss-name-popup');
+    if (!bossListPopupTarget || !popup || popup.hidden) return;
+    const target = bossListPopupTarget.getBoundingClientRect();
+    if (!target.width || !target.height || target.bottom <= 0 || target.top >= innerHeight) {
+        HideBossListPopup();
+        return;
+    }
+    const size = popup.getBoundingClientRect();
+    const left = Math.max(8, Math.min(target.left + (target.width - size.width) / 2, innerWidth - size.width - 8));
+    const below = target.bottom + 4;
+    const top = below + size.height <= innerHeight - 8 ? below : Math.max(8, target.top - size.height - 4);
+    popup.style.left = left + 'px';
+    popup.style.top = top + 'px';
+}
+
+function ShowBossListPopup(entry) {
+    if (bossListPopupTarget !== entry) HideBossListPopup();
+    const popup = $('#boss-name-popup');
+    popup.empty().append($(entry).children('.boss-name').clone().removeAttr('aria-hidden'));
+    bossListPopupTarget = entry;
+    entry.setAttribute('aria-describedby', 'boss-name-popup');
+    popup.prop('hidden', false);
+    PositionBossListPopup();
+}
+
 function BindBossList() {
     $('#boss-leaderboard-back').on('click', event => {
         event.preventDefault();
         LoadRaidLeaderboardAndUpdateURL();
     });
-    $('#boss-list-groups').on('click', '.boss-entry', function(event) {
+    $('#boss-list-groups').off('.bossNames')
+    .on('mouseenter.bossNames focusin.bossNames', '.boss-entry', function() {
+        ShowBossListPopup(this);
+    })
+    .on('mouseleave.bossNames', '.boss-entry', function() {
+        if (bossListPopupTarget === this && bossListTouchTarget !== this && !this.matches(':focus-visible'))
+            HideBossListPopup();
+    })
+    .on('focusout.bossNames', '.boss-entry', function() {
+        if (bossListPopupTarget === this) HideBossListPopup();
+    })
+    .on('click.bossNames', '.boss-entry', function(event) {
         // Keep normal link behavior for opening another tab or window.
         if (event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
         event.preventDefault();
+        if (HasTouchScreen() && event.originalEvent?.detail !== 0 && bossListTouchTarget !== this) {
+            ShowBossListPopup(this);
+            bossListTouchTarget = this;
+            this.classList.add('boss-selected');
+            return;
+        }
+        HideBossListPopup();
         LoadPokedexAndUpdateURL(GetPokeDexMon(Number(this.dataset.id), this.dataset.form));
+    });
+    $(document).off('.bossNames')
+    .on('pointerdown.bossNames', event => {
+        if (!$(event.target).closest('.boss-entry').length) HideBossListPopup();
+    })
+    .on('keydown.bossNames', event => {
+        if (event.key === 'Escape') HideBossListPopup();
+    });
+    $(window).off('.bossNames').on('scroll.bossNames resize.bossNames', () => {
+        if (bossListPopupTarget?.matches(':focus-visible, :hover') || bossListTouchTarget) PositionBossListPopup();
+        else HideBossListPopup();
     });
 }
 
@@ -126,6 +191,7 @@ async function LoadBossList() {
 }
 
 function RenderBossList() {
+    HideBossListPopup();
     const table = $('#boss-list-groups');
     table.children('tbody').remove();
     for (const group of GetBossListGroups()) {
@@ -155,15 +221,17 @@ function RenderBossList() {
             else {
                 const roster = $('<ul class="boss-roster"></ul>');
                 for (const pokemon of group[availability]) {
+                    const name = BossListPokemonName(pokemon).attr('aria-hidden', 'true');
                     const link = $('<a class="boss-entry"></a>').attr({
                         href: '?' + new URLSearchParams({p: pokemon.id, f: pokemon.form}),
                         'data-key': PokemonDataKey(pokemon), 'data-id': pokemon.id, 'data-form': pokemon.form,
+                        'aria-label': name.text(),
                     });
                     const coords = GetPokemonIconCoords(pokemon.id, pokemon.form);
                     const sprite = $('<span class="pokemon-icon boss-sprite" aria-hidden="true"></span>')
                         .css({'background-image': 'url(' + ICONS_URL + ')',
                             'background-position': coords.x + 'px ' + coords.y + 'px'});
-                    link.append(sprite, BossListPokemonName(pokemon));
+                    link.append(sprite, name);
                     roster.append($('<li></li>').append(link));
                 }
                 cell.append(roster);

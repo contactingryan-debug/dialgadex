@@ -123,7 +123,10 @@ inherit their species category, while Mega/Primal/Super raid profiles retain
 their HP category. Unknown future five-star species remain visible under
 Other rather than being silently mislabeled or dropped. This display-only
 classification leaves the boss pool, weights, and combat calculations intact.
-Entries link to each boss form's Pokémon page. Both columns use the same
+Boss sprites share compact, wrapping rows within each column. Names and form
+labels appear in a counter-style popup on hover or keyboard focus. On touch,
+tap once to preview a name and again to open that boss form's Pokémon page.
+Links retain accessible names and normal new-tab behavior. Both columns use the same
 supported, usable boss pool as the rankings;
 the future column adds only forms absent from the current pool. Release status
 uses current data even when Data Preview projects a future release. Incomplete

@@ -424,3 +424,10 @@ The calculation formulas and upstream data sources are unchanged.
 - Correct the former Dark Mega label to Legendary Mega, and identify the blue
   and red designs as Event and Elite eggs. Retain the Ultra Wormhole and omit
   emblems. Keep desktop and mobile layouts compact with translated captions.
+
+## November 1, 2026 — Compact Boss List sprites and name popups
+
+- Arrange boss sprites together in wrapping rows within the Released and
+  Unreleased columns, with full names and form labels shown on hover or focus.
+- Match the raid-counter popup styling and keep popups inside the viewport.
+  Add touch name previews, keyboard access, and accessible sprite-link labels.
