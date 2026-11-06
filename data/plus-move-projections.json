@@ -1,5 +1,5 @@
 {
-    "reviewed": "2026-10-28",
+    "reviewed": "2026-11-05",
     "modelDate": "2026-10-17",
     "model": {
         "intercept": 147.391,
@@ -135,15 +135,18 @@
             "form": "Mega",
             "pokemon": "Mega Clefable",
             "move": "Moonblast+",
-            "assignmentEvidence": "Datamined assignment",
+            "assignmentEvidence": "Official — announced future",
             "registryRow": 67,
             "baseMove": "Moonblast",
             "type": "Fairy",
             "referenceAttack": 253,
             "referenceDuration": 4000,
             "referencePrediction": 185,
-            "publishedPower": null,
-            "hypothesis": false
+            "publishedPower": 160,
+            "hypothesis": false,
+            "sources": [
+                "https://pokemongo.com/en/news/clefable-super-mega-raid-day-2026"
+            ]
         },
         {
             "id": 65,

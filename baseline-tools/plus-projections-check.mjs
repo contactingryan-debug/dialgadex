@@ -28,10 +28,10 @@ function fixture() {
     return {evaluate, json};
 }
 
-test('all 69 unknown canonical powers reproduce the recovered per-move model', () => {
+test('all 68 unknown canonical powers reproduce the recovered per-move model', () => {
     const {json} = fixture();
     const predicted = projections.assignments.filter(rule => rule.move && rule.publishedPower == null);
-    assert.equal(predicted.length, 69);
+    assert.equal(predicted.length, 68);
     for (const rule of predicted)
         assert.equal(json(`PredictPlusMovePower(${rule.referenceAttack},${rule.referenceDuration})`), rule.referencePrediction, rule.pokemon);
 });

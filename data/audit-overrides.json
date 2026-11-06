@@ -1,5 +1,5 @@
 {
-    "reviewed": "2026-10-31",
+    "reviewed": "2026-11-05",
     "corrections": [
         {
             "key": "beedrill-super-max",
@@ -638,6 +638,17 @@
         }
     ],
     "releaseReviews": [
+        {
+            "key": "mega-clefable-announcement",
+            "id": 36,
+            "form": "Mega",
+            "effectiveDate": "2026-11-28",
+            "raidStatus": "announced",
+            "note": "Mega Clefable is scheduled to debut in Super Mega Raids on November 28, 2026, with Super Max and Moonblast+. The announcement gives Moonblast+ 160 base raid power.",
+            "sources": [
+                "https://pokemongo.com/en/news/clefable-super-mega-raid-day-2026"
+            ]
+        },
         {
             "key": "mega-chandelure-release",
             "id": 609,
