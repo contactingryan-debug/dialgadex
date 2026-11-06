@@ -98,7 +98,7 @@ function releaseFixture(preview = false) {
             {...structuredClone(jb_pkm[0]),id:807,name:'Mega Zeraora',form:'Mega',released:true}];
         jb_cm.push({name:'Ominous Wind+',duration:2500,power:145,energy_delta:-100,mega_temp:true});
         jb_max_id=807;
-        ApplyVerifiedPokemonReleases(jb_pkm,jb_spec,jb_audit_manifest);
+        ApplyPokemonReleaseReviews(jb_pkm,jb_spec,jb_audit_manifest);
         settings_speculative=${preview};
         if(settings_speculative) PatchSpeculative(true);
     `);
@@ -130,20 +130,20 @@ test('release bridges prefer released main data and require an explicit verified
     const {evaluate,json}=releaseFixture();
     evaluate(`mainRecord={...structuredClone(jb_pkm.find(p=>p.id===609)),raid_tier:9,
         temp_cm:['New source move'],stats:{baseAttack:340,baseDefense:230,baseStamina:155}};
-        delete mainRecord._verifiedRelease;delete mainRecord._auditCorrections;
+        delete mainRecord._releaseReview;delete mainRecord._auditCorrections;
         roster=[structuredClone(mainRecord)];
-        ApplyVerifiedPokemonReleases(roster,jb_spec,jb_audit_manifest)`);
+        ApplyPokemonReleaseReviews(roster,jb_spec,jb_audit_manifest)`);
     assert.deepEqual(json('roster'),json('[mainRecord]'));
     for(const status of ['announced',undefined]) {
-        evaluate(`roster=[];ApplyVerifiedPokemonReleases(roster,jb_spec,
+        evaluate(`roster=[];ApplyPokemonReleaseReviews(roster,jb_spec,
             {releaseReviews:[{...jb_audit_manifest.releaseReviews[0],raidStatus:${JSON.stringify(status)}}]})`);
         assert.deepEqual(json('roster'),[]);
     }
-    evaluate(`roster=[];ApplyVerifiedPokemonReleases(roster,[],jb_audit_manifest);
-        ApplyVerifiedPokemonReleases(roster,[{...jb_spec[0],released:false}],jb_audit_manifest)`);
+    evaluate(`roster=[];ApplyPokemonReleaseReviews(roster,[],jb_audit_manifest);
+        ApplyPokemonReleaseReviews(roster,[{...jb_spec[0],released:false}],jb_audit_manifest)`);
     assert.deepEqual(json('roster'),[]);
     evaluate(`roster=[{...structuredClone(jb_spec[0]),released:false,raid_tier:4}];
-        ApplyVerifiedPokemonReleases(roster,jb_spec,jb_audit_manifest)`);
+        ApplyPokemonReleaseReviews(roster,jb_spec,jb_audit_manifest)`);
     assert.equal(json('roster.length'),1);
     assert.equal(json('roster[0].released'),true);
     assert.equal(json('roster[0].raid_tier'),8);

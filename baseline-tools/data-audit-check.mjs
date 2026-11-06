@@ -183,7 +183,7 @@ test('confirmed announced-feed releases retain provenance and current audit incl
     evaluate(`jb_spec.push({...structuredClone(jb_source_pkm.find(p=>p.id===150&&p.form==='Normal')),
         id:609,name:'Mega Chandelure',form:'Mega',released:true,shadow:false,raid_tier:8,
         stats:{baseAttack:335,baseDefense:227,baseStamina:155}});
-        ApplyVerifiedPokemonReleases(jb_pkm,jb_spec,manifest)`);
+        ApplyPokemonReleaseReviews(jb_pkm,jb_spec,manifest)`);
     for(const preview of [false,true,false]) {
         evaluate(`PatchSpeculative(${preview});settings_speculative=${preview}`);
         const info=json('GetPokemonAuditInfo(609,"Mega",BuildPokemonAuditContext())');
@@ -200,6 +200,30 @@ test('confirmed announced-feed releases retain provenance and current audit incl
         assert.match(copied,/evidence: verified/);
         assert.match(copied,/https:\/\/pokemongo.com\/news\/chandelure-super-mega-raid-day-2026/);
         assert.equal(json('jb_source_pkm.some(p=>p.id===609&&p.form==="Mega")'),false);
+    }
+});
+
+test('Mega Clefable counts as released while its raid debut remains announced', () => {
+    const {evaluate,json}=fixture({preview:false});
+    evaluate(`jb_spec.push({...structuredClone(jb_source_pkm.find(p=>p.id===150&&p.form==='Normal')),
+        id:36,name:'Mega Clefable',form:'Mega',released:true,shadow:false,raid_tier:8,
+        types:['Fairy','Flying'],temp_cm:['Moonblast+']});
+        ApplyPokemonReleaseReviews(jb_pkm,jb_spec,manifest)`);
+    for (const preview of [false,true]) {
+        evaluate(`PatchSpeculative(${preview});settings_speculative=${preview}`);
+        const info=json('GetPokemonAuditInfo(36,"Mega",BuildPokemonAuditContext())');
+        assert.equal(info.currentReleased,true);
+        assert.equal(info.currentRaidReleased,true);
+        assert.equal(info.attackerIncluded,true);
+        assert.equal(info.bossIncluded,true);
+        assert.equal(info.evidence,'announced');
+        assert.equal(info.projectedStats,true);
+        assert.equal(info.releaseReview.effectiveDate,'2026-11-28');
+        assert.deepEqual(info.attackerLevels,[52]);
+        assert.deepEqual(info.selected.temp_cm,['Moonblast+']);
+        const group=json('GetBossListGroups().find(group=>group.key==="super-mega")');
+        assert.equal(group.released.filter(p=>p.id===36&&p.form==='Mega').length,1);
+        assert.equal(group.unreleased.some(p=>p.id===36&&p.form==='Mega'),false);
     }
 });
 

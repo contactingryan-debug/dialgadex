@@ -201,7 +201,7 @@ async function LoadRaidLeaderboard() {
         if (raidLeaderboardCache.has(key)) matrix = raidLeaderboardCache.get(key);
         else {
             matrix = await new Promise((resolve, reject) => {
-                const worker = new Worker('scripts/raid-leaderboard-worker.js?v=8ef7ed42fd90');
+                const worker = new Worker('scripts/raid-leaderboard-worker.js?v=2a1b295fc661');
                 raidLeaderboardWorker = worker;
                 raidLeaderboardReject = reject;
                 worker.onmessage = event => {

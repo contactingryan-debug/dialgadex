@@ -64,7 +64,7 @@ test('a regular Mega raid can retain full current XL boosting and Super Max elig
 test('a verified announced-feed release qualifies for current XL boosting and Super Max without a main-feed record',()=>{
     const {evaluate,json}=fixture();
     evaluate(`releasedMega={...structuredClone(get(6,'Mega')),id:609,name:'Mega Chandelure',
-        types:['Ghost','Fire'],raid_tier:8,_verifiedRelease:'mega-chandelure-release'};
+        types:['Ghost','Fire'],raid_tier:8,_releaseReview:'mega-chandelure-release'};
         jb_pkm.push(releasedMega)`);
     assert.equal(json('jb_source_pkm.some(p=>p.id===609)'),false);
     assert.equal(json('IsCatchXLProjection(releasedMega)'),false);
@@ -72,7 +72,7 @@ test('a verified announced-feed release qualifies for current XL boosting and Su
     assert.equal(json('HasSuperMaxUnlocked(releasedMega)'),true);
     assert.equal(json('GetCatchXLMatch(GetCatchXLBoostProfile(releasedMega),{types:["Ghost"],status:"known"},4,false).eligible'),true);
     assert.equal(json('HasSuperMaxUnlocked({...releasedMega,released:false})'),false);
-    assert.equal(json('IsCatchXLProjection({...releasedMega,_verifiedRelease:undefined})'),true);
+    assert.equal(json('IsCatchXLProjection({...releasedMega,_releaseReview:undefined})'),true);
 });
 
 test('Mega catches use the base encounter typing instead of the fought form',()=>{

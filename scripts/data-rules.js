@@ -61,20 +61,20 @@ function MarkPokemonMovePlaceholder(pokemon, previewOnly = false) {
     return pokemon;
 }
 
-/** Bridge confirmed releases while their complete records remain in the announced feed. */
-function ApplyVerifiedPokemonReleases(pokemon, announced = [], manifest = {}) {
+/** Bring reviewed release records from the announced feed into current calculations. */
+function ApplyPokemonReleaseReviews(pokemon, announced = [], manifest = {}) {
     for (const review of manifest.releaseReviews || []) {
-        // Neither a preview release flag nor an announcement date confirms a release.
-        if (review.raidStatus !== 'verified') continue;
+        // Require verified raid history or an explicit local release override.
+        if (review.raidStatus !== 'verified' && review.includeAsReleased !== true) continue;
         const patch = announced.find(entry => PokemonAuditRuleMatches(review, entry));
         if (!patch?.released) continue;
         const index = pokemon.findIndex(entry => PokemonAuditRuleMatches(review, entry));
         if (index >= 0 && pokemon[index].released) continue; // Prefer released main-feed data.
         const entry = MarkPokemonMovePlaceholder({...(index >= 0 ? pokemon[index] : {}),
             ...structuredClone(patch)}, true);
-        entry._verifiedRelease = review.key || PokemonDataKey(entry);
+        entry._releaseReview = review.key || PokemonDataKey(entry);
         entry._auditCorrections = [...(entry._auditCorrections || []), {
-            key: entry._verifiedRelease,
+            key: entry._releaseReview,
             fields: Object.keys(patch).filter(key => !['id', 'name', 'form', 'eff_date'].includes(key))
         }];
         if (index < 0) pokemon.push(entry);

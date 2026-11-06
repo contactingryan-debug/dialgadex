@@ -15,7 +15,7 @@ let jb_source_pkm, jb_audit_manifest, jb_plus_predictions;
 let jb_catch_profiles;
 const CATCH_XL_URL = 'data/catch-xl-profiles.json?v=ebb12b28669b';
 const PLUS_PREDICTIONS_URL = 'data/plus-move-projections.json?v=ab5e52f80dcb';
-const AUDIT_MANIFEST_URL = 'data/audit-overrides.json?v=0c1ef2055f44';
+const AUDIT_MANIFEST_URL = 'data/audit-overrides.json?v=15820145e58c';
 
 /**
  * Load JSONs from resource repo
@@ -79,7 +79,7 @@ async function LoadJSONData() {
 
     try {
         await Promise.all(jsonLoadReqs);
-        ApplyVerifiedPokemonReleases(jb_pkm, jb_spec, jb_audit_manifest);
+        ApplyPokemonReleaseReviews(jb_pkm, jb_spec, jb_audit_manifest);
         ApplyPokemonAuditOverrides(jb_pkm, jb_audit_manifest);
         $("#loading-bar").css("display", "none");
         

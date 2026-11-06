@@ -25,7 +25,7 @@ function BuildPokemonAuditContext() {
     const manifest = jb_audit_manifest || {};
     const source = typeof jb_source_pkm !== 'undefined' && jb_source_pkm ? jb_source_pkm : GetCalculationPokemon(false);
     const current = ApplyPokemonAuditOverrides(
-        ApplyVerifiedPokemonReleases(structuredClone(source), jb_spec || [], manifest), manifest);
+        ApplyPokemonReleaseReviews(structuredClone(source), jb_spec || [], manifest), manifest);
     const currentMap = new Map(current.map(pokemon => [PokemonDataKey(pokemon), pokemon]));
     const previewMap = new Map(current.map(pokemon => [PokemonDataKey(pokemon), structuredClone(pokemon)]));
     for (const patch of jb_spec || []) {
@@ -78,7 +78,8 @@ function GetPokemonAuditInfo(id, form, context) {
         : corrections.some(rule => Object.hasOwn(rule.values, 'raid_tier'))
         || (releaseReview?.raidStatus === 'verified' && current?.released)
         ? 'verified' : releaseReview?.raidStatus === 'announced' ? 'announced' : 'source-tag';
-    const projectedStats = statReview?.kind === 'projection' || (!source && !current?._verifiedRelease);
+    const verifiedRelease = current?._releaseReview && releaseReview?.raidStatus === 'verified';
+    const projectedStats = statReview?.kind === 'projection' || (!source && !verifiedRelease);
     const statsChanged = statReview && ['baseAttack', 'baseDefense', 'baseStamina']
         .some(stat => display.stats?.[stat] !== statReview.expected[stat]);
     const mega = IsMegaPrimalUltraForm(display);

@@ -644,7 +644,8 @@
             "form": "Mega",
             "effectiveDate": "2026-11-28",
             "raidStatus": "announced",
-            "note": "Mega Clefable is scheduled to debut in Super Mega Raids on November 28, 2026, with Super Max and Moonblast+. The announcement gives Moonblast+ 160 base raid power.",
+            "includeAsReleased": true,
+            "note": "DialgaDex counts Mega Clefable as released for attackers and raid bosses ahead of its scheduled November 28, 2026 Pokémon GO debut. The Super Mega Raid Day announcement confirms Super Max and Moonblast+ at 160 base raid power.",
             "sources": [
                 "https://pokemongo.com/en/news/clefable-super-mega-raid-day-2026"
             ]
