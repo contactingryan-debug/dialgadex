@@ -11,7 +11,7 @@ try {
     const page=await browser.newPage({...devices['iPhone 13'],locale:'en-US',permissions:['clipboard-read','clipboard-write'],
         ignoreHTTPSErrors:process.env.PLAYWRIGHT_IGNORE_HTTPS_ERRORS==='1'});
     const errors=[];page.on('pageerror',error=>errors.push(error.message));
-    const start=new URL(base);start.search='?leaderboard&xl&sort=xl';
+    const start=new URL(base);start.search='?leaderboard&xl&sort=xl&no-super-max';
     await page.goto(start.toString(),{waitUntil:'domcontentloaded'});
     async function ready(future=false) {
         await page.waitForFunction(future=>typeof raidLeaderboardResult!=='undefined'&&raidLeaderboardResult
