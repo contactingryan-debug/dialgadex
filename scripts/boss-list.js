@@ -106,7 +106,7 @@ function HideBossListPopup() {
     bossListPopupTarget?.removeAttribute('aria-describedby');
     bossListTouchTarget?.classList.remove('boss-selected');
     bossListPopupTarget = bossListTouchTarget = null;
-    $('#boss-name-popup').prop('hidden', true);
+    $('#boss-name-popup').prop('hidden', true).empty();
 }
 
 function PositionBossListPopup() {
@@ -129,11 +129,35 @@ function PositionBossListPopup() {
 }
 
 function ShowBossListPopup(entry) {
-    if (bossListPopupTarget !== entry) HideBossListPopup();
-    const popup = $('#boss-name-popup');
-    popup.empty().append($(entry).children('.boss-name').clone().removeAttr('aria-hidden'));
+    if (bossListPopupTarget === entry) {
+        PositionBossListPopup();
+        return;
+    }
+    HideBossListPopup();
     bossListPopupTarget = entry;
+
+    const name = GetPokemonImgSrcName(Number(entry.dataset.id), entry.dataset.form);
+    const sources = [
+        JB_URL + GIFS_PATH + name + '.gif',
+        CDN_URL + GIFS_PATH + name + '.gif',
+        JB_URL + POGO_PNGS_PATH + name + '.png',
+        CDN_URL + POGO_PNGS_PATH + name + '.png',
+    ];
+    let sourceIndex = 0;
+    const image = $('<img class="boss-popup-image" alt="" hidden>')
+        .one('load', function() {
+            this.hidden = false;
+            PositionBossListPopup();
+        })
+        .on('error', function() {
+            const next = sources[++sourceIndex];
+            if (next) this.src = next;
+            else $(this).remove();
+        });
+    const popup = $('#boss-name-popup');
+    popup.append(image, $(entry).children('.boss-name').clone().removeAttr('aria-hidden'));
     PositionBossListPopup();
+    image.attr('src', sources[0]);
 }
 
 function BindBossList() {

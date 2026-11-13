@@ -122,6 +122,28 @@ try {
     assert(!await page.locator('.boss-name .raid-species').evaluateAll(names=>names.some(name=>name.textContent.startsWith('Shadow '))),
         'Shadow attacker availability must not rename an ordinary raid boss.');
     await page.evaluate(async()=>{const image=new Image();image.src=ICONS_URL;await image.decode();});
+    const popup=page.locator('#boss-name-popup');
+    const image=popup.locator('.boss-popup-image');
+    assert.equal(await image.count(),0,'Previews should load when a boss is selected.');
+    await page.locator('.boss-entry[data-key="6/Mega"]').hover();
+    await image.waitFor({state:'visible',timeout:20000});
+    assert.match(await image.getAttribute('src'),/\/graphics\/ani\/charizard-megax\.gif$/);
+    const imageBox=await image.boundingBox();
+    const nameBox=await popup.locator('.boss-name').boundingBox();
+    assert(imageBox.y+imageBox.height<=nameBox.y,'The animation should sit above the name.');
+    await page.mouse.move(0,0);
+    await popup.waitFor({state:'hidden'});
+    assert.equal(await image.count(),0);
+
+    const missingAnimation='**/graphics/ani/charizard-megay.gif';
+    await page.route(missingAnimation,route=>route.fulfill({status:404}));
+    await page.locator('.boss-entry[data-key="6/MegaY"]').hover();
+    await image.waitFor({state:'visible',timeout:20000});
+    assert.match(await image.getAttribute('src'),/\/graphics\/pogo-256\/charizard-megay\.png$/);
+    await page.mouse.move(0,0);
+    await popup.waitFor({state:'hidden'});
+    await page.unroute(missingAnimation);
+
     for (const width of [1100,900,600,390,320]) {
         await page.setViewportSize({width,height:900});
         const layout = await page.evaluate(() => ({overflow:document.documentElement.scrollWidth > innerWidth + 1,
@@ -152,7 +174,6 @@ try {
         assert(layout.sharedRows&&layout.wraps,`Sprites should share rows and wrap at ${width}px.`);
         const floette=page.locator('.boss-entry[data-key="670/Mega"]');
         await floette.hover();
-        const popup=page.locator('#boss-name-popup');
         await popup.waitFor({state:'visible'});
         assert.equal(await popup.textContent(),'Floette (Eternal Flower)');
         const box=await popup.boundingBox();
