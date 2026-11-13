@@ -114,15 +114,12 @@ remain compact. This emphasis follows the relative Jenks tiers, rather than
 defining a fixed performance or investment threshold.
 Calculation notes appear below the list. The species funnel opens and closes
 on hover, matching Type Rankings, and retains touch and keyboard controls.
-**Boss List →** opens a two-column roster at `?bosses`: Released and Unreleased,
-with Super Mega (25,000), Legendary Mega (22,500), and Mega (9,000) sections.
-The 15,000 HP bosses split into Legendary, Sub-Legendary, and Mythical using
-the supplied species lists; Ultra Beasts are Sub-Legendary in this display.
-Eligible Paradox raid species have their own section, shown only when populated. All forms
-inherit their species category, while Mega/Primal/Super raid profiles retain
-their HP category. Unknown future five-star species remain visible under
-Other rather than being silently mislabeled or dropped. This display-only
-classification leaves the boss pool, weights, and combat calculations intact.
+**Raid Bosses →** opens the Released and Unreleased roster at `?bosses`.
+Four sections show the raid eggs for Super Mega (25,000 HP), Legendary Mega
+(22,500 HP), five-star (15,000 HP), and Mega (9,000 HP) raids.
+The five-star tier has Legendary, Sub-Legendary, and Mythical subsections.
+Ultra Beasts appear under Sub-Legendary. When present, Paradox and other
+five-star bosses appear in labeled rows below those subsections.
 Boss sprites share compact, wrapping rows within each column. Names and form
 labels appear in a counter-style popup on hover or keyboard focus. On touch,
 tap once to preview a name and again to open that boss form's Pokémon page.

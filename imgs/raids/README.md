@@ -1,11 +1,11 @@
 # Raid graphics
 
-The original gallery uses unmodified Pokémon GO assets from
+The Raid Bosses page uses unmodified Pokémon GO assets from
 [PokeMiners/pogo_assets](https://github.com/PokeMiners/pogo_assets/tree/db10df75d6f6f92018d9786af0aecc238fecc4ef/Images/Raids),
 pinned to commit `db10df75d6f6f92018d9786af0aecc238fecc4ef`. Additional Super Mega
 and Shadow graphics come from the linked Serebii and GO Hub raid guides below.
-Artwork belongs to its respective Pokémon GO rights holders. The Boss List
-gallery uses a selection of these files.
+Artwork belongs to its respective Pokémon GO rights holders. The tier headers
+use the Super Mega, Legendary Mega, Legendary, and Mega eggs.
 
 | Local file | Original file under `Images/Raids/` |
 |---|---|

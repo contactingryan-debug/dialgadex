@@ -98,7 +98,7 @@ try {
     assert.equal(await page.locator('.raid-first,.raid-near,.raid-positive').count(),0);
     assert.equal(await page.evaluate(()=>raidLeaderboardState.weighting),'groups');
     assert.deepEqual(await page.locator('#nav-drawer .menu a').allTextContents(),
-        ['Raid Leaderboard','Boss List','Type Rankings','Data Audit','Move Data','Type Chart']);
+        ['Raid Leaderboard','Raid Bosses','Type Rankings','Data Audit','Move Data','Type Chart']);
     assert.equal(await page.locator('#raid-filters').isVisible(),false);
     await openFilters();
     assert.equal(await page.locator('#raid-filters input[type="checkbox"]:visible').count(),3);

@@ -17,11 +17,22 @@ try {
     const start = new URL(base); start.search = '?bosses';
     await page.goto(start.toString(), {waitUntil:'domcontentloaded'});
     await page.locator('.boss-tier-group').last().waitFor({timeout:120000});
-    assert.equal(await page.title(), 'Boss List - DialgaDex');
+    assert.equal(await page.title(), 'Raid Bosses - DialgaDex');
+    assert.equal(await page.locator('#boss-list h1').textContent(), 'Raid Bosses');
     assert.deepEqual(await page.locator('#boss-list-groups thead th').allTextContents(), ['Released','Unreleased']);
-    const categoryLabels = await page.locator('.boss-category').allTextContents();
-    assert.deepEqual(categoryLabels.filter(label => !['Paradox','Other'].includes(label)),
-        ['Super Mega','Legendary Mega','Legendary','Sub-Legendary','Mythical','Mega']);
+    assert.deepEqual(await page.locator('.boss-tier-name').allTextContents(),
+        ['Super Mega','Legendary Mega','Five-Star Raids','Mega']);
+    assert.deepEqual(await page.locator('.boss-tier-group').evaluateAll(groups => groups.map(group => [
+        Number(group.dataset.hp), group.querySelector('.boss-egg').getAttribute('src'),
+    ])), [
+        [25000,'imgs/raids/super-mega-egg.png'],
+        [22500,'imgs/raids/dark-mega-egg.png'],
+        [15000,'imgs/raids/legendary-egg.png'],
+        [9000,'imgs/raids/mega-egg.png'],
+    ]);
+    assert.deepEqual(await page.locator('.boss-subsection-heading h3').allTextContents(),
+        ['Legendary','Sub-Legendary','Mythical']);
+    await page.locator('.boss-egg').evaluateAll(images => Promise.all(images.map(image => image.decode())));
     const report = await page.evaluate(() => {
         const groups = [...document.querySelectorAll('.boss-tier-group')];
         const rendered = groups.flatMap(group => [...group.querySelectorAll('.boss-cell')].flatMap(cell =>
@@ -32,7 +43,10 @@ try {
         if (JSON.stringify(rendered) !== JSON.stringify(expected)) throw new Error('Rendered roster differs from the calculation pools.');
         const pool = new Set(GetRaidBosses(null,null,false).concat(GetRaidBosses(null,null,true)).map(PokemonDataKey));
         if (pool.size !== rendered.length || rendered.some(row => !pool.has(row.key))) throw new Error('Bosses missing or duplicated.');
-        if (groups.some(group => group.querySelectorAll('.boss-cell').length !== 2)) throw new Error('Each category needs two columns.');
+        if (groups.some(group => !group.querySelector('.boss-tier-heading .boss-total-count').textContent
+            .startsWith(group.querySelectorAll('.boss-entry').length + ' '))) throw new Error('Tier totals must include all subsection rosters.');
+        if ([...document.querySelectorAll('.boss-tier-rosters')].some(row => row.cells.length !== 2))
+            throw new Error('Each roster needs two columns.');
         const released = GetRaidBosses(null,null,false);
         for (const id of [791,792,894,895,905]) {
             const boss = released.find(p => p.id === id && (id !== 905 || p.form === 'Incarnate'));
@@ -88,7 +102,7 @@ try {
     for (const key of ['894/Normal','895/Normal','905/Incarnate'])
         assert.equal(await page.locator(`.boss-tier-group[data-hp="15000"] .boss-cell[data-availability="released"] .boss-entry[data-key="${key}"]`).count(), 1);
     for (const id of [791,792])
-        assert.equal(await page.locator(`.boss-tier-group[data-category="legendary"] .boss-cell[data-availability="released"] .boss-entry[data-id="${id}"]`).count(), 1);
+        assert.equal(await page.locator(`.boss-tier-rosters[data-category="legendary"] .boss-cell[data-availability="released"] .boss-entry[data-id="${id}"]`).count(), 1);
     for (const key of ['15/Mega','26/Mega','26/MegaY','71/Mega','121/Mega','149/Mega','227/Mega','229/Mega','310/Mega','687/Mega','870/Mega'])
         assert.equal(await page.locator(`.boss-tier-group[data-category="mega"] .boss-cell[data-availability="released"] .boss-entry[data-key="${key}"]`).count(),1);
     for (const id of [652,655,658]) {
@@ -156,6 +170,7 @@ try {
     assert.equal(await page.locator('.boss-entry').count(), report.released + report.unreleased);
     await page.locator('#boss-leaderboard-back').click();
     await page.waitForFunction(() => document.querySelector('#raid-leaderboard')?.checkVisibility());
+    assert.equal(await page.locator('#raid-boss-list').textContent(), 'Raid Bosses →');
     await page.locator('#raid-boss-list').click();
     await page.waitForFunction(() => document.querySelector('#boss-list')?.checkVisibility());
     assert(new URL(page.url()).searchParams.has('bosses'));
@@ -165,7 +180,7 @@ try {
     await page.locator('#menu-icon').hover();
     await page.locator('#boss-list-link').click();
     await page.waitForFunction(() => document.querySelector('#boss-list')?.checkVisibility());
-    assert.equal(await page.title(), 'Boss List - DialgaDex');
+    assert.equal(await page.title(), 'Raid Bosses - DialgaDex');
     const touch=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true,
         locale:'en-US',ignoreHTTPSErrors:process.env.PLAYWRIGHT_IGNORE_HTTPS_ERRORS==='1'});
     touch.on('pageerror',error=>errors.push(error.message));
@@ -186,5 +201,5 @@ try {
     assert.equal(new URL(touch.url()).searchParams.get('f'),'Incarnate');
     await touch.close();
     assert.deepEqual(errors, []);
-    console.log('Boss List pools, compact sprite rows, viewport-safe hover/focus names, touch previews, links, history and responsive layout:', report);
+    console.log('Raid Bosses tiers, release columns, compact sprites, name previews, navigation and responsive layout:', report);
 } finally { await browser.close(); }
