@@ -40,6 +40,3 @@ Category labels are cross-checked against [Serebii's raid guide](https://serebii
 and [GO Hub's raid guide](https://pokemongohub.net/post/guide/go-hub-guide-to-raid-battles/).
 Shadow options show the standard Normal, Rare and Legendary eggs with their
 purple Shadow aura. They do not imply that Shadow Mega raids are available.
-
-The gallery displays `legendary-mega-egg-centered.png`, an edited version of
-the Legendary Mega egg with the three bars centered on the shell.
