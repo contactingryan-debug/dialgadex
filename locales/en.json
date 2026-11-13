@@ -674,7 +674,6 @@
         "legendary": "Legendary",
         "mega": "Mega",
         "hp": "{hp} HP",
-        "empty": "None",
         "note": "Released means previously available, not currently in rotation. Unreleased shows additional boss forms allowed by the Unreleased filter; incomplete movesets are excluded.",
         "total-count": "{count} total",
         "sub-legendary": "Sub-Legendary",

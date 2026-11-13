@@ -62,7 +62,7 @@ test('Boss List categories partition the ranking pool once and retain current re
     assert.equal(new Set([...released, ...unreleased]).size, released.length + unreleased.length);
     const before = json('GetBossListGroups()');
     evaluate('settings_include_unreleased=true');
-    assert.deepEqual(json('GetBossListGroups()'), before, 'Both columns are independent of the leaderboard toggle.');
+    assert.deepEqual(json('GetBossListGroups()'), before, 'Raid Bosses availability is independent of the leaderboard toggle.');
 });
 
 test('species categories preserve the supplied distinctions and apply to every form without changing eligibility', () => {

@@ -120,15 +120,16 @@ Four sections show the raid eggs for Super Mega (25,000 HP), Legendary Mega
 The five-star tier has Legendary, Sub-Legendary, and Mythical subsections.
 Ultra Beasts appear under Sub-Legendary. When present, Paradox and other
 five-star bosses appear in labeled rows below those subsections.
-Boss sprites share compact, wrapping rows within each column. Names and form
+Boss sprites share compact, full-width rows labeled Released or Unreleased.
+Only groups with eligible bosses appear. Names and form
 labels appear in a counter-style popup on hover or keyboard focus. On touch,
 tap once to preview a name and again to open that boss form's Pokémon page.
-Links retain accessible names and normal new-tab behavior. Both columns use the same
-supported, usable boss pool as the rankings;
-the future column adds only forms absent from the current pool. Release status
+Links retain accessible names and normal new-tab behavior. The page uses the same
+supported, usable boss pool as the rankings.
+The Unreleased group shows forms absent from the current pool. Release status
 uses current data even when Data Preview projects a future release. Incomplete
-learnsets and Max Battle-only forms remain excluded. Both columns stay visible
-on mobile, independently of the leaderboard's Unreleased toggle.
+learnsets and Max Battle-only forms remain excluded. The roster shows both
+availability groups independently of the leaderboard's Unreleased toggle.
 
 Enamorus (Incarnate), Regidrago, and Regieleki use their later five-star raid
 profile (15,000 HP). Narrow, sourced corrections replace stale Elite tags;
@@ -144,9 +145,8 @@ tag later changes to tier 4. Tags 8/9 remain a fallback for other forms.
 Chesnaught, Delphox and Greninja remain released Mega attackers. Their Mega
 Evolutions debuted through research/GO Pass rather than raids, so
 `raid_released: false` keeps them out of current boss calculations and places
-their hypothetical upstream boss profiles in the Unreleased column. That column
-does not mean their Mega Evolutions are unavailable to use. Raid release and
-Super Max availability appear separately in Data Audit and copied details.
+their hypothetical upstream boss profiles in the Unreleased group. Raid release
+and Super Max availability appear separately in Data Audit and copied details.
 
 The shared **Unreleased** option applies to both attackers and the
 raid-boss pool throughout the rankings, Each type summaries, and leaderboard.

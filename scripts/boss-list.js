@@ -192,84 +192,75 @@ async function LoadBossList() {
 
 function RenderBossList() {
     HideBossListPopup();
-    const table = $('#boss-list-groups');
+    const container = $('#boss-list-groups').empty();
     const groups = GetBossListGroups();
-    table.children('tbody').remove();
     for (const tier of BOSS_LIST_TIERS) {
         const tierGroups = groups.filter(group => group.hp === tier.hp);
         const total = tierGroups.reduce((sum, group) => sum + group.released.length + group.unreleased.length, 0);
         const headingID = 'boss-tier-' + tier.key;
-        const section = $('<tbody class="boss-tier-group"></tbody>').attr({
-            'data-hp': tier.hp, 'data-category': tier.key,
+        const section = $('<section class="boss-tier-group"></section>').attr({
+            'data-hp': tier.hp, 'data-category': tier.key, 'aria-labelledby': headingID,
         });
-        const heading = $('<th colspan="2" scope="rowgroup"></th>').attr('id', headingID)
-            .append($('<div class="boss-tier-title"></div>').append(
-                $('<h2 class="boss-tier-label"></h2>').append(
-                    $('<img class="boss-egg" width="44" height="44" alt="">').attr('src', 'imgs/raids/' + tier.egg),
-                    $('<span class="boss-tier-text"></span>').append(
-                        $('<span class="boss-tier-name"></span>').text(BossListText(tier.key)),
-                        $('<span class="boss-hp"></span>').text(BossListText('hp', {
-                            hp: tier.hp.toLocaleString(currentLocale),
-                        })))),
-                $('<span class="boss-total-count"></span>').text(BossListText('total-count', {
-                    count: total.toLocaleString(currentLocale),
-                }))));
-        section.append($('<tr class="boss-tier-heading"></tr>').append(heading));
+        section.append($('<div class="boss-tier-heading boss-tier-title"></div>').append(
+            $('<h2 class="boss-tier-label"></h2>').attr('id', headingID).append(
+                $('<img class="boss-egg" width="44" height="44" alt="">').attr('src', 'imgs/raids/' + tier.egg),
+                $('<span class="boss-tier-text"></span>').append(
+                    $('<span class="boss-tier-name"></span>').text(BossListText(tier.key)),
+                    $('<span class="boss-hp"></span>').text(BossListText('hp', {
+                        hp: tier.hp.toLocaleString(currentLocale),
+                    })))),
+            $('<span class="boss-total-count"></span>').text(BossListText('total-count', {
+                count: total.toLocaleString(currentLocale),
+            }))));
         for (const group of tierGroups) {
             const optional = OPTIONAL_BOSS_GROUPS.includes(group.key);
-            let headers = headingID;
             if (tier.categories && !optional) {
-                const subsectionID = 'boss-subsection-' + group.key;
                 const count = group.released.length + group.unreleased.length;
-                const subheading = $('<th colspan="2"></th>').attr('id', subsectionID)
-                    .append($('<div class="boss-tier-title"></div>').append(
-                        $('<h3></h3>').text(BossListText(group.key)),
-                        $('<span class="boss-total-count"></span>').text(BossListText('total-count', {
-                            count: count.toLocaleString(currentLocale),
-                        }))));
-                section.append($('<tr class="boss-subsection-heading"></tr>').append(subheading));
-                headers += ' ' + subsectionID;
+                section.append($('<div class="boss-subsection-heading boss-tier-title"></div>').append(
+                    $('<h3></h3>').text(BossListText(group.key)),
+                    $('<span class="boss-total-count"></span>').text(BossListText('total-count', {
+                        count: count.toLocaleString(currentLocale),
+                    }))));
             }
-            section.append(BuildBossRosterRow(group, headers, optional));
+            section.append(BuildBossRosters(group, optional));
         }
-        table.append(section);
+        container.append(section);
     }
 }
 
-function BuildBossRosterRow(group, headers, optional) {
-    const row = $('<tr class="boss-tier-rosters"></tr>').attr('data-category', group.key)
+function BuildBossRosters(group, optional) {
+    const rosters = $('<div class="boss-tier-rosters"></div>').attr('data-category', group.key)
         .toggleClass('boss-extra-roster', optional);
     for (const availability of ['released', 'unreleased']) {
         const pokemonList = group[availability];
-        const cell = $('<td class="boss-cell"></td>').attr({
+        if (!pokemonList.length) continue;
+
+        const labelID = 'boss-' + group.key + '-' + availability;
+        const label = BossListText(availability);
+        const groupLabel = optional ? BossListText(group.key) + ' · ' + label : label;
+        const section = $('<div class="boss-release-roster" role="group"></div>').attr({
             'data-availability': availability,
-            headers: headers + ' boss-column-' + availability,
+            'aria-labelledby': labelID,
         });
-        if (!optional || pokemonList.length) {
-            cell.append($('<div class="boss-column-count"></div>').append(
-                $('<span></span>').text(BossListText(optional ? group.key : availability)),
-                $('<span></span>').text(pokemonList.length.toLocaleString(currentLocale))));
-            if (!pokemonList.length) cell.append($('<p class="boss-empty"></p>').text(BossListText('empty')));
-            else {
-                const roster = $('<ul class="boss-roster"></ul>');
-                for (const pokemon of pokemonList) {
-                    const name = BossListPokemonName(pokemon).attr('aria-hidden', 'true');
-                    const link = $('<a class="boss-entry"></a>').attr({
-                        href: '?' + new URLSearchParams({p: pokemon.id, f: pokemon.form}),
-                        'data-key': PokemonDataKey(pokemon), 'data-id': pokemon.id, 'data-form': pokemon.form,
-                        'aria-label': name.text(),
-                    });
-                    const coords = GetPokemonIconCoords(pokemon.id, pokemon.form);
-                    const sprite = $('<span class="pokemon-icon boss-sprite" aria-hidden="true"></span>')
-                        .css({'background-image': 'url(' + ICONS_URL + ')',
-                            'background-position': coords.x + 'px ' + coords.y + 'px'});
-                    link.append(sprite, name);
-                    roster.append($('<li></li>').append(link));
-                }
-                cell.append(roster);
-            }
+        const heading = $('<div class="boss-release-heading"></div>').append(
+            $('<span class="boss-release-label"></span>').attr('id', labelID).text(groupLabel),
+            $('<span></span>').text(pokemonList.length.toLocaleString(currentLocale)));
+        const roster = $('<ul class="boss-roster"></ul>');
+        for (const pokemon of pokemonList) {
+            const name = BossListPokemonName(pokemon).attr('aria-hidden', 'true');
+            const link = $('<a class="boss-entry"></a>').attr({
+                href: '?' + new URLSearchParams({p: pokemon.id, f: pokemon.form}),
+                'data-key': PokemonDataKey(pokemon), 'data-id': pokemon.id, 'data-form': pokemon.form,
+                'aria-label': name.text(),
+            });
+            const coords = GetPokemonIconCoords(pokemon.id, pokemon.form);
+            const sprite = $('<span class="pokemon-icon boss-sprite" aria-hidden="true"></span>')
+                .css({'background-image': 'url(' + ICONS_URL + ')',
+                    'background-position': coords.x + 'px ' + coords.y + 'px'});
+            link.append(sprite, name);
+            roster.append($('<li></li>').append(link));
         }
-        row.append(cell);
+        rosters.append(section.append(heading, roster));
     }
-    return row;
+    return rosters;
 }
