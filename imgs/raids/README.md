@@ -4,9 +4,8 @@ The original gallery uses unmodified Pokémon GO assets from
 [PokeMiners/pogo_assets](https://github.com/PokeMiners/pogo_assets/tree/db10df75d6f6f92018d9786af0aecc238fecc4ef/Images/Raids),
 pinned to commit `db10df75d6f6f92018d9786af0aecc238fecc4ef`. Additional Super Mega
 and Shadow graphics come from the linked Serebii and GO Hub raid guides below.
-Artwork belongs to its respective Pokémon GO rights holders. These files are
-visual options on the Boss List.
-Their presentation does not assign a raid difficulty or change calculations.
+Artwork belongs to its respective Pokémon GO rights holders. The Boss List
+gallery uses a selection of these files.
 
 | Local file | Original file under `Images/Raids/` |
 |---|---|
@@ -41,3 +40,6 @@ Category labels are cross-checked against [Serebii's raid guide](https://serebii
 and [GO Hub's raid guide](https://pokemongohub.net/post/guide/go-hub-guide-to-raid-battles/).
 Shadow options show the standard Normal, Rare and Legendary eggs with their
 purple Shadow aura. They do not imply that Shadow Mega raids are available.
+
+The gallery displays `legendary-mega-egg-centered.png`, an edited version of
+the Legendary Mega egg with the three bars centered on the shell.
