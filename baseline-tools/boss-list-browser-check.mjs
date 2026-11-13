@@ -125,6 +125,17 @@ try {
     const popup=page.locator('#boss-name-popup');
     const image=popup.locator('.boss-popup-image');
     assert.equal(await image.count(),0,'Previews should load when a boss is selected.');
+    await page.locator('.boss-entry[data-key="150/Normal"]').hover();
+    await image.waitFor({state:'visible',timeout:20000});
+    assert.match(await image.getAttribute('src'),/\/graphics\/ani\/mewtwo\.gif$/);
+    const mewtwoImage=await image.boundingBox();
+    const mewtwoName=await popup.locator('.boss-name').boundingBox();
+    const bodyCenter=mewtwoImage.x + mewtwoImage.width * .28;
+    const nameCenter=mewtwoName.x + mewtwoName.width / 2;
+    assert(Math.abs(bodyCenter-nameCenter)<1,'Mewtwo’s body should line up with its name.');
+    await page.mouse.move(0,0);
+    await popup.waitFor({state:'hidden'});
+
     await page.locator('.boss-entry[data-key="6/Mega"]').hover();
     await image.waitFor({state:'visible',timeout:20000});
     assert.match(await image.getAttribute('src'),/\/graphics\/ani\/charizard-megax\.gif$/);
