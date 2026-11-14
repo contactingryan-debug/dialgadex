@@ -163,10 +163,6 @@ function ShowBossListPopup(entry) {
 }
 
 function BindBossList() {
-    $('#boss-leaderboard-back').on('click', event => {
-        event.preventDefault();
-        LoadRaidLeaderboardAndUpdateURL();
-    });
     $('#boss-tier-tabs').on('click', '.boss-egg-tab', function() {
         if (this.getAttribute('aria-selected') === 'true') return;
         const params = new URLSearchParams(location.search);
@@ -261,22 +257,23 @@ function RenderBossList() {
         const total = tierGroups.reduce((sum, group) => sum + group.released.length + group.unreleased.length, 0);
         const tabID = 'boss-tab-' + tier.key;
         const panelID = 'boss-tier-' + tier.key;
+        const tierName = BossListText(tier.key);
         tabs.append($('<button type="button" class="boss-egg-tab" role="tab"></button>').attr({
-            id: tabID, 'data-tier': tier.key, 'aria-controls': panelID,
+            id: tabID, 'data-tier': tier.key, 'aria-controls': panelID, 'aria-label': tierName,
         }).append(
-            $('<img class="boss-egg" width="56" height="56" alt="">').attr('src', 'imgs/raids/' + tier.egg),
-            $('<span class="boss-tier-name"></span>').text(BossListText(tier.key === 'five-star' ? 'five-star-tab' : tier.key)),
-            $('<span class="boss-total-count"></span>').text(BossListText('total-count', {
-                count: total.toLocaleString(currentLocale),
-            }))));
+            $('<img class="boss-egg" width="56" height="56" alt="">').attr('src', 'imgs/raids/' + tier.egg)));
         const section = $('<section class="boss-tier-group" role="tabpanel" tabindex="0"></section>').attr({
             id: panelID, 'data-hp': tier.hp, 'data-category': tier.key, 'aria-labelledby': tabID,
         });
         section.append($('<h2 class="boss-tier-heading boss-tier-title"></h2>').append(
-            $('<span></span>').text(BossListText(tier.key)),
-            $('<span class="boss-hp"></span>').text(BossListText('hp', {
-                hp: tier.hp.toLocaleString(currentLocale),
-            }))));
+            $('<span></span>').text(tierName),
+            $('<span class="boss-tier-meta"></span>').append(
+                $('<span class="boss-hp"></span>').text(BossListText('hp', {
+                    hp: tier.hp.toLocaleString(currentLocale),
+                })),
+                $('<span class="boss-total-count"></span>').text(BossListText('total-count', {
+                    count: total.toLocaleString(currentLocale),
+                })))));
         if (!total) section.append($('<p class="boss-list-note"></p>').text(BossListText('empty-tier')));
         for (const group of tierGroups) {
             const optional = OPTIONAL_BOSS_GROUPS.includes(group.key);

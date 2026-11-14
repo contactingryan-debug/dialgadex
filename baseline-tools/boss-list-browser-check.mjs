@@ -27,17 +27,17 @@ try {
     await page.goto(start.toString(), {waitUntil:'domcontentloaded'});
     await selected('super-mega');
     assert.equal(await page.title(), 'Raid Bosses - PalkiaDex');
-    assert.equal(await page.locator('#boss-list h1').textContent(), 'Raid Bosses');
-    assert.deepEqual(await page.locator('.boss-tier-name').allTextContents(),
-        ['Super Mega','Legendary Mega','Five-Star','Mega']);
+    assert.equal(await page.locator('#boss-list .raid-page-links, #boss-list .card-header').count(),0);
+    assert.equal(await page.locator('#boss-list').getByRole('heading',{level:1,name:'Raid Bosses'}).count(),1);
     assert.deepEqual(await page.getByRole('tab').evaluateAll(tabs => tabs.map(tab => [
+        tab.getAttribute('aria-label'), tab.textContent.trim(),
         Number(document.getElementById(tab.getAttribute('aria-controls')).dataset.hp),
         tab.querySelector('.boss-egg').getAttribute('src'),
     ])), [
-        [25000,'imgs/raids/super-mega-egg.png'],
-        [22500,'imgs/raids/dark-mega-egg.png'],
-        [15000,'imgs/raids/legendary-egg.png'],
-        [9000,'imgs/raids/mega-egg.png'],
+        ['Super Mega','',25000,'imgs/raids/super-mega-egg.png'],
+        ['Legendary Mega','',22500,'imgs/raids/dark-mega-egg.png'],
+        ['Five-Star Raids','',15000,'imgs/raids/legendary-egg.png'],
+        ['Mega','',9000,'imgs/raids/mega-egg.png'],
     ]);
     await page.locator('.boss-egg').evaluateAll(images => Promise.all(images.map(image => image.decode())));
     const report = await page.evaluate(() => {
@@ -54,8 +54,7 @@ try {
         if (pool.size !== rendered.length || rendered.some(row => !pool.has(row.key))) throw new Error('Bosses missing or duplicated.');
         for (const tier of document.querySelectorAll('.boss-tier-group')) {
             const count = tier.querySelectorAll('.boss-entry').length;
-            const tab = document.getElementById(tier.getAttribute('aria-labelledby'));
-            if (tab.querySelector('.boss-total-count').textContent !== count + ' total')
+            if (tier.querySelector('.boss-tier-heading .boss-total-count').textContent !== count + ' total')
                 throw new Error('Tier totals must include all subsection rosters.');
         }
         for (const group of groups) for (const availability of ['released','unreleased']) {
@@ -255,7 +254,7 @@ try {
     await selected('five-star');
     assert.equal(new URL(page.url()).searchParams.get('tier'),'five-star');
     assert.equal(await page.locator('.boss-entry').count(), report.released + report.unreleased);
-    await page.locator('#boss-leaderboard-back').click();
+    await page.locator('#header-left').click();
     await page.waitForFunction(() => document.querySelector('#raid-leaderboard')?.checkVisibility());
     assert.equal(await page.locator('#raid-boss-list').textContent(), 'Raid Bosses →');
     await page.locator('#raid-boss-list').click();
