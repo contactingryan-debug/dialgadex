@@ -48,7 +48,7 @@ function GetPreferredLocale() {
 /**
  * Load locale in preparation for translation
  */
-async function SetLocale(newLocale) {  
+async function SetLocale(newLocale, {initial = false} = {}) {
     const oldLocale = currentLocale;
     if (!newLocale)
         newLocale = GetPreferredLocale();
@@ -77,7 +77,7 @@ async function SetLocale(newLocale) {
         translationMap = LoadFallbackLocale();
     }
     finally { 
-        if (currentLocale != oldLocale)
+        if (!initial && currentLocale != oldLocale)
             TranslateEverything();
         
         document.documentElement.lang = currentLocale;

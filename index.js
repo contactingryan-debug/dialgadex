@@ -34,11 +34,13 @@ async function Main() {
     // Load Data
     let loadPromises = [];
     loadPromises.push(LoadJSONData());
-    loadPromises.push(SetLocale());
+    loadPromises.push(SetLocale(undefined, {initial: true}));
     loadPromises.push(LoadFallbackLocale());
     try {
         await Promise.all(loadPromises);
 
+        TranslateElement($('body'));
+        DisplaySelectedLang();
         CheckURLAndAct();
         InitializePokemonSearch();
     }

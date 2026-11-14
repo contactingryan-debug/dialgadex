@@ -269,13 +269,20 @@ try {
     await page.waitForFunction(() => document.querySelector('#boss-list')?.checkVisibility());
     assert.equal(await page.title(), 'Raid Bosses - PalkiaDex');
     const touch=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true,
-        locale:'en-US',ignoreHTTPSErrors:process.env.PLAYWRIGHT_IGNORE_HTTPS_ERRORS==='1'});
+        locale:'es-ES',ignoreHTTPSErrors:process.env.PLAYWRIGHT_IGNORE_HTTPS_ERRORS==='1'});
     touch.on('pageerror',error=>errors.push(error.message));
     const deepLink = new URL(start);
-    deepLink.search = '?bosses&tier=mega';
+    deepLink.search = '?bosses&tier=mega&lang=es';
     await touch.goto(deepLink.toString(),{waitUntil:'domcontentloaded'});
     await selected('mega',touch);
     await tab('five-star',touch).tap();
+    await selected('five-star',touch);
+    assert.equal(await panel('five-star',touch).locator('.boss-hp').textContent(),'15.000 PS');
+    await touch.reload({waitUntil:'domcontentloaded'});
+    await selected('five-star',touch);
+    await touch.goBack();
+    await selected('mega',touch);
+    await touch.goForward();
     await selected('five-star',touch);
     const touchBoss=touch.locator('.boss-entry[data-key="905/Incarnate"]');
     await touchBoss.waitFor({timeout:120000});
