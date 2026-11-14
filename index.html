@@ -4,32 +4,31 @@
 <head>
     <meta charset=UTF-8>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
-    <title>DialgaDex</title>
+    <title>PalkiaDex</title>
     <meta name="description" content="Ranking lists, moveset data, calculation tools, and everything else you need to tackle raids in Pokémon Go." />
     
-    <link rel="icon" type="image/png" href="res/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="res/favicon.svg" />
-    <link rel="shortcut icon" href="res/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="res/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="DialgaDex" />
-    <link rel="manifest" href="res/site.webmanifest" />
+    <link rel="icon" type="image/png" href="res/favicon-96x96.png?v=73f6d6482636" sizes="96x96" />
+    <link rel="shortcut icon" href="res/favicon.ico?v=4568f40dca39" />
+    <link rel="apple-touch-icon" sizes="180x180" href="res/apple-touch-icon.png?v=80015b503934" />
+    <meta name="apple-mobile-web-app-title" content="PalkiaDex" />
+    <link rel="manifest" href="res/site.webmanifest?v=68d59bc4c2d3" />
 
-    <link rel="stylesheet" href="styles/darkmode.css">
-    <link rel="stylesheet" href="styles/switch.css">
-    <link rel="stylesheet" href="styles/togglebutton.css">
+    <link rel="stylesheet" href="styles/darkmode.css?v=4aba2a16d7d1">
+    <link rel="stylesheet" href="styles/switch.css?v=b3b268e28329">
+    <link rel="stylesheet" href="styles/togglebutton.css?v=7898a2862d65">
     <link rel="stylesheet" href="styles/tooltips.css">
-    <link rel="stylesheet" href="styles/autocomplete.css">
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="styles/mobile.css?v=154598002288" media="screen and (max-width:900px)">
-    <link rel="stylesheet" href="styles/raid-leaderboard.css?v=297edeba92ca">
-    <link rel="stylesheet" href="styles/data-audit.css?v=be58799a26df">
+    <link rel="stylesheet" href="styles/autocomplete.css?v=e9a3ed713622">
+    <link rel="stylesheet" href="styles/style.css?v=452848829769">
+    <link rel="stylesheet" href="styles/mobile.css?v=60ad340b9ac5" media="screen and (max-width:900px)">
+    <link rel="stylesheet" href="styles/raid-leaderboard.css?v=f33ee2cbea07">
+    <link rel="stylesheet" href="styles/data-audit.css?v=5f3a6efc419c">
     <link rel="stylesheet" href="styles/boss-list.css?v=36abc85eca39">
 
     <!--<link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_pkm_names.json" as="fetch" crossorigin />-->
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_pkm.min.json" as="fetch" crossorigin />
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_fm.json" as="fetch" crossorigin />
     <link rel="preload" href="https://raw.githubusercontent.com/mgrann03/pokemon-resources/main/pogo_cm.json" as="fetch" crossorigin />
-    <link rel="preload" href="locales/en.json?v=d68717b8a2bd" as="fetch" crossorigin />
+    <link rel="preload" href="locales/en.json?v=88686d19b05c" as="fetch" crossorigin />
     <link rel="preload" href="locales/pokedata/en.json" as="fetch" crossorigin />
 
     <script src="lib/jquery-3.6.0.min.js"></script>
@@ -37,7 +36,7 @@
     <script src="lib/jenks.js"></script>
     
     <script src="scripts/dataload.js?v=76379354deae"></script>
-    <script src="scripts/translation.js?v=832fcb7b1de3"></script>
+    <script src="scripts/translation.js?v=2c859ce0a954"></script>
     <script src="scripts/settings.js?v=63f6908f18cb"></script>
     <script src="scripts/pokemon_enums.js"></script>
     <script src="scripts/data-rules.js?v=267c71dd38d7"></script>
@@ -50,10 +49,10 @@
     <script src="scripts/pokedex.js?v=e61a6cee8dc6"></script>
     <script src="scripts/moves.js?v=b70b692c2036"></script>
     <script src="scripts/raid-points.js?v=72d64f01baa4"></script>
-    <script src="scripts/data-audit.js?v=1f73c4de2834"></script>
+    <script src="scripts/data-audit.js?v=6560e435be0f"></script>
     <script src="scripts/raid-leaderboard.js?v=ee5cee8b35c5"></script>
     <script src="scripts/boss-list.js?v=7673249d032a"></script>
-    <script src="index.js?v=405731627c9d"></script>
+    <script src="index.js?v=68522802831f"></script>
     
     <script src="components/type-selector.js?v=9ea0ae6e6f65"></script>
 </head>
@@ -388,8 +387,8 @@
     <div class="site-size" id="header-content">
         <a id="header-left" href="./">
             <div class="header-area">
-                <img class="unselectable" id=logo src="imgs/dialga.png" alt="Site Logo depicting Dialga">
-                <h2 id="site-name">Dialga<span class="contrast">Dex</span></h2>
+                <img class="unselectable" id=logo src="imgs/palkia-origin.png?v=fd57ad9992e6" alt="">
+                <h2 id="site-name">Palkia<span class="contrast">Dex</span></h2>
             </div>
         </a>
         <div class="header-area" id="header-right">
@@ -554,7 +553,7 @@
 
     <!-- footer -->
     <div id=footer>
-        <p data-i18n="site.disclaimer">DialgaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.<br/>
+        <p data-i18n="site.disclaimer">PalkiaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.<br/>
             Pokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.</p>
         <nav id=footer-links>
             <a id=faq-link href="?faq" data-i18n="site.links.FAQ">FAQ</a>

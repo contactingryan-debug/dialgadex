@@ -17,7 +17,7 @@ try {
     const start = new URL(base); start.search = '?bosses';
     await page.goto(start.toString(), {waitUntil:'domcontentloaded'});
     await page.locator('.boss-tier-group').last().waitFor({timeout:120000});
-    assert.equal(await page.title(), 'Raid Bosses - DialgaDex');
+    assert.equal(await page.title(), 'Raid Bosses - PalkiaDex');
     assert.equal(await page.locator('#boss-list h1').textContent(), 'Raid Bosses');
     assert.deepEqual(await page.locator('.boss-tier-name').allTextContents(),
         ['Super Mega','Legendary Mega','Five-Star Raids','Mega']);
@@ -230,7 +230,7 @@ try {
     await page.locator('#menu-icon').hover();
     await page.locator('#boss-list-link').click();
     await page.waitForFunction(() => document.querySelector('#boss-list')?.checkVisibility());
-    assert.equal(await page.title(), 'Raid Bosses - DialgaDex');
+    assert.equal(await page.title(), 'Raid Bosses - PalkiaDex');
     const touch=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true,
         locale:'en-US',ignoreHTTPSErrors:process.env.PLAYWRIGHT_IGNORE_HTTPS_ERRORS==='1'});
     touch.on('pageerror',error=>errors.push(error.message));

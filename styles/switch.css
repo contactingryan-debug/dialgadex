@@ -20,7 +20,7 @@ Some modifications made to suit this application
     --toggle-wider: 1em;
     --color-handle: #fff;
     --color-grey: #c0c0c0;
-    --color-blue: #4296f4;
+    --color-on: var(--col-accent);
     --color-disabled-border: #a0a0a0;
     --label-spacing: 6px;
     --disable-border-width: 1px;
@@ -66,7 +66,7 @@ Some modifications made to suit this application
 }
 
 .switch input[type="checkbox"]:checked + .slider {
-    background-color: var(--color-blue);
+    background-color: var(--color-on);
 }
 
 .switch input[type="checkbox"]:disabled + .slider {

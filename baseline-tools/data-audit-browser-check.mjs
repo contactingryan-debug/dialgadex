@@ -18,7 +18,7 @@ try {
     const start=new URL(base); start.search='?audit&q=150';
     await page.goto(start.toString(),{waitUntil:'domcontentloaded'});
     await page.locator('.audit-entry[data-key="150/A"]').waitFor({timeout:120000});
-    assert.equal(await page.title(),'Pokémon Data Audit - DialgaDex');
+    assert.equal(await page.title(),'Pokémon Data Audit - PalkiaDex');
     const armored=page.locator('.audit-entry[data-key="150/A"]');
     await armored.locator('summary').click();
     await armored.locator('.audit-copy').waitFor();

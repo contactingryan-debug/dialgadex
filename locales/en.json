@@ -354,7 +354,7 @@
         "primal": "Primal"
     },
     "site": {
-        "disclaimer": "§DialgaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.\nPokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.",
+        "disclaimer": "§PalkiaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.\nPokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.",
         "links": {
             "rankings": "Type Rankings",
             "moves": "Move Data",
@@ -385,41 +385,41 @@
     "meta": {
         "rankings": {
             "typed": {
-                "title": "Best {type} Attackers - DialgaDex",
+                "title": "Best {type} Attackers - PalkiaDex",
                 "description": "The best {type}-type attackers in Pokémon Go, using the new eDPS metric."
             },
             "each": {
-                "title": "Best Attackers of Each type - DialgaDex",
+                "title": "Best Attackers of Each type - PalkiaDex",
                 "description": "The best attackers of Each type in Pokémon Go, using the new eDPS metric."
             },
             "each-versus": {
-                "title": "Best Counters against Each Type - DialgaDex",
+                "title": "Best Counters against Each Type - PalkiaDex",
                 "description": "The strongest counter against each defending type in Pokémon Go, using the selected ranking settings."
             },
             "versus": {
-                "title": "Best Attackers against {type}-type Bosses - DialgaDex",
+                "title": "Best Attackers against {type}-type Bosses - PalkiaDex",
                 "description": "The best attackers against {type}-type Bosses in Pokémon Go, using the new eDPS metric."
             }
         },
         "moves": {
-            "title": "{type} {kind} Moves - DialgaDex",
+            "title": "{type} {kind} Moves - PalkiaDex",
             "description": "All the hidden move data attributes for {type} {kind} moves in Pokémon Go. Includes metrics which evaluate how effective each move is."
         },
         "pokedex": {
-            "title": "#{id} {name} - DialgaDex",
+            "title": "#{id} {name} - PalkiaDex",
             "description": "Best movesets, base stats, and raid counters for {name} in Pokémon Go."
         },
         "typechart": {
-            "title": "Type Chart - DialgaDex",
+            "title": "Type Chart - PalkiaDex",
             "description": "Each attacking type's effectiveness against raid bosses in Pokémon Go."
         },
         "faq": {
-            "title": "FAQ - DialgaDex",
-            "description": "Answers to common questions about DialgaDex."
+            "title": "FAQ - PalkiaDex",
+            "description": "Answers to common questions about PalkiaDex."
         },
         "about": {
-            "title": "About - DialgaDex",
-            "description": "Credits, references, contact info, and details about DialgaDex."
+            "title": "About - PalkiaDex",
+            "description": "Credits, references, contact info, and details about PalkiaDex."
         }
     },
     "raid-leaderboard": {
@@ -427,7 +427,7 @@
         "title": "Raid Attacker Leaderboard",
         "back": "← Type Rankings",
         "intro": "Raid attackers ranked across high-tier raids. Select a Pokémon to see its contributing matchups.",
-        "meta-title": "Raid Attacker Leaderboard - DialgaDex",
+        "meta-title": "Raid Attacker Leaderboard - PalkiaDex",
         "meta-description": "Compare non-Mega raid attackers using eDPS points and boss coverage.",
         "preparing": "Preparing raid matchups…",
         "progress": "Calculating bosses: {completed} / {total}",
@@ -483,7 +483,7 @@
         "mode-help": "Switch between non-Mega attackers and Mega / Primal / Ultra forms",
         "mega-title": "Raid Mega Leaderboard",
         "mega-intro": "Mega, Primal, and Ultra forms ranked across high-tier raids. Select a Pokémon to see its contributing matchups.",
-        "mega-meta-title": "Raid Mega Leaderboard - DialgaDex",
+        "mega-meta-title": "Raid Mega Leaderboard - PalkiaDex",
         "mega-meta-description": "Rank the highest-eDPS XL-boosting Mega, Primal, or Ultra option per raid boss using weighted performance points against a non-Mega benchmark.",
         "pool-mega": "Mega, Primal, and Ultra forms compete for each boss’s XL win. Best non-Mega eDPS remains the matchup benchmark. The leading weighted total in the eligible Mega pool scores 100.",
         "attacker-method-summary": "Each boss awards 2 points at ≥100% of its best non-Mega eDPS, 1 point at 95–<100%, and 0 below 95%. Boss weights apply. Only attackers with qualifying matchups are ranked; the leading weighted total scores 100.",
@@ -504,7 +504,7 @@
         "raid-unreleased": "Raid debut unreleased",
         "nav": "Data Audit",
         "title": "Pokémon Data Audit",
-        "meta-title": "Pokémon Data Audit - DialgaDex",
+        "meta-title": "Pokémon Data Audit - PalkiaDex",
         "intro": "Inspect release flags, raid tags, moves, stats, and ranking eligibility. Open a Pokémon and copy its details to report a mistake.",
         "meaning": "Released means historically available, not currently in rotation. Raid tags come from the dataset unless explicitly verified or announced. Separate Shadow raid history is deferred.",
         "yes": "Yes",
@@ -663,7 +663,7 @@
     },
     "boss-list": {
         "title": "Raid Bosses",
-        "meta-title": "Raid Bosses - DialgaDex",
+        "meta-title": "Raid Bosses - PalkiaDex",
         "description": "Raid bosses by HP and release status.",
         "back": "← Raid Leaderboard",
         "released": "Released",

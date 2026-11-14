@@ -12,30 +12,34 @@
 
  :root {
     /* light colors */
-    --col-bg: #fbfbff;
-    --col-header: #61b6e7;
+    --col-bg: #fcf7fa;
+    --col-header: #f1e3ed;
 
-    --col-outline: Grey;
-    --col-text: #103;
-    --col-text-midkey: #505050;
-    --col-text-lowkey: Grey;
+    --col-outline: #987b93;
+    --col-text: #291c29;
+    --col-text-midkey: #554152;
+    --col-text-lowkey: #72596d;
 
     --col-contrast: Gold;
     --col-red: #972a2a;
 
-    --col-sitename: #f0eeff;
-    --col-sitename-contrast: #272790;
+    --col-sitename: #291c29;
+    --col-accent: #862254;
 
-    --col-widget: #4296f4;
-    --col-widget-back: #f5f5ff;
-    --col-widget-back-hover: #fff;
+    --col-widget: #eacfe1;
+    --col-meter: #862254;
+    --col-widget-back: #fffafd;
+    --col-widget-back-hover: #f3e5ee;
 
-    --col-drawer-bg: rgba(250,250,250,0.85);
+    --col-drawer-bg: rgb(255 249 253 / 96%);
+    --col-elevation: rgb(51 26 46 / 16%);
+    --drawer-icon-filter: brightness(.2);
+    --drawer-icon-active-filter: brightness(.5) sepia(1) saturate(4) hue-rotate(284deg) brightness(.64);
 
-    --col-row-bg: #fff;
-    --col-alt-bg: #e2e2e2;
+    --col-row-bg: #fffafd;
+    --col-alt-bg: #f5eaf1;
     
-    --col-shadow: #cc00cc;
+    --col-shadow: #8a218c;
     --col-shadow-bg: #800080;
     
     --border-radius: 2px;
@@ -46,17 +50,17 @@
 }
 
 .switch {
-    --color-handle: #dfdfdf;
-    --color-grey: #aaa;
-    --color-blue: var(--col-widget);
+    --color-handle: #fffafd;
+    --color-grey: #8a7686;
 }
 
 label.togglebutton {
-    --col-toggle-bg: var(--col-widget-back);
+    --col-toggle-bg: var(--col-widget);
 }
 
 .tooltip {
     --col-tooltip: var(--col-text);
+    --col-tooltip-bg: var(--col-widget-back-hover);
 }
 
 /*
@@ -84,7 +88,7 @@ header {
     height: var(--header-height);
     border-bottom: 1px solid var(--col-outline);
     background-color: var(--col-header);
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.7);
+    box-shadow: 0 0.5rem 1rem var(--col-elevation);
 }
 
 nav {
@@ -221,7 +225,7 @@ ul.footnotes {
     margin: 0;
 }
 #site-name .contrast {
-    color: var(--col-sitename-contrast);
+    color: var(--col-accent);
 }
 
 #header-content {
@@ -280,7 +284,9 @@ ul.menu > li:hover {
 
 #logo {
     height: 2.5rem;
+    width: 2.5rem;
     margin: 0 0.5rem;
+    image-rendering: pixelated;
 }
 
 /*
@@ -303,6 +309,7 @@ ul.menu > li:hover {
 .drawer-icon {
     height: 1.5em;
     margin: 0 0.5em;
+    filter: var(--drawer-icon-filter);
 }
 
 .drawer.absolute-right .drawer-icon {
@@ -334,11 +341,11 @@ ul.menu > li:hover {
         display: revert;
     }
     .drawer:hover .drawer-icon, .drawer:focus .drawer-icon {
-        filter: brightness(0) saturate(100%) invert(37%) sepia(76%) saturate(3643%) hue-rotate(200deg) brightness(96%) contrast(90%);
+        filter: var(--drawer-icon-active-filter);
     }
 }
-.drawer-icon-focused {
-    filter: brightness(0) saturate(100%) invert(37%) sepia(76%) saturate(3643%) hue-rotate(200deg) brightness(96%) contrast(90%);
+.drawer[open] .drawer-icon, .drawer-icon-focused {
+    filter: var(--drawer-icon-active-filter);
 }
 
 .card .drawer-popup {
@@ -369,7 +376,7 @@ ul.menu > li:hover {
  */
 .card {
     box-shadow: 0 0 1px 0px var(--col-outline) inset, 0 0 1px 0px var(--col-outline),
-        0 0.5rem 1rem rgba(0,0,0,0.7);
+        0 0.5rem 1rem var(--col-elevation);
     border: 1px solid var(--col-outline);
     box-sizing: border-box;
     margin: 2rem 0;
@@ -742,7 +749,7 @@ input.plus {
     background-color: var(--col-alt-bg);
 }
 .card.article a {
-    color: var(--col-sitename-contrast);
+    color: var(--col-accent);
     text-decoration: underline;
 }
 
@@ -1405,7 +1412,7 @@ th.vertical a.type-text {
     font-weight: bold;
 }
 #type-affinity-link {
-    color: var(--col-sitename-contrast);
+    color: var(--col-accent);
     font-weight: bold;
 }
 
@@ -1427,7 +1434,7 @@ th.vertical a.type-text {
 
 .settings-opt-sel {
     font-weight: bold;
-    color: var(--col-text);
+    color: var(--col-accent);
 }
 
 .settings-title {
@@ -1578,8 +1585,7 @@ input.settings-num {
 
 #loading-bar {
     position: fixed;
-    background-image: linear-gradient(to right,
-            rgb(104, 144, 240), rgb(120, 200, 80), rgb(248, 208, 57));
+    background-color: var(--col-accent);
     width: 0%;
     height: 2px;
 }
@@ -1594,7 +1600,7 @@ input.settings-num {
 
 .bar-fg {
     color: white;
-    background-color: var(--col-widget);
+    background-color: var(--col-meter);
     text-align: left;
     box-sizing: content-box;
     display: inline-block;

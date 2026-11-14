@@ -1,5 +1,5 @@
 let currentLocale = 'en';
-const LOCALE_VERSION = "d68717b8a2bd";
+const LOCALE_VERSION = "88686d19b05c";
 let translationMap;
 let fallbackMap;
 
@@ -140,7 +140,7 @@ function GetFallbackTranslation(key, fallback) {
 /**
  * Get a translated template string, replacing {key} placeholders with values.
  * Example: FormatTranslation("meta.rankings-title", {type: "Fire"})
- *   with template "Best {type}-type Attackers - DialgaDex"
+ *   with template "Best {type}-type Attackers - PalkiaDex"
  */
 function FormatTranslation(key, params = {}, fallback = "") {
     let template = GetTranslation(key, fallback);

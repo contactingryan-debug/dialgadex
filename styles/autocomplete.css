@@ -108,7 +108,7 @@
 
 .autoComplete_wrapper mark {
     background-color: transparent;
-    color: #5d84b1;
+    color: var(--col-accent);
     font-weight: bold;
 }
 

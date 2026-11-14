@@ -2,34 +2,37 @@
     /*
      * Variables
      */
-    --col-bg: hsl(240, 36%, 8%);
-    --col-header: #171717;
-    /*--col-header-highlight: hsl(240, 45%, 20%);*/
-    --col-header-highlight: hsl(240, 20%, 14%);
+    --col-bg: #190f1d;
+    --col-header: #25172b;
+    --col-header-highlight: #38253e;
 
-    --col-outline: hsl(220, 20%, 35%);
-    --col-text: White;
-    --col-text-midkey: #dcdcdc;
-    --col-sitename: #fff;
-    --col-sitename-contrast: #4296f4;
+    --col-outline: #74546e;
+    --col-text: #faf2f8;
+    --col-text-midkey: #dfcddc;
+    --col-text-lowkey: #bca4b8;
+    --col-sitename: #faf2f8;
+    --col-accent: #e5a1cd;
+    --col-red: #f5a2ac;
+    --col-shadow: #e08ae6;
 
-    --col-widget: #1c497d;
-    --col-widget-back: #2f2f2f;
-    --col-widget-back-hover: #444;
+    --col-widget: #743d65;
+    --col-meter: #743d65;
+    --col-widget-back: #302235;
+    --col-widget-back-hover: #3d2942;
 
-    --col-drawer-bg: rgba(27,27,27,0.85);
+    --col-drawer-bg: rgb(40 26 44 / 96%);
+    --col-elevation: rgb(0 0 0 / 70%);
+    --drawer-icon-filter: none;
+    --drawer-icon-active-filter: brightness(.82) sepia(.55) saturate(2.3) hue-rotate(280deg);
 
-    --col-row-bg: hsl(220, 5%, 18%);
-    --col-alt-bg: hsl(220, 5%, 13%);
+    --col-row-bg: #281d2d;
+    --col-alt-bg: #211725;
     --card-radius: 1rem;
 
     .switch {
-        --color-handle: #bbb;
-        --color-grey: #444;
-    }
-
-    .tooltip {
-        --col-tooltip-bg: #3b3b3b;
+        --color-handle: #faf2f8;
+        --color-grey: #715b71;
+        --color-on: #a25b89;
     }
 
     /*
@@ -103,20 +106,20 @@
     #additional-containers::-webkit-scrollbar-track
     {
         -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-        background-color: #252525;
+        background-color: var(--col-alt-bg);
         margin: 0 2%;
     }
 
     #additional-containers::-webkit-scrollbar
     {
-        background-color: #252525;
+        background-color: var(--col-alt-bg);
         height: 10px;
     }
 
     #additional-containers::-webkit-scrollbar-thumb
     {
-        background-color: #000000;
-        border: 2px solid #555555;
+        background-color: var(--col-bg);
+        border: 2px solid var(--col-outline);
     }
 
     .scroll-portal {
@@ -215,10 +218,6 @@
         background-color: rgba(255,255,255,0.1);
     }
     
-    label.togglebutton {
-        background-color: var(--col-widget);
-    }
-
     #poke-search-box {
         border-radius: var(--card-radius);
     }

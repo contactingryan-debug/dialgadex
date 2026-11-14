@@ -25,7 +25,7 @@ try {
             &&raidLeaderboardMatrix?.settings.includeMegas===megas
             &&raidLeaderboardMatrix?.settings.includeUnreleased===future,[megas,future],{timeout:240000});
         assert.equal(await page.locator('#raid-retry').isVisible(),false);
-        assert.equal(await page.title(),megas ? 'Raid Mega Leaderboard - DialgaDex' : 'Raid Attacker Leaderboard - DialgaDex');
+        assert.equal(await page.title(),megas ? 'Raid Mega Leaderboard - PalkiaDex' : 'Raid Attacker Leaderboard - PalkiaDex');
         const visible=await page.evaluate(()=>[...document.querySelectorAll('.raid-entry')].map((el,index)=>({
             transformed:raidLeaderboardResult.rows.find(r=>r.key===el.dataset.key)?.transformed,
             rank:Number(el.querySelector('.raid-rank').textContent),expectedRank:index+1,

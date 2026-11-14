@@ -218,7 +218,7 @@ function PokemonAuditCopyText(info, context) {
     url.search = new URLSearchParams({p: info.id, f: info.form}).toString();
     url.hash = '';
     return [
-        'DialgaDex data review', `Pokémon: #${info.id} ${info.display.name} (${info.form})`, `URL: ${url}`,
+        'PalkiaDex data review', `Pokémon: #${info.id} ${info.display.name} (${info.form})`, `URL: ${url}`,
         `Loaded at: ${new Date().toISOString()}; local review: ${context.manifest.reviewed || 'unknown'}`,
         `Released: ${AuditYesNo(info.currentReleased)}; upstream: ${AuditYesNo(info.source?.released)}`,
         `Released in raids: ${AuditYesNo(info.currentRaidReleased)}; explicit upstream raid release flag: ${AuditYesNo(info.source?.raid_released)}`,

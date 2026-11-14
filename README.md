@@ -1,4 +1,4 @@
-# DialgaDex — MEGA project fork
+# PalkiaDex — MEGA project fork
 
 Personal research fork of [DialgaDex](https://github.com/mgrann03/dialgadex),
 based on upstream commit `0f958e7b09375fd58f327e42e3c41b2a7d18f27f`.
@@ -73,7 +73,7 @@ movesets, and scores follow the corresponding individual view, including ties.
 
 ## Raid attacker leaderboard
 
-**Raid Leaderboard** is the home page. Open it with the DialgaDex logo, the
+**Raid Leaderboard** is the home page. Open it with the PalkiaDex logo, the
 navigation menu, or
 [`?leaderboard`](https://contactingryan-debug.github.io/dialgadex/?leaderboard).
 It defaults to released non-Mega/Primal/Ultra attackers, including Shadows,

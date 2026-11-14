@@ -53,7 +53,7 @@ try {
         assert(valid,'A tier must have one continuous band and one centered letter, including expanded rows.');
     }
     await ready();
-    assert.equal(await page.title(), 'Raid Attacker Leaderboard - DialgaDex');
+    assert.equal(await page.title(), 'Raid Attacker Leaderboard - PalkiaDex');
     assert(new URL(page.url()).searchParams.has('leaderboard'),'The root URL must open the raid leaderboard.');
     assert(await page.locator('.raid-entry').count() > 10);
     assert.equal(await page.locator('.raid-entry').count(),await page.evaluate(()=>raidLeaderboardResult.rows.length));

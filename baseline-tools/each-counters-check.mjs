@@ -44,8 +44,8 @@ try {
     assert.equal(await page.evaluate(() => document.querySelector('#strongest-links-types').selectedType), 'Each');
     assert.equal(await page.locator('#footnote-each-counters').isVisible(), counters);
     assert.equal(await page.title(), counters
-      ? 'Best Counters against Each Type - DialgaDex'
-      : 'Best Attackers of Each type - DialgaDex');
+      ? 'Best Counters against Each Type - PalkiaDex'
+      : 'Best Attackers of Each type - PalkiaDex');
     const layout = await page.evaluate(() => ({
       labelFont: parseFloat(getComputedStyle(document.querySelector('.floating-label')).fontSize),
       labelWidth: document.querySelector('.floating-label').clientWidth,

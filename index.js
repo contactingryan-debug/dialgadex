@@ -17,8 +17,8 @@ const pages = [
     {id: 'data-audit', template_path: 'templates/data-audit.html?v=553dad90b622', binder: BindDataAudit},
     {id: 'move-data', template_path: 'templates/moves.html', binder: BindMoveData},
     {id: 'type-matrix', template_path: 'templates/typechart.html', binder: BuildTypeChart},
-    {id: 'faq', template_path: 'templates/faq.html?v=4ae1a84cfcc8'},
-    {id: 'about', template_path: 'templates/about.html'}
+    {id: 'faq', template_path: 'templates/faq.html?v=e0738a0a1aa0'},
+    {id: 'about', template_path: 'templates/about.html?v=47d3e4f1a898'}
 ];
 
 /**
@@ -345,7 +345,7 @@ function LoadTypeChartAndUpdateURL() {
     UpdateURL("?typechart");
     
     // sets the page title
-    document.title = GetTranslation("meta.typechart.title", "Type Chart - DialgaDex");
+    document.title = GetTranslation("meta.typechart.title", "Type Chart - PalkiaDex");
 
     // sets description
     $('meta[name=description]').attr('content', 
@@ -361,11 +361,11 @@ function LoadFAQAndUpdateURL() {
     UpdateURL("?faq");
     
     // sets the page title
-    document.title = GetTranslation("meta.faq.title", "FAQ - DialgaDex");
+    document.title = GetTranslation("meta.faq.title", "FAQ - PalkiaDex");
 
     // sets description
     $('meta[name=description]').attr('content', 
-        GetTranslation("meta.faq.description", "Answers to common questions about DialgaDex."));
+        GetTranslation("meta.faq.description", "Answers to common questions about PalkiaDex."));
 
     LoadPage("faq");
 }
@@ -377,11 +377,11 @@ function LoadAboutAndUpdateURL() {
     UpdateURL("?about");
     
     // sets the page title
-    document.title = GetTranslation("meta.about.title", "About - DialgaDex");
+    document.title = GetTranslation("meta.about.title", "About - PalkiaDex");
 
     // sets description
     $('meta[name=description]').attr('content', 
-        GetTranslation("meta.about.description", "Credits, references, contact info, and details about DialgaDex."));
+        GetTranslation("meta.about.description", "Credits, references, contact info, and details about PalkiaDex."));
 
     LoadPage("about");
 }

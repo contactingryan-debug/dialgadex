@@ -354,7 +354,7 @@
         "primal": "Primo"
     },
     "site": {
-        "disclaimer": "§DialgaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.\nPokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.",
+        "disclaimer": "§PalkiaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.\nPokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.",
         "links": {
             "rankings": "Classement par type",
             "moves": "Classement Attaques",
@@ -385,41 +385,41 @@
     "meta": {
         "rankings": {
             "typed": {
-                "title": "Meilleur Attaquant de {type} - DialgaDex",
+                "title": "Meilleur Attaquant de {type} - PalkiaDex",
                 "description": "Le meilleur Attaquant de {type} dans Pokémon Go, selon la nouvelle métrique eDPS."
             },
             "each": {
-                "title": "Meilleur Attaquant de chaque type - DialgaDex",
+                "title": "Meilleur Attaquant de chaque type - PalkiaDex",
                 "description": "Les meilleurs attaquants de chaque type dans Pokémon Go, selon la nouvelle métrique eDPS."
             },
             "each-versus": {
-                "title": "Meilleurs Contres contre Chaque Type - DialgaDex",
+                "title": "Meilleurs Contres contre Chaque Type - PalkiaDex",
                 "description": "Le meilleur contre pour chaque type défensif dans Pokémon Go, selon les paramètres de classement sélectionnés."
             },
             "versus": {
-                "title": "Les meilleurs attaquants contre les Boss de {type} - DialgaDex",
+                "title": "Les meilleurs attaquants contre les Boss de {type} - PalkiaDex",
                 "description": "Les meilleurs attaquants contre les Boss de {type} dans Pokémon Go, selon la nouvelle métrique eDPS."
             }
         },
         "moves": {
-            "title": "Attaque de {type} {kind} - DialgaDex",
+            "title": "Attaque de {type} {kind} - PalkiaDex",
             "description": "Toutes les données de déplacement cachées pour les déplacements de type {type} et de type {kind} dans Pokémon Go. Inclut des indicateurs permettant d'évaluer l'efficacité de chaque déplacement."
         },
         "pokedex": {
-            "title": "#{id} {name} - DialgaDex",
+            "title": "#{id} {name} - PalkiaDex",
             "description": "Meilleurs ensembles de mouvements, statistiques de base et contres en raid pour {name} dans Pokémon Go."
         },
         "typechart": {
-            "title": "Efficacité des types - DialgaDex",
+            "title": "Efficacité des types - PalkiaDex",
             "description": "L'efficacité de chaque type d'attaque contre les boss de raid dans Pokémon Go."
         },
         "faq": {
-            "title": "FAQ - DialgaDex",
-            "description": "Réponses aux questions fréquentes sur DialgaDex."
+            "title": "FAQ - PalkiaDex",
+            "description": "Réponses aux questions fréquentes sur PalkiaDex."
         },
         "about": {
-            "title": "A propos - DialgaDex",
-            "description": "Crédits, références, coordonnées et détails concernant DialgaDex."
+            "title": "A propos - PalkiaDex",
+            "description": "Crédits, références, coordonnées et détails concernant PalkiaDex."
         }
     },
     "raid-leaderboard": {
@@ -427,7 +427,7 @@
         "title": "Classement des attaquants de raid",
         "back": "← Classements par type",
         "intro": "Attaquants classés selon leurs performances dans les raids de haut niveau. Sélectionnez un Pokémon pour voir ses contributions.",
-        "meta-title": "Classement des attaquants de raid - DialgaDex",
+        "meta-title": "Classement des attaquants de raid - PalkiaDex",
         "meta-description": "Comparez les attaquants de raid sans Méga selon les points eDPS et la couverture des boss.",
         "preparing": "Préparation des combats…",
         "progress": "Calcul des boss : {completed} / {total}",
@@ -483,7 +483,7 @@
         "mode-help": "Alterner entre les attaquants sans Méga et les formes Méga / Primo / Ultra",
         "mega-title": "Classement des Méga de raid",
         "mega-intro": "Formes Méga, Primo et Ultra classées selon leurs performances dans les raids de haut niveau. Sélectionnez un Pokémon pour voir ses contributions.",
-        "mega-meta-title": "Classement des Méga de raid - DialgaDex",
+        "mega-meta-title": "Classement des Méga de raid - PalkiaDex",
         "mega-meta-description": "Classe la meilleure option Méga, Primo ou Ultra boostant les XL par boss avec des points de performance pondérés et une référence hors Méga.",
         "pool-mega": "Les formes Méga, Primo et Ultra concourent pour la victoire XL de chaque boss. Le meilleur eDPS non-Méga reste la référence. Le meilleur total pondéré du groupe Méga admissible obtient 100.",
         "attacker-method-summary": "Chaque boss accorde 2 points à ≥100% de son meilleur eDPS sans Méga, 1 point de 95% à <100% et 0 en dessous de 95%. Les poids des boss sont appliqués. Seuls les attaquants avec des combats admissibles sont classés ; le meilleur total pondéré obtient 100.",
@@ -504,7 +504,7 @@
         "raid-unreleased": "Première apparition en raid à venir",
         "nav": "Audit des données",
         "title": "Audit des données Pokémon",
-        "meta-title": "Audit des données Pokémon - DialgaDex",
+        "meta-title": "Audit des données Pokémon - PalkiaDex",
         "intro": "Consultez les disponibilités, raids, capacités, statistiques et critères de classement. Ouvrez un Pokémon et copiez ses données pour signaler une erreur.",
         "meaning": "Disponible signifie déjà sorti, pas présent dans la rotation actuelle. Les catégories de raid proviennent des données sauf vérification ou annonce explicite. L’historique séparé des raids obscurs est reporté.",
         "yes": "Oui",
@@ -663,7 +663,7 @@
     },
     "boss-list": {
         "title": "Boss de raid",
-        "meta-title": "Boss de raid - DialgaDex",
+        "meta-title": "Boss de raid - PalkiaDex",
         "description": "Boss de raid par PV et disponibilité.",
         "back": "← Classement des raids",
         "released": "Disponibles",

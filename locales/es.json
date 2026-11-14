@@ -354,7 +354,7 @@
         "primal": "Primigenio"
     },
     "site": {
-        "disclaimer": "§DialgaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.\nPokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.",
+        "disclaimer": "§PalkiaDex is not affiliated with The Pokémon Company, Niantic, Scopely, Pokémon Go, or any other such entities.\nPokémon is a trademark of Nintendo. All such trademarks are the property of their respective owners.",
         "links": {
             "rankings": "Clasificación por tipo",
             "moves": "Datos del Ataques",
@@ -385,41 +385,41 @@
     "meta": {
         "rankings": {
             "typed": {
-                "title": "Mejores Atacantes del tipo {type} - DialgaDex",
+                "title": "Mejores Atacantes del tipo {type} - PalkiaDex",
                 "description": "Los mejores atacantes del tipo {type} en Pokémon Go, utilizando la nueva métrica eDPS."
             },
             "each": {
-                "title": "Mejores Atacantes de Cada Tipo - DialgaDex",
+                "title": "Mejores Atacantes de Cada Tipo - PalkiaDex",
                 "description": "Los mejores atacantes de cada tipo en Pokémon Go, utilizando la nueva métrica eDPS."
             },
             "each-versus": {
-                "title": "Mejores Contrarios contra Cada Tipo - DialgaDex",
+                "title": "Mejores Contrarios contra Cada Tipo - PalkiaDex",
                 "description": "El mejor contrario contra cada tipo defensor en Pokémon Go, utilizando la configuración de clasificación seleccionada."
             },
             "versus": {
-                "title": "Mejores Atacantes contra Oponentes de tipo {type} - DialgaDex",
+                "title": "Mejores Atacantes contra Oponentes de tipo {type} - PalkiaDex",
                 "description": "Los mejores atacantes contra oponentes del tipo {type} en Pokémon Go, utilizando la nueva métrica eDPS."
             }
         },
         "moves": {
-            "title": "Ataques {kind} {type} - DialgaDex",
+            "title": "Ataques {kind} {type} - PalkiaDex",
             "description": "Todos los datos ocultos de ataques de tipo {type} y clase {kind} en Pokémon Go."
         },
         "pokedex": {
-            "title": "#{id} {name} - DialgaDex",
+            "title": "#{id} {name} - PalkiaDex",
             "description": "Los mejores ataques, los mejores contrarios de incursiones, y las estadísticas base de {name} en Pokémon Go."
         },
         "typechart": {
-            "title": "Efectividades de los Tipos - DialgaDex",
+            "title": "Efectividades de los Tipos - PalkiaDex",
             "description": "La efectividad de cada tipo de ataque contra oponentes en Pokémon GO."
         },
         "faq": {
-            "title": "PF - DialgaDex",
-            "description": "Respuestas a preguntas frecuentes sobre DialgaDex."
+            "title": "PF - PalkiaDex",
+            "description": "Respuestas a preguntas frecuentes sobre PalkiaDex."
         },
         "about": {
-            "title": "Sobre - DialgaDex",
-            "description": "Créditos, referencias, información de contacto y detalles sobre DialgaDex."
+            "title": "Sobre - PalkiaDex",
+            "description": "Créditos, referencias, información de contacto y detalles sobre PalkiaDex."
         }
     },
     "raid-leaderboard": {
@@ -427,7 +427,7 @@
         "title": "Mejores atacantes de incursiones",
         "back": "← Clasificaciones por tipo",
         "intro": "Atacantes clasificados según su rendimiento en incursiones de alto nivel. Selecciona un Pokémon para ver sus enfrentamientos.",
-        "meta-title": "Clasificación de atacantes de incursiones - DialgaDex",
+        "meta-title": "Clasificación de atacantes de incursiones - PalkiaDex",
         "meta-description": "Compara atacantes de incursiones sin Mega por puntos eDPS y cobertura de jefes.",
         "preparing": "Preparando enfrentamientos…",
         "progress": "Calculando jefes: {completed} / {total}",
@@ -483,7 +483,7 @@
         "mode-help": "Alterna entre atacantes sin Mega y formas Mega / Primigenio / Ultra",
         "mega-title": "Clasificación de Megas de incursión",
         "mega-intro": "Formas Mega, Primigenias y Ultra clasificadas por su rendimiento en incursiones de alto nivel. Selecciona un Pokémon para ver sus enfrentamientos.",
-        "mega-meta-title": "Clasificación de Megas de incursión - DialgaDex",
+        "mega-meta-title": "Clasificación de Megas de incursión - PalkiaDex",
         "mega-meta-description": "Clasifica la mejor opción Mega, Primigenio o Ultra que potencia XL por jefe, con puntos ponderados de rendimiento y referencia no Mega.",
         "pool-mega": "Las formas Mega, Primigenia y Ultra compiten por la victoria XL de cada jefe. El mejor eDPS no Mega sigue siendo la referencia. El mayor total ponderado del conjunto Mega elegible obtiene 100.",
         "attacker-method-summary": "Cada jefe otorga 2 puntos al ≥100% de su mejor eDPS sin Mega, 1 punto del 95% al <100% y 0 por debajo del 95%. Se aplican los pesos de los jefes. Solo se clasifican atacantes con enfrentamientos válidos; el mayor total ponderado obtiene 100.",
@@ -504,7 +504,7 @@
         "raid-unreleased": "Debut en incursiones pendiente",
         "nav": "Auditoría de datos",
         "title": "Auditoría de datos Pokémon",
-        "meta-title": "Auditoría de datos Pokémon - DialgaDex",
+        "meta-title": "Auditoría de datos Pokémon - PalkiaDex",
         "intro": "Revisa disponibilidad, etiquetas de incursión, movimientos, estadísticas y elegibilidad. Abre un Pokémon y copia sus datos para comunicar un error.",
         "meaning": "Disponible significa lanzado alguna vez, no presente en la rotación actual. Las etiquetas proceden de los datos salvo verificación o anuncio explícitos. El historial separado de incursiones oscuras queda pendiente.",
         "yes": "Sí",
@@ -663,7 +663,7 @@
     },
     "boss-list": {
         "title": "Jefes de incursión",
-        "meta-title": "Jefes de incursión - DialgaDex",
+        "meta-title": "Jefes de incursión - PalkiaDex",
         "description": "Jefes de incursión por PS y disponibilidad.",
         "back": "← Clasificación de incursiones",
         "released": "Disponibles",

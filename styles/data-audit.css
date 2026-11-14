@@ -13,7 +13,7 @@
 .audit-entry > summary::before { content: '▸'; position: absolute; left: .4rem; top: 50%; transform: translateY(-50%); }
 .audit-entry[open] > summary::before { content: '▾'; }
 .audit-entry > summary::-webkit-details-marker { display: none; }
-.audit-entry > summary:focus-visible, .audit-pokemon-details > summary:focus-visible { outline: 2px solid var(--col-widget); outline-offset: -2px; }
+.audit-entry > summary:focus-visible, .audit-pokemon-details > summary:focus-visible { outline: 2px solid var(--col-accent); outline-offset: -2px; }
 .audit-name { min-width: 0; overflow-wrap: anywhere; }
 .audit-name small { display: block; font-size: .75rem; color: var(--col-text-midkey); margin-top: .2rem; }
 .audit-badges { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: .3rem; font-size: .72rem; }

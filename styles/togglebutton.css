@@ -12,7 +12,6 @@ Some modifications made to suit this application
 */
 
 label.togglebutton {
-    --col-toggle-bg: #4296f4;
     background-color: var(--col-toggle-bg);
     display: inline-block;
     align-items: center;
