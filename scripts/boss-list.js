@@ -143,8 +143,8 @@ function ShowBossListPopup(entry) {
         JB_URL + POGO_PNGS_PATH + name + '.png',
         CDN_URL + POGO_PNGS_PATH + name + '.png',
     ];
-    // Legends: Z-A animation from PokeAPI/sprites, resized for the popup.
-    if (name === 'chandelure-mega') sources.unshift('imgs/pokemon/chandelure-mega.webp');
+    // Use the Pokémon GO still from PokeMiners until the shared feed has this form's GIF.
+    if (name === 'chandelure-mega') sources.splice(2, 0, 'imgs/pokemon/chandelure-mega.png');
     let sourceIndex = 0;
     const image = $('<img class="boss-popup-image" alt="" hidden>')
         .one('load', function() {
