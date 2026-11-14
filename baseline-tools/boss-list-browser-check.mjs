@@ -14,23 +14,31 @@ try {
         ignoreHTTPSErrors:process.env.PLAYWRIGHT_IGNORE_HTTPS_ERRORS === '1'});
     const errors = [];
     page.on('pageerror', error => errors.push(error.message));
+    const tab = (key, target = page) => target.locator('#boss-tab-' + key);
+    const panel = (key, target = page) => target.locator('#boss-tier-' + key);
+    async function selected(key, target = page) {
+        await panel(key, target).waitFor({timeout:120000});
+        assert.equal(await target.getByRole('tabpanel').count(),1);
+        assert.equal(await tab(key, target).getAttribute('aria-selected'),'true');
+        assert.equal(await tab(key, target).getAttribute('tabindex'),'0');
+        assert.equal(await target.locator('.boss-egg-tab[tabindex="-1"]').count(),3);
+    }
     const start = new URL(base); start.search = '?bosses';
     await page.goto(start.toString(), {waitUntil:'domcontentloaded'});
-    await page.locator('.boss-tier-group').last().waitFor({timeout:120000});
+    await selected('super-mega');
     assert.equal(await page.title(), 'Raid Bosses - PalkiaDex');
     assert.equal(await page.locator('#boss-list h1').textContent(), 'Raid Bosses');
     assert.deepEqual(await page.locator('.boss-tier-name').allTextContents(),
-        ['Super Mega','Legendary Mega','Five-Star Raids','Mega']);
-    assert.deepEqual(await page.locator('.boss-tier-group').evaluateAll(groups => groups.map(group => [
-        Number(group.dataset.hp), group.querySelector('.boss-egg').getAttribute('src'),
+        ['Super Mega','Legendary Mega','Five-Star','Mega']);
+    assert.deepEqual(await page.getByRole('tab').evaluateAll(tabs => tabs.map(tab => [
+        Number(document.getElementById(tab.getAttribute('aria-controls')).dataset.hp),
+        tab.querySelector('.boss-egg').getAttribute('src'),
     ])), [
         [25000,'imgs/raids/super-mega-egg.png'],
         [22500,'imgs/raids/dark-mega-egg.png'],
         [15000,'imgs/raids/legendary-egg.png'],
         [9000,'imgs/raids/mega-egg.png'],
     ]);
-    assert.deepEqual(await page.locator('.boss-subsection-heading h3').allTextContents(),
-        ['Legendary','Sub-Legendary','Mythical']);
     await page.locator('.boss-egg').evaluateAll(images => Promise.all(images.map(image => image.decode())));
     const report = await page.evaluate(() => {
         const readRoster = () => [...document.querySelectorAll('.boss-tier-group')].flatMap(tier =>
@@ -46,7 +54,8 @@ try {
         if (pool.size !== rendered.length || rendered.some(row => !pool.has(row.key))) throw new Error('Bosses missing or duplicated.');
         for (const tier of document.querySelectorAll('.boss-tier-group')) {
             const count = tier.querySelectorAll('.boss-entry').length;
-            if (tier.querySelector('.boss-tier-heading .boss-total-count').textContent !== count + ' total')
+            const tab = document.getElementById(tier.getAttribute('aria-labelledby'));
+            if (tab.querySelector('.boss-total-count').textContent !== count + ' total')
                 throw new Error('Tier totals must include all subsection rosters.');
         }
         for (const group of groups) for (const availability of ['released','unreleased']) {
@@ -125,6 +134,26 @@ try {
     const popup=page.locator('#boss-name-popup');
     const image=popup.locator('.boss-popup-image');
     assert.equal(await image.count(),0,'Previews should load when a boss is selected.');
+    await tab('legendary-mega').click();
+    await selected('legendary-mega');
+    assert.equal(await panel('legendary-mega').locator('.boss-hp').textContent(),'22,500 HP');
+    assert.equal(new URL(page.url()).searchParams.get('tier'),'legendary-mega');
+    await tab('legendary-mega').focus();
+    await page.keyboard.press('ArrowRight');
+    await selected('five-star');
+    assert(await tab('five-star').evaluate(tab=>tab===document.activeElement));
+    assert.deepEqual(await panel('five-star').locator('.boss-subsection-heading h3').allTextContents(),
+        ['Legendary','Sub-Legendary','Mythical']);
+    await page.keyboard.press('End');
+    await selected('mega');
+    await page.keyboard.press('Home');
+    await selected('super-mega');
+    await page.goBack();
+    await selected('mega');
+    await page.goForward();
+    await selected('super-mega');
+    await tab('five-star').click();
+    await selected('five-star');
     await page.locator('.boss-entry[data-key="150/Normal"]').hover();
     await image.waitFor({state:'visible',timeout:20000});
     assert.match(await image.getAttribute('src'),/\/graphics\/ani\/mewtwo\.gif$/);
@@ -136,6 +165,8 @@ try {
     await page.mouse.move(0,0);
     await popup.waitFor({state:'hidden'});
 
+    await tab('mega').click();
+    await selected('mega');
     await page.locator('.boss-entry[data-key="6/Mega"]').hover();
     await image.waitFor({state:'visible',timeout:20000});
     assert.match(await image.getAttribute('src'),/\/graphics\/ani\/charizard-megax\.gif$/);
@@ -155,10 +186,14 @@ try {
     await popup.waitFor({state:'hidden'});
     await page.unroute(missingAnimation);
 
+    await tab('super-mega').click();
     for (const width of [1100,900,600,390,320]) {
         await page.setViewportSize({width,height:900});
         const layout = await page.evaluate(() => ({overflow:document.documentElement.scrollWidth > innerWidth + 1,
-            fullWidth:[...document.querySelectorAll('.boss-tier-rosters')].every(group => {
+            tabsFit:[...document.querySelectorAll('.boss-egg-tab')].map(tab=>tab.getBoundingClientRect())
+                .every((rect,i,rects)=>rect.top===rects[0].top&&rect.left>=0&&rect.right<=innerWidth
+                    &&rect.width>=44&&rect.height>=44),
+            fullWidth:[...document.querySelectorAll('.boss-tier-group:not([hidden]) .boss-tier-rosters')].every(group => {
                 const bounds = group.getBoundingClientRect();
                 const [first, second] = [...group.children].map(roster => roster.getBoundingClientRect());
                 return [...group.children].every(roster => {
@@ -169,7 +204,7 @@ try {
             namesHidden:[...document.querySelectorAll('.boss-entry > .boss-name')]
                 .every(name=>getComputedStyle(name).display==='none'),
             accessible:[...document.querySelectorAll('.boss-entry')].every(link=>link.getAttribute('aria-label')),
-            sharedRows:[...document.querySelectorAll('.boss-roster')].filter(roster=>roster.children.length>1)
+            sharedRows:[...document.querySelectorAll('.boss-tier-group:not([hidden]) .boss-roster')].filter(roster=>roster.children.length>1)
                 .every(roster=>{const [a,b]=[...roster.querySelectorAll('.boss-entry')].map(link=>link.getBoundingClientRect());
                     return Math.abs(a.top-b.top)<1&&b.left>a.left;}),
             wraps:[...document.querySelectorAll('.boss-roster')].every(roster=>{
@@ -180,6 +215,7 @@ try {
                 });
             })}));
         assert.equal(layout.overflow, false, `Page overflow at ${width}px.`);
+        assert(layout.tabsFit, `The egg tabs must fit in one row at ${width}px.`);
         assert(layout.fullWidth, `Availability groups must stack and use the full width at ${width}px.`);
         assert(layout.namesHidden&&layout.accessible,`Names should be hidden visually and remain accessible at ${width}px.`);
         assert(layout.sharedRows&&layout.wraps,`Sprites should share rows and wrap at ${width}px.`);
@@ -195,6 +231,7 @@ try {
             await page.screenshot({path:process.env.BOSS_LIST_SCREENSHOT.replace(/\.png$/,`-${width}.png`)});
     }
     await page.setViewportSize({width:1100,height:900});
+    await tab('five-star').click();
     await page.locator('.boss-entry[data-key="905/Incarnate"]').focus();
     await page.keyboard.press('Tab');
     await page.locator('#boss-name-popup').waitFor({state:'visible'});
@@ -207,22 +244,22 @@ try {
     assert.equal(new URL(page.url()).searchParams.get('p'), '905');
     assert.equal(new URL(page.url()).searchParams.get('f'), 'Incarnate');
     await page.goBack();
-    await page.waitForFunction(() => document.querySelector('#boss-list')?.checkVisibility());
+    await selected('five-star');
     await page.locator('.boss-entry[data-key="905/Incarnate"]').focus();
     await page.keyboard.press('Enter');
     await page.waitForFunction(() => document.querySelector('#pokedex-page')?.checkVisibility());
     assert.equal(new URL(page.url()).searchParams.get('f'),'Incarnate');
     await page.goBack();
-    await page.waitForFunction(() => document.querySelector('#boss-list')?.checkVisibility());
-    assert.equal(await page.locator('.boss-tier-heading').count(), 4, 'Repeated renders must retain the tier headers.');
-    await page.reload();
-    await page.locator('.boss-tier-group').last().waitFor();
+    await selected('five-star');
+    await page.reload({waitUntil:'domcontentloaded'});
+    await selected('five-star');
+    assert.equal(new URL(page.url()).searchParams.get('tier'),'five-star');
     assert.equal(await page.locator('.boss-entry').count(), report.released + report.unreleased);
     await page.locator('#boss-leaderboard-back').click();
     await page.waitForFunction(() => document.querySelector('#raid-leaderboard')?.checkVisibility());
     assert.equal(await page.locator('#raid-boss-list').textContent(), 'Raid Bosses →');
     await page.locator('#raid-boss-list').click();
-    await page.waitForFunction(() => document.querySelector('#boss-list')?.checkVisibility());
+    await selected('super-mega');
     assert(new URL(page.url()).searchParams.has('bosses'));
     assert.equal(await page.evaluate(() => raidLeaderboardWorker), null, 'Opening the boss list must cancel pending ranking work.');
     await page.locator('#header-left').click();
@@ -234,15 +271,23 @@ try {
     const touch=await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true,
         locale:'en-US',ignoreHTTPSErrors:process.env.PLAYWRIGHT_IGNORE_HTTPS_ERRORS==='1'});
     touch.on('pageerror',error=>errors.push(error.message));
-    await touch.goto(start.toString(),{waitUntil:'domcontentloaded'});
+    const deepLink = new URL(start);
+    deepLink.search = '?bosses&tier=mega';
+    await touch.goto(deepLink.toString(),{waitUntil:'domcontentloaded'});
+    await selected('mega',touch);
+    await tab('five-star',touch).tap();
+    await selected('five-star',touch);
     const touchBoss=touch.locator('.boss-entry[data-key="905/Incarnate"]');
     await touchBoss.waitFor({timeout:120000});
     await touchBoss.tap();
     await touch.locator('#boss-name-popup').waitFor({state:'visible'});
     assert.equal(await touch.locator('#boss-name-popup').textContent(),'Enamorus');
     assert(new URL(touch.url()).searchParams.has('bosses'),'The first tap previews the name.');
-    await touch.touchscreen.tap(2,100);
+    await tab('super-mega',touch).tap();
     await touch.locator('#boss-name-popup').waitFor({state:'hidden'});
+    await selected('super-mega',touch);
+    await tab('five-star',touch).tap();
+    await selected('five-star',touch);
     await touchBoss.tap();
     await touch.locator('#boss-name-popup').waitFor({state:'visible'});
     await touchBoss.tap();

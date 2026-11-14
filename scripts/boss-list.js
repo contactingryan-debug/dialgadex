@@ -167,6 +167,28 @@ function BindBossList() {
         event.preventDefault();
         LoadRaidLeaderboardAndUpdateURL();
     });
+    $('#boss-tier-tabs').on('click', '.boss-egg-tab', function() {
+        if (this.getAttribute('aria-selected') === 'true') return;
+        const params = new URLSearchParams(location.search);
+        params.set('tier', this.dataset.tier);
+        UpdateURL(params);
+        SelectBossListTier(this.dataset.tier);
+    }).on('keydown', '.boss-egg-tab', function(event) {
+        if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+        const tabs = Array.from(this.parentElement.children);
+        const current = tabs.indexOf(this);
+        let next;
+        switch (event.key) {
+            case 'ArrowLeft': next = (current + tabs.length - 1) % tabs.length; break;
+            case 'ArrowRight': next = (current + 1) % tabs.length; break;
+            case 'Home': next = 0; break;
+            case 'End': next = tabs.length - 1; break;
+            default: return;
+        }
+        event.preventDefault();
+        tabs[next].click();
+        tabs[next].focus();
+    });
     $('#boss-list-groups').off('.bossNames')
     .on('mouseenter.bossNames focusin.bossNames', '.boss-entry', function() {
         ShowBossListPopup(this);
@@ -216,28 +238,46 @@ async function LoadBossList() {
     RenderBossList();
 }
 
-function RenderBossList() {
+function SelectBossListTier(key) {
     HideBossListPopup();
+    $('#boss-tier-tabs .boss-egg-tab').each(function() {
+        const selected = this.dataset.tier === key;
+        this.setAttribute('aria-selected', selected);
+        this.tabIndex = selected ? 0 : -1;
+    });
+    $('#boss-list-groups .boss-tier-group').each(function() {
+        this.hidden = this.dataset.category !== key;
+    });
+}
+
+function RenderBossList() {
+    const tabs = $('#boss-tier-tabs').empty().attr('aria-label', BossListText('raid-tiers'));
     const container = $('#boss-list-groups').empty();
     const groups = GetBossListGroups();
+    const requestedTier = new URLSearchParams(location.search).get('tier');
+    const selectedTier = BOSS_LIST_TIERS.find(tier => tier.key === requestedTier) || BOSS_LIST_TIERS[0];
     for (const tier of BOSS_LIST_TIERS) {
         const tierGroups = groups.filter(group => group.hp === tier.hp);
         const total = tierGroups.reduce((sum, group) => sum + group.released.length + group.unreleased.length, 0);
-        const headingID = 'boss-tier-' + tier.key;
-        const section = $('<section class="boss-tier-group"></section>').attr({
-            'data-hp': tier.hp, 'data-category': tier.key, 'aria-labelledby': headingID,
-        });
-        section.append($('<div class="boss-tier-heading boss-tier-title"></div>').append(
-            $('<h2 class="boss-tier-label"></h2>').attr('id', headingID).append(
-                $('<img class="boss-egg" width="44" height="44" alt="">').attr('src', 'imgs/raids/' + tier.egg),
-                $('<span class="boss-tier-text"></span>').append(
-                    $('<span class="boss-tier-name"></span>').text(BossListText(tier.key)),
-                    $('<span class="boss-hp"></span>').text(BossListText('hp', {
-                        hp: tier.hp.toLocaleString(currentLocale),
-                    })))),
+        const tabID = 'boss-tab-' + tier.key;
+        const panelID = 'boss-tier-' + tier.key;
+        tabs.append($('<button type="button" class="boss-egg-tab" role="tab"></button>').attr({
+            id: tabID, 'data-tier': tier.key, 'aria-controls': panelID,
+        }).append(
+            $('<img class="boss-egg" width="56" height="56" alt="">').attr('src', 'imgs/raids/' + tier.egg),
+            $('<span class="boss-tier-name"></span>').text(BossListText(tier.key === 'five-star' ? 'five-star-tab' : tier.key)),
             $('<span class="boss-total-count"></span>').text(BossListText('total-count', {
                 count: total.toLocaleString(currentLocale),
             }))));
+        const section = $('<section class="boss-tier-group" role="tabpanel" tabindex="0"></section>').attr({
+            id: panelID, 'data-hp': tier.hp, 'data-category': tier.key, 'aria-labelledby': tabID,
+        });
+        section.append($('<h2 class="boss-tier-heading boss-tier-title"></h2>').append(
+            $('<span></span>').text(BossListText(tier.key)),
+            $('<span class="boss-hp"></span>').text(BossListText('hp', {
+                hp: tier.hp.toLocaleString(currentLocale),
+            }))));
+        if (!total) section.append($('<p class="boss-list-note"></p>').text(BossListText('empty-tier')));
         for (const group of tierGroups) {
             const optional = OPTIONAL_BOSS_GROUPS.includes(group.key);
             if (tier.categories && !optional) {
@@ -252,6 +292,7 @@ function RenderBossList() {
         }
         container.append(section);
     }
+    SelectBossListTier(selectedTier.key);
 }
 
 function BuildBossRosters(group, optional) {

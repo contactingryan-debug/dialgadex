@@ -114,9 +114,10 @@ remain compact. This emphasis follows the relative Jenks tiers, rather than
 defining a fixed performance or investment threshold.
 Calculation notes appear below the list. The species funnel opens and closes
 on hover, matching Type Rankings, and retains touch and keyboard controls.
-**Raid Bosses →** opens the Released and Unreleased roster at `?bosses`.
-Four sections show the raid eggs for Super Mega (25,000 HP), Legendary Mega
-(22,500 HP), five-star (15,000 HP), and Mega (9,000 HP) raids.
+**Raid Bosses →** opens Super Mega raids at `?bosses`. The four egg tabs show
+boss counts for Super Mega (25,000 HP), Legendary Mega (22,500 HP), five-star
+(15,000 HP), and Mega (9,000 HP) raids. Select an egg to show its roster. The
+selection is bookmarkable, for example at `?bosses&tier=five-star`.
 The five-star tier has Legendary, Sub-Legendary, and Mythical subsections.
 Ultra Beasts appear under Sub-Legendary. When present, Paradox and other
 five-star bosses appear in labeled rows below those subsections.
