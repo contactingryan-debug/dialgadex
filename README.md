@@ -122,6 +122,7 @@ The five-star tier has Legendary, Sub-Legendary, and Mythical subsections.
 Ultra Beasts appear under Sub-Legendary. When present, Paradox and other
 five-star bosses appear in labeled rows below those subsections.
 Boss sprites share compact, full-width rows labeled Released or Unreleased.
+Released Super Mega bosses show their large previews directly in the roster.
 Only groups with eligible bosses appear. Names and form
 labels appear in a counter-style popup on hover or keyboard focus. On touch,
 tap once to preview a name and again to open that boss form's Pokémon page.

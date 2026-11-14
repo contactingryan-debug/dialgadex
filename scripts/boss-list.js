@@ -128,15 +128,8 @@ function PositionBossListPopup() {
     popup.style.top = top + 'px';
 }
 
-function ShowBossListPopup(entry) {
-    if (bossListPopupTarget === entry) {
-        PositionBossListPopup();
-        return;
-    }
-    HideBossListPopup();
-    bossListPopupTarget = entry;
-
-    const name = GetPokemonImgSrcName(Number(entry.dataset.id), entry.dataset.form);
+function BuildBossPreview(id, form, imageClass, onLoad) {
+    const name = GetPokemonImgSrcName(id, form);
     const sources = [
         JB_URL + GIFS_PATH + name + '.gif',
         CDN_URL + GIFS_PATH + name + '.gif',
@@ -146,20 +139,43 @@ function ShowBossListPopup(entry) {
     // Use the Pokémon GO still from PokeMiners until the shared feed has this form's GIF.
     if (name === 'chandelure-mega') sources.splice(2, 0, 'imgs/pokemon/chandelure-mega.png');
     let sourceIndex = 0;
-    const image = $('<img class="boss-popup-image" alt="" hidden>')
+    const image = $('<img alt="" hidden>').addClass(imageClass)
         .one('load', function() {
             this.hidden = false;
-            PositionBossListPopup();
+            onLoad?.();
         })
         .on('error', function() {
             const next = sources[++sourceIndex];
             if (next) this.src = next;
             else $(this).remove();
         });
+    return image.attr('src', sources[0]);
+}
+
+function ShowBossListPopup(entry) {
+    if (bossListPopupTarget === entry) {
+        PositionBossListPopup();
+        return;
+    }
+    HideBossListPopup();
+    bossListPopupTarget = entry;
+
     const popup = $('#boss-name-popup');
-    popup.append(image, $(entry).children('.boss-name').clone().removeAttr('aria-hidden'));
+    if (!entry.classList.contains('boss-entry-preview')) {
+        popup.append(BuildBossPreview(Number(entry.dataset.id), entry.dataset.form, 'boss-popup-image', PositionBossListPopup));
+    }
+    popup.append($(entry).children('.boss-name').clone().removeAttr('aria-hidden'));
     PositionBossListPopup();
-    image.attr('src', sources[0]);
+}
+
+function ShowInlineBossPreviews() {
+    $('#boss-tier-super-mega .boss-preview-slot:not(:has(.boss-inline-image))').each(function() {
+        const entry = this.parentElement;
+        const slot = $(this);
+        const sprite = slot.children('.boss-sprite');
+        slot.append(BuildBossPreview(Number(entry.dataset.id), entry.dataset.form, 'boss-inline-image',
+            () => sprite.prop('hidden', true)));
+    });
 }
 
 function BindBossList() {
@@ -244,6 +260,7 @@ function SelectBossListTier(key) {
     $('#boss-list-groups .boss-tier-group').each(function() {
         this.hidden = this.dataset.category !== key;
     });
+    if (key === 'super-mega') ShowInlineBossPreviews();
 }
 
 function RenderBossList() {
@@ -302,6 +319,7 @@ function BuildBossRosters(group, optional) {
         const labelID = 'boss-' + group.key + '-' + availability;
         const label = BossListText(availability);
         const groupLabel = optional ? BossListText(group.key) + ' · ' + label : label;
+        const inlinePreviews = group.key === 'super-mega' && availability === 'released';
         const section = $('<div class="boss-release-roster" role="group"></div>').attr({
             'data-availability': availability,
             'aria-labelledby': labelID,
@@ -309,10 +327,10 @@ function BuildBossRosters(group, optional) {
         const heading = $('<div class="boss-release-heading"></div>').append(
             $('<span class="boss-release-label"></span>').attr('id', labelID).text(groupLabel),
             $('<span></span>').text(pokemonList.length.toLocaleString(currentLocale)));
-        const roster = $('<ul class="boss-roster"></ul>');
+        const roster = $('<ul class="boss-roster"></ul>').toggleClass('boss-roster-previews', inlinePreviews);
         for (const pokemon of pokemonList) {
             const name = BossListPokemonName(pokemon).attr('aria-hidden', 'true');
-            const link = $('<a class="boss-entry"></a>').attr({
+            const link = $('<a class="boss-entry"></a>').toggleClass('boss-entry-preview', inlinePreviews).attr({
                 href: '?' + new URLSearchParams({p: pokemon.id, f: pokemon.form}),
                 'data-key': PokemonDataKey(pokemon), 'data-id': pokemon.id, 'data-form': pokemon.form,
                 'aria-label': name.text(),
@@ -321,7 +339,8 @@ function BuildBossRosters(group, optional) {
             const sprite = $('<span class="pokemon-icon boss-sprite" aria-hidden="true"></span>')
                 .css({'background-image': 'url(' + ICONS_URL + ')',
                     'background-position': coords.x + 'px ' + coords.y + 'px'});
-            link.append(sprite, name);
+            const art = inlinePreviews ? $('<span class="boss-preview-slot"></span>').append(sprite) : sprite;
+            link.append(art, name);
             roster.append($('<li></li>').append(link));
         }
         rosters.append(section.append(heading, roster));
